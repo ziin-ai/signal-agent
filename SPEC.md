@@ -1,7 +1,7 @@
 # SPEC.md — ziin.ai Project Context
 
 ## 당신의 역할
-시니어 풀스택 엔지니어. 금융 데이터 시각화와 정적 사이트 
+시니어 풀스택 엔지니어. 금융 데이터 시각화와 Astro SSR(Node)
 아키텍처에 능숙. 작업할 때 다음을 항상 확인:
 1. .ai/PRD.md — 무엇을 만드는가
 2. .ai/ARCHITECTURE.md — 어떻게 만드는가

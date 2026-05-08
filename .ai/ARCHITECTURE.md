@@ -4,7 +4,7 @@
 
 | 영역 | 선택 | 이유 |
 |---|---|---|
-| 프레임워크 | Astro 4.x | 콘텐츠 컬렉션, 0 JS 기본, SSG 친화 |
+| 프레임워크 | Astro 6.x | 콘텐츠 컬렉션, 0 JS 기본, `@astrojs/node` SSR |
 | UI | Tailwind CSS 4 | 디자인 토큰 관리 용이 |
 | 인터랙티브 | React 18 (islands) | 그래프, 차트만 클라이언트 컴포넌트 |
 | 콘텐츠 | Markdown + frontmatter | Git이 SSOT |
@@ -66,9 +66,7 @@ ziin-ai/
 │   └── plugins/
 │       └── remark-citations.ts # {{cite:id}} 변환
 ├── .github/workflows/
-│   ├── publish.yml
-│   ├── ai-review.yml
-│   └── source-audit.yml        # 매주 월요일
+│   └── build.yml               # Docker 이미지 빌드·GHCR 푸시
 └── scripts/
     └── new-post.ts
 
@@ -100,7 +98,7 @@ id, title, date, symbol?, market?, category, impact, summary, sourceUrl?, tags[]
 3. 모든 sources 집계 → credibility scores 계산
 4. 모든 theses 집계 → thesis-board 데이터 생성
 5. 시세 데이터 페치 → 빌드 시 스냅샷 + 클라이언트 폴링
-6. 정적 사이트 출력
+6. Node 어댑터로 서버 번들 생성 (`dist/server`, `dist/client`) 후 컨테이너/Kubernetes 배포
 
 ## 최근 흐름 오버랩 차트 아키텍처
 
