@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.output/
+.vercel/
+
+# Astro
+.astro/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Logs & debug
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+*.lcov
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+.cache/
+.temp/
+tmp/

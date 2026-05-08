@@ -1,0 +1,41 @@
+---
+export interface TickerItem {
+  symbol: string;
+  label: string;
+  price: number;
+  change: number;
+  changePercent: number;
+}
+
+interface Props {
+  items: TickerItem[];
+}
+
+const { items } = Astro.props;
+
+function formatPrice(value: number): string {
+  return new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 2 }).format(value);
+}
+---
+
+<div class="bg-secondary/80 px-4 py-2 dark:bg-secondary/70">
+  <div class="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-x-6 gap-y-1 font-mono text-xs">
+    {
+      items.map((item) => {
+        const directionClass =
+          item.change > 0 ? "text-success" : item.change < 0 ? "text-danger" : "text-warning";
+        const sign = item.change > 0 ? "+" : "";
+        return (
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-600 dark:text-slate-300">{item.label}</span>
+            <span class="font-semibold">{formatPrice(item.price)}</span>
+            <span class={directionClass}>
+              {sign}
+              {item.changePercent.toFixed(2)}%
+            </span>
+          </div>
+        );
+      })
+    }
+  </div>
+</div>

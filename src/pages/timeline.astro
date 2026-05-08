@@ -1,0 +1,372 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Panel from "../components/ui/Panel.astro";
+import SymbolTimelineChart from "../components/dashboard/SymbolTimelineChart";
+import { buildGlobalTimelineEvents, buildSymbolTimelineEvents } from "../lib/timeline";
+
+const allPosts = await getCollection("posts");
+const posts =
+  allPosts.filter((post) => post.data.draft !== true).length > 0
+    ? allPosts.filter((post) => post.data.draft !== true)
+    : allPosts;
+const externalEvents = await getCollection("events");
+
+const publishedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const rawSymbol = Astro.url.searchParams.get("symbol")?.trim() ?? "";
+const symbolKnown =
+  rawSymbol &&
+  (publishedPosts.some((p) => p.data.symbol === rawSymbol) ||
+    externalEvents.some((e) => e.data.symbol === rawSymbol));
+const activeSymbol = symbolKnown ? rawSymbol : "";
+const symbolPosts = activeSymbol ? publishedPosts.filter((p) => p.data.symbol === activeSymbol) : [];
+const activeMarket = symbolPosts[0]?.data.market;
+
+const events = activeSymbol
+  ? buildSymbolTimelineEvents(activeSymbol, publishedPosts, externalEvents, activeMarket)
+  : buildGlobalTimelineEvents(publishedPosts, externalEvents);
+const kindParam = Astro.url.searchParams.get("kind")?.trim() ?? "all";
+const impactParam = Astro.url.searchParams.get("impact")?.trim() ?? "all";
+const categoryParam = Astro.url.searchParams.get("category")?.trim() ?? "all";
+const selectedKind = kindParam === "post" || kindParam === "external_event" ? kindParam : "all";
+const selectedImpact =
+  impactParam === "high" || impactParam === "mid" || impactParam === "low" ? impactParam : "all";
+const categoryOptions = [...new Set(externalEvents.map((e) => e.data.category))].sort();
+const selectedCategory = categoryOptions.includes(categoryParam) ? categoryParam : "all";
+
+const filteredEvents = events.filter((ev) => {
+  if (selectedKind !== "all" && ev.kind !== selectedKind) return false;
+  if (selectedImpact !== "all") {
+    if (ev.kind !== "external_event" || ev.meta?.impact !== selectedImpact) return false;
+  }
+  if (selectedCategory !== "all") {
+    if (ev.kind !== "external_event" || ev.meta?.category !== selectedCategory) return false;
+  }
+  return true;
+});
+
+const anchorPost = symbolPosts[0];
+const naverCode =
+  anchorPost?.data.market === "KRX" ? anchorPost.data.symbol.split(".")[0] : "";
+const naverUrl =
+  naverCode && /^\d{6}$/.test(naverCode) ? `https://finance.naver.com/item/main.naver?code=${naverCode}` : "";
+const yahooUrl = activeSymbol ? `https://finance.yahoo.com/quote/${encodeURIComponent(activeSymbol)}` : "";
+
+const symbolPickers = [...new Set(publishedPosts.map((p) => p.data.symbol))].slice(0, 14);
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+function withBase(href: string): string {
+  if (!href.startsWith("/")) return href;
+  return `${rootPath}${href.slice(1)}`;
+}
+
+function kindLabel(kind: string) {
+  if (kind === "post") return "분석";
+  if (kind === "external_event") return "이벤트";
+  return "기타";
+}
+
+function kindClass(kind: string) {
+  if (kind === "post") return "bg-blue-500/15 text-blue-800 dark:text-blue-200";
+  if (kind === "external_event") return "bg-indigo-500/15 text-indigo-900 dark:text-indigo-100";
+  return "bg-slate-500/15 text-slate-800 dark:text-slate-100";
+}
+
+function categoryLabel(category: string) {
+  if (category === "macro") return "매크로";
+  if (category === "earnings") return "실적";
+  if (category === "product") return "제품";
+  if (category === "policy") return "정책";
+  if (category === "supply-chain") return "공급망";
+  if (category === "news") return "뉴스";
+  return "기타";
+}
+
+function timelineHref(next: {
+  symbol?: string;
+  kind?: string;
+  impact?: string;
+  category?: string;
+}) {
+  const params = new URLSearchParams();
+  const symbolValue = next.symbol ?? activeSymbol;
+  const kindValue = next.kind ?? selectedKind;
+  const impactValue = next.impact ?? selectedImpact;
+  const categoryValue = next.category ?? selectedCategory;
+  if (symbolValue) params.set("symbol", symbolValue);
+  if (kindValue !== "all") params.set("kind", kindValue);
+  if (impactValue !== "all") params.set("impact", impactValue);
+  if (categoryValue !== "all") params.set("category", categoryValue);
+  const qs = params.toString();
+  return qs ? `${rootPath}timeline?${qs}` : `${rootPath}timeline`;
+}
+
+const chartMarkers = activeSymbol ? filteredEvents.map((e) => ({ at: e.at, kind: e.kind })) : [];
+const chartFallbackPoints: Array<{ at: string; price: number }> = [];
+---
+
+<Base>
+  <section class="mb-4">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h1 class="font-sans text-3xl font-semibold tracking-tight">
+          {activeSymbol ? (
+            <>
+              타임라인 · <span class="font-mono text-info">{activeSymbol}</span>
+            </>
+          ) : (
+            "타임라인"
+          )}
+        </h1>
+        <p class="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          {
+            activeSymbol ? (
+              <>
+                이 종목에 대한 <strong>분석·외부 이벤트</strong>를 같은 시간축에 모았습니다. 차트는 시장 맥락,
+                목록은 우리의 해석과 행동입니다.
+              </>
+            ) : (
+              <>
+                분석글 게시와 외부 이벤트를 한 축에 모아 <strong>시간 순서</strong>로 의미를 읽을 수 있게 합니다.
+                종목을 고르면 시장 차트와 이벤트가 함께 묶입니다.
+              </>
+            )
+          }
+        </p>
+      </div>
+      {
+        activeSymbol && (
+          <a
+            href={`${rootPath}timeline`}
+            class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            전체 타임라인
+          </a>
+        )
+      }
+    </div>
+
+    {
+      activeSymbol && symbolPickers.length > 0 && (
+        <div class="mt-3 flex flex-wrap gap-1.5">
+          <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">다른 종목:</span>
+          {symbolPickers.map((sym) => (
+            <a
+              href={timelineHref({ symbol: sym })}
+              class={`rounded-full border px-2.5 py-0.5 text-xs font-mono ${
+                sym === activeSymbol
+                  ? "border-info bg-info/15 text-info"
+                  : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+              }`}
+            >
+              {sym}
+            </a>
+          ))}
+        </div>
+      )
+    }
+    {
+      !activeSymbol && symbolPickers.length > 0 && (
+        <div class="mt-3 flex flex-wrap gap-1.5">
+          <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">종목:</span>
+          {symbolPickers.map((sym) => (
+            <a
+              href={timelineHref({ symbol: sym })}
+              class="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-mono text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+            >
+              {sym}
+            </a>
+          ))}
+        </div>
+      )
+    }
+    {
+      rawSymbol && !symbolKnown && (
+        <p class="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
+          <span class="font-mono">{rawSymbol}</span>는 게시된 분석·이벤트 기록에 없어 전체 타임라인을 보여줍니다.
+        </p>
+      )
+    }
+    <div class="mt-3 space-y-2">
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">유형:</span>
+        {[
+          { id: "all", label: "전체" },
+          { id: "post", label: "분석" },
+          { id: "external_event", label: "이벤트" },
+        ].map((opt) => (
+          <a
+            href={timelineHref({ kind: opt.id })}
+            class={`rounded-full border px-2.5 py-0.5 text-xs ${
+              selectedKind === opt.id
+                ? "border-info bg-info/15 text-info"
+                : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+            }`}
+          >
+            {opt.label}
+          </a>
+        ))}
+      </div>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">영향도:</span>
+        {[
+          { id: "all", label: "전체" },
+          { id: "high", label: "High" },
+          { id: "mid", label: "Mid" },
+          { id: "low", label: "Low" },
+        ].map((opt) => (
+          <a
+            href={timelineHref({ impact: opt.id })}
+            class={`rounded-full border px-2.5 py-0.5 text-xs ${
+              selectedImpact === opt.id
+                ? "border-info bg-info/15 text-info"
+                : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+            }`}
+          >
+            {opt.label}
+          </a>
+        ))}
+      </div>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">카테고리:</span>
+        <a
+          href={timelineHref({ category: "all" })}
+          class={`rounded-full border px-2.5 py-0.5 text-xs ${
+            selectedCategory === "all"
+              ? "border-info bg-info/15 text-info"
+              : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+          }`}
+        >
+          전체
+        </a>
+        {categoryOptions.map((category) => (
+          <a
+            href={timelineHref({ category })}
+            class={`rounded-full border px-2.5 py-0.5 text-xs ${
+              selectedCategory === category
+                ? "border-info bg-info/15 text-info"
+                : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+            }`}
+          >
+            {categoryLabel(category)}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <div class="lg:col-span-2 space-y-4">
+      {
+        activeSymbol && (
+          <Panel title="시장 맥락 (차트)">
+            <SymbolTimelineChart
+              symbol={activeSymbol}
+              markers={chartMarkers}
+              fallbackPoints={chartFallbackPoints}
+              client:visible
+            />
+            <div class="mt-3 flex flex-wrap gap-2">
+              {naverUrl && (
+                <a
+                  href={naverUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="rounded border border-slate-200 px-2 py-1 text-xs text-info hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800"
+                >
+                  네이버증권
+                </a>
+              )}
+              {yahooUrl && (
+                <a
+                  href={yahooUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="rounded border border-slate-200 px-2 py-1 text-xs text-info hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800"
+                >
+                  Yahoo Finance
+                </a>
+              )}
+            </div>
+          </Panel>
+        )
+      }
+
+      <Panel title={activeSymbol ? "이벤트 · 해석 · 행동" : "통합 타임라인"}>
+        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+          {activeSymbol
+            ? `최신순 · 이 심볼 연결 기록 (${filteredEvents.length}건)`
+            : `최신순 · 전체 아카이브 (${filteredEvents.length}건)`}
+        </p>
+        <ul class="mt-4 divide-y divide-slate-100 dark:divide-slate-700/80">
+          {
+            filteredEvents.length === 0 ? (
+              <li class="py-6 text-sm text-slate-600 dark:text-slate-300">필터 조건에 맞는 이벤트가 없습니다.</li>
+            ) : (
+              filteredEvents.map((ev) => (
+                <li class="flex flex-wrap items-start gap-3 py-3">
+                  <div class="w-24 shrink-0 text-xs text-slate-500 dark:text-slate-400">
+                    {new Date(ev.at).toLocaleDateString("ko-KR", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class={`rounded px-2 py-0.5 text-[10px] font-semibold ${kindClass(ev.kind)}`}>
+                        {kindLabel(ev.kind)}
+                      </span>
+                      {ev.meta?.symbol && (
+                        <span class="font-mono text-[10px] text-slate-500 dark:text-slate-400">{ev.meta.symbol}</span>
+                      )}
+                    </div>
+                    <p class="mt-1 text-sm font-medium text-slate-900 dark:text-slate-100">
+                      {ev.href ? (
+                        <a href={withBase(ev.href)} class="hover:text-info">
+                          {ev.title}
+                        </a>
+                      ) : (
+                        ev.title
+                      )}
+                    </p>
+                    {ev.summary && <p class="mt-0.5 line-clamp-2 text-xs text-slate-600 dark:text-slate-300">{ev.summary}</p>}
+                  </div>
+                </li>
+              ))
+            )
+          }
+        </ul>
+      </Panel>
+    </div>
+
+    <aside class="space-y-4">
+      {
+        activeSymbol && symbolPosts.length > 0 && (
+          <Panel title="이 종목 분석글">
+            <ul class="mt-3 space-y-2">
+              {symbolPosts.slice(0, 6).map((post) => (
+                <li class="rounded-lg bg-secondary/30 px-3 py-2 text-sm">
+                  <a href={`${rootPath}posts/${post.id.replace(/\.md$/, "")}`} class="hover:text-info">
+                    {post.data.title}
+                  </a>
+                  <p class="mt-0.5 text-[10px] text-slate-500">
+                    {post.data.date.toLocaleDateString("ko-KR")} · 확신 {post.data.conviction}/5
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        )
+      }
+
+      <Panel title="이 페이지의 역할" variant="soft">
+        <ul class="mt-2 list-inside list-disc space-y-1 text-xs text-slate-600 dark:text-slate-300">
+          <li>종목 모드: 차트(시장) + 타임라인(우리) + 분석 목록을 같은 맥락으로</li>
+          <li>전체 모드: 모든 심볼의 이벤트를 한 축에서 탐색</li>
+          <li>분석글은 본문으로, 외부 이벤트는 출처로 바로 이동</li>
+        </ul>
+      </Panel>
+    </aside>
+  </section>
+</Base>

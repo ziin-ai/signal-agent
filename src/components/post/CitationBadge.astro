@@ -1,0 +1,11 @@
+---
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<span class="mx-0.5 inline-flex rounded border border-info/40 bg-info/10 px-1.5 py-0.5 text-xs font-mono text-info">
+  {`cite:${id}`}
+</span>

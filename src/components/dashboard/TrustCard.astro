@@ -1,0 +1,114 @@
+---
+import Panel from "../ui/Panel.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+
+const sources = [...post.data.sources].sort((a, b) => b.date.getTime() - a.date.getTime());
+function extractYoutubeId(url: string): string | undefined {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes("youtube.com")) {
+      const id = parsed.searchParams.get("v");
+      return id ?? undefined;
+    }
+    if (parsed.hostname === "youtu.be") {
+      const id = parsed.pathname.replace("/", "").trim();
+      return id || undefined;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+function tierLabel(tier: number) {
+  if (tier === 0) return "탐색";
+  if (tier === 1) return "핵심";
+  if (tier === 2) return "보강";
+  if (tier === 3) return "참고";
+  return "기타";
+}
+---
+
+<Panel title="관련정보" titleClass="text-xs" variant="soft">
+  <div class="mt-2 space-y-2 text-[11px]">
+    {sources.length === 0 ? (
+      <div class="rounded border border-dashed border-slate-300 bg-slate-50 px-2 py-3 text-[10px] text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+        표시할 source 메타데이터가 없습니다.
+      </div>
+    ) : (
+      sources.map((source) => (
+        source.type === "youtube" ? (
+          <article class="rounded-lg border border-slate-200 bg-white/80 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/70">
+            <div class="flex flex-wrap items-center gap-1.5 text-[9px]">
+              <span class="rounded bg-info/15 px-1.5 py-0.5 font-semibold text-info">{tierLabel(source.tier)}</span>
+              <span class="rounded bg-slate-100 px-1.5 py-0.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                youtube
+              </span>
+              <span class="text-slate-500 dark:text-slate-400">
+                {source.date.toLocaleDateString("ko-KR")}
+              </span>
+            </div>
+            {extractYoutubeId(source.url) ? (
+              <>
+                <div class="mt-2 aspect-video overflow-hidden rounded-lg border border-slate-200 bg-black dark:border-slate-700">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${extractYoutubeId(source.url)}`}
+                    title={`${source.title} embed`}
+                    loading="lazy"
+                    class="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                  />
+                </div>
+                <div class="mt-1 flex items-center gap-3 text-[9px]">
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex text-info hover:underline"
+                  >
+                    YouTube 원본 열기
+                  </a>
+                </div>
+              </>
+            ) : (
+              <p class="mt-1 text-[10px] text-amber-600 dark:text-amber-400">
+                유효한 YouTube URL이 아니어서 임베드를 표시하지 못했습니다.
+              </p>
+            )}
+          </article>
+        ) : (
+          <article class="rounded-lg border border-slate-200 bg-white/80 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/70">
+            <div class="flex flex-wrap items-center gap-1.5 text-[9px]">
+              <span class="rounded bg-info/15 px-1.5 py-0.5 font-semibold text-info">{tierLabel(source.tier)}</span>
+              <span class="rounded bg-slate-100 px-1.5 py-0.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                {source.type}
+              </span>
+              <span class="text-slate-500 dark:text-slate-400">
+                {source.date.toLocaleDateString("ko-KR")}
+              </span>
+            </div>
+            <a
+              href={source.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-1 block text-[11px] font-semibold text-info hover:underline"
+              title={source.title}
+            >
+              {source.title}
+            </a>
+            <p class="mt-1 line-clamp-2 text-[10px] leading-relaxed text-slate-600 dark:text-slate-300">
+              {source.excerpt}
+            </p>
+          </article>
+        )
+      ))
+    )}
+  </div>
+</Panel>

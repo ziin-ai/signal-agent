@@ -1,0 +1,5 @@
+---
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+return Astro.redirect(`${rootPath}timeline`, 301);
+---

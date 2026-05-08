@@ -1,0 +1,167 @@
+---
+interface Props {
+  Content: any;
+  components?: Record<string, any>;
+}
+
+const { Content, components = {} } = Astro.props;
+---
+
+<article class="markdown-viewer">
+  <Content components={components} />
+</article>
+
+<style>
+  :global(.markdown-viewer) {
+    color: var(--color-fg);
+    line-height: 1.75;
+    font-size: 0.98rem;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  :global(.markdown-viewer > :first-child) {
+    margin-top: 0;
+  }
+
+  :global(.markdown-viewer > :last-child) {
+    margin-bottom: 0;
+  }
+
+  :global(.markdown-viewer h1) {
+    margin-top: 1.6rem;
+    margin-bottom: 0.7rem;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+  }
+
+  :global(.markdown-viewer h2) {
+    margin-top: 1.4rem;
+    margin-bottom: 0.55rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  :global(.markdown-viewer h3) {
+    margin-top: 1.2rem;
+    margin-bottom: 0.45rem;
+    font-size: 1.08rem;
+    font-weight: 600;
+  }
+
+  :global(.markdown-viewer h4) {
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.98rem;
+    font-weight: 600;
+  }
+
+  :global(.markdown-viewer p) {
+    margin: 0.55rem 0;
+    color: color-mix(in oklab, var(--color-fg) 92%, white 8%);
+  }
+
+  :global(.markdown-viewer a) {
+    color: var(--color-info);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  :global(.markdown-viewer ul),
+  :global(.markdown-viewer ol) {
+    margin: 0.65rem 0 0.8rem;
+    padding-left: 1.2rem;
+  }
+
+  :global(.markdown-viewer ul) {
+    list-style: disc;
+  }
+
+  :global(.markdown-viewer ol) {
+    list-style: decimal;
+  }
+
+  :global(.markdown-viewer li) {
+    margin: 0.28rem 0;
+  }
+
+  :global(.markdown-viewer strong) {
+    font-weight: 700;
+    color: color-mix(in oklab, var(--color-fg) 96%, white 4%);
+  }
+
+  :global(.markdown-viewer code) {
+    padding: 0.1rem 0.32rem;
+    border-radius: 0.35rem;
+    background: color-mix(in oklab, var(--color-fg) 8%, transparent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.86em;
+  }
+
+  :global(.markdown-viewer pre) {
+    margin: 0.8rem 0 1rem;
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in oklab, var(--color-fg) 18%, transparent);
+    background: color-mix(in oklab, var(--color-fg) 6%, transparent);
+    padding: 0.75rem 0.85rem;
+  }
+
+  :global(.markdown-viewer pre code) {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    font-size: 0.84rem;
+    line-height: 1.65;
+  }
+
+  :global(.markdown-viewer blockquote) {
+    margin: 0.9rem 0;
+    border-left: 3px solid var(--color-info);
+    padding-left: 0.8rem;
+    color: color-mix(in oklab, var(--color-fg) 80%, white 20%);
+  }
+
+  :global(.markdown-viewer hr) {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid color-mix(in oklab, var(--color-fg) 16%, transparent);
+  }
+
+  :global(.markdown-viewer table) {
+    width: 100%;
+    margin: 0.75rem 0 1rem;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  :global(.markdown-viewer th),
+  :global(.markdown-viewer td) {
+    border: 1px solid color-mix(in oklab, var(--color-fg) 16%, transparent);
+    padding: 0.42rem 0.5rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  :global(.markdown-viewer th) {
+    background: color-mix(in oklab, var(--color-fg) 7%, transparent);
+    font-weight: 700;
+  }
+
+  :global(.markdown-viewer img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.8rem 0;
+    border-radius: 0.65rem;
+  }
+
+  :global(.markdown-viewer iframe) {
+    margin-top: 0.8rem;
+    width: 100%;
+    border: 1px solid color-mix(in oklab, var(--color-fg) 18%, transparent);
+    border-radius: 0.75rem;
+  }
+</style>

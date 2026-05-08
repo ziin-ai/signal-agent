@@ -1,0 +1,41 @@
+---
+import Header from "../components/layout/Header.astro";
+import TickerBar from "../components/layout/TickerBar.astro";
+import Footer from "../components/layout/Footer.astro";
+import "../styles/global.css";
+
+interface QuoteItem {
+  symbol: string;
+  label: string;
+  price: number;
+  change: number;
+  changePercent: number;
+}
+
+const fallbackItems: QuoteItem[] = [
+  { symbol: "^KS11", label: "KOSPI", price: 0, change: 0, changePercent: 0 },
+  { symbol: "^KQ11", label: "KOSDAQ", price: 0, change: 0, changePercent: 0 },
+  { symbol: "^GSPC", label: "S&P 500", price: 0, change: 0, changePercent: 0 },
+  { symbol: "KRW=X", label: "USD/KRW", price: 0, change: 0, changePercent: 0 },
+  { symbol: "^VIX", label: "VIX", price: 0, change: 0, changePercent: 0 },
+];
+
+let tickerItems = fallbackItems;
+---
+
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ziin.ai</title>
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+  </head>
+  <body class="antialiased">
+    <TickerBar items={tickerItems} />
+    <Header />
+    <main class="mx-auto w-full max-w-6xl px-4 py-6">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

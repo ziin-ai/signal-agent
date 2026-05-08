@@ -1,0 +1,249 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import HeroCard from "../components/dashboard/HeroCard.astro";
+import TrustCard from "../components/dashboard/TrustCard.astro";
+import DashboardTimeline from "../components/dashboard/DashboardTimeline.astro";
+import {
+  buildTimelineEvents,
+  buildGlobalTimelineEvents,
+} from "../lib/timeline";
+import { getYahooChartSeries } from "../lib/market";
+
+const allPosts = await getCollection("posts");
+const posts =
+  allPosts.filter((post) => post.data.draft !== true).length > 0
+    ? allPosts.filter((post) => post.data.draft !== true)
+    : allPosts;
+const externalEvents = await getCollection("events");
+
+const publishedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const latestPost = publishedPosts[0];
+const requestedPost = Astro.url.searchParams.get("post");
+const activePost = requestedPost
+  ? publishedPosts.find((post) => post.id.replace(/\.md$/, "") === requestedPost) ?? latestPost
+  : latestPost;
+const activeMeta = activePost
+  ? {
+      slug: activePost.id.replace(/\.md$/, ""),
+      title: activePost.data.title,
+      market: activePost.data.market,
+      tags: activePost.data.tags,
+      entities: Object.values(activePost.data.entities).flat(),
+    }
+  : undefined;
+const activeIndex = activePost ? publishedPosts.findIndex((post) => post.id === activePost.id) : -1;
+const newerPostSlug =
+  activeIndex > 0 ? publishedPosts[activeIndex - 1].id.replace(/\.md$/, "") : undefined;
+const olderPostSlug =
+  activeIndex >= 0 && activeIndex < publishedPosts.length - 1
+    ? publishedPosts[activeIndex + 1].id.replace(/\.md$/, "")
+    : undefined;
+const relatedPosts = activePost
+  ? publishedPosts.filter((post) => {
+      const hasSameMarket = post.data.market === activePost.data.market;
+      const hasTagOverlap = post.data.tags.some((tag) => activePost.data.tags.includes(tag));
+      const hasEntityOverlap = Object.values(post.data.entities)
+        .flat()
+        .some((entity) => activeMeta?.entities.includes(entity));
+      return hasSameMarket || hasTagOverlap || hasEntityOverlap;
+    })
+  : publishedPosts;
+const dashboardBaseEvents =
+  activePost && publishedPosts.length > 0
+    ? buildTimelineEvents(relatedPosts, activePost, externalEvents)
+    : publishedPosts.length > 0
+      ? buildGlobalTimelineEvents(publishedPosts, externalEvents)
+      : [];
+const now = new Date();
+const dashboardWindowStart = new Date(now);
+dashboardWindowStart.setMonth(dashboardWindowStart.getMonth() - 8);
+dashboardWindowStart.setHours(0, 0, 0, 0);
+const dashboardWindowEnd = new Date(now);
+dashboardWindowEnd.setMonth(dashboardWindowEnd.getMonth() + 4);
+dashboardWindowEnd.setHours(23, 59, 59, 999);
+const dashboardSpan = Math.max(1, dashboardWindowEnd.getTime() - dashboardWindowStart.getTime());
+const dashboardTodayPct = Math.min(
+  100,
+  Math.max(0, ((now.getTime() - dashboardWindowStart.getTime()) / dashboardSpan) * 100),
+);
+const dashboardEvents = dashboardBaseEvents
+  .filter((e) => {
+    const t = new Date(e.at).getTime();
+    return t >= dashboardWindowStart.getTime() && t <= dashboardWindowEnd.getTime();
+  })
+  .sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
+const eventMarketParam = Astro.url.searchParams.get("eventMarket")?.trim() ?? "all";
+const selectedEventMarket =
+  eventMarketParam === "us" || eventMarketParam === "kr" ? eventMarketParam : "all";
+const rawEventCategoryParams = Astro.url.searchParams
+  .getAll("eventCategory")
+  .map((category) => category.trim())
+  .filter((category) => category.length > 0 && category !== "all");
+const externalEventsByMarket = externalEvents.filter((ev) => {
+  if (selectedEventMarket === "kr") return ev.data.market === "KRX";
+  if (selectedEventMarket === "us") {
+    return ["NASDAQ", "NYSE", "AMEX", "OTC"].includes(ev.data.market ?? "");
+  }
+  return true;
+});
+const eventCategoryOptions = [...new Set(externalEventsByMarket.map((ev) => ev.data.category))].sort();
+const selectedEventCategories = [
+  ...new Set(rawEventCategoryParams.filter((category) => eventCategoryOptions.includes(category))),
+];
+const filteredDashboardEvents = dashboardEvents.filter((ev) => {
+  if (ev.kind !== "external_event") return true;
+  if (selectedEventMarket === "kr" && ev.meta?.market !== "KRX") return false;
+  if (
+    selectedEventMarket === "us" &&
+    !["NASDAQ", "NYSE", "AMEX", "OTC"].includes(ev.meta?.market ?? "")
+  ) {
+    return false;
+  }
+  if (selectedEventCategories.length > 0 && !selectedEventCategories.includes(ev.meta?.category ?? "")) {
+    return false;
+  }
+  return true;
+});
+const activePostSlug = activePost?.id.replace(/\.md$/, "");
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+const newerPostHref = newerPostSlug ? `${rootPath}dashboard/${newerPostSlug}` : "#";
+const olderPostHref = olderPostSlug ? `${rootPath}dashboard/${olderPostSlug}` : "#";
+function dashboardHref(next: {
+  eventMarket?: string;
+  eventCategoryToggle?: string;
+  clearCategories?: boolean;
+}) {
+  const params = new URLSearchParams();
+  const marketValue = next.eventMarket ?? selectedEventMarket;
+  const categorySet = new Set(selectedEventCategories);
+  if (next.clearCategories) {
+    categorySet.clear();
+  }
+  if (next.eventCategoryToggle && eventCategoryOptions.includes(next.eventCategoryToggle)) {
+    if (categorySet.has(next.eventCategoryToggle)) categorySet.delete(next.eventCategoryToggle);
+    else categorySet.add(next.eventCategoryToggle);
+  }
+  if (marketValue !== "all") params.set("eventMarket", marketValue);
+  [...categorySet].sort().forEach((category) => params.append("eventCategory", category));
+  const qs = params.toString();
+  return qs ? `${rootPath}?${qs}` : rootPath;
+}
+function eventCategoryLabel(category: string) {
+  if (category === "macro") return "매크로";
+  if (category === "earnings") return "실적";
+  if (category === "product") return "제품";
+  if (category === "policy") return "정책";
+  if (category === "supply-chain") return "공급망";
+  if (category === "news") return "뉴스";
+  return "기타";
+}
+const eventMarketFilters = [
+  { label: "전체", href: dashboardHref({ eventMarket: "all" }), active: selectedEventMarket === "all" },
+  { label: "미국", href: dashboardHref({ eventMarket: "us" }), active: selectedEventMarket === "us" },
+  { label: "한국", href: dashboardHref({ eventMarket: "kr" }), active: selectedEventMarket === "kr" },
+];
+const eventCategoryFilters = [
+  { label: "전체", href: dashboardHref({ clearCategories: true }), active: selectedEventCategories.length === 0 },
+  ...eventCategoryOptions.map((category) => ({
+    label: eventCategoryLabel(category),
+    href: dashboardHref({ eventCategoryToggle: category }),
+    active: selectedEventCategories.includes(category),
+  })),
+];
+const activeChartFallbackPoints: Array<{ at: string; price: number }> = [];
+let activeChartPoints = [...activeChartFallbackPoints];
+let priceDataStatusMessage = "";
+if (activePost) {
+  try {
+    const { closes, timestamps } = await getYahooChartSeries(activePost.data.symbol, {
+      range: "1y",
+      interval: "1d",
+    });
+    if (closes.length === timestamps.length && closes.length > 1) {
+      activeChartPoints = closes.map((price, i) => ({
+        at: new Date(timestamps[i] * 1000).toISOString(),
+        price,
+      }));
+    } else {
+      priceDataStatusMessage =
+        activeChartFallbackPoints.length > 1
+          ? "외부 시세 응답이 비어 내부 보조 데이터로 표시 중"
+          : "외부 시세 응답이 비어 기준선으로 표시 중";
+    }
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : "";
+    priceDataStatusMessage =
+      activeChartFallbackPoints.length > 1
+        ? `외부 시세 연동 실패(${msg || "network"}) · 내부 보조 데이터로 표시 중`
+        : `외부 시세 연동 실패(${msg || "network"}) · 기준선으로 표시 중`;
+    // Keep fallback points when Yahoo API is unavailable.
+  }
+}
+const sortedChart = [...activeChartPoints].sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
+const currentPrice = sortedChart.length > 0 ? sortedChart[sortedChart.length - 1].price : undefined;
+---
+
+<Base>
+  {activePost && (
+    <section class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <HeroCard post={activePost} />
+      <TrustCard post={activePost} />
+    </section>
+  )}
+
+  {activeMeta && (
+    <section class="mt-2 flex flex-wrap items-center justify-between gap-2">
+      <p class="text-xs text-slate-500 dark:text-slate-300">
+        기준 글: <span class="text-info">{activeMeta.title}</span>
+      </p>
+      <div class="flex items-center gap-2 text-xs">
+        <a
+          href={newerPostHref}
+          class={`rounded border px-2 py-1 ${
+            newerPostSlug
+              ? "border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+              : "pointer-events-none border-slate-200 text-slate-400 dark:border-slate-700 dark:text-slate-500"
+          }`}
+        >
+          더 최신 글
+        </a>
+        <a
+          href={olderPostHref}
+          class={`rounded border px-2 py-1 ${
+            olderPostSlug
+              ? "border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+              : "pointer-events-none border-slate-200 text-slate-400 dark:border-slate-700 dark:text-slate-500"
+          }`}
+        >
+          이전 글
+        </a>
+      </div>
+    </section>
+  )}
+
+  {!latestPost && (
+    <section class="rounded-xl border border-slate-300/70 bg-white p-6 dark:border-slate-700/70 dark:bg-slate-900">
+      <p class="text-sm text-slate-600 dark:text-slate-300">표시할 published post가 아직 없습니다.</p>
+    </section>
+  )}
+
+  {publishedPosts.length > 0 && (
+    <section class="mt-3">
+      <DashboardTimeline
+        events={filteredDashboardEvents}
+        windowStart={dashboardWindowStart.toISOString()}
+        windowEnd={dashboardWindowEnd.toISOString()}
+        todayPct={dashboardTodayPct}
+        pricePoints={activeChartPoints}
+        symbol={activePost?.data.symbol}
+        market={activePost?.data.market}
+        currentPrice={currentPrice}
+        priceDataStatusMessage={priceDataStatusMessage}
+        eventMarketFilters={eventMarketFilters}
+        eventCategoryFilters={eventCategoryFilters}
+      />
+    </section>
+  )}
+</Base>
