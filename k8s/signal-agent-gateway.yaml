@@ -1,0 +1,47 @@
+# Kubernetes Gateway API (Ingress 대신 Gateway + HTTPRoute)
+# 네임스페이스: signal-agent (kubectl apply -f k8s/namespace.yaml 선행 권장)
+# 사전 요건: 클러스터에 Gateway API CRD 및 구현체(NGINX Gateway Fabric, Cilium, Contour 등) 설치
+#
+# gatewayClassName 은 클러스터의 실제 GatewayClass 리소스 이름과 일치해야 합니다.
+# 예: kubectl get gatewayclass
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: signal-agent
+  namespace: signal-agent
+  labels:
+    app.kubernetes.io/name: signal-agent
+spec:
+  gatewayClassName: nginx
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: signal-agent
+  namespace: signal-agent
+  labels:
+    app.kubernetes.io/name: signal-agent
+spec:
+  parentRefs:
+    - name: signal-agent
+      namespace: signal-agent
+      sectionName: http
+  hostnames:
+    - ziin.ai
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: signal-agent
+          namespace: signal-agent
+          port: 80
