@@ -26,7 +26,11 @@ if (!post) {
 const { Content } = await render(post);
 ---
 
-<Base>
+<Base
+  title={`${post.data.title} | 내 곁에 지인`}
+  description={post.data.summary}
+  type="article"
+>
   <section class="grid grid-cols-1 gap-6 lg:grid-cols-3">
     <article class="prose prose-slate max-w-none rounded-xl border border-slate-300/70 bg-white p-6 dark:prose-invert dark:border-slate-700/70 dark:bg-slate-900 lg:col-span-2">
       <h1 class="mb-2 font-sans text-3xl font-semibold tracking-tight">{post.data.title}</h1>

@@ -160,7 +160,14 @@ const currentPrice =
       : undefined;
 ---
 
-<Base>
+<Base
+  title={activePost ? `${activePost.data.title} | 대시보드 | 내 곁에 지인` : "대시보드 | 내 곁에 지인"}
+  description={
+    activePost
+      ? `${activePost.data.summary} (${activePost.data.symbol}, ${activePost.data.market})`
+      : "종목별 투자 포인트와 연계 이벤트를 확인하는 대시보드입니다."
+  }
+>
   {activePost && (
     <section
       transition:name="dashboard-hero"

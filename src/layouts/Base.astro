@@ -6,18 +6,61 @@ import Footer from "../components/layout/Footer.astro";
 import { fetchTickerBarQuotes } from "../lib/market";
 import "../styles/global.css";
 
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
+}
+
+const {
+  title = "내 곁에 지인 | 주식 투자 분석",
+  description = "데이터와 출처 기반으로 한국어 주식 투자 인사이트를 제공하는 분석 블로그.",
+  image = "/favicon.svg",
+  type = "website",
+  noindex = false,
+} = Astro.props;
+
 const tickerItems = await fetchTickerBarQuotes();
 
 /** GA4 — disabled by default, enable via PUBLIC_GA_MEASUREMENT_ID */
 const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() || "";
+const siteOrigin = Astro.site?.toString().replace(/\/$/, "") || "";
+const canonical = siteOrigin
+  ? new URL(`${Astro.url.pathname}${Astro.url.search}`, siteOrigin).toString()
+  : Astro.url.toString();
+const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
 ---
 
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>내 곁에 지인</title>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large"} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:site_name" content="내 곁에 지인" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:locale" content="ko_KR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "내 곁에 지인",
+      url: siteOrigin || canonical,
+      inLanguage: "ko-KR",
+      description,
+    })} />
     <ClientRouter />
     {
       gaMeasurementId ? (

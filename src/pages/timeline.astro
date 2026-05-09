@@ -203,7 +203,14 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
 
 ---
 
-<Base>
+<Base
+  title={activeSymbol ? `타임라인 · ${activeSymbol} | 내 곁에 지인` : "타임라인 | 내 곁에 지인"}
+  description={
+    activeSymbol
+      ? `${activeSymbol} 관련 분석글/외부 이벤트 일정을 달력형 타임라인으로 제공합니다.`
+      : "분석글과 외부 이벤트를 월 단위 달력 타임라인으로 제공하는 페이지."
+  }
+>
   <section class="mb-4">
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
