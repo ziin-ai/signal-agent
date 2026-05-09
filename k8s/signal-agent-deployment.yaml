@@ -31,6 +31,8 @@ spec:
               value: "0.0.0.0"
             - name: PORT
               value: "4321"
+            - name: PUBLIC_GA_MEASUREMENT_ID
+              value: "G-KWLNTJCV41"
           readinessProbe:
             httpGet:
               path: /
