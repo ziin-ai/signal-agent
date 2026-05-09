@@ -3,12 +3,16 @@ import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
 import HeroCard from "../components/dashboard/HeroCard.astro";
 import TrustCard from "../components/dashboard/TrustCard.astro";
-import DashboardTimeline from "../components/dashboard/DashboardTimeline.astro";
+import DashboardTimelineInteractive from "../components/dashboard/DashboardTimelineInteractive";
 import {
   buildTimelineEvents,
   buildGlobalTimelineEvents,
 } from "../lib/timeline";
-import { getYahooChartSeries } from "../lib/market";
+import { getThemeIndexChartLines, getYahooChartSeries, isThemeSymbol } from "../lib/market";
+import {
+  marketCategoryOptionsInWindow,
+  resolveDashboardTimelineFilters,
+} from "../lib/dashboard-event-filters";
 
 const allPosts = await getCollection("posts");
 const posts =
@@ -73,128 +77,96 @@ const dashboardEvents = dashboardBaseEvents
     return t >= dashboardWindowStart.getTime() && t <= dashboardWindowEnd.getTime();
   })
   .sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
-const eventMarketParam = Astro.url.searchParams.get("eventMarket")?.trim() ?? "all";
-const selectedEventMarket =
-  eventMarketParam === "us" || eventMarketParam === "kr" ? eventMarketParam : "all";
-const rawEventCategoryParams = Astro.url.searchParams
-  .getAll("eventCategory")
-  .map((category) => category.trim())
-  .filter((category) => category.length > 0 && category !== "all");
-const externalEventsByMarket = externalEvents.filter((ev) => {
-  if (selectedEventMarket === "kr") return ev.data.market === "KRX";
-  if (selectedEventMarket === "us") {
-    return ["NASDAQ", "NYSE", "AMEX", "OTC"].includes(ev.data.market ?? "");
-  }
-  return true;
-});
-const eventCategoryOptions = [...new Set(externalEventsByMarket.map((ev) => ev.data.category))].sort();
-const selectedEventCategories = [
-  ...new Set(rawEventCategoryParams.filter((category) => eventCategoryOptions.includes(category))),
-];
-const filteredDashboardEvents = dashboardEvents.filter((ev) => {
-  if (ev.kind !== "external_event") return true;
-  if (selectedEventMarket === "kr" && ev.meta?.market !== "KRX") return false;
-  if (
-    selectedEventMarket === "us" &&
-    !["NASDAQ", "NYSE", "AMEX", "OTC"].includes(ev.meta?.market ?? "")
-  ) {
-    return false;
-  }
-  if (selectedEventCategories.length > 0 && !selectedEventCategories.includes(ev.meta?.category ?? "")) {
-    return false;
-  }
-  return true;
-});
-const activePostSlug = activePost?.id.replace(/\.md$/, "");
+const marketCategoryOptions = marketCategoryOptionsInWindow(
+  externalEvents,
+  dashboardWindowStart,
+  dashboardWindowEnd,
+);
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+const { selectedEventMarket, selectedEventCategories } = resolveDashboardTimelineFilters(
+  Astro.url,
+  activePost?.data.market,
+  externalEvents,
+  marketCategoryOptions,
+);
+const activePostSlug = activePost?.id.replace(/\.md$/, "");
+const filterPathAndQuery = `${Astro.url.pathname}${Astro.url.search}${Astro.url.hash}`;
 const newerPostHref = newerPostSlug ? `${rootPath}dashboard/${newerPostSlug}` : "#";
 const olderPostHref = olderPostSlug ? `${rootPath}dashboard/${olderPostSlug}` : "#";
-function dashboardHref(next: {
-  eventMarket?: string;
-  eventCategoryToggle?: string;
-  clearCategories?: boolean;
-}) {
-  const params = new URLSearchParams();
-  const marketValue = next.eventMarket ?? selectedEventMarket;
-  const categorySet = new Set(selectedEventCategories);
-  if (next.clearCategories) {
-    categorySet.clear();
-  }
-  if (next.eventCategoryToggle && eventCategoryOptions.includes(next.eventCategoryToggle)) {
-    if (categorySet.has(next.eventCategoryToggle)) categorySet.delete(next.eventCategoryToggle);
-    else categorySet.add(next.eventCategoryToggle);
-  }
-  if (marketValue !== "all") params.set("eventMarket", marketValue);
-  [...categorySet].sort().forEach((category) => params.append("eventCategory", category));
-  const qs = params.toString();
-  return qs ? `${rootPath}?${qs}` : rootPath;
-}
-function eventCategoryLabel(category: string) {
-  if (category === "macro") return "매크로";
-  if (category === "earnings") return "실적";
-  if (category === "product") return "제품";
-  if (category === "policy") return "정책";
-  if (category === "supply-chain") return "공급망";
-  if (category === "news") return "뉴스";
-  return "기타";
-}
-const eventMarketFilters = [
-  { label: "전체", href: dashboardHref({ eventMarket: "all" }), active: selectedEventMarket === "all" },
-  { label: "미국", href: dashboardHref({ eventMarket: "us" }), active: selectedEventMarket === "us" },
-  { label: "한국", href: dashboardHref({ eventMarket: "kr" }), active: selectedEventMarket === "kr" },
-];
-const eventCategoryFilters = [
-  { label: "전체", href: dashboardHref({ clearCategories: true }), active: selectedEventCategories.length === 0 },
-  ...eventCategoryOptions.map((category) => ({
-    label: eventCategoryLabel(category),
-    href: dashboardHref({ eventCategoryToggle: category }),
-    active: selectedEventCategories.includes(category),
-  })),
-];
 const activeChartFallbackPoints: Array<{ at: string; price: number }> = [];
 let activeChartPoints = [...activeChartFallbackPoints];
+let themeChartLines: Awaited<ReturnType<typeof getThemeIndexChartLines>> | undefined;
 let priceDataStatusMessage = "";
 if (activePost) {
   try {
-    const { closes, timestamps } = await getYahooChartSeries(activePost.data.symbol, {
-      range: "1y",
-      interval: "1d",
-    });
-    if (closes.length === timestamps.length && closes.length > 1) {
-      activeChartPoints = closes.map((price, i) => ({
-        at: new Date(timestamps[i] * 1000).toISOString(),
-        price,
-      }));
+    if (isThemeSymbol(activePost.data.symbol)) {
+      themeChartLines = await getThemeIndexChartLines(activePost.data.market, {
+        range: "1y",
+        interval: "1d",
+      });
+      if (!themeChartLines.length) {
+        priceDataStatusMessage =
+          "지수 일봉을 가져오지 못했습니다. 네트워크 또는 Yahoo Finance 제한일 수 있습니다.";
+      }
     } else {
-      priceDataStatusMessage =
-        activeChartFallbackPoints.length > 1
-          ? "외부 시세 응답이 비어 내부 보조 데이터로 표시 중"
-          : "외부 시세 응답이 비어 기준선으로 표시 중";
+      const { closes, timestamps } = await getYahooChartSeries(activePost.data.symbol, {
+        range: "1y",
+        interval: "1d",
+        market: activePost.data.market,
+      });
+      if (closes.length === timestamps.length && closes.length > 1) {
+        activeChartPoints = closes.map((price, i) => ({
+          at: new Date(timestamps[i] * 1000).toISOString(),
+          price,
+        }));
+      } else {
+        priceDataStatusMessage =
+          activeChartFallbackPoints.length > 1
+            ? "외부 시세 응답이 비어 내부 보조 데이터로 표시 중"
+            : "외부 시세 응답이 비어 기준선으로 표시 중";
+      }
     }
   } catch (error) {
     const msg = error instanceof Error ? error.message : "";
-    priceDataStatusMessage =
-      activeChartFallbackPoints.length > 1
-        ? `외부 시세 연동 실패(${msg || "network"}) · 내부 보조 데이터로 표시 중`
-        : `외부 시세 연동 실패(${msg || "network"}) · 기준선으로 표시 중`;
-    // Keep fallback points when Yahoo API is unavailable.
+    if (activePost && isThemeSymbol(activePost.data.symbol)) {
+      priceDataStatusMessage = `지수 시세 연동 실패(${msg || "network"})`;
+    } else {
+      priceDataStatusMessage =
+        activeChartFallbackPoints.length > 1
+          ? `외부 시세 연동 실패(${msg || "network"}) · 내부 보조 데이터로 표시 중`
+          : `외부 시세 연동 실패(${msg || "network"}) · 기준선으로 표시 중`;
+    }
   }
 }
+const timelineChartVariant =
+  activePost && isThemeSymbol(activePost.data.symbol)
+    ? themeChartLines?.length
+      ? "theme"
+      : "theme-empty"
+    : "stock";
 const sortedChart = [...activeChartPoints].sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
-const currentPrice = sortedChart.length > 0 ? sortedChart[sortedChart.length - 1].price : undefined;
+const currentPrice =
+  themeChartLines?.length && themeChartLines[0]?.points.length
+    ? undefined
+    : sortedChart.length > 0
+      ? sortedChart[sortedChart.length - 1]!.price
+      : undefined;
 ---
 
 <Base>
   {activePost && (
-    <section class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <section
+      transition:name="dashboard-hero"
+      class="relative z-10 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3"
+    >
       <HeroCard post={activePost} />
       <TrustCard post={activePost} />
     </section>
   )}
 
   {activeMeta && (
-    <section class="mt-2 flex flex-wrap items-center justify-between gap-2">
+    <section transition:name="dashboard-meta" class="relative z-10 mt-2 flex flex-wrap items-center justify-between gap-2">
       <p class="text-xs text-slate-500 dark:text-slate-300">
         기준 글: <span class="text-info">{activeMeta.title}</span>
       </p>
@@ -230,19 +202,26 @@ const currentPrice = sortedChart.length > 0 ? sortedChart[sortedChart.length - 1
   )}
 
   {publishedPosts.length > 0 && (
-    <section class="mt-3">
-      <DashboardTimeline
-        events={filteredDashboardEvents}
+    <section class="relative z-20 mt-3 scroll-mt-8" id="recent-flow" aria-label="최근 흐름 타임라인">
+      <DashboardTimelineInteractive
+        client:load
+        key={activePost?.id ?? "global"}
+        allEvents={dashboardEvents}
         windowStart={dashboardWindowStart.toISOString()}
         windowEnd={dashboardWindowEnd.toISOString()}
         todayPct={dashboardTodayPct}
         pricePoints={activeChartPoints}
+        themeChartLines={themeChartLines ?? []}
+        timelineChartVariant={timelineChartVariant}
         symbol={activePost?.data.symbol}
         market={activePost?.data.market}
         currentPrice={currentPrice}
         priceDataStatusMessage={priceDataStatusMessage}
-        eventMarketFilters={eventMarketFilters}
-        eventCategoryFilters={eventCategoryFilters}
+        rootPath={rootPath}
+        filterPathAndQuery={filterPathAndQuery}
+        initialMarket={selectedEventMarket}
+        initialCategories={selectedEventCategories}
+        marketCategoryOptions={marketCategoryOptions}
       />
     </section>
   )}

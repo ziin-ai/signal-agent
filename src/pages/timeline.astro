@@ -2,8 +2,13 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Panel from "../components/ui/Panel.astro";
-import SymbolTimelineChart from "../components/dashboard/SymbolTimelineChart";
 import { buildGlobalTimelineEvents, buildSymbolTimelineEvents } from "../lib/timeline";
+import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../lib/calendar-grid";
+import {
+  buildSymbolSearchEntries,
+  resolveSymbolFromQuery,
+  symbolOptionCaption,
+} from "../lib/symbol-search";
 
 const allPosts = await getCollection("posts");
 const posts =
@@ -13,46 +18,94 @@ const posts =
 const externalEvents = await getCollection("events");
 
 const publishedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const symbolSearchEntries = buildSymbolSearchEntries(publishedPosts, externalEvents);
+
 const rawSymbol = Astro.url.searchParams.get("symbol")?.trim() ?? "";
-const symbolKnown =
-  rawSymbol &&
+const resolvedSymbol = resolveSymbolFromQuery(rawSymbol, symbolSearchEntries);
+const exactTickerKnown =
+  rawSymbol !== "" &&
   (publishedPosts.some((p) => p.data.symbol === rawSymbol) ||
     externalEvents.some((e) => e.data.symbol === rawSymbol));
-const activeSymbol = symbolKnown ? rawSymbol : "";
+const activeSymbol = resolvedSymbol ?? (exactTickerKnown ? rawSymbol : "");
+const symbolKnown = Boolean(rawSymbol && activeSymbol);
 const symbolPosts = activeSymbol ? publishedPosts.filter((p) => p.data.symbol === activeSymbol) : [];
 const activeMarket = symbolPosts[0]?.data.market;
 
 const events = activeSymbol
   ? buildSymbolTimelineEvents(activeSymbol, publishedPosts, externalEvents, activeMarket)
   : buildGlobalTimelineEvents(publishedPosts, externalEvents);
-const kindParam = Astro.url.searchParams.get("kind")?.trim() ?? "all";
-const impactParam = Astro.url.searchParams.get("impact")?.trim() ?? "all";
-const categoryParam = Astro.url.searchParams.get("category")?.trim() ?? "all";
-const selectedKind = kindParam === "post" || kindParam === "external_event" ? kindParam : "all";
-const selectedImpact =
-  impactParam === "high" || impactParam === "mid" || impactParam === "low" ? impactParam : "all";
+
 const categoryOptions = [...new Set(externalEvents.map((e) => e.data.category))].sort();
-const selectedCategory = categoryOptions.includes(categoryParam) ? categoryParam : "all";
+
+/** 빈 배열 = 해당 축 필터 없음(전체). URL: `kind=post&kind=external_event` 형태 */
+const selectedKinds = [...new Set(Astro.url.searchParams.getAll("kind"))].filter(
+  (k): k is "post" | "external_event" => k === "post" || k === "external_event",
+);
+const selectedImpacts = [...new Set(Astro.url.searchParams.getAll("impact"))].filter(
+  (k): k is "high" | "mid" | "low" => k === "high" || k === "mid" || k === "low",
+);
+const selectedCategories = [...new Set(Astro.url.searchParams.getAll("category"))].filter((c) =>
+  categoryOptions.includes(c),
+);
 
 const filteredEvents = events.filter((ev) => {
-  if (selectedKind !== "all" && ev.kind !== selectedKind) return false;
-  if (selectedImpact !== "all") {
-    if (ev.kind !== "external_event" || ev.meta?.impact !== selectedImpact) return false;
+  if (selectedKinds.length > 0 && !selectedKinds.includes(ev.kind)) return false;
+  if (selectedImpacts.length > 0) {
+    if (ev.kind !== "external_event" || !ev.meta?.impact || !selectedImpacts.includes(ev.meta.impact)) {
+      return false;
+    }
   }
-  if (selectedCategory !== "all") {
-    if (ev.kind !== "external_event" || ev.meta?.category !== selectedCategory) return false;
+  if (selectedCategories.length > 0) {
+    if (ev.kind !== "external_event" || !ev.meta?.category || !selectedCategories.includes(ev.meta.category)) {
+      return false;
+    }
   }
   return true;
 });
 
-const anchorPost = symbolPosts[0];
-const naverCode =
-  anchorPost?.data.market === "KRX" ? anchorPost.data.symbol.split(".")[0] : "";
-const naverUrl =
-  naverCode && /^\d{6}$/.test(naverCode) ? `https://finance.naver.com/item/main.naver?code=${naverCode}` : "";
-const yahooUrl = activeSymbol ? `https://finance.yahoo.com/quote/${encodeURIComponent(activeSymbol)}` : "";
+const monthParam = Astro.url.searchParams.get("month")?.trim() ?? "";
+const today = new Date();
+let viewYear = today.getFullYear();
+let viewMonth = today.getMonth() + 1;
+if (/^\d{4}-\d{2}$/.test(monthParam)) {
+  const [y, m] = monthParam.split("-").map(Number);
+  if (y >= 1970 && y <= 2100 && m >= 1 && m <= 12) {
+    viewYear = y;
+    viewMonth = m;
+  }
+}
 
-const symbolPickers = [...new Set(publishedPosts.map((p) => p.data.symbol))].slice(0, 14);
+function eventDayKey(at: string): string {
+  const d = new Date(at);
+  return localIsoKey(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+const eventsByDay = new Map<string, typeof filteredEvents>();
+for (const ev of filteredEvents) {
+  const k = eventDayKey(ev.at);
+  const list = eventsByDay.get(k) ?? [];
+  list.push(ev);
+  eventsByDay.set(k, list);
+}
+for (const [, list] of eventsByDay) {
+  list.sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
+}
+
+const eventsInCalendarMonth = filteredEvents.filter((ev) => {
+  const d = new Date(ev.at);
+  return d.getFullYear() === viewYear && d.getMonth() + 1 === viewMonth;
+});
+
+const monthGrid = buildGregorianMonthGrid(viewYear, viewMonth);
+const prevNav = shiftMonth(viewYear, viewMonth, -1);
+const nextNav = shiftMonth(viewYear, viewMonth, 1);
+const prevMonthStr = `${prevNav.year}-${String(prevNav.month).padStart(2, "0")}`;
+const nextMonthStr = `${nextNav.year}-${String(nextNav.month).padStart(2, "0")}`;
+const todayMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`;
+const todayDayKey = localIsoKey(today.getFullYear(), today.getMonth(), today.getDate());
+
+const weekdayLabels = ["일", "월", "화", "수", "목", "금", "토"];
+
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 function withBase(href: string): string {
@@ -60,16 +113,54 @@ function withBase(href: string): string {
   return `${rootPath}${href.slice(1)}`;
 }
 
+function timelineHref(next: {
+  symbol?: string | null;
+  kinds?: string[];
+  impacts?: string[];
+  categories?: string[];
+  month?: string;
+}) {
+  const params = new URLSearchParams();
+  const symbolValue = next.symbol !== undefined ? next.symbol : activeSymbol;
+  const kindsValue = next.kinds !== undefined ? next.kinds : selectedKinds;
+  const impactsValue = next.impacts !== undefined ? next.impacts : selectedImpacts;
+  const categoriesValue = next.categories !== undefined ? next.categories : selectedCategories;
+  const monthValue = next.month ?? `${viewYear}-${String(viewMonth).padStart(2, "0")}`;
+  if (symbolValue) params.set("symbol", symbolValue);
+  for (const k of kindsValue) params.append("kind", k);
+  for (const i of impactsValue) params.append("impact", i);
+  for (const c of categoriesValue) params.append("category", c);
+  params.set("month", monthValue);
+  return `${rootPath}timeline?${params.toString()}`;
+}
+
+function toggleMember(list: string[], id: string): string[] {
+  const s = new Set(list);
+  if (s.has(id)) s.delete(id);
+  else s.add(id);
+  return [...s];
+}
+
+function chipActive(active: boolean): string {
+  return active
+    ? "border-info bg-info/15 text-info"
+    : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200";
+}
+
+const monthQueryValue = `${viewYear}-${String(viewMonth).padStart(2, "0")}`;
+
 function kindLabel(kind: string) {
   if (kind === "post") return "분석";
   if (kind === "external_event") return "이벤트";
   return "기타";
 }
 
-function kindClass(kind: string) {
-  if (kind === "post") return "bg-blue-500/15 text-blue-800 dark:text-blue-200";
-  if (kind === "external_event") return "bg-indigo-500/15 text-indigo-900 dark:text-indigo-100";
-  return "bg-slate-500/15 text-slate-800 dark:text-slate-100";
+function kindCalendarChip(kind: string): string {
+  if (kind === "post")
+    return "border-l-4 border-[#2563eb] bg-[#dbeafe] font-medium text-[#1e40af] hover:bg-[#bfdbfe] dark:border-[#60a5fa] dark:bg-[#1e3a8a] dark:text-[#dbeafe] dark:hover:bg-[#1d4ed8]";
+  if (kind === "external_event")
+    return "border-l-4 border-[#059669] bg-[#d1fae5] font-medium text-[#065f46] hover:bg-[#a7f3d0] dark:border-[#34d399] dark:bg-[#022c22] dark:text-[#a7f3d0] dark:hover:bg-[#064e3b]";
+  return "border-l-4 border-[#64748b] bg-slate-100 font-medium text-slate-800 hover:bg-slate-200 dark:border-slate-500 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700";
 }
 
 function categoryLabel(category: string) {
@@ -82,27 +173,34 @@ function categoryLabel(category: string) {
   return "기타";
 }
 
-function timelineHref(next: {
-  symbol?: string;
-  kind?: string;
-  impact?: string;
-  category?: string;
-}) {
-  const params = new URLSearchParams();
-  const symbolValue = next.symbol ?? activeSymbol;
-  const kindValue = next.kind ?? selectedKind;
-  const impactValue = next.impact ?? selectedImpact;
-  const categoryValue = next.category ?? selectedCategory;
-  if (symbolValue) params.set("symbol", symbolValue);
-  if (kindValue !== "all") params.set("kind", kindValue);
-  if (impactValue !== "all") params.set("impact", impactValue);
-  if (categoryValue !== "all") params.set("category", categoryValue);
-  const qs = params.toString();
-  return qs ? `${rootPath}timeline?${qs}` : `${rootPath}timeline`;
-}
+/** 오늘 기준 과거 3개월 ~ 미래 3개월, 외부 이벤트 중 영향도 High만 */
+const summaryWindowStart = new Date(today);
+summaryWindowStart.setMonth(summaryWindowStart.getMonth() - 3);
+summaryWindowStart.setHours(0, 0, 0, 0);
+const summaryWindowEnd = new Date(today);
+summaryWindowEnd.setMonth(summaryWindowEnd.getMonth() + 3);
+summaryWindowEnd.setHours(23, 59, 59, 999);
 
-const chartMarkers = activeSymbol ? filteredEvents.map((e) => ({ at: e.at, kind: e.kind })) : [];
-const chartFallbackPoints: Array<{ at: string; price: number }> = [];
+const highImpactWindowEvents = externalEvents
+  .filter((e) => {
+    if (e.data.impact !== "high") return false;
+    const t = e.data.date.getTime();
+    return t >= summaryWindowStart.getTime() && t <= summaryWindowEnd.getTime();
+  })
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const highImpactCategoryCounts = highImpactWindowEvents.reduce(
+  (acc, e) => {
+    acc[e.data.category] = (acc[e.data.category] ?? 0) + 1;
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+
+const highImpactCategorySorted = Object.entries(highImpactCategoryCounts).sort((a, b) => b[1] - a[1]);
+
+const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
+
 ---
 
 <Base>
@@ -122,13 +220,11 @@ const chartFallbackPoints: Array<{ at: string; price: number }> = [];
           {
             activeSymbol ? (
               <>
-                이 종목에 대한 <strong>분석·외부 이벤트</strong>를 같은 시간축에 모았습니다. 차트는 시장 맥락,
-                목록은 우리의 해석과 행동입니다.
+                이 종목의 <strong>분석·외부 이벤트</strong>를 달력 격자에 표시합니다. 날짜 칸에서 바로 열어볼 수 있습니다.
               </>
             ) : (
               <>
-                분석글 게시와 외부 이벤트를 한 축에 모아 <strong>시간 순서</strong>로 의미를 읽을 수 있게 합니다.
-                종목을 고르면 시장 차트와 이벤트가 함께 묶입니다.
+                분석글과 외부 이벤트를 <strong>월 단위 달력</strong>으로 묶어 날짜 맥락을 읽기 쉽게 했습니다. 종목을 고르면 해당 심볼만 필터됩니다.
               </>
             )
           }
@@ -137,7 +233,7 @@ const chartFallbackPoints: Array<{ at: string; price: number }> = [];
       {
         activeSymbol && (
           <a
-            href={`${rootPath}timeline`}
+            href={timelineHref({ symbol: "", month: monthQueryValue })}
             class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
           >
             전체 타임라인
@@ -146,198 +242,282 @@ const chartFallbackPoints: Array<{ at: string; price: number }> = [];
       }
     </div>
 
-    {
-      activeSymbol && symbolPickers.length > 0 && (
-        <div class="mt-3 flex flex-wrap gap-1.5">
-          <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">다른 종목:</span>
-          {symbolPickers.map((sym) => (
-            <a
-              href={timelineHref({ symbol: sym })}
-              class={`rounded-full border px-2.5 py-0.5 text-xs font-mono ${
-                sym === activeSymbol
-                  ? "border-info bg-info/15 text-info"
-                  : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-              }`}
+    <div class="mt-4 space-y-3">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+        <span class="shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400 sm:w-14">종목</span>
+        <form method="get" action={`${rootPath}timeline`} class="relative flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          <input type="hidden" name="month" value={monthQueryValue} />
+          {selectedKinds.map((k) => <input type="hidden" name="kind" value={k} />)}
+          {selectedImpacts.map((i) => <input type="hidden" name="impact" value={i} />)}
+          {selectedCategories.map((c) => <input type="hidden" name="category" value={c} />)}
+          <div class="relative min-w-0 flex-1">
+            <span
+              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              aria-hidden="true"
             >
-              {sym}
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </span>
+            <input
+              type="search"
+              name="symbol"
+              id="timeline-symbol-search"
+              placeholder="티커 또는 회사명 (예: NVDA, 일진전기)"
+              list="timeline-symbol-options"
+              autocomplete="off"
+              value={symbolKnown ? activeSymbol : rawSymbol}
+              class="w-full rounded-lg border border-slate-300 bg-white py-2 pl-10 pr-3 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-info focus:outline-none focus:ring-2 focus:ring-info/25 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
+            />
+            <datalist id="timeline-symbol-options">
+              {symbolSearchEntries.map((entry) => (
+                <option value={entry.symbol}>{symbolOptionCaption(entry)}</option>
+              ))}
+            </datalist>
+          </div>
+          <button
+            type="submit"
+            class="shrink-0 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          >
+            적용
+          </button>
+          {
+            activeSymbol && (
+              <a
+                href={timelineHref({ symbol: "", month: monthQueryValue })}
+                class="shrink-0 rounded-lg border border-transparent px-3 py-2 text-sm text-slate-600 underline-offset-2 hover:text-info hover:underline dark:text-slate-400"
+              >
+                초기화
+              </a>
+            )
+          }
+        </form>
+      </div>
+
+      {
+        rawSymbol && !symbolKnown && (
+          <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
+            <span class="font-mono">{rawSymbol}</span>는 게시된 분석·이벤트 기록에 없어 전체 타임라인을 보여줍니다.
+          </p>
+        )
+      }
+
+      <p class="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+        유형·영향도·카테고리는 여러 개를 동시에 선택할 수 있습니다. 아무 것도 선택하지 않으면 해당 항목 전체가 표시됩니다.
+      </p>
+
+      <div class="flex flex-wrap items-start gap-x-3 gap-y-2">
+        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">유형</span>
+        <div class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+          <a
+            href={timelineHref({ kinds: [] })}
+            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedKinds.length === 0)]}
+          >
+            전체
+          </a>
+          <a
+            href={timelineHref({ kinds: toggleMember(selectedKinds, "post") })}
+            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedKinds.includes("post"))]}
+          >
+            분석
+          </a>
+          <a
+            href={timelineHref({ kinds: toggleMember(selectedKinds, "external_event") })}
+            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedKinds.includes("external_event"))]}
+          >
+            이벤트
+          </a>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-start gap-x-3 gap-y-2">
+        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">영향도</span>
+        <div class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+          <a
+            href={timelineHref({ impacts: [] })}
+            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedImpacts.length === 0)]}
+          >
+            전체
+          </a>
+          {(["high", "mid", "low"] as const).map((id) => (
+            <a
+              href={timelineHref({ impacts: toggleMember(selectedImpacts, id) })}
+              class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedImpacts.includes(id))]}
+            >
+              {id === "high" ? "High" : id === "mid" ? "Mid" : "Low"}
             </a>
           ))}
         </div>
-      )
-    }
-    {
-      !activeSymbol && symbolPickers.length > 0 && (
-        <div class="mt-3 flex flex-wrap gap-1.5">
-          <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">종목:</span>
-          {symbolPickers.map((sym) => (
+      </div>
+
+      <div class="flex flex-wrap items-start gap-x-3 gap-y-2">
+        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">카테고리</span>
+        <div class="flex min-w-0 flex-1 flex-wrap gap-1.5">
+          <a
+            href={timelineHref({ categories: [] })}
+            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedCategories.length === 0)]}
+          >
+            전체
+          </a>
+          {categoryOptions.map((category) => (
             <a
-              href={timelineHref({ symbol: sym })}
-              class="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-mono text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+              href={timelineHref({ categories: toggleMember(selectedCategories, category) })}
+              class:list={[
+                "rounded-full border px-2.5 py-0.5 text-xs",
+                chipActive(selectedCategories.includes(category)),
+              ]}
             >
-              {sym}
+              {categoryLabel(category)}
             </a>
           ))}
         </div>
-      )
-    }
-    {
-      rawSymbol && !symbolKnown && (
-        <p class="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
-          <span class="font-mono">{rawSymbol}</span>는 게시된 분석·이벤트 기록에 없어 전체 타임라인을 보여줍니다.
-        </p>
-      )
-    }
-    <div class="mt-3 space-y-2">
-      <div class="flex flex-wrap items-center gap-1.5">
-        <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">유형:</span>
-        {[
-          { id: "all", label: "전체" },
-          { id: "post", label: "분석" },
-          { id: "external_event", label: "이벤트" },
-        ].map((opt) => (
-          <a
-            href={timelineHref({ kind: opt.id })}
-            class={`rounded-full border px-2.5 py-0.5 text-xs ${
-              selectedKind === opt.id
-                ? "border-info bg-info/15 text-info"
-                : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-            }`}
-          >
-            {opt.label}
-          </a>
-        ))}
-      </div>
-      <div class="flex flex-wrap items-center gap-1.5">
-        <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">영향도:</span>
-        {[
-          { id: "all", label: "전체" },
-          { id: "high", label: "High" },
-          { id: "mid", label: "Mid" },
-          { id: "low", label: "Low" },
-        ].map((opt) => (
-          <a
-            href={timelineHref({ impact: opt.id })}
-            class={`rounded-full border px-2.5 py-0.5 text-xs ${
-              selectedImpact === opt.id
-                ? "border-info bg-info/15 text-info"
-                : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-            }`}
-          >
-            {opt.label}
-          </a>
-        ))}
-      </div>
-      <div class="flex flex-wrap items-center gap-1.5">
-        <span class="mr-1 text-xs text-slate-500 dark:text-slate-400">카테고리:</span>
-        <a
-          href={timelineHref({ category: "all" })}
-          class={`rounded-full border px-2.5 py-0.5 text-xs ${
-            selectedCategory === "all"
-              ? "border-info bg-info/15 text-info"
-              : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-          }`}
-        >
-          전체
-        </a>
-        {categoryOptions.map((category) => (
-          <a
-            href={timelineHref({ category })}
-            class={`rounded-full border px-2.5 py-0.5 text-xs ${
-              selectedCategory === category
-                ? "border-info bg-info/15 text-info"
-                : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
-            }`}
-          >
-            {categoryLabel(category)}
-          </a>
-        ))}
       </div>
     </div>
   </section>
 
   <section class="grid grid-cols-1 gap-4 lg:grid-cols-3">
     <div class="lg:col-span-2 space-y-4">
-      {
-        activeSymbol && (
-          <Panel title="시장 맥락 (차트)">
-            <SymbolTimelineChart
-              symbol={activeSymbol}
-              markers={chartMarkers}
-              fallbackPoints={chartFallbackPoints}
-              client:visible
-            />
-            <div class="mt-3 flex flex-wrap gap-2">
-              {naverUrl && (
-                <a
-                  href={naverUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="rounded border border-slate-200 px-2 py-1 text-xs text-info hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800"
-                >
-                  네이버증권
-                </a>
-              )}
-              {yahooUrl && (
-                <a
-                  href={yahooUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="rounded border border-slate-200 px-2 py-1 text-xs text-info hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800"
-                >
-                  Yahoo Finance
-                </a>
-              )}
+      <div
+        class="overflow-hidden rounded-xl border border-[#dadce0] bg-[#f8f9fa] shadow-sm dark:border-slate-600 dark:bg-slate-950"
+      >
+        <div
+          class="flex flex-col gap-3 border-b border-[#dadce0] bg-white px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-4 dark:border-slate-600 dark:bg-slate-900"
+        >
+          <div class="flex flex-wrap items-center gap-2">
+            <a
+              href={timelineHref({ month: todayMonthStr })}
+              class="rounded border border-[#dadce0] px-3 py-1.5 text-sm font-medium text-[#3c4043] hover:bg-[#f1f3f4] dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+            >
+              오늘
+            </a>
+            <div class="flex items-center">
+              <a
+                href={timelineHref({ month: prevMonthStr })}
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xl leading-none text-[#5f6368] hover:bg-[#f1f3f4] dark:text-slate-300 dark:hover:bg-slate-800"
+                aria-label="이전 달"
+              >
+                ‹
+              </a>
+              <a
+                href={timelineHref({ month: nextMonthStr })}
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xl leading-none text-[#5f6368] hover:bg-[#f1f3f4] dark:text-slate-300 dark:hover:bg-slate-800"
+                aria-label="다음 달"
+              >
+                ›
+              </a>
             </div>
-          </Panel>
-        )
-      }
+          </div>
+          <h2 class="text-center text-lg font-normal tracking-tight text-[#3c4043] sm:flex-1 sm:text-xl dark:text-slate-100">
+            {
+              new Date(viewYear, viewMonth - 1, 1).toLocaleDateString("ko-KR", {
+                year: "numeric",
+                month: "long",
+              })
+            }
+          </h2>
+          <p class="text-center text-xs text-[#70757a] sm:text-right dark:text-slate-400">
+            이번 달 {eventsInCalendarMonth.length}건 · 필터 전체 {filteredEvents.length}건
+          </p>
+        </div>
 
-      <Panel title={activeSymbol ? "이벤트 · 해석 · 행동" : "통합 타임라인"}>
-        <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          {activeSymbol
-            ? `최신순 · 이 심볼 연결 기록 (${filteredEvents.length}건)`
-            : `최신순 · 전체 아카이브 (${filteredEvents.length}건)`}
-        </p>
-        <ul class="mt-4 divide-y divide-slate-100 dark:divide-slate-700/80">
+        <div
+          class="grid grid-cols-7 border-b border-[#dadce0] bg-[#f8f9fa] text-center text-[11px] font-medium uppercase tracking-wide text-[#70757a] dark:border-slate-600 dark:bg-slate-800/90 dark:text-slate-400"
+        >
+          {weekdayLabels.map((w) => (
+            <div class="border-r border-[#dadce0] py-2 last:border-r-0 dark:border-slate-600">{w}</div>
+          ))}
+        </div>
+
+        <div class="grid grid-cols-7 gap-px bg-[#dadce0] dark:bg-slate-700">
           {
-            filteredEvents.length === 0 ? (
-              <li class="py-6 text-sm text-slate-600 dark:text-slate-300">필터 조건에 맞는 이벤트가 없습니다.</li>
-            ) : (
-              filteredEvents.map((ev) => (
-                <li class="flex flex-wrap items-start gap-3 py-3">
-                  <div class="w-24 shrink-0 text-xs text-slate-500 dark:text-slate-400">
-                    {new Date(ev.at).toLocaleDateString("ko-KR", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+            monthGrid.map((cell) => {
+              const dayEvents = eventsByDay.get(cell.isoKey) ?? [];
+              const maxShow = 4;
+              const shown = dayEvents.slice(0, maxShow);
+              const more = Math.max(0, dayEvents.length - shown.length);
+              const isToday = cell.isoKey === todayDayKey;
+              return (
+                <div
+                  class:list={[
+                    "flex min-h-[108px] flex-col bg-white p-1 dark:bg-slate-900",
+                    !cell.inMonth && "bg-[#f8f9fa] dark:bg-slate-800/40",
+                  ]}
+                >
+                  <div class="flex shrink-0 justify-end px-0.5 pt-0.5">
+                    <span
+                      class:list={[
+                        "flex h-7 min-w-[28px] items-center justify-center rounded-full text-xs tabular-nums",
+                        isToday &&
+                          "bg-[#ea4335] font-semibold text-white shadow-sm ring-2 ring-[#ea4335]/25 dark:bg-[#f87171] dark:ring-red-400/30",
+                        !isToday && cell.inMonth && "text-[#3c4043] dark:text-slate-200",
+                        !isToday && !cell.inMonth && "text-[#70757a] dark:text-slate-500",
+                      ]}
+                    >
+                      {cell.day}
+                    </span>
                   </div>
-                  <div class="min-w-0 flex-1">
-                    <div class="flex flex-wrap items-center gap-2">
-                      <span class={`rounded px-2 py-0.5 text-[10px] font-semibold ${kindClass(ev.kind)}`}>
-                        {kindLabel(ev.kind)}
-                      </span>
-                      {ev.meta?.symbol && (
-                        <span class="font-mono text-[10px] text-slate-500 dark:text-slate-400">{ev.meta.symbol}</span>
-                      )}
-                    </div>
-                    <p class="mt-1 text-sm font-medium text-slate-900 dark:text-slate-100">
-                      {ev.href ? (
-                        <a href={withBase(ev.href)} class="hover:text-info">
+                  <div class="mt-1 min-h-0 flex-1 space-y-0.5 overflow-hidden">
+                    {shown.map((ev) =>
+                      ev.href ? (
+                        <a
+                          href={withBase(ev.href)}
+                          {...(ev.href.startsWith("http")
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                          class:list={[
+                            "block max-w-full truncate rounded-sm px-1 py-0.5 text-left text-[11px] leading-snug transition-colors",
+                            kindCalendarChip(ev.kind),
+                          ]}
+                          title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                        >
                           {ev.title}
                         </a>
                       ) : (
-                        ev.title
-                      )}
-                    </p>
-                    {ev.summary && <p class="mt-0.5 line-clamp-2 text-xs text-slate-600 dark:text-slate-300">{ev.summary}</p>}
+                        <span
+                          class:list={[
+                            "block max-w-full truncate rounded-sm px-1 py-0.5 text-[11px] leading-snug",
+                            kindCalendarChip(ev.kind),
+                          ]}
+                          title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                        >
+                          {ev.title}
+                        </span>
+                      ),
+                    )}
+                    {more > 0 && (
+                      <p class="truncate pl-1 text-[10px] font-medium text-[#70757a] dark:text-slate-500">
+                        +{more}개
+                      </p>
+                    )}
                   </div>
-                </li>
-              ))
-            )
+                </div>
+              );
+            })
           }
-        </ul>
-      </Panel>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-6 border-t border-[#dadce0] bg-white px-4 py-3 text-xs dark:border-slate-600 dark:bg-slate-900">
+          <span class="flex items-center gap-2 font-medium text-[#1e40af] dark:text-blue-200">
+            <span
+              class="h-3 w-3 shrink-0 rounded-full bg-[#2563eb] shadow-sm ring-2 ring-[#bfdbfe] dark:bg-[#60a5fa] dark:ring-blue-950"
+              aria-hidden="true"
+            />
+            분석글
+          </span>
+          <span class="flex items-center gap-2 font-medium text-[#065f46] dark:text-emerald-200">
+            <span
+              class="h-3 w-3 shrink-0 rounded-full bg-[#059669] shadow-sm ring-2 ring-[#a7f3d0] dark:bg-[#34d399] dark:ring-emerald-950"
+              aria-hidden="true"
+            />
+            외부 이벤트
+          </span>
+        </div>
+      </div>
     </div>
 
     <aside class="space-y-4">
@@ -360,12 +540,100 @@ const chartFallbackPoints: Array<{ at: string; price: number }> = [];
         )
       }
 
-      <Panel title="이 페이지의 역할" variant="soft">
-        <ul class="mt-2 list-inside list-disc space-y-1 text-xs text-slate-600 dark:text-slate-300">
-          <li>종목 모드: 차트(시장) + 타임라인(우리) + 분석 목록을 같은 맥락으로</li>
-          <li>전체 모드: 모든 심볼의 이벤트를 한 축에서 탐색</li>
-          <li>분석글은 본문으로, 외부 이벤트는 출처로 바로 이동</li>
-        </ul>
+      <Panel title="±3개월 · High 영향 이벤트" variant="soft">
+        <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+          콘텐츠의 외부 이벤트 중 영향도가 High인 일정만 모았습니다. 기간은 오늘 기준 과거 3개월부터 미래 3개월까지입니다.
+        </p>
+        <p class="mt-2 text-[11px] tabular-nums text-slate-600 dark:text-slate-300">
+          {summaryWindowStart.toLocaleDateString("ko-KR", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+          {" ~ "}
+          {summaryWindowEnd.toLocaleDateString("ko-KR", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </p>
+        <p class="mt-3 text-2xl font-semibold tabular-nums text-slate-900 dark:text-slate-50">
+          {highImpactWindowEvents.length}
+          <span class="ml-1 text-sm font-normal text-slate-500 dark:text-slate-400">건</span>
+        </p>
+        {
+          highImpactCategorySorted.length > 0 && (
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              {highImpactCategorySorted.map(([cat, n]) => (
+                <span class="rounded-full border border-slate-200/90 bg-white px-2 py-0.5 text-[10px] font-medium text-slate-700 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-200">
+                  {categoryLabel(cat)} {n}
+                </span>
+              ))}
+            </div>
+          )
+        }
+        {
+          highImpactSidebarList.length > 0 ? (
+            <ul class="mt-4 space-y-3 border-t border-slate-200/90 pt-3 dark:border-slate-600/80">
+              {highImpactSidebarList.map((ev) => (
+                <li>
+                  <p class="text-[10px] font-medium uppercase tracking-wide text-amber-700 dark:text-amber-300">
+                    High · {categoryLabel(ev.data.category)}
+                  </p>
+                  <p class="mt-0.5 text-[10px] tabular-nums text-slate-500 dark:text-slate-400">
+                    {ev.data.date.toLocaleDateString("ko-KR", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                    {ev.data.symbol && (
+                      <>
+                        {" · "}
+                        <span class="font-mono">{ev.data.symbol}</span>
+                      </>
+                    )}
+                  </p>
+                  <p class="mt-1 text-sm font-medium leading-snug text-slate-900 dark:text-slate-100">
+                    {ev.data.sourceUrl ? (
+                      <a
+                        href={ev.data.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:text-info"
+                      >
+                        {ev.data.title}
+                      </a>
+                    ) : (
+                      ev.data.title
+                    )}
+                  </p>
+                  <p class="mt-1 line-clamp-3 text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
+                    {ev.data.summary}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="mt-4 text-xs text-slate-500 dark:text-slate-400">
+              이 기간에 등록된 High 이벤트가 없습니다.
+            </p>
+          )
+        }
+        {
+          highImpactWindowEvents.length > 10 && (
+            <p class="mt-3 text-[11px] text-slate-500 dark:text-slate-400">
+              최신 순 상위 10건만 표시합니다. 전체는 타임라인 필터에서 확인할 수 있습니다.
+            </p>
+          )
+        }
+        <p class="mt-4 border-t border-slate-200/90 pt-3 dark:border-slate-600/80">
+          <a
+            href={timelineHref({ impacts: ["high"], kinds: [], categories: [] })}
+            class="text-xs font-medium text-info hover:underline"
+          >
+            타임라인에서 영향도 High만 보기 →
+          </a>
+        </p>
       </Panel>
     </aside>
   </section>

@@ -34,20 +34,39 @@ const navItems = [
 </header>
 
 <script is:inline>
-  const timeEl = document.getElementById("kst-time");
-  const formatter = new Intl.DateTimeFormat("ko-KR", {
-    timeZone: "Asia/Seoul",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
+  (function () {
+    let intervalId = /** @type {ReturnType<typeof setInterval> | undefined} */ (undefined);
 
-  const updateKstTime = () => {
-    if (!timeEl) return;
-    timeEl.textContent = `KST ${formatter.format(new Date())}`;
-  };
+    const formatter = new Intl.DateTimeFormat("ko-KR", {
+      timeZone: "Asia/Seoul",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
 
-  updateKstTime();
-  setInterval(updateKstTime, 1000);
+    function updateKstTime() {
+      const el = document.getElementById("kst-time");
+      if (!el) return;
+      try {
+        el.textContent = "KST " + formatter.format(new Date());
+      } catch {
+        el.textContent = "KST " + new Date().toLocaleTimeString("ko-KR", { hour12: false });
+      }
+    }
+
+    function startClock() {
+      updateKstTime();
+      if (intervalId !== undefined) clearInterval(intervalId);
+      intervalId = setInterval(updateKstTime, 1000);
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startClock, { once: true });
+    } else {
+      startClock();
+    }
+
+    document.addEventListener("astro:page-load", startClock);
+  })();
 </script>

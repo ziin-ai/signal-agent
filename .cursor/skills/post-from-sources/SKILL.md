@@ -1,6 +1,13 @@
 ---
 name: post-from-sources
-description: Write a post markdown file from provided source metadata and brief context. Use when the user provides source links or source summaries and asks to draft/update an analysis post under src/content/posts.
+description: >-
+  Write a post under src/content/posts from sources or topic research, and when
+  the thesis hinges on dated catalysts or milestones, add or update matching
+  entries in src/content/events (timeline / 대시보드 외부 이벤트).
+  In topic-driven mode, include and cite user-supplied anchor URLs as required
+  references, while keeping topic research and source diversification as the
+  primary method. Use when the user provides URLs, source summaries, topics, or
+  asks to draft or revise analysis posts for this repo.
 disable-model-invocation: true
 ---
 
@@ -9,6 +16,8 @@ disable-model-invocation: true
 ## Goal
 
 Create or update one file in `src/content/posts/` that matches the project's post schema and writing style.
+
+When the draft introduces or relies on **concrete calendar catalysts** (실적 일정, 정책·금리 결정, 제품·공장 가동, 규제 마일스톤 등), **also** add or update one or more files in `src/content/events/` so those items appear on the global/symbol timeline and in dashboard filters (`category`, `market`, `impact`). Do not invent dates; only record what sources or the user supplied with reasonable certainty.
 
 ## Inputs To Request
 
@@ -20,6 +29,8 @@ Ask for missing items before drafting:
 4. Tags (at least one)
 5. Source list (id, tier, type, title, date, url, excerpt)
 6. Optional constraints (tone, length, Korean/English mix, key risks)
+7. Optional: explicit **calendar catalysts** to record as `events` (date + kind — 실적, FOMC, 규제 등). If omitted, infer from sources while drafting.
+8. **Topic 모드 전용:** 사용자가 “꼭 참조할 URL”“반드시 포함” 등으로 넘긴 **앵커 URL** 목록(0개 이상). 있으면 아래 **Topic mode + anchor URLs** 절의 규칙을 따른다.
 
 If the user omits some fields, propose sensible defaults and mark them clearly for confirmation.
 
@@ -61,11 +72,12 @@ When confidence is low, still produce a draft but include a short "assumptions u
 
 ### Topic-Driven Research Mode
 
-If the user provides a topic keyword (or short thesis) without URLs, actively discover sources first, then draft.
+If the user provides a topic keyword (or short thesis), actively discover sources, then draft. **If they also supply anchor URLs**, run topic research as the main flow and include those anchors as mandatory references — see the next subsection.
 
 Minimum accepted input:
 
 - Topic keyword or question (for example, "블랙웰 수요 둔화", "한국 바이오 CMO 수주 전망")
+- Optional: one or more anchor URLs the user wants cited (same message or labeled as required references)
 
 Research process:
 
@@ -91,6 +103,23 @@ Quality bar:
 - Do not draft from a single weak source
 - Prefer recency and source credibility over quantity
 - If evidence is too thin, still produce a draft but clearly state low-confidence sections
+
+### Topic mode + anchor URLs
+
+When the user gives a **topic** (or thesis) **and** one or more **URLs they insist on referencing**, treat those URLs as **required references inside topic research**: anchors must appear in `sources` and be cited in the body, but they are not the sole center of analysis.
+
+Process:
+
+1. **Define topic research frame first**: expand the topic into intents and evidence needs (drivers, counters, exposure, recent changes).
+2. **Normalize anchors**: absolute `https?://` URLs only; dedupe; strip tracking params when safe.
+3. **Ingest anchors as mandatory subset**: build full `sources` entries (`id`, `tier`, `type`, `title`, `date`, `url`, `excerpt`) with honest tiering.
+4. **Run broad Topic-Driven Research** to fill gaps and diversify evidence; do not stop at anchors.
+5. **Merge sources with clear provenance**: keep all anchors in final `sources`, then append supplemental discoveries (`src-n` ordering can keep anchors first for readability, but research breadth is the priority).
+6. **Synthesis priority**: conclusions come from weighted evidence across all quality sources; anchors are required inputs, not automatic top-weight evidence.
+7. **Conflict handling**: if an anchor conflicts with stronger primary sources, keep the anchor, cite both, and explain why the conclusion weights one side more.
+8. **Broken/inaccessible anchor**: still keep a best-effort `sources` row and disclose lowered confidence for claims depending on it.
+
+Trigger phrases (non-exhaustive): “이 URL 꼭”, “반드시 참고”, “must read”, “anchor”, “primary link”, “아래 링크 위주로”, topic + pasted URLs in the same message.
 
 ### YouTube Content Handling
 
@@ -207,16 +236,25 @@ Always satisfy these constraints:
 If a source is `youtube`, keep it as a normal source item (UI handles embedding).
 If a source is `pdf`, keep direct PDF link in `url`.
 
-Event updates must follow the events collection schema in this project:
+Companion **events** must follow `src/content.config.ts` — collection `events` (glob: `src/content/events/**/*.md`):
 
-- Event markdown is stored under `src/content/events/`
-- Frontmatter fields must include:
-  - `title` (string)
-  - `date` (`YYYY-MM-DD`)
-  - `category` (valid enum in project schema, including `news`)
-  - `importance` (`high` | `medium` | `low`)
-  - `market` (`KR` | `US` | `GLOBAL`)
-  - `relatedSymbols` (array of strings)
+| Field | Required | Notes |
+| --- | --- | --- |
+| `id` | yes | Stable slug-like id, unique across events (e.g. `nvda-earnings-2026-05`) |
+| `title` | yes | Short headline shown on timeline |
+| `date` | yes | `YYYY-MM-DD` — event day or known scheduled day |
+| `summary` | yes | One or two sentences; why it matters for markets or the thesis |
+| `category` | yes | One of: `macro`, `earnings`, `product`, `policy`, `supply-chain`, `news`, `other` |
+| `impact` | yes | `low` \| `mid` \| `high` |
+| `symbol` | no | Ticker when the event is **issuer-specific** (e.g. `NVDA`) |
+| `market` | no | `KRX` \| `NASDAQ` \| `NYSE` \| `AMEX` \| `OTC` \| `GLOBAL` |
+| `scope` | no | `all` \| `symbol` \| `market` — who sees this on the dashboard timeline |
+| `sourceUrl` | no | Official calendar, IR, regulator, or primary link |
+| `tags` | no | Keywords for search/consistency |
+
+**Scope without guessing:** If you omit `scope`, the app infers it: `symbol` if `symbol` is set; else `market` if `market` is set and not `GLOBAL`; else `all`. Set `scope` explicitly when that inference would be wrong (e.g. Korea-wide macro with a `KRX` label).
+
+Reference examples in-repo: `src/content/events/2026-01-15-bok-rate-decision.md` (`scope: market`, `category: macro`), `src/content/events/2026-02-26-nvda-earnings.md` (`scope: symbol`, `category: earnings`).
 
 ## Writing Rules
 
@@ -305,29 +343,50 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
 
 ## Event Co-Update Policy
 
-When drafting/updating a post, evaluate whether new timeline-worthy events should also be added or updated.
+While drafting or revising a post, **scan** `src/content/events/` for the same catalyst (same issuer + same kind of milestone + same approximate date). Prefer **updating** an existing file (title/summary/impact/tags/sourceUrl) over adding a duplicate.
 
-Create or update event entries when all are true:
+**Add or update an event file when:**
 
-1. The item has a concrete date (or a clearly expected date window)
-2. The item can affect price, guidance, policy, demand/supply, regulation, or capital allocation
-3. The item is relevant beyond a single sentence in the post body
+1. The post cites or depends on a **specific dated** catalyst (not vague “나중에”).
+2. That catalyst is **material** to valuation, guidance, regulation, supply/demand, or liquidity for the covered symbol or market.
+3. Recording it helps readers on the **타임라인** or **대시보드 최근 흐름** (filtered by `category` / 시장).
 
-Typical candidates:
+**Typical candidates:**
 
-- Earnings release, guidance revision, product launch window
-- Regulatory decision/enforcement milestone
-- Policy announcement with implementation timeline
-- Major contract/capex/plant ramp milestone
-- Court ruling or approval calendar
+- 분기·연간 실적, 컨퍼런스 콜, 가이던스
+- FOMC·CPI·고용 등 매크로 일정 (글/시장과 연결될 때)
+- 규제 승인·재판·공시 마감, tariff/정책 시행일
+- 공장 가동, 제품 출시, 대형 수주·CAPEX 가시화 일정
 
-Event drafting rules:
+**Skip separate event files when:**
 
-- Keep event text short and factual
-- Do not duplicate near-identical existing events; update existing one if overlap is high
-- Align `relatedSymbols` with the post focus ticker(s)
-- Set `importance` by expected market impact and uncertainty
-- If date is uncertain, prefer conservative date handling and mention uncertainty in the event body
+- The date is unknown and cannot be narrowed without fabrication — mention uncertainty in the post only.
+- The item is purely background with no calendar anchor.
+
+**Per-event file:**
+
+- Path pattern: `src/content/events/YYYY-MM-DD-<kebab-description>.md` (match existing repo style).
+- Frontmatter must validate against the table above; body can be one short factual paragraph (optional) after `---`.
+- Set `impact` from likely **cross-asset** or **issuer** repricing, not from hype wording in the post.
+- For the post’s primary ticker, set `symbol` + `market` from post frontmatter when the event is name-specific; use `scope: market` or `GLOBAL` + `category: macro` for broad Korea/US events without a single ticker.
+
+```markdown
+---
+id: "example-catalyst-2026-05"
+title: "…"
+date: 2026-05-20
+symbol: "NVDA"
+market: "NASDAQ"
+scope: "symbol"
+category: "earnings"
+impact: "high"
+summary: "…"
+sourceUrl: "https://…"
+tags: ["실적", "가이던스"]
+---
+
+한 줄 보조 설명(선택).
+```
 
 ## Voice And Freedom
 
@@ -379,12 +438,12 @@ Slug rules:
 ## Workflow
 
 1. Inspect nearby post files in `src/content/posts/` for tone/structure consistency.
-2. If input is topic-only, run Topic-Driven Research Mode and assemble `sources`.
+2. If input is topic (+ optional anchor URLs), run Topic-Driven Research Mode as the primary flow, and apply **Topic mode + anchor URLs** to include anchors as required references within that flow. If topic-only with no anchors, run Topic-Driven Research Mode only.
 3. Draft frontmatter first and validate schema fields.
 4. For YouTube sources, extract transcript-backed points (or best-effort metadata summary with confidence note).
 5. Draft body sections using source-backed claims and synthesized reasoning.
 6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections.
-7. Determine whether event co-update is needed; create/update files in `src/content/events/` if applicable.
+7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
 8. Re-check all source metadata fields and date formats.
 9. Verify visuals: tables have headers, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks, captions cite sources where applicable.
 10. Save or update the target post file and any event files.
@@ -405,6 +464,10 @@ For topic-driven mode, also report:
 
 5. Discovered-source shortlist and why each was selected
 
+For topic-driven mode **with user anchor URLs**, also report:
+
+6. Anchor URLs (in order) and which `src-n` id each received; confirm every anchor appears in `sources` and is cited in the body
+
 If events were co-updated, also report:
 
-6. Created/updated event file paths and rationale
+7. Created/updated event file paths and rationale

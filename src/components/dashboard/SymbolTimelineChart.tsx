@@ -10,8 +10,8 @@ interface Props {
 }
 
 function markerColor(kind: string): string {
-  if (kind === "post") return "rgb(59 130 246)";
-  if (kind === "external_event") return "rgb(99 102 241)";
+  if (kind === "post") return "rgb(37 99 235)";
+  if (kind === "external_event") return "rgb(5 150 105)";
   return "rgb(148 163 184)";
 }
 

@@ -1,41 +1,190 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import Header from "../components/layout/Header.astro";
 import TickerBar from "../components/layout/TickerBar.astro";
 import Footer from "../components/layout/Footer.astro";
+import { fetchTickerBarQuotes } from "../lib/market";
 import "../styles/global.css";
 
-interface QuoteItem {
-  symbol: string;
-  label: string;
-  price: number;
-  change: number;
-  changePercent: number;
-}
-
-const fallbackItems: QuoteItem[] = [
-  { symbol: "^KS11", label: "KOSPI", price: 0, change: 0, changePercent: 0 },
-  { symbol: "^KQ11", label: "KOSDAQ", price: 0, change: 0, changePercent: 0 },
-  { symbol: "^GSPC", label: "S&P 500", price: 0, change: 0, changePercent: 0 },
-  { symbol: "KRW=X", label: "USD/KRW", price: 0, change: 0, changePercent: 0 },
-  { symbol: "^VIX", label: "VIX", price: 0, change: 0, changePercent: 0 },
-];
-
-let tickerItems = fallbackItems;
+const tickerItems = await fetchTickerBarQuotes();
 ---
 
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ziin.ai</title>
+    <title>내 곁에 지인</title>
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <ClientRouter />
   </head>
   <body class="antialiased">
-    <TickerBar items={tickerItems} />
-    <Header />
-    <main class="mx-auto w-full max-w-6xl px-4 py-6">
+    <TickerBar items={tickerItems} transition:persist="ziin-ticker" />
+    <Header transition:persist="ziin-header" />
+    <main class="mx-auto w-full max-w-6xl px-4 py-6" transition:animate="none">
       <slot />
     </main>
-    <Footer />
+    <Footer transition:persist="ziin-footer" />
+    <script is:inline>
+      const SCROLL_KEY = "ziin-vt-scroll-y";
+      document.addEventListener("astro:before-preparation", (e) => {
+        const from = e.from;
+        const to = e.to;
+        if (!from?.pathname || !to?.pathname) return;
+        if (from.pathname === to.pathname) {
+          sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
+        } else {
+          sessionStorage.removeItem(SCROLL_KEY);
+        }
+      });
+      document.addEventListener("astro:after-swap", () => {
+        const raw = sessionStorage.getItem(SCROLL_KEY);
+        if (raw === null) return;
+        sessionStorage.removeItem(SCROLL_KEY);
+        const y = Number(raw);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            window.scrollTo(0, Number.isFinite(y) ? y : 0);
+          });
+        });
+      });
+
+      (function dashboardHeroBody() {
+        let heroClampRo = null;
+
+        function syncDashboardHeroBodyClamp() {
+          const vh = window.visualViewport?.height ?? window.innerHeight;
+          const safeBottom = 40;
+          const narrow = window.matchMedia("(max-width: 1023px)").matches;
+
+          document.querySelectorAll("[data-dashboard-body-content]").forEach((body) => {
+            if (!(body instanceof HTMLElement)) return;
+            let toggleBtn = null;
+            document.querySelectorAll("[data-dashboard-body-toggle]").forEach((btn) => {
+              if (btn instanceof HTMLButtonElement && btn.dataset.dashboardBodyToggle === body.id) {
+                toggleBtn = btn;
+              }
+            });
+            if (toggleBtn && toggleBtn.getAttribute("aria-expanded") === "true") return;
+
+            const middle = body.closest("[data-hero-card-middle]");
+            const btnRow = body.nextElementSibling;
+            if (!middle || !(btnRow instanceof HTMLElement)) return;
+
+            const bodyTop = body.getBoundingClientRect().top;
+            /** 본문 아래 버튼까지 뷰포트 안에 들어오도록 허용되는 본문 높이 상한 */
+            const viewportCap = Math.floor(vh - bodyTop - btnRow.offsetHeight - safeBottom);
+
+            const slot = middle.clientHeight - btnRow.offsetHeight;
+            const slotUse = slot < 48 ? 360 : slot;
+
+            let px = Math.min(slotUse, viewportCap);
+            if (narrow) px = Math.min(px, 360);
+            px = Math.max(120, Math.min(px, 1200));
+
+            body.style.flex = "";
+            body.style.maxHeight = px + "px";
+          });
+
+          requestAnimationFrame(() => {
+            const rf = document.getElementById("recent-flow");
+            if (!rf) return;
+            const rfTop = rf.getBoundingClientRect().top;
+            /** 메타·타임라인 제목이 함께 보이도록 상단 여유 */
+            const peekReserve = 220;
+            const targetMaxTop = vh - peekReserve;
+            if (rfTop <= targetMaxTop) return;
+
+            const overflow = rfTop - targetMaxTop;
+            document.querySelectorAll("[data-dashboard-body-content]").forEach((body) => {
+              if (!(body instanceof HTMLElement)) return;
+              let toggleBtn = null;
+              document.querySelectorAll("[data-dashboard-body-toggle]").forEach((btn) => {
+                if (btn instanceof HTMLButtonElement && btn.dataset.dashboardBodyToggle === body.id) {
+                  toggleBtn = btn;
+                }
+              });
+              if (toggleBtn && toggleBtn.getAttribute("aria-expanded") === "true") return;
+
+              const cur = parseFloat(body.style.maxHeight);
+              if (!Number.isFinite(cur)) return;
+              const next = Math.max(120, cur - overflow);
+              if (next < cur) body.style.maxHeight = next + "px";
+            });
+          });
+        }
+
+        function attachHeroClampObservers() {
+          if (heroClampRo) heroClampRo.disconnect();
+          heroClampRo = new ResizeObserver(() => syncDashboardHeroBodyClamp());
+          document.querySelectorAll("[data-hero-card-panel]").forEach((el) => heroClampRo.observe(el));
+        }
+
+        function initHeroClamp() {
+          requestAnimationFrame(() => {
+            attachHeroClampObservers();
+            syncDashboardHeroBodyClamp();
+          });
+        }
+
+        document.addEventListener("astro:page-load", initHeroClamp);
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", initHeroClamp, { once: true });
+        } else {
+          initHeroClamp();
+        }
+
+        let resizeT = 0;
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeT);
+          resizeT = setTimeout(syncDashboardHeroBodyClamp, 120);
+        });
+
+        let scrollT = 0;
+        window.addEventListener(
+          "scroll",
+          () => {
+            clearTimeout(scrollT);
+            scrollT = setTimeout(syncDashboardHeroBodyClamp, 80);
+          },
+          { passive: true },
+        );
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener("resize", () => syncDashboardHeroBodyClamp());
+          window.visualViewport.addEventListener("scroll", () => syncDashboardHeroBodyClamp());
+        }
+
+        const w = window;
+        if (w.__ziinHeroCardToggleBound) return;
+        w.__ziinHeroCardToggleBound = true;
+        document.addEventListener("click", (ev) => {
+          const el = ev.target;
+          if (!(el instanceof Element)) return;
+          const toggle = el.closest("[data-dashboard-body-toggle]");
+          if (!(toggle instanceof HTMLButtonElement)) return;
+          const targetId = toggle.dataset.dashboardBodyToggle;
+          if (!targetId) return;
+          const content = document.getElementById(targetId);
+          if (!(content instanceof HTMLElement)) return;
+          const esc = typeof CSS !== "undefined" && CSS.escape ? CSS.escape(targetId) : targetId.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+          const fade = document.querySelector(`[data-dashboard-body-fade="${esc}"]`);
+          const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+          if (isExpanded) {
+            content.style.maxHeight = "";
+            content.style.flex = "";
+            if (fade instanceof HTMLElement) fade.classList.remove("hidden");
+            toggle.textContent = "상세 내용 더보기";
+            toggle.setAttribute("aria-expanded", "false");
+            requestAnimationFrame(() => syncDashboardHeroBodyClamp());
+            return;
+          }
+          content.style.flex = "0 0 auto";
+          content.style.maxHeight = `${content.scrollHeight}px`;
+          if (fade instanceof HTMLElement) fade.classList.add("hidden");
+          toggle.textContent = "상세 내용 접기";
+          toggle.setAttribute("aria-expanded", "true");
+        });
+      })();
+    </script>
   </body>
 </html>
