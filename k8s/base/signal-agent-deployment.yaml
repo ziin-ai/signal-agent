@@ -1,0 +1,54 @@
+# GHCR: ghcr.io/ziin-ai/signal-agent (GitHub Actions .github/workflows/build.yml)
+# Namespace: signal-agent
+# Astro SSR (@astrojs/node) listens on PORT (default 4321 in Dockerfile).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signal-agent
+  namespace: signal-agent
+  labels:
+    app.kubernetes.io/name: signal-agent
+    app.kubernetes.io/component: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: signal-agent
+  template:
+    metadata:
+      labels:
+        app: signal-agent
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/ziin-ai/signal-agent:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4321
+              name: http
+          env:
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "4321"
+            - name: PUBLIC_GA_MEASUREMENT_ID
+              value: "G-KWLNTJCV41"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
