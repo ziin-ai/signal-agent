@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: signal-agent
+  namespace: argocd
+spec:
+  project: signal-agent
+  source:
+    repoURL: https://github.com/ziin-ai/signal-agent
+    targetRevision: main
+    path: k8s/overlay/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: signal-agent
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
