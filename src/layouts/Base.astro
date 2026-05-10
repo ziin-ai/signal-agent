@@ -5,7 +5,7 @@ import TickerBar from "../components/layout/TickerBar.astro";
 import Footer from "../components/layout/Footer.astro";
 import { fetchTickerBarQuotes } from "../lib/market";
 import "../styles/global.css";
-import { getPublicAdsenseClientId } from "../lib/adsense-public-env";
+import { getPublicAdsenseClientId, getPublicGaMeasurementId } from "../lib/adsense-public-env";
 
 interface Props {
   title?: string;
@@ -25,8 +25,8 @@ const {
 
 const tickerItems = await fetchTickerBarQuotes();
 
-/** GA4 — disabled by default, enable via PUBLIC_GA_MEASUREMENT_ID */
-const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() || "";
+/** GA4 — disabled by default; use runtime env in production (see getPublicGaMeasurementId) */
+const gaMeasurementId = getPublicGaMeasurementId();
 
 /** Google AdSense — site/account association meta; enable via PUBLIC_ADSENSE_CLIENT_ID (ca-pub-…) */
 const adsenseClientId = getPublicAdsenseClientId();

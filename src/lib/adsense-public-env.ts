@@ -1,7 +1,17 @@
 /**
- * Runtime/build PUBLIC_ vars for AdSense (SSR + dev).
- * Mirrors logic in layouts that need process.env for Kubernetes.
+ * Runtime/build PUBLIC_ vars for SSR (Kubernetes injects env at container start;
+ * import.meta.env alone is fixed at build time).
  */
+
+/** GA4 measurement ID (G-…) — enables gtag in Base layout */
+export function getPublicGaMeasurementId(): string {
+  return (
+    (typeof process !== "undefined" && process.env.PUBLIC_GA_MEASUREMENT_ID?.trim()) ||
+    import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() ||
+    ""
+  );
+}
+
 export function getPublicAdsenseClientId(): string {
   return (
     (typeof process !== "undefined" && process.env.PUBLIC_ADSENSE_CLIENT_ID?.trim()) ||
