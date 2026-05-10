@@ -2,6 +2,8 @@
 
 이 문서는 Cursor Agent **`post-from-sources`** 스킬을 실제로 호출할 때 바로 복사해 쓸 수 있는 예제를 모아둔 가이드입니다. 상세 규칙·스키마·워크플로는 레포 루트의 [`.cursor/skills/post-from-sources/SKILL.md`](../.cursor/skills/post-from-sources/SKILL.md)이 기준입니다.
 
+**기본값:** 새 글·대규모 수정 시 포스트 frontmatter에 **`shorts`**(세로 Shorts용 훅·장면·썸네일 카피)를 **`sources` 다음, `entities` 앞**에 포함합니다. 스키마는 [`src/content.config.ts`](../src/content.config.ts)의 `shortsSchema`, 예시 포스트는 [`src/content/posts/2026-05-08-2026-iljin-electric.md`](../src/content/posts/2026-05-08-2026-iljin-electric.md)를 참고하세요.
+
 ## 1) `post-from-sources` 기본 사용
 
 가장 일반적인 형태는 "출처 + 작성 조건"을 함께 주는 방식입니다.
@@ -30,6 +32,7 @@ sources:
 - src/content/posts/ 아래에 새 파일 생성
 - 한국어, 전문가 톤, 분석적으로
 - 리스크 섹션 포함
+- shorts 메타데이터 포함 (본문 논지와 정합, 약 30초 분량 장면 구성)
 ```
 
 ## 2) `post-from-sources` URL-only 모드
@@ -49,6 +52,7 @@ urls:
 - src/content/posts/ 아래에 새 파일 생성
 - 한국어, 전문가 톤, 분석적으로
 - 스니펫 노출형 구조(질문형 헤딩 + 즉답 + TL;DR + FAQ + 리스크 + 출처)
+- shorts 메타데이터 포함 (추론한 논지 기준)
 - 생성 후 assumptions, URL->type/tier/date 추론표 같이 보고
 ```
 
@@ -65,6 +69,7 @@ target: src/content/posts/2026-05-13-nvidia-blackwell-demand.md
 - FAQ 3개 추가
 - 기존 주장 중 근거 없는 문장 제거
 - sources 메타데이터 누락값 보완
+- 본문 변경에 맞춰 shorts 훅·scenes·thumbnail도 재작성 (없으면 새로 추가)
 ```
 
 ## 4) 주제어(topic-only) 모드
@@ -83,6 +88,7 @@ topic: 2026년 AI 데이터센터 전력 병목이 반도체 수요에 미치는
 - 한국어, 전문가 톤, 분석적으로
 - 링크는 본문에 과도하게 넣지 말고 출처 섹션 중심으로 정리
 - YouTube가 출처에 포함되면 영상 핵심 내용까지 반영
+- shorts 메타데이터 포함
 - 생성 후 선정 소스 shortlist와 선정 이유, assumptions 같이 보고
 ```
 
@@ -104,12 +110,57 @@ anchor_urls (반드시 sources에 포함하고 본문에서 인용):
 요청:
 - topic 리서치를 중심으로 진행하고, 위 URL은 필수 참조로 포함
 - 앵커와 다른 1차 출처가 충돌하면 본문에서 균형 있게 정리
+- shorts 메타데이터 포함
 - 완료 후: 앵커 URL별 할당된 src-n, 본문 인용 여부 보고
 ```
 
 트리거 예시 문구: `이 URL 꼭`, `반드시 참고`, `must read`, `아래 링크 위주로`, topic과 URL을 한 메시지에 같이 붙여 넣기.
 
-## 6) 타임라인 이벤트(`src/content/events`) 동반 기록
+## 6) Shorts 메타데이터 (`shorts`)
+
+| 항목 | 설명 |
+| --- | --- |
+| 배치 | `sources:` 블록 **직후**, `entities:` **앞** |
+| 생략 | 사용자가 명시적으로 **shorts 없이** 등을 요청한 경우에만 키 생략 가능 |
+| 내용 | 세로 영상(예: YouTube Shorts)용 훅, 장면별 `visual`/`caption`/`vo`, 썸네일 카피, 해시태그 |
+| 검증 | `src/content.config.ts`의 `shortsSchema` |
+
+미니 예시(필드만 확인용 — 실제 작성 시에는 장면 수·시간축을 글 길이에 맞출 것):
+
+```yaml
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "첫 3초 훅"
+  title: "숏츠 제목"
+  description: |
+    요약 2~4줄
+
+    #태그1 #태그2
+  hashtags:
+    - "#티커"
+    - "#주식분석"
+  thumbnail:
+    headline: "썸네일 메인"
+    subline: "보조 한 줄"
+    style: "레이아웃 힌트"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "화면 설명"
+      caption: "자막"
+      vo: "나레이션"
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
+```
+
+## 7) 타임라인 이벤트(`src/content/events`) 동반 기록
 
 글에서 **날짜가 분명한 촉매**(실적 일정, FOMC/CPI, 규제 마일스톤, 공장 가동 등)를 전제로 하면, 타임라인·대시보드 「최근 흐름」에 쓰이도록 **`src/content/events/`** 에도 추가·수정을 요청할 수 있습니다. 날짜를 지어내지 말 것.
 
@@ -123,7 +174,7 @@ symbol: ...
 market: ...
 
 요청:
-- src/content/posts/ 신규 초안
+- src/content/posts/ 신규 초안 (shorts 포함)
 - 글에서 다루는 확정/예정 일정 중 시장 의미가 큰 것은 src/content/events/ 에 YAML 스키마 맞게 추가
 - 이미 비슷한 이벤트 파일이 있으면 중복 생성 말고 업데이트
 - 생성/수정한 event 파일 경로와 이유를 마지막에 보고
@@ -131,7 +182,7 @@ market: ...
 
 이벤트 frontmatter 필드 요약은 스킬의 Schema Guardrails와 `src/content.config.ts`의 `events` 컬렉션을 따릅니다 (`id`, `title`, `date`, `summary`, `category`, `impact`, 선택적 `symbol` / `market` / `scope`, 등).
 
-## 7) 출력 품질 높이는 요청 템플릿
+## 8) 출력 품질 높이는 요청 템플릿
 
 아래 항목을 같이 주면 결과 품질이 좋아집니다.
 
@@ -140,10 +191,11 @@ market: ...
 - 필수 섹션: TL;DR, 리스크, 체크리스트
 - 길이 제약: 700자 내외, 혹은 5개 불릿 중심
 - 확인 요청: assumptions 표, source 추론표, 누락 데이터 목록
+- **Shorts:** 목표 초(예: 30초), 톤(분석형/캐주얼), 썸네일에 넣을 숫자·티커가 있으면 명시
 - (topic + 앵커 시) 앵커 목록, 본문 인용 여부, 그리고 결론이 전체 근거 기준으로 도출됐는지
 - (이벤트 동반 시) 기록할 촉매 날짜·종류를 사용자가 직접 적어 주기
 
-## 8) 자주 발생하는 실수
+## 9) 자주 발생하는 실수
 
 - URL만 주고 톤/구조 요청을 생략해서 결과물이 일반 기사체가 되는 경우
 - 출처 날짜가 불명확한데도 검증 없이 단정형 문장을 쓰는 경우
@@ -151,8 +203,10 @@ market: ...
 - `summary` 대신 다른 키(`thesis`)를 써서 포스트 스키마 불일치가 나는 경우
 - topic + 앵커에서 앵커만 과대반영하고, 주제 리서치를 충분히 확장하지 않는 경우
 - `src/content/events/`에 잘못된 `category`/`impact`/`market` enum을 쓰는 경우 (스키마는 `src/content.config.ts` 참고)
+- 본문은 바꿨는데 **`shorts`를 안 고쳐서** 훅·장면이 예전 논지와 어긋나는 경우
+- `shorts.scenes[*].t` 시간축이 `duration`과 맞지 않거나, 숫자·주장을 출처 없이 새로 만드는 경우
 
-## 9) 권장 마무리 요청 문구
+## 10) 권장 마무리 요청 문구
 
 작업 끝에 아래를 붙이면 검토가 쉬워집니다.
 
@@ -160,8 +214,9 @@ market: ...
 완료 후 아래를 보고해줘:
 1) 생성/수정한 포스트 파일 경로
 2) assumptions 목록
-3) URL-only이면: URL별 type/tier/date 추론 근거
-4) topic-only이면: 선정 소스 shortlist와 선정 이유
-5) topic + 앵커이면: 앵커 URL 순서, 각각 매긴 src-n, 본문 인용 여부
-6) events를 건드렸으면: 생성/수정한 event 파일 경로와 요약
+3) shorts: 훅 각도·목표 duration 초 (shorts 생략 요청이었으면 그 사실)
+4) URL-only이면: URL별 type/tier/date 추론 근거
+5) topic-only이면: 선정 소스 shortlist와 선정 이유
+6) topic + 앵커이면: 앵커 URL 순서, 각각 매긴 src-n, 본문 인용 여부
+7) events를 건드렸으면: 생성/수정한 event 파일 경로와 요약
 ```

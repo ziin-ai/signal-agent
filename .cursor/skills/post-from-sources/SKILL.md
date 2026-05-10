@@ -4,10 +4,12 @@ description: >-
   Write a post under src/content/posts from sources or topic research, and when
   the thesis hinges on dated catalysts or milestones, add or update matching
   entries in src/content/events (timeline / 대시보드 외부 이벤트).
-  In topic-driven mode, include and cite user-supplied anchor URLs as required
-  references, while keeping topic research and source diversification as the
-  primary method. Use when the user provides URLs, source summaries, topics, or
-  asks to draft or revise analysis posts for this repo.
+  For each new or revised post, generate frontmatter `shorts` (YouTube Shorts-style
+  hook, scenes, thumbnail, hashtags) after `sources` and before `entities`, aligned
+  with src/content.config.ts. In topic-driven mode, include and cite user-supplied
+  anchor URLs as required references, while keeping topic research and source
+  diversification as the primary method. Use when the user provides URLs, source
+  summaries, topics, or asks to draft or revise analysis posts for this repo.
 disable-model-invocation: true
 ---
 
@@ -18,6 +20,8 @@ disable-model-invocation: true
 Create or update one file in `src/content/posts/` that matches the project's post schema and writing style.
 
 When the draft introduces or relies on **concrete calendar catalysts** (실적 일정, 정책·금리 결정, 제품·공장 가동, 규제 마일스톤 등), **also** add or update one or more files in `src/content/events/` so those items appear on the global/symbol timeline and in dashboard filters (`category`, `market`, `impact`). Do not invent dates; only record what sources or the user supplied with reasonable certainty.
+
+Unless the user explicitly asks to skip shorts, **fill `shorts` frontmatter** for every post: a vertical Shorts script derived from the same thesis as the long-form body (hook → tension → explanation → checkpoints → conclusion → CTA). Placement order in YAML is **`sources:` → `shorts:` → `entities:`**. Validate fields against `shortsSchema` in `src/content.config.ts`. In-repo reference: `src/content/posts/2026-05-08-2026-iljin-electric.md`.
 
 ## Inputs To Request
 
@@ -31,6 +35,7 @@ Ask for missing items before drafting:
 6. Optional constraints (tone, length, Korean/English mix, key risks)
 7. Optional: explicit **calendar catalysts** to record as `events` (date + kind — 실적, FOMC, 규제 등). If omitted, infer from sources while drafting.
 8. **Topic 모드 전용:** 사용자가 “꼭 참조할 URL”“반드시 포함” 등으로 넘긴 **앵커 URL** 목록(0개 이상). 있으면 아래 **Topic mode + anchor URLs** 절의 규칙을 따른다.
+9. Optional: **shorts 생략** — “shorts 빼줘”, “세로영상 메타 없이” 등으로 명시할 때만 `shorts` 키를 넣지 않는다. 그 외에는 항상 생성한다.
 
 If the user omits some fields, propose sensible defaults and mark them clearly for confirmation.
 
@@ -161,6 +166,46 @@ sources:
     date: 2026-05-07
     url: "https://..."
     excerpt: "..."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "첫 3초 훅 한 줄 (본문과 동일 논지)"
+  title: "숏츠 제목 (검색·추천용, 길게 쓰지 않음)"
+  description: |
+    2~4줄 요약 + 마지막 줄에 해시태그 문자열(본문 thesis와 정합).
+    톤은 분석형, 과장 금지.
+
+    #키워드1 #키워드2 #키워드3
+  hashtags:
+    - "#티커또는테마"
+    - "#섹터"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "썸네일 메인 카피"
+    subline: "보조 한 줄"
+    style: "브랜딩/레이아웃 힌트 (예: 차트 + 강조 텍스트)"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "화면에 무엇이 보이는지 (구체적으로)"
+      caption: "자막 한 줄"
+      vo: "나레이션 한 줄"
+    - t: "3-8s"
+      role: "problem"
+      visual: "..."
+      caption: "..."
+      vo: "..."
+    # 권장: 총 6컷 전후, duration(초)과 시간축 `t`가 맞을 것
+    # role 예: hook | problem | explanation | checkpoints | conclusion | cta
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company: ["..."]
   product: ["..."]
@@ -232,6 +277,33 @@ Always satisfy these constraints:
 - `sources[*].date` must be ISO date (`YYYY-MM-DD`)
 - `url` must be absolute URL
 - Keep `sources` non-empty
+
+**Shorts (`shorts`, optional in Zod but standard for new posts here):**
+
+When present, all of the following must satisfy `shortsSchema` in `src/content.config.ts`:
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `enabled` | boolean | Usually `true`; `false` only if user wants metadata stub without publishing intent |
+| `platform` | non-empty string array | e.g. `- "youtube"` |
+| `format` | string | Vertical: `"9:16"` unless user specifies otherwise |
+| `duration` | positive integer | Seconds; typically `30`, aligned with `scenes[*].t` ranges |
+| `hook` | string | Opening line; must not contradict `summary` / thesis |
+| `title` | string | Shorts-specific title (can differ from post `title`) |
+| `description` | string | Often multiline `\|` block; may repeat hashtag line for platform copy-paste |
+| `hashtags` | non-empty string array | Each entry usually includes leading `#` |
+| `thumbnail` | object | `headline`, `subline`, `style` — all required strings |
+| `scenes` | non-empty array | Each scene: `t`, `role`, `visual` required; `caption`, `vo` optional |
+| `cta` | object | `type`, `target` (e.g. `blog_link` / `본문 포스트`) |
+| `tone` | string | e.g. `analytical_calm` |
+| `bgm` | string | e.g. `minimal_beat_no_climax` |
+
+**Authoring rules for `scenes`:**
+
+- Order time ranges (`t`) monotonically and cover roughly `0`–`duration` seconds.
+- Default arc for analysis posts: `hook` → `problem` (or tension) → `explanation` → `checkpoints` → `conclusion` → `cta`.
+- `visual` / `caption` / `vo` must be faithful to the post’s sourced claims; do not invent figures or quotes.
+- Keep `vo` readable aloud in ~1–2 short sentences per segment.
 
 If a source is `youtube`, keep it as a normal source item (UI handles embedding).
 If a source is `pdf`, keep direct PDF link in `url`.
@@ -444,9 +516,10 @@ Slug rules:
 5. Draft body sections using source-backed claims and synthesized reasoning.
 6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections.
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
-8. Re-check all source metadata fields and date formats.
-9. Verify visuals: tables have headers, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks, captions cite sources where applicable.
-10. Save or update the target post file and any event files.
+8. Unless the user opted out, add **`shorts`** after `sources` and before `entities`: derive hook/scenes/thumbnail from the finalized thesis and `summary`; match `duration` to scene timeline; validate against **Shorts** table above.
+9. Re-check all source metadata fields and date formats.
+10. Verify visuals: tables have headers, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks, captions cite sources where applicable.
+11. Save or update the target post file and any event files.
 
 ## Final Response To User
 
@@ -455,19 +528,20 @@ When done, report:
 1. Created/updated file path
 2. Any assumed defaults
 3. Missing data the user may want to refine (optional)
+4. **`shorts`:** one-line note on hook angle and target `duration`, or that shorts was omitted per user request
 
 For URL-only mode, also report:
 
-4. URL -> inferred source mapping (`type`, `tier`, `date` basis)
+5. URL -> inferred source mapping (`type`, `tier`, `date` basis)
 
 For topic-driven mode, also report:
 
-5. Discovered-source shortlist and why each was selected
+6. Discovered-source shortlist and why each was selected
 
 For topic-driven mode **with user anchor URLs**, also report:
 
-6. Anchor URLs (in order) and which `src-n` id each received; confirm every anchor appears in `sources` and is cited in the body
+7. Anchor URLs (in order) and which `src-n` id each received; confirm every anchor appears in `sources` and is cited in the body
 
 If events were co-updated, also report:
 
-7. Created/updated event file paths and rationale
+8. Created/updated event file paths and rationale
