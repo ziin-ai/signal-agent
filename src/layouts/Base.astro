@@ -28,8 +28,11 @@ const tickerItems = await fetchTickerBarQuotes();
 /** GA4 — disabled by default; use runtime env in production (see getPublicGaMeasurementId) */
 const gaMeasurementId = getPublicGaMeasurementId();
 
-/** Google AdSense — site/account association meta; enable via PUBLIC_ADSENSE_CLIENT_ID (ca-pub-…) */
+/** Google AdSense — meta + pagead loader; enable via PUBLIC_ADSENSE_CLIENT_ID (ca-pub-…) */
 const adsenseClientId = getPublicAdsenseClientId();
+const adsenseLoaderSrc = adsenseClientId
+  ? `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(adsenseClientId)}`
+  : "";
 const siteOrigin = Astro.site?.toString().replace(/\/$/, "") || "";
 const canonical = siteOrigin
   ? new URL(`${Astro.url.pathname}${Astro.url.search}`, siteOrigin).toString()
@@ -42,7 +45,10 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {adsenseClientId ? (
-      <meta name="google-adsense-account" content={adsenseClientId} />
+      <>
+        <meta name="google-adsense-account" content={adsenseClientId} />
+        <script async src={adsenseLoaderSrc} crossorigin="anonymous" />
+      </>
     ) : null}
     <title>{title}</title>
     <meta name="description" content={description} />
