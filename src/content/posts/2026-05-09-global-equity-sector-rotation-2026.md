@@ -49,6 +49,67 @@ sources:
     date: 2026-05-06
     url: "https://www.ubs.com/global/en/wealthmanagement/insights/marketnews/article.3020364.html"
     excerpt: "AI 리더십이 반도체 인프라에서 애플리케이션 레이어와 방어·가치 섹터로 확산될 가능성을 제시하며 미국 외 지역 기회도 강조."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "메가캡 다음 주자? 2026 글로벌 섹터 로테이션 프레임"
+  title: "AI에서 방어·가치로: 글로벌 주식 순환매 체크리스트"
+  description: |
+    AI 반도체 집중 이후 자금이 애플리케이션·방어·가치로 퍼질 수 있다.
+    미국 외 지역 상대매력도 함께 논의된다.
+    로테이션을 보는 3축만 30초에 정리.
+
+    #글로벌주식 #섹터로테이션 #AI #방어주 #가치주
+  hashtags:
+    - "#섹터로테이션"
+    - "#글로벌주식"
+    - "#AI"
+    - "#밸류"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "AI 다음 섹터"
+    subline: "앱·방어·가치"
+    style: "섹터 휠 다이어그램"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "나스닥 vs 방어 지수 스플릿"
+      caption: "한쪽만 오를까?"
+      vo: "자금이 이동합니다"
+    - t: "3-8s"
+      role: "problem"
+      visual: "레이어 케이크: 인프라→앱"
+      caption: "AI 수혜 확산"
+      vo: "칩에서 소프트웨어로"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "방어·가치 라벨"
+      caption: "밸류에이션·금리 민감"
+      vo: "금리·성장 둔화 시나리오"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "지구본 + 미국 외 강조"
+      caption: "미국 외 상대매력"
+      vo: "지역 분산이 다시 켜짐"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "3키워드: 수익·현금흐름·밸류"
+      caption: "체크리스트"
+      vo: "테마보다 현금흐름"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   index:
     - "MSCI ACWI"

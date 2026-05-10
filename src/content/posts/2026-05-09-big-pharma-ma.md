@@ -63,6 +63,67 @@ sources:
     date: 2025-08-21
     url: "https://www.gilead.com/news/news-details/2025/kite-to-acquire-interius-biotherapeutics-to-advance-in-vivo-platform"
     excerpt: "Gilead 산하 Kite가 Interius를 3억5000만달러에 인수해 in vivo CAR 플랫폼을 강화한다고 발표했다."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "빅파마 M&A가 왜 'in vivo CAR-T'로 몰리나"
+  title: "2026 빅파마: 세포치료·플랫폼 인수의 방향"
+  description: |
+    전통 소분자에서 세포·유전자 치료로 인수 논리가 이동 중이다.
+    임상 단계·규제·제조 리스크를 함께 봐야 밸류가 설명된다.
+    최근 딜 흐름을 한 장면씩 압축.
+
+    #빅파마 #바이오 #M&A #세포치료 #바이오테크
+  hashtags:
+    - "#빅파마"
+    - "#바이오M&A"
+    - "#세포치료"
+    - "#CAR-T"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "M&A 방향 전환"
+    subline: "in vivo CAR 플랫폼"
+    style: "DNA 루프 + 약품 아이콘"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "빅파마 로고 콜라주"
+      caption: "왜 지금 M&A?"
+      vo: "플랫폼이 표적입니다"
+    - t: "3-8s"
+      role: "problem"
+      visual: "특허 절벽·파이프라인 간극"
+      caption: "성장 동력 재배치"
+      vo: "파이프라인을 사들인다"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "in vivo CAR 텍스트 카드"
+      caption: "차세대 세포치료"
+      vo: "제조·회수 문제를 줄이는 베팅"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "Kite·Interius 헤드라인 캡처 스타일"
+      caption: "최근 딜 사례"
+      vo: "플랫폼 프리미엄의 의미"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "상업화 타임라인 물음표"
+      caption: "임상·승인 리스크 동반"
+      vo: "낙관과 증거 분리"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company:
     - "Eli Lilly"

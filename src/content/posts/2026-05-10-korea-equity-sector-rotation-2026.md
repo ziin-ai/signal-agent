@@ -42,6 +42,67 @@ sources:
     date: 2026-04-10
     url: "https://www.bok.or.kr/portal/bbs/P0000559/view.do?depth=200690&menuNo=200690&nttId=10097452&programType=newsData&relate=Y"
     excerpt: "기준금리 2.50% 동결(만장일치). 중동 사태로 물가 상방·성장 하방이 함께 커졌다고 보고, 올해 성장률이 2월 전망(2.0%)을 하회할 것, 물가는 2월 전망을 상당폭 상회하는 경로 등을 제시."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "한국 주식 순환매: 정책·MSCI·금리 세 축만 기억하세요"
+  title: "2026 코리아: 금리 동결·지정학 리스크 속 섹터 프레임"
+  description: |
+    금리 동결과 물가·성장 불확실성이 동시에 커진 상황이다.
+    외국인 수급과 MSCI 이벤트는 변동성을 키운다.
+    국내 로테이션을 보는 세 가지 레버만 30초 요약.
+
+    #한국주식 #코스피 #금리 #MSCI #섹터로테이션
+  hashtags:
+    - "#코스피"
+    - "#한국주식"
+    - "#금리"
+    - "#MSCI"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "코리아 로테이션"
+    subline: "금리·정책·수급"
+    style: "삼각 삼축 인포그래픽"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "한국 지도 + 변동성 게이지"
+      caption: "동결인데 왜 요동?"
+      vo: "성장과 물가가 엇갈림"
+    - t: "3-8s"
+      role: "problem"
+      visual: "한은·물가 아이콘"
+      caption: "금리 민감 섹터"
+      vo: "금융·내수 배분이 갈림"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "외국인 화살표·지수"
+      caption: "수급 이벤트"
+      vo: "MSCI·지정학 리스크"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "정부 정책 키워드 카드"
+      caption: "규제·재정 테마"
+      vo: "테마주보다 현금흐름"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "방어 vs 성장 스케일"
+      caption: "분기별 재평가"
+      vo: "거시 확인 후 섹터"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   theme:
     - "전략산업"

@@ -48,6 +48,68 @@ sources:
     date: 2026-04-30
     url: "https://www.biztribune.co.kr/news/articleView.html?idxno=349183"
     excerpt: "증권사 관점에서 2026년 증설 효과와 수익성 개선 가능성을 제시한 2차 전망 기사."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "일진전기 1,980억 수주! 이 숫자만 보면 안 됩니다"
+  title: "일진전기 수주 호재? 진짜 봐야 할 3가지 숫자"
+  description: |
+    북미향 대형 변압기 수주가 이어지는 일진전기, 
+    그런데 수주 헤드라인보다 더 중요한 건 따로 있습니다.
+    프로젝트형 전력기기 사업의 매출 인식 구조와 
+    2026년 반드시 체크해야 할 3가지 지표를 30초 안에 정리.
+    
+    #일진전기 #103590 #변압기 #북미전력망 #전력기기 #초고압변압기
+  hashtags:
+    - "#일진전기"
+    - "#변압기주"
+    - "#전력기기"
+    - "#북미전력망"
+    - "#주식분석"
+    - "#103590"
+  thumbnail:
+    headline: "수주 1,980억"
+    subline: "진짜 봐야 할 건 따로 있다"
+    style: "차트 + 강조 텍스트"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "뉴스 헤드라인 클로즈업"
+      caption: "일진전기 1,980억 수주!"
+      vo: "이 숫자만 보면 안 됩니다"
+    - t: "3-8s"
+      role: "problem"
+      visual: "주가 차트 + 물음표"
+      caption: "수주 = 이익?"
+      vo: "수주가 곧 이익은 아니거든요"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "수주→생산→납품→매출 인식 플로우"
+      caption: "매출 인식까지 1~2년"
+      vo: "프로젝트형 전력기기의 시간차"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "3개 키워드 카드"
+      caption: "①매출 인식률 ②영업이익률 ③현금흐름"
+      vo: "이 세 가지를 분기마다 확인하세요"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "'2026 = 실행력 검증' 카피"
+      caption: "수주 스토리 → 실행 증명"
+      vo: "주가 재평가는 실행력이 결정합니다"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company:
     - "일진전기"

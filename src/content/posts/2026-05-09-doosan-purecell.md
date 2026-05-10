@@ -56,6 +56,67 @@ sources:
     date: 2026-04-28
     url: "https://www.bloomenergy.com/news/bloom-energy-reports-record-first-quarter-2026-results-and-raises-full-year-2026-guidance/"
     excerpt: "글로벌 연료전지 데이터센터 수요의 비교 기준으로 매출 성장률, 가이던스 상향, 온사이트 전원 수요 확산을 제시한다."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "두산퓨어셀 실적 서프라이즈 다음 관건은?"
+  title: "연료전지 데이터센터 담보? 북미 PAFC·온사이트 전원 체크"
+  description: |
+    분기 실적과 가이던스는 긍정적이다.
+    다음 레그는 데이터센터 온사이트 전원에서 반복 매출로 이어지는지다.
+    글로벌 동종 대비 프레임으로 30초 정리.
+
+    #두산퓨어셀 #연료전지 #데이터센터 #친환경에너지 #전력
+  hashtags:
+    - "#두산퓨어셀"
+    - "#연료전지"
+    - "#데이터센터전력"
+    - "#수소"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "실적 다음은?"
+    subline: "온사이트 반복 매출"
+    style: "연료전지 스택 + DC 아이콘"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "실적 그래프 업"
+      caption: "서프라이즈 이후"
+      vo: "다음 질문은 지속성"
+    - t: "3-8s"
+      role: "problem"
+      visual: "Bloom 스타일 비교 표"
+      caption: "글로벌 벤치마크"
+      vo: "동종 성장률을 같이 본다"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "데이터센터 온사이트 전원 일러스트"
+      caption: "온사이트 수요"
+      vo: "반복 매출로 전환되는지"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "북미 PAFC·계약 키워드"
+      caption: "지역·수주 파이프"
+      vo: "계약 전환율이 핵심"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "밸류 vs 성장 밸런스 스케일"
+      caption: "기대 디스카운트"
+      vo: "숫자로 증명 구간"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company:
     - "두산퓨어셀"

@@ -62,6 +62,66 @@ sources:
     date: 2026-04-10
     url: "https://www.youtube.com/watch?v=R4UHVI3NyvU"
     excerpt: "초고압 해저 HVDC 시장은 Prysmian·NKT·Nexans·LS전선 4사가 85%를 점유하고 있으며, 미국 FCC의 중국산 케이블 차단 이후 한국 전선업의 수주잔고가 사상 최대치로 점프했다."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "GPU 부족이 아니라 전력? AI 데이터센터 병목의 진짜 정체"
+  title: "2026 AI 전력망 병목: 송전·변압기·케이블이 좌우한다"
+  description: |
+    데이터센터 확장의 상한은 칩이 아니라 송전망·변압기·HVDC로 이어지는 전력 공급사슬이다.
+    한국의 수도권 포화와 글로벌 변압기 리드타임을 30초 안에 정리한다.
+
+    #AI데이터센터 #전력인프라 #HVDC #변압기 #전력망
+  hashtags:
+    - "#AI데이터센터"
+    - "#전력병목"
+    - "#HVDC"
+    - "#변압기"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "병목은 GPU가 아니다"
+    subline: "송전·변압·케이블"
+    style: "그리드 아이콘 + 강조 텍스트"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "데이터센터 외관 vs 정전 아이콘"
+      caption: "AI 멈추는 이유"
+      vo: "GPU가 아니라 전력입니다"
+    - t: "3-8s"
+      role: "problem"
+      visual: "송전탑·대기열 일러스트"
+      caption: "그리드 인터커넥트 지연"
+      vo: "연결만 수년 걸리는 시장"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "변압기·케이블·가스터빈 키워드 카드"
+      caption: "공급사슬 전체가 제약"
+      vo: "한 축만 풀어도 다음 병목"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "한반도 + 수도권 밀도 맵"
+      caption: "국내: 수도권 포화"
+      vo: "정책보다 집행 속도가 핵심"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "수혜 섹터 텍스트 리스트"
+      caption: "변압·케이블·터빈 수요"
+      vo: "단기 수급 깊은 곳을 본다"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company:
     - "두산에너빌리티"

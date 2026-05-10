@@ -49,6 +49,67 @@ sources:
     date: 2026-05-09
     url: "https://www.intc.com/news-events/ir-calendar/detail/20260513-2026-annual-stockholders-meeting"
     excerpt: "2026년 5월 13일 9:00 AM PDT 연차 주주총회·웹캐스트 일정(공식 IR 캘린더)."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "애플·인텔 예비 합의 뉴스 — 양산까지는 또 다른 스토리"
+  title: "인텔 파운드리 x 애플·엔비디아·스페이스X: 체크포인트 맵"
+  description: |
+    공급 협상은 진행 중이나 공식 바인딩이 아니다.
+    파운드리 포트폴리오와 스타링크 시너지는 시나리오일 뿐 담보가 아니다.
+    수익화 타임라인을 분리해 보는 30초 프레임.
+
+    #인텔 #애플 #엔비디아 #파운드리 #반도체
+  hashtags:
+    - "#INTC"
+    - "#파운드리"
+    - "#애플"
+    - "#엔비디아"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "뉴스 ≠ 계약"
+    subline: "인텔 파운드리 타임라인"
+    style: "4개 로고 + 타임라인 화살표"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "인텔·애플 로고 스플릿"
+      caption: "예비 합의?"
+      vo: "단계가 많습니다"
+    - t: "3-8s"
+      role: "problem"
+      visual: "법적 문구·조건 아이콘"
+      caption: "비구속·조건부"
+      vo: "바인딩되기 전까지는 가능성"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "엔비디아·스페이스X 연결선"
+      caption: "포트폴리오 시나리오"
+      vo: "규모와 일정은 별개"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "2026 연차총회 날짜 뱃지"
+      caption: "거버넌스·가이던스"
+      vo: "공식 일정을 함께 본다"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "보수적 베이스 vs 업사이드"
+      caption: "수익화는 증명 과제"
+      vo: "과대 해석 경계"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company:
     - "Intel"

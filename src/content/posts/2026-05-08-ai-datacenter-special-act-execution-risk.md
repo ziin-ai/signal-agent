@@ -27,6 +27,67 @@ sources:
     date: 2026-05-08
     url: "https://www.youtube.com/watch?v=IS9a9QlC8gY"
     excerpt: "법안 핵심은 인허가 통합, 기업 부담 완화, 안정적 전력 공급 협력, 2027년 2월 시행 일정으로 요약된다."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "특별법 통과했는데… 왜 아직 '실행 리스크'라고 부르나"
+  title: "AI 데이터센터 특별법: 법과 현장 사이의 간격"
+  description: |
+    인허가 통합·비수도권 유인 등 제도 전환은 호재다.
+    그러나 전력 안정·시행령·수용력까지 따라와야 집행된다.
+    통과와 실적 사이를 가르는 체크포인트를 30초 요약.
+
+    #AI데이터센터 #특별법 #인허가 #전력 #정책주
+  hashtags:
+    - "#AI데이터센터특별법"
+    - "#데이터센터"
+    - "#전력인프라"
+    - "#규제"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "법 통과 ≠ 즉시 투자"
+    subline: "실행 리스크 체크"
+    style: "법조문 아이콘 + 물음표"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "가결 뉴스 헤드라인"
+      caption: "특별법 통과"
+      vo: "그다음이 문제입니다"
+    - t: "3-8s"
+      role: "problem"
+      visual: "전력선·불안정 아이콘"
+      caption: "전력 공급 불확실성"
+      vo: "법만으로 전기가 늘지 않습니다"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "인허가 플로우 단순화 도식"
+      caption: "통합·완화의 의미"
+      vo: "집행 속도가 빨라질 여지"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "3키워드: 시행령·계통·입지"
+      caption: "실무에서 막히는 지점"
+      vo: "여기서 진도가 갈립니다"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "'법·실행 분리' 카피"
+      caption: "통과는 신호, 증명은 현장"
+      vo: "실적은 입증 단계에서"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company:
     - "과학기술정보통신부"

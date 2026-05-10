@@ -13,6 +13,45 @@ const sourceSchema = z
   })
   .strict();
 
+const shortsSceneSchema = z
+  .object({
+    t: z.string().min(1),
+    role: z.string().min(1),
+    visual: z.string().min(1),
+    caption: z.string().optional(),
+    vo: z.string().optional(),
+  })
+  .strict();
+
+const shortsSchema = z
+  .object({
+    enabled: z.boolean(),
+    platform: z.array(z.string().min(1)).min(1),
+    format: z.string().min(1),
+    duration: z.number().int().positive(),
+    hook: z.string().min(1),
+    title: z.string().min(1),
+    description: z.string().min(1),
+    hashtags: z.array(z.string().min(1)).min(1),
+    thumbnail: z
+      .object({
+        headline: z.string().min(1),
+        subline: z.string().min(1),
+        style: z.string().min(1),
+      })
+      .strict(),
+    scenes: z.array(shortsSceneSchema).min(1),
+    cta: z
+      .object({
+        type: z.string().min(1),
+        target: z.string().min(1),
+      })
+      .strict(),
+    tone: z.string().min(1),
+    bgm: z.string().min(1),
+  })
+  .strict();
+
 const posts = defineCollection({
   loader: glob({ base: "./src/content/posts", pattern: "**/*.md" }),
   schema: z
@@ -28,6 +67,7 @@ const posts = defineCollection({
       draft: z.boolean(),
       sources: z.array(sourceSchema).min(1),
       entities: z.record(z.string(), z.array(z.string().min(1))).default({}),
+      shorts: shortsSchema.optional(),
     })
     .strict(),
 });

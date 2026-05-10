@@ -70,6 +70,67 @@ sources:
     date: 2025-09-02
     url: "https://www.theregister.com/2025/09/02/goldman_sachs_ai_datacenters/"
     excerpt: "AI 워크로드가 2027년까지 전체 데이터센터 용량의 28%로 확장되며 자본 회수 시점에 대한 회의론이 병존한다."
+shorts:
+  enabled: true
+  platform:
+    - "youtube"
+  format: "9:16"
+  duration: 30
+  hook: "반도체 부족이 아니라 전력이 GPU 출하의 상한?"
+  title: "전력 병목이 2026 반도체 수요 곡선을 바꾼다"
+  description: |
+    가속기 공급 다음 제약은 송전·계통이다.
+    수요는 사라지지 않고 시점만 밀리고, HBM·파운드리 사이클의 진폭에 영향을 준다.
+    메모리 투자 관점에서 꼭 알아야 할 논리를 30초 압축.
+
+    #반도체 #AI전력 #HBM #데이터센터 #GPU
+  hashtags:
+    - "#반도체"
+    - "#전력병목"
+    - "#HBM"
+    - "#AI인프라"
+    - "#주식분석"
+    - "#THEME"
+  thumbnail:
+    headline: "전력 = 출하 상한"
+    subline: "수요는 밀린다"
+    style: "칩 + 전력 아이콘 분할"
+  scenes:
+    - t: "0-3s"
+      role: "hook"
+      visual: "GPU와 전기 플러그 대비"
+      caption: "다음 병목은 칩?"
+      vo: "전력이 먼저 막습니다"
+    - t: "3-8s"
+      role: "problem"
+      visual: "하이퍼스케일 CAPEX vs 그리드 큐"
+      caption: "전력 큐 대기"
+      vo: "CAPEX는 늘는데 연결은 지연"
+    - t: "8-15s"
+      role: "explanation"
+      visual: "수요 곡선 시프트 도식"
+      caption: "수요 소멸이 아닌 이연"
+      vo: "메모리·GPU 타임라인이 밀림"
+    - t: "15-23s"
+      role: "checkpoints"
+      visual: "HBM·파운드리 로고 자리표시자"
+      caption: "한국 메모리 체크"
+      vo: "사이클은 더 길어질 수 있음"
+    - t: "23-28s"
+      role: "conclusion"
+      visual: "상한 = 전력 카피"
+      caption: "병목 이동을 추적"
+      vo: "실적은 분기별 전력·출하"
+    - t: "28-30s"
+      role: "cta"
+      visual: "채널 로고 + 링크"
+      caption: "전체 분석은 블로그에서"
+      vo: ""
+  cta:
+    type: "blog_link"
+    target: "본문 포스트"
+  tone: "analytical_calm"
+  bgm: "minimal_beat_no_climax"
 entities:
   company:
     - "NVIDIA"
