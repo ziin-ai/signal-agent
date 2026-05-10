@@ -26,6 +26,12 @@ const tickerItems = await fetchTickerBarQuotes();
 
 /** GA4 — disabled by default, enable via PUBLIC_GA_MEASUREMENT_ID */
 const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim() || "";
+
+/** Google AdSense — site/account association meta; enable via PUBLIC_ADSENSE_CLIENT_ID (ca-pub-…) */
+const adsenseClientId =
+  (typeof process !== "undefined" && process.env.PUBLIC_ADSENSE_CLIENT_ID?.trim()) ||
+  import.meta.env.PUBLIC_ADSENSE_CLIENT_ID?.trim() ||
+  "";
 const siteOrigin = Astro.site?.toString().replace(/\/$/, "") || "";
 const canonical = siteOrigin
   ? new URL(`${Astro.url.pathname}${Astro.url.search}`, siteOrigin).toString()
@@ -37,6 +43,9 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {adsenseClientId ? (
+      <meta name="google-adsense-account" content={adsenseClientId} />
+    ) : null}
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large"} />

@@ -33,6 +33,8 @@ spec:
               value: "4321"
             - name: PUBLIC_GA_MEASUREMENT_ID
               value: "G-KWLNTJCV41"
+            - name: PUBLIC_ADSENSE_CLIENT_ID
+              value: "ca-pub-6929869719862616"
           readinessProbe:
             httpGet:
               path: /
