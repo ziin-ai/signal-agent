@@ -6,9 +6,9 @@ symbol: "NVDA"
 market: "NASDAQ"
 category: "earnings"
 impact: "high"
-summary: "데이터센터 매출 성장률과 가이던스가 AI 밸류체인 전반의 멀티플 재평가에 영향을 줄 수 있다."
+summary: "데이터센터 매출 성장률과 가이던스가 AI 밸류체인 전반의 멀티플 재평가에 영향을 줄 수 있다. 네트워킹·인피니밴드/이더넷 광학 전환(CPO 등)에 대한 코멘트는 실리콘 포토닉스·광모듈 공급망 기대치와도 연동될 수 있다."
 sourceUrl: "https://investor.nvidia.com/"
-tags: ["AI", "GPU", "실적", "가이던스"]
+tags: ["AI", "GPU", "실적", "가이던스", "실리콘포토닉스", "CPO", "광통신"]
 ---
 
 핵심 확인 포인트는 데이터센터 성장률, 재고 코멘트, 차세대 제품 램프업 타이밍.
