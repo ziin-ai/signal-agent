@@ -7,7 +7,7 @@ scope: "market"
 category: "macro"
 impact: "high"
 summary: "기준금리 동결/변경 여부와 통화정책 문구가 원화·금리·내수주 센티먼트에 영향을 준다."
-sourceUrl: "https://www.bok.or.kr/"
+sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
 tags: ["금통위", "금리", "원화"]
 ---
 
