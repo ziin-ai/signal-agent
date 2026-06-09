@@ -1,6 +1,53 @@
 # Skill Usage Examples
 
-이 문서는 Cursor Agent **`post-from-sources`** 스킬을 실제로 호출할 때 바로 복사해 쓸 수 있는 예제를 모아둔 가이드입니다. 상세 규칙·스키마·워크플로는 레포 루트의 [`.cursor/skills/post-from-sources/SKILL.md`](../.cursor/skills/post-from-sources/SKILL.md)이 기준입니다.
+이 문서는 Cursor Agent 스킬을 실제로 호출할 때 바로 복사해 쓸 수 있는 예제를 모아둔 가이드입니다.
+
+| 스킬 | 용도 |
+| --- | --- |
+| [`korea-daily-news`](../.cursor/skills/korea-daily-news/SKILL.md) | **오늘(KST) 한국 경제·증시 뉴스 검색** → 변수 선별 → 브리핑/포스트 |
+| [`post-from-sources`](../.cursor/skills/post-from-sources/SKILL.md) | 출처·주제 기반 분석 포스트 작성 (스키마·shorts·events) |
+
+일일 한국 시장 글은 **`korea-daily-news`로 리서치**한 뒤, 파일 저장 시 **`post-from-sources` 스키마**를 따릅니다 (`korea-daily-news`가 내부에서 연결).
+
+---
+
+## 0) `korea-daily-news` — 오늘 한국 경제·증시 (기본)
+
+```text
+`korea-daily-news` 스킬로 오늘 한국 경제·증시 뉴스 검색해서 포스트 작성해줘.
+
+요청:
+- src/content/posts/ 신규 파일
+- 장 마감이면 daily-summary, 장 전이면 outlook slug
+- shorts 포함
+- 완료 후: 기준일(KST), 5대 변수, sources shortlist 보고
+```
+
+**장 전 브리핑만 (채팅):**
+
+```text
+`korea-daily-news` — 오늘 장 전 브리핑만. 파일 생성 없이 채팅으로.
+```
+
+**특정 날짜 + 리서치만:**
+
+```text
+`korea-daily-news` 스킬 — 2026-06-10 기준 리서치만.
+sources YAML 초안 + 5대 변수 표 + 추천 제목 3개.
+```
+
+**네이버 헤드라인 중심 (참고 포스트: `2026-06-10-naver-economy-market-outlook.md`):**
+
+```text
+`korea-daily-news`로 네이버 경제·IT 헤드라인 기준 오늘 증시 전망 포스트 작성.
+symbol: ^KS11, conviction: 4
+```
+
+---
+
+## 1) `post-from-sources` 기본 사용
+
+상세 규칙·스키마·워크플로는 [`.cursor/skills/post-from-sources/SKILL.md`](../.cursor/skills/post-from-sources/SKILL.md)이 기준입니다.
 
 **기본값:** 새 글·대규모 수정 시 포스트 frontmatter에 **`shorts`**(세로 Shorts용 훅·장면·썸네일 카피)를 **`sources` 다음, `entities` 앞**에 포함합니다. 스키마는 [`src/content.config.ts`](../src/content.config.ts)의 `shortsSchema`, 예시 포스트는 [`src/content/posts/2026-05-08-2026-iljin-electric.md`](../src/content/posts/2026-05-08-2026-iljin-electric.md)를 참고하세요.
 
