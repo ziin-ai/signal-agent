@@ -5,7 +5,7 @@ date: 2026-06-18
 market: "KRX"
 scope: "market"
 category: "policy"
-impact: "medium"
+impact: "mid"
 summary: "시장 접근성(외환·공시·결제 등) 연례 리뷰 결과. 한국 시장 분류(관찰대상국) 결정은 6/23 별도 발표."
 sourceUrl: "https://www.msci.com/market-classification"
 tags: ["MSCI", "접근성", "코리아디스카운트"]
