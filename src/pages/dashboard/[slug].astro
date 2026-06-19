@@ -11,6 +11,8 @@ import {
   resolveDashboardTimelineFilters,
 } from "../../lib/dashboard-event-filters";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const allPosts = await getCollection("posts");
   const posts =
@@ -220,6 +222,9 @@ const currentPrice =
   {!latestPost && (
     <section class="rounded-xl border border-slate-300/70 bg-white p-6 dark:border-slate-700/70 dark:bg-slate-900">
       <p class="text-sm text-slate-600 dark:text-slate-300">표시할 published post가 아직 없습니다.</p>
+      <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+        <a href={`${rootPath}posts/`} class="text-info hover:underline">분석글 목록</a>에서 글을 선택할 수 있습니다.
+      </p>
     </section>
   )}
 

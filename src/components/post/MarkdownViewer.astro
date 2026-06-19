@@ -165,13 +165,104 @@ const { Content, components = {} } = Astro.props;
     border-radius: 0.75rem;
   }
 
-  :global(.markdown-viewer .jiin-cite-chip) {
-    cursor: pointer;
+  :global(.markdown-viewer .jiin-cite-group) {
+    display: inline;
+    vertical-align: sub;
+    font-size: 0.72em;
+    line-height: 0;
+    white-space: nowrap;
+    margin: 0 0.1em;
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    letter-spacing: 0.01em;
+    position: relative;
+    top: 0.04em;
+  }
+
+  :global(.markdown-viewer .jiin-cite-item) {
+    display: inline;
+    white-space: nowrap;
+  }
+
+  :global(.markdown-viewer .jiin-cite-sep) {
+    margin: 0 0.1em;
+    color: color-mix(in oklab, var(--color-info) 42%, var(--color-fg));
+    font-weight: 600;
+    user-select: none;
+  }
+
+  :global(.markdown-viewer .jiin-cite-mark) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    min-width: 1.15em;
+    padding: 0.08em 0.34em;
+    border: 1px solid color-mix(in oklab, var(--color-info) 34%, transparent);
+    background: color-mix(in oklab, var(--color-info) 11%, var(--color-bg));
+    color: var(--color-info);
     font: inherit;
-    vertical-align: baseline;
+    font-size: inherit;
+    font-weight: 700;
+    line-height: 1.1;
+    cursor: pointer;
+    border-radius: 0.38em;
+    box-shadow: 0 1px 0 color-mix(in oklab, var(--color-info) 10%, transparent);
+    transition:
+      color 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+      background 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+      border-color 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+      box-shadow 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+      transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  :global(.markdown-viewer .jiin-cite-mark:hover) {
+    color: color-mix(in oklab, var(--color-info) 88%, white);
+    background: color-mix(in oklab, var(--color-info) 18%, var(--color-bg));
+    border-color: color-mix(in oklab, var(--color-info) 52%, transparent);
+    box-shadow: 0 1px 3px color-mix(in oklab, var(--color-info) 18%, transparent);
+    transform: translateY(-0.04em);
+  }
+
+  :global(.markdown-viewer .jiin-cite-mark:hover .jiin-cite-num) {
+    text-decoration: none;
+  }
+
+  :global(.markdown-viewer .jiin-cite-mark:focus-visible) {
+    outline: none;
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--color-info) 28%, transparent),
+      0 1px 2px color-mix(in oklab, var(--color-info) 14%, transparent);
+  }
+
+  :global(.markdown-viewer .jiin-cite-num) {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.96em;
   }
 
   :global(.markdown-viewer .jiin-cite-ext) {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.08em;
+    padding: 0;
+    color: color-mix(in oklab, var(--color-info) 62%, var(--color-fg));
+    font-size: 0.82em;
+    font-weight: 600;
     text-decoration: none;
+    opacity: 0.72;
+    vertical-align: baseline;
+    transition:
+      opacity 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
+      color 0.18s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  :global(.markdown-viewer .jiin-cite-group:hover .jiin-cite-ext),
+  :global(.markdown-viewer .jiin-cite-ext:focus-visible) {
+    opacity: 1;
+    color: var(--color-info);
+  }
+
+  :global(.markdown-viewer .jiin-cite-ext:hover) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 </style>

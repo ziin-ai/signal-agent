@@ -1,11 +1,18 @@
 ---
 interface Props {
   id: string;
+  index?: number;
+  title?: string;
 }
 
-const { id } = Astro.props;
+const { id, index, title } = Astro.props;
+const num = index ?? id.replace(/^src-/, "#");
 ---
 
-<span class="mx-0.5 inline-flex rounded border border-info/40 bg-info/10 px-1.5 py-0.5 text-xs font-mono text-info">
-  {`cite:${id}`}
-</span>
+<sub class="jiin-cite-group" role="doc-noteref">
+  <span class="jiin-cite-item" title={title ?? id}>
+    <span class="jiin-cite-mark">
+      <span class="jiin-cite-num">{num}</span>
+    </span>
+  </span>
+</sub>
