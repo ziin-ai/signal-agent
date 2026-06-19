@@ -6,9 +6,9 @@ market: "KRX"
 scope: "market"
 category: "earnings"
 impact: "high"
-summary: "삼성전자 7월 초 잠정·7월 하순 확정, SK하이닉스 7/29(캘린더) 전후 발표 예상. 증권사 컨센서스 합산 OI 150조+ — FOMC 매파 이후 EPS 검증 구간."
-sourceUrl: "https://www.yna.co.kr/view/AKR20260605052400003"
-tags: ["2분기실적", "삼성전자", "SK하이닉스", "반도체"]
+summary: "7월 실적 시즌 본격화 — 6/24 Micron read-through, 7/8 전후 삼성 잠정, 7/29 SK하이닉스. 컨센 합산 OI 150조+. 비메모리 서프라이즈: LG이노텍·대덕전자·BGF·증권·조선 등."
+sourceUrl: "https://www.mk.co.kr/news/business/12067577"
+tags: ["2분기실적", "어닝서프라이즈", "삼성전자", "SK하이닉스", "반도체"]
 ---
 
 시장 주요 일정은 타임라인에서 분석글과 함께 맥락 이벤트로 사용한다.
