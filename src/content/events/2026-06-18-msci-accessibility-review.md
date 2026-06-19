@@ -1,13 +1,13 @@
 ---
 id: "msci-korea-accessibility-2026"
 title: "MSCI Global Market Accessibility Review (한국)"
-date: 2026-06-18
+date: 2026-06-19
 market: "KRX"
 scope: "market"
 category: "policy"
 impact: "mid"
-summary: "시장 접근성(외환·공시·결제 등) 연례 리뷰 결과. 한국 시장 분류(관찰대상국) 결정은 6/23 별도 발표."
-sourceUrl: "https://www.msci.com/market-classification"
+summary: "연례 접근성 리뷰 — 투자상품 가용성 평가를 마이너스→플러스로 상향(국제 거래소 한국 지수 파생). 마이너스 6→5개. 외환·등록·공시·결제·증권이동성은 여전히 개선 필요."
+sourceUrl: "https://www.asiae.co.kr/article/2026061907453508926"
 tags: ["MSCI", "접근성", "코리아디스카운트"]
 ---
 

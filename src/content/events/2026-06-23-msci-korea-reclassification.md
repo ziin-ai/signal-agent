@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "policy"
 impact: "high"
-summary: "Annual Market Classification Review — 관찰대상국(Watch List) 등재 여부가 중장기 외국인 프레임·코리아 디스카운트 논리의 핵심 변수."
+summary: "Annual Market Classification Review — 관찰대상국(Watch List) 등재 여부(한국시간 6/24 전후 발표). 접근성 리뷰에서 투자상품 '+' 상향 후 핵심 변수."
 sourceUrl: "https://www.msci.com/market-classification"
 tags: ["MSCI", "재분류", "코리아디스카운트"]
 ---
