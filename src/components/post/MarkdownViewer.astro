@@ -185,8 +185,8 @@ const { Content, components = {} } = Astro.props;
 
   :global(.markdown-viewer .jiin-cite-sep) {
     margin: 0 0.1em;
-    color: color-mix(in oklab, var(--color-info) 42%, var(--color-fg));
-    font-weight: 600;
+    color: color-mix(in oklab, var(--color-info) 20%, var(--color-fg));
+    font-weight: 500;
     user-select: none;
   }
 
@@ -197,16 +197,16 @@ const { Content, components = {} } = Astro.props;
     margin: 0;
     min-width: 1.15em;
     padding: 0.08em 0.34em;
-    border: 1px solid color-mix(in oklab, var(--color-info) 34%, transparent);
-    background: color-mix(in oklab, var(--color-info) 11%, var(--color-bg));
-    color: var(--color-info);
+    border: 1px solid color-mix(in oklab, var(--color-info) 16%, transparent);
+    background: color-mix(in oklab, var(--color-info) 5%, var(--color-bg));
+    color: color-mix(in oklab, var(--color-info) 50%, var(--color-fg));
     font: inherit;
     font-size: inherit;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1.1;
     cursor: pointer;
     border-radius: 0.38em;
-    box-shadow: 0 1px 0 color-mix(in oklab, var(--color-info) 10%, transparent);
+    box-shadow: 0 1px 0 color-mix(in oklab, var(--color-info) 4%, transparent);
     transition:
       color 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
       background 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
@@ -216,10 +216,10 @@ const { Content, components = {} } = Astro.props;
   }
 
   :global(.markdown-viewer .jiin-cite-mark:hover) {
-    color: color-mix(in oklab, var(--color-info) 88%, white);
-    background: color-mix(in oklab, var(--color-info) 18%, var(--color-bg));
-    border-color: color-mix(in oklab, var(--color-info) 52%, transparent);
-    box-shadow: 0 1px 3px color-mix(in oklab, var(--color-info) 18%, transparent);
+    color: color-mix(in oklab, var(--color-info) 65%, var(--color-fg));
+    background: color-mix(in oklab, var(--color-info) 9%, var(--color-bg));
+    border-color: color-mix(in oklab, var(--color-info) 28%, transparent);
+    box-shadow: 0 1px 2px color-mix(in oklab, var(--color-info) 7%, transparent);
     transform: translateY(-0.04em);
   }
 
@@ -230,8 +230,8 @@ const { Content, components = {} } = Astro.props;
   :global(.markdown-viewer .jiin-cite-mark:focus-visible) {
     outline: none;
     box-shadow:
-      0 0 0 3px color-mix(in oklab, var(--color-info) 28%, transparent),
-      0 1px 2px color-mix(in oklab, var(--color-info) 14%, transparent);
+      0 0 0 3px color-mix(in oklab, var(--color-info) 18%, transparent),
+      0 1px 2px color-mix(in oklab, var(--color-info) 8%, transparent);
   }
 
   :global(.markdown-viewer .jiin-cite-num) {
@@ -244,11 +244,11 @@ const { Content, components = {} } = Astro.props;
     align-items: center;
     margin-left: 0.08em;
     padding: 0;
-    color: color-mix(in oklab, var(--color-info) 62%, var(--color-fg));
+    color: color-mix(in oklab, var(--color-info) 32%, var(--color-fg));
     font-size: 0.82em;
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
-    opacity: 0.72;
+    opacity: 0.5;
     vertical-align: baseline;
     transition:
       opacity 0.18s cubic-bezier(0.25, 0.1, 0.25, 1),
@@ -257,8 +257,8 @@ const { Content, components = {} } = Astro.props;
 
   :global(.markdown-viewer .jiin-cite-group:hover .jiin-cite-ext),
   :global(.markdown-viewer .jiin-cite-ext:focus-visible) {
-    opacity: 1;
-    color: var(--color-info);
+    opacity: 0.78;
+    color: color-mix(in oklab, var(--color-info) 55%, var(--color-fg));
   }
 
   :global(.markdown-viewer .jiin-cite-ext:hover) {

@@ -43,15 +43,15 @@ html.jiin-contra-first #post-source-sidebar [data-source-tier="0"] {
 }
 
 html.jiin-contra-first .markdown-viewer .jiin-cite-item[data-jiin-cite-tier="0"] .jiin-cite-mark {
-  color: color-mix(in oklab, var(--color-danger) 88%, var(--color-fg));
-  border-color: color-mix(in oklab, var(--color-danger) 38%, transparent);
-  background: color-mix(in oklab, var(--color-danger) 10%, var(--color-bg));
+  color: color-mix(in oklab, var(--color-danger) 50%, var(--color-fg));
+  border-color: color-mix(in oklab, var(--color-danger) 18%, transparent);
+  background: color-mix(in oklab, var(--color-danger) 4%, var(--color-bg));
 }
 
 html.jiin-contra-first .markdown-viewer .jiin-cite-item[data-jiin-cite-tier="0"] .jiin-cite-mark:hover {
-  color: var(--color-danger);
-  background: color-mix(in oklab, var(--color-danger) 16%, var(--color-bg));
-  border-color: color-mix(in oklab, var(--color-danger) 52%, transparent);
+  color: color-mix(in oklab, var(--color-danger) 65%, var(--color-fg));
+  background: color-mix(in oklab, var(--color-danger) 8%, var(--color-bg));
+  border-color: color-mix(in oklab, var(--color-danger) 26%, transparent);
 }
 
 .jiin-fab {
