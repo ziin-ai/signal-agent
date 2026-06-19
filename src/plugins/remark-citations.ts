@@ -15,10 +15,12 @@ export const remarkCitations: Plugin<[], Root> = () => {
 
     const raw = String(file.value ?? "");
     const sourceBlocks = [
-      ...raw.matchAll(/-\s+id:\s*"([^"]+)"[\s\S]*?\n\s+title:\s*"([^"]+)"[\s\S]*?\n\s+url:\s*"([^"]+)"/g),
+      ...raw.matchAll(
+        /-\s+id:\s*"([^"]+)"[\s\S]*?\n\s+tier:\s*(\d+)[\s\S]*?\n\s+title:\s*"([^"]+)"[\s\S]*?\n\s+url:\s*"([^"]+)"/g,
+      ),
     ];
-    const sourceById = new Map<string, { title: string; url: string }>(
-      sourceBlocks.map((match) => [match[1], { title: match[2], url: match[3] }]),
+    const sourceById = new Map<string, { tier: string; title: string; url: string }>(
+      sourceBlocks.map((match) => [match[1], { tier: match[2], title: match[3], url: match[4] }]),
     );
 
     visit(tree, "text", (node, index, parent) => {
@@ -41,9 +43,11 @@ export const remarkCitations: Plugin<[], Root> = () => {
         const badgeContent = explicitUrl ? source?.title || citeId : source?.title || citeId;
         const safeLabel = escapeHtml(badgeContent);
         const safeTitle = escapeHtml(badgeContent);
+        const tier = source?.tier ?? "";
+        const tierAttr = tier !== "" ? ` data-jiin-cite-tier="${escapeHtml(tier)}"` : "";
         const html = href
-          ? `<a href="${href}" title="${safeTitle}" target="_blank" rel="noopener noreferrer" class="mx-0.5 inline-flex max-w-[220px] truncate rounded border border-info/40 bg-info/10 px-1.5 py-0.5 text-xs text-info hover:bg-info/20">${safeLabel}</a>`
-          : `<span title="${safeTitle}" class="mx-0.5 inline-flex max-w-[220px] truncate rounded border border-info/40 bg-info/10 px-1.5 py-0.5 text-xs text-info">${safeLabel}</span>`;
+          ? `<button type="button" data-jiin-cite-id="${escapeHtml(citeId)}"${tierAttr} title="${safeTitle}" class="jiin-cite-chip mx-0.5 inline-flex max-w-[220px] truncate rounded border border-info/40 bg-info/10 px-1.5 py-0.5 text-xs text-info hover:bg-info/20">${safeLabel}</button><a href="${href}" target="_blank" rel="noopener noreferrer" class="jiin-cite-ext ml-0.5 inline-flex align-middle text-[10px] text-slate-400 hover:text-info" aria-label="원문 열기" title="원문">↗</a>`
+          : `<button type="button" data-jiin-cite-id="${escapeHtml(citeId)}"${tierAttr} title="${safeTitle}" class="jiin-cite-chip mx-0.5 inline-flex max-w-[220px] truncate rounded border border-info/40 bg-info/10 px-1.5 py-0.5 text-xs text-info hover:bg-info/20">${safeLabel}</button>`;
         children.push({
           type: "html",
           value: html,

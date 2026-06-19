@@ -19,6 +19,13 @@
 모든 추천은 검증 가능한 가설로 등록된다. 틀린 가설을
 숨기지 않고, 의견 변화를 시계열로 추적한다.
 
+### Pillar D: 지인 (Conversational Grounding)
+"내 곁에 지인" 브랜드의 의인화. 대화형 에이전트는 범용 AI가
+아니라 ziin.ai 분석글·타임라인·신뢰도만 근거로 답한다.
+매수/매도 단정·수익 보장은 하지 않으며, 답변마다 자체 분석
+출처를 인용·링크한다. 추론은 자체 호스팅 LLM(vLLM) + tool
+그라운딩으로 구현한다.
+
 ## 3. 페르소나
 
 ### P1: 신중한 개인 투자자 (주 타겟)
@@ -42,6 +49,7 @@
 - Knowledge Graph 미니뷰 (대시보드 내 위젯)
 
 ### 추후 (Should Have)
+- **지인 Agent MVP** — `/api/chat`, 자체 LLM + tool 그라운딩, 플로팅 위젯
 - 가설 검증 보드 (전체 페이지)
 - Knowledge Graph 전체 뷰
 - 종목 상세 페이지 + Conviction Timeline

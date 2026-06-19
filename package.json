@@ -9,17 +9,22 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "vitest run"
+    "test": "vitest run",
+    "agent:debug": "node scripts/agent-debug.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^10.0.6",
     "@astrojs/react": "^5.0.4",
+    "@connectrpc/connect-node": "^1.7.0",
+    "@cursor/sdk": "^1.0.19",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.2.2",
     "d3-force": "^3.0.0",
     "google-trends-api": "^4.9.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.2.4",
     "unist-util-visit": "^5.1.0",
     "yahoo-finance2": "^3.14.0"

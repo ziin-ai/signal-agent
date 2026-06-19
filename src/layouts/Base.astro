@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import Header from "../components/layout/Header.astro";
 import TickerBar from "../components/layout/TickerBar.astro";
 import Footer from "../components/layout/Footer.astro";
+import JiinWidget from "../components/agent/JiinWidget";
 import { fetchTickerBarQuotes } from "../lib/market";
 import "../styles/global.css";
 import { getPublicAdsenseClientId, getPublicGaMeasurementId } from "../lib/adsense-public-env";
@@ -13,6 +14,13 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   noindex?: boolean;
+  agentContext?: {
+    slug?: string;
+    symbol?: string;
+    title?: string;
+  };
+  /** 분석글 읽기 모드: FAB 축소, 본문 동행 UI 우선 */
+  readingMode?: boolean;
 }
 
 const {
@@ -21,6 +29,8 @@ const {
   image = "/favicon.svg",
   type = "website",
   noindex = false,
+  agentContext,
+  readingMode = false,
 } = Astro.props;
 
 const tickerItems = await fetchTickerBarQuotes();
@@ -65,6 +75,9 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
+    {agentContext?.slug ? <meta name="ziin-agent-slug" content={agentContext.slug} /> : null}
+    {agentContext?.symbol ? <meta name="ziin-agent-symbol" content={agentContext.symbol} /> : null}
+    {agentContext?.title ? <meta name="ziin-agent-title" content={agentContext.title} /> : null}
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
@@ -102,10 +115,16 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
   <body class="antialiased">
     <TickerBar items={tickerItems} transition:persist="ziin-ticker" />
     <Header transition:persist="ziin-header" />
-    <main class="mx-auto w-full max-w-6xl px-4 py-6" transition:animate="none">
+    <main class="mx-auto w-full max-w-6xl px-4 py-6 pb-8" transition:animate="none">
       <slot />
     </main>
     <Footer transition:persist="ziin-footer" />
+    <JiinWidget
+      client:idle
+      transition:persist="ziin-widget"
+      basePath={import.meta.env.BASE_URL}
+      compact={readingMode}
+    />
     <script is:inline>
       const SCROLL_KEY = "ziin-vt-scroll-y";
       document.addEventListener("astro:before-preparation", (e) => {

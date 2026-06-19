@@ -4,3 +4,5 @@ resources:
   - namespace.yaml
   - signal-agent-deployment.yaml
   - signal-agent-service.yaml
+  - jiin-vllm-deployment.yaml
+  - jiin-vllm-service.yaml

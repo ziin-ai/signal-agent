@@ -1,0 +1,73 @@
+# OpenAI-compatible vLLM inference for 지인 Agent.
+# Requires a GPU node pool with nvidia.com/gpu.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jiin-vllm
+  namespace: signal-agent
+  labels:
+    app.kubernetes.io/name: jiin-vllm
+    app.kubernetes.io/component: inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jiin-vllm
+  template:
+    metadata:
+      labels:
+        app: jiin-vllm
+    spec:
+      nodeSelector:
+        accelerator: nvidia-gpu
+      containers:
+        - name: vllm
+          image: vllm/vllm-openai:v0.8.5
+          imagePullPolicy: IfNotPresent
+          args:
+            - --model
+            - $(LLM_MODEL)
+            - --host
+            - "0.0.0.0"
+            - --port
+            - "8000"
+            - --max-model-len
+            - "8192"
+            - --enable-auto-tool-choice
+            - --tool-call-parser
+            - hermes
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: LLM_MODEL
+              value: "Qwen/Qwen2.5-7B-Instruct"
+            - name: HF_HOME
+              value: "/models/cache"
+          volumeMounts:
+            - name: model-cache
+              mountPath: /models/cache
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 120
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: "4"
+              memory: 16Gi
+              nvidia.com/gpu: 1
+            limits:
+              cpu: "8"
+              memory: 24Gi
+              nvidia.com/gpu: 1
+      volumes:
+        - name: model-cache
+          emptyDir: {}

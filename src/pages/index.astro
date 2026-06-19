@@ -157,6 +157,15 @@ const currentPrice =
 <Base
   title="내 곁에 지인 | 주식 투자 대시보드"
   description="최신 분석글, 신뢰도 지표, 외부 이벤트 타임라인을 한 화면에서 확인하는 주식 투자 대시보드."
+  agentContext={
+    activePost
+      ? {
+          slug: activePost.id.replace(/\.md$/, ""),
+          symbol: activePost.data.symbol,
+          title: activePost.data.title,
+        }
+      : undefined
+  }
 >
   {activePost && (
     <section

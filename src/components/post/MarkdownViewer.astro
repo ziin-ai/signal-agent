@@ -164,4 +164,14 @@ const { Content, components = {} } = Astro.props;
     border: 1px solid color-mix(in oklab, var(--color-fg) 18%, transparent);
     border-radius: 0.75rem;
   }
+
+  :global(.markdown-viewer .jiin-cite-chip) {
+    cursor: pointer;
+    font: inherit;
+    vertical-align: baseline;
+  }
+
+  :global(.markdown-viewer .jiin-cite-ext) {
+    text-decoration: none;
+  }
 </style>

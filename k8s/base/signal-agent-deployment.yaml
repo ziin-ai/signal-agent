@@ -35,6 +35,12 @@ spec:
               value: "G-KWLNTJCV41"
             - name: PUBLIC_ADSENSE_CLIENT_ID
               value: "ca-pub-6929869719862616"
+            - name: LLM_BASE_URL
+              value: "http://jiin-vllm:8000/v1"
+            - name: LLM_MODEL
+              value: "Qwen/Qwen2.5-7B-Instruct"
+            - name: AGENT_ENABLED
+              value: "true"
           readinessProbe:
             httpGet:
               path: /

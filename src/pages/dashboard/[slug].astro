@@ -167,6 +167,15 @@ const currentPrice =
       ? `${activePost.data.summary} (${activePost.data.symbol}, ${activePost.data.market})`
       : "종목별 투자 포인트와 연계 이벤트를 확인하는 대시보드입니다."
   }
+  agentContext={
+    activePost
+      ? {
+          slug: activePost.id.replace(/\.md$/, ""),
+          symbol: activePost.data.symbol,
+          title: activePost.data.title,
+        }
+      : undefined
+  }
 >
   {activePost && (
     <section

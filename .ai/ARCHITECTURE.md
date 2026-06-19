@@ -180,3 +180,92 @@ id, title, date, symbol?, market?, category, impact, summary, sourceUrl?, tags[]
 - `오늘의 분석` 제목 클릭 시 `/posts/[slug]` 이동.
 - summary는 상시 표시.
 - post 본문(body)은 카드 내 토글로 표시/숨김.
+
+## 지인 Agent Layer (Self-hosted LLM)
+
+브랜드 "내 곁에 지인"의 의인화. 범용 GPT 래퍼가 아니라 **ziin.ai 콘텐츠만** 근거로 답하는 대화 레이어.
+
+### 포지셔닝
+- signal-agent: 콘텐츠 생산 파이프라인 (스킬 → posts/events)
+- 지인 Agent: 콘텐츠 소비·탐색 대화 레이어 (RAG + tools + persona)
+
+### 3-tier 구조
+
+```
+Browser (widget / inline ask)
+  → POST /api/chat (Astro SSR, signal-agent web pod)
+      → Orchestrator (tool loop + guardrail)
+          → Self-hosted vLLM (OpenAI-compatible /v1/chat/completions)
+          → Tools (posts, events, credibility, quote — no hallucination path for facts)
+```
+
+- **Web pod**: API gateway, 키 보관, 가드레일, SSE 스트리밍. GPU 없음.
+- **vLLM pod**: 추론 전용, `LLM_BASE_URL`로 연결. web과 분리.
+- **Tool layer**: frontmatter·timeline·credibility — 결정적(deterministic) 데이터.
+
+### 디렉토리
+
+```
+src/lib/agent/
+  types.ts          # Chat request/response, tool types
+  persona.ts        # System prompt (지인)
+  guardrail.ts      # Buy/sell block, disclaimer
+  tools.ts          # search_posts, get_post, get_timeline_events, explain_credibility, get_quote
+  llm-client.ts     # OpenAI-compatible fetch → vLLM
+  orchestrator.ts   # Tool loop (max 4 rounds) + fallback
+src/pages/api/
+  chat.ts           # POST /api/chat (JSON + SSE)
+.ai/prompts/
+  jiin-agent.md     # Persona SSOT
+k8s/base/
+  jiin-vllm-deployment.yaml
+  jiin-vllm-service.yaml
+```
+
+### 환경 변수 (web pod)
+
+| Variable | Description |
+|---|---|
+| `LLM_BASE_URL` | e.g. `http://jiin-vllm:8000/v1` |
+| `LLM_MODEL` | Served model name |
+| `LLM_API_KEY` | Optional |
+| `AGENT_ENABLED` | `false` → tool-only fallback |
+
+`LLM_BASE_URL` 미설정 시 LLM 없이 **deterministic fallback** (개발·장애 시).
+
+### Tool-first RAG (MVP)
+
+1. Structured tools (frontmatter search, timeline filter) — primary
+2. BM25/keyword (search_posts) — MVP implemented
+3. Vector embed index — v1.5 (build-time chunk + embed server)
+
+환각 방지: **수치·날짜·등급은 tool JSON만** 인용. LLM은 서술·톤만 담당.
+
+### 가드레일
+
+- `guardrail.ts`: 매수/매도·수익보장 패턴 → 시나리오 재구성
+- 모든 응답 footer: 투자 권유 아님 면책 (`AGENT_DISCLAIMER`)
+- `robots.txt`: `/api/` Disallow (기존)
+
+### UX
+
+| Layer | Component | Hydration |
+|---|---|---|
+| Global | `JiinWidget.tsx` floating (우하단 FAB) | `client:idle`, `transition:persist` |
+| In-post | `JiinAskButton.tsx` — slug pre-fill via meta + `jiin:open` event | `client:visible` |
+| Proactive | "오늘의 지인 한마디" | HeroCard 연동 (v2, 미구현) |
+
+페이지 컨텍스트: `Base.astro`의 `agentContext` → `<meta name="ziin-agent-slug|symbol">` → `readPageAgentContext()`.
+
+### 성공 지표
+
+- `grounded` rate (citations.length ≥ 1)
+- citation click-through → post PV
+- widget open rate, sessions with chat
+
+### vLLM 배포 (K8s)
+
+- Image: `vllm/vllm-openai:latest` (or pinned)
+- GPU nodeSelector + `nvidia.com/gpu: 1`
+- Service: `jiin-vllm:8000` (cluster-internal)
+- Model via `LLM_MODEL` env (e.g. Qwen2.5-7B-Instruct or ziin-jiin SFT checkpoint)
