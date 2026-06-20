@@ -97,7 +97,7 @@ shorts:
   description: |
     네이버 IT 헤드라인 5대 변수.
     美 AI 사용 통제·360만 폴드·챗GPT 광고
-  카카오게임즈·HBM4E를 30초로.
+    카카오게임즈·HBM4E를 30초로.
 
     #IT #반도체 #소버린AI #칩플레이션 #한국증시
   hashtags:
