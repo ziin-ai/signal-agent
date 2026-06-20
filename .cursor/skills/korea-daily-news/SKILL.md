@@ -3,6 +3,8 @@ name: korea-daily-news
 description: >-
   Search today's major Korean news (KST) on economy, stocks, and macro,
   triage by market impact, and draft analysis posts or briefs for signal-agent.
+  After saving files, run git add, commit, and push per _shared/git-publish.md
+  unless the user opts out or there are no changes.
   Use when the user asks for 오늘 한국 뉴스, 당일 증시·경제 헤드라인, 코스피/코스닥
   시장 요약, 네이버·연합뉴스 경제 섹션 정리, or daily Korea market outlook from
   current news. Chains into post-from-sources for file output under src/content/posts/.
@@ -179,6 +181,12 @@ disable-model-invocation: true
 
 예: BOK 금통위, CPI 발표, 과징금 심의, 실적 발표, MSCI 리밸런싱.
 
+## Step 6: Git Publish
+
+Mode B 등 **파일 생성·수정**이 있으면 [_shared/git-publish.md](../_shared/git-publish.md) 실행 (`git add` → `commit` → `push`).
+
+Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 skip.
+
 ## Quality Checklist
 
 작업 완료 전 확인:
@@ -189,6 +197,7 @@ disable-model-invocation: true
 - [ ] Mode B면 visual 3종 이상(post-from-sources Visual Enrichment Policy)
 - [ ] Mode B면 `shorts` 포함(명시적 생략 제외)
 - [ ] 투자 권유·목표가 단정 표현 없음
+- [ ] Mode B면 git publish 완료 또는 skip 사유 기록
 
 ## Final Response To User
 
@@ -199,6 +208,7 @@ disable-model-invocation: true
 5. **low-confidence 구간** — 확인 못한 숫자·충돈 보도
 6. **events** co-update 목록 (해당 시)
 7. **shorts** 훅 각도 (Mode B)
+8. **Git** — commit hash·branch·push 결과 또는 skip 사유
 
 ## Trigger Examples
 
@@ -217,5 +227,6 @@ disable-model-invocation: true
 ## Related
 
 - Post schema & shorts: [post-from-sources](../post-from-sources/SKILL.md)
+- Git after skill: [_shared/git-publish.md](../_shared/git-publish.md)
 - Usage copy-paste: [guidebook/skill-usage-examples.md](../../../guidebook/skill-usage-examples.md)
 - Search query expansion: [search-queries.md](search-queries.md)

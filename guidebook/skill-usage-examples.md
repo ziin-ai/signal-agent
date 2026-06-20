@@ -5,9 +5,12 @@
 | 스킬 | 용도 |
 | --- | --- |
 | [`korea-daily-news`](../.cursor/skills/korea-daily-news/SKILL.md) | **오늘(KST) 한국 경제·증시 뉴스 검색** → 변수 선별 → 브리핑/포스트 |
+| [`naver-research-short-term`](../.cursor/skills/naver-research-short-term/SKILL.md) | **네이버 증권 리서치** 수집·선별 → 단기 투자 포스트 |
 | [`post-from-sources`](../.cursor/skills/post-from-sources/SKILL.md) | 출처·주제 기반 분석 포스트 작성 (스키마·shorts·events) |
 
 일일 한국 시장 글은 **`korea-daily-news`로 리서치**한 뒤, 파일 저장 시 **`post-from-sources` 스키마**를 따릅니다 (`korea-daily-news`가 내부에서 연결).
+
+**Git:** 위 스킬로 파일이 생성·수정되면 작업 마지막에 자동으로 `git add` → `commit` → `push` 합니다. 상세: [_shared/git-publish.md](../.cursor/skills/_shared/git-publish.md). "git 생략"으로 opt-out 가능.
 
 ---
 

@@ -8,7 +8,9 @@ description: >-
   hook, scenes, thumbnail, hashtags) after `sources` and before `entities`, aligned
   with src/content.config.ts. In topic-driven mode, include and cite user-supplied
   anchor URLs as required references, while keeping topic research and source
-  diversification as the primary method. Use when the user provides URLs, source
+  diversification as the primary method. After saving files, run git add, commit,
+  and push per _shared/git-publish.md unless the user opts out or there are no changes.
+  Use when the user provides URLs, source
   summaries, topics, or asks to draft or revise analysis posts for this repo.
 disable-model-invocation: true
 ---
@@ -520,6 +522,7 @@ Slug rules:
 9. Re-check all source metadata fields and date formats.
 10. Verify visuals: tables have headers, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks, captions cite sources where applicable.
 11. Save or update the target post file and any event files.
+12. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
 
 ## Final Response To User
 
@@ -545,3 +548,11 @@ For topic-driven mode **with user anchor URLs**, also report:
 If events were co-updated, also report:
 
 8. Created/updated event file paths and rationale
+
+Always report (unless git skipped):
+
+9. **Git** — commit hash·branch·push result, or skip reason
+
+## Related
+
+- Git after skill: [_shared/git-publish.md](../_shared/git-publish.md)
