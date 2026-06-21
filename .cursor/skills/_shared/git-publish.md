@@ -1,6 +1,6 @@
 # Git Publish After Skill (스킬 실행 후 커밋·푸시)
 
-모든 프로젝트 스킬(`korea-daily-news`, `post-from-sources`, `naver-research-short-term` 등)은 **작업 완료 직후** 이 정책을 따른다.
+모든 프로젝트 스킬(`korea-daily-news`, `korea-weekly-macro`, `post-from-sources`, `naver-research-short-term` 등)은 **작업 완료 직후** 이 정책을 따른다.
 
 ## When To Run
 
@@ -60,6 +60,7 @@ EOF
 | Skill | Message pattern |
 | --- | --- |
 | `korea-daily-news` | `Add/update {date} Korea market daily post` |
+| `korea-weekly-macro` | `Add/update {weekEnd} Korea weekly macro strategy post` |
 | `post-from-sources` | `Add/update post: {slug or topic}` |
 | `naver-research-short-term` | `Add/update {date} broker research brief` |
 

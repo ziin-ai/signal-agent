@@ -5,12 +5,41 @@
 | 스킬 | 용도 |
 | --- | --- |
 | [`korea-daily-news`](../.cursor/skills/korea-daily-news/SKILL.md) | **오늘(KST) 한국 경제·증시 뉴스 검색** → 변수 선별 → 브리핑/포스트 |
+| [`korea-weekly-macro`](../.cursor/skills/korea-weekly-macro/SKILL.md) | **월~금(KST) 주간** 매크로·수급·섹터 종합 → 차주 전략 리포트/포스트 |
 | [`naver-research-short-term`](../.cursor/skills/naver-research-short-term/SKILL.md) | **네이버 증권 리서치** 수집·선별 → 단기 투자 포스트 |
 | [`post-from-sources`](../.cursor/skills/post-from-sources/SKILL.md) | 출처·주제 기반 분석 포스트 작성 (스키마·shorts·events) |
 
 일일 한국 시장 글은 **`korea-daily-news`로 리서치**한 뒤, 파일 저장 시 **`post-from-sources` 스키마**를 따릅니다 (`korea-daily-news`가 내부에서 연결).
 
+**주간** 매크로·차주 전략 글은 **`korea-weekly-macro`** — 월~금 데이터를 Signal/Noise로 걸러 [report-template](../.cursor/skills/korea-weekly-macro/report-template.md) 4섹션 구조로 작성합니다.
+
 **Git:** 위 스킬로 파일이 생성·수정되면 작업 마지막에 자동으로 `git add` → `commit` → `push` 합니다. 상세: [_shared/git-publish.md](../.cursor/skills/_shared/git-publish.md). "git 생략"으로 opt-out 가능.
+
+---
+
+## 0b) `korea-weekly-macro` — 주간 매크로 지형도 (기본)
+
+```text
+`korea-weekly-macro` — 2026-06-16~20 주간 매크로 지형도 및 차주 투자 전략 포스트 작성.
+
+요청:
+- src/content/posts/ 신규 (slug: …-korea-weekly-macro-w3-{thesis}.md)
+- report-template 4섹션 구조 준수
+- sources ≥10, shorts 포함
+- 완료 후: 기준 주, Signal 2~3, 차주 Top3 일정 보고
+```
+
+**금요일 마감 직후 (날짜 생략):**
+
+```text
+`korea-weekly-macro` 이번 주 wrap + 차주 시나리오. 파일 저장.
+```
+
+**리서치만:**
+
+```text
+`korea-weekly-macro` — 리서치만. Signal/Noise 표 + sources YAML + 제목 3개.
+```
 
 ---
 
