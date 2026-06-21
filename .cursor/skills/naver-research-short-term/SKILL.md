@@ -109,13 +109,14 @@ node .cursor/skills/naver-research-short-term/scripts/fetch-research.mjs --date 
 
 ### Workflow
 
-1. 근처 포스트 톤 참고: `src/content/posts/2026-06-19-naver-economy-market-outlook.md`, `2026-06-19-korea-q2-earnings-surprise-candidates.md`
+1. 근처 포스트 톤 참고: `src/content/posts/2026-06-19-korea-q2-earnings-surprise-candidates.md`, `src/content/posts/2026-05-14-korea-equity-market-daily-summary.md`
 2. frontmatter 작성 → schema 검증
-3. 본문: [post-template.md](post-template.md) Body structure
-4. Visual ≥ 3 (표 + SVG/ASCII + blockquote) — post-from-sources Visual Enrichment Policy
-5. **`shorts`** — `sources` 다음, `entities` 앞 (사용자 "shorts 생략" 시만 제외)
-6. 확정 촉매 → `src/content/events/` co-update (post-from-sources Event Co-Update Policy)
-7. 저장: `src/content/posts/YYYY-MM-DD-naver-research-short-term-brief.md`
+3. **제목·파일명**: [post-from-sources Title Policy](../post-from-sources/SKILL.md#title-policy-naver-as-search--discovery-source) — 네이버는 수집 경로일 뿐; `title`·slug·shorts에 `네이버`/`naver-*` 금지. 당일 hook(지수·섹터·촉매)으로 작성.
+4. 본문: [post-template.md](post-template.md) Body structure
+5. Visual ≥ 3 (표 + SVG/ASCII + blockquote) — post-from-sources Visual Enrichment Policy
+6. **`shorts`** — `sources` 다음, `entities` 앞 (사용자 "shorts 생략" 시만 제외)
+7. 확정 촉매 → `src/content/events/` co-update (post-from-sources Event Co-Update Policy)
+8. 저장: `src/content/posts/YYYY-MM-DD-<content-kebab>.md` (예: `2026-06-19-kospi-nine-thousand-research-brief.md`) — 고정 `naver-research-*` slug 사용 금지
 
 ### Frontmatter quick defaults
 
@@ -149,7 +150,7 @@ node .cursor/skills/naver-research-short-term/scripts/fetch-research.mjs --date 
 **섹터:** ...
 **다음:** ...
 
-📄 전문: src/content/posts/YYYY-MM-DD-naver-research-short-term-brief.md
+📄 전문: src/content/posts/YYYY-MM-DD-<content-kebab>.md
 ※ 리포트 요지 요약, 투자 권유 아님
 ```
 

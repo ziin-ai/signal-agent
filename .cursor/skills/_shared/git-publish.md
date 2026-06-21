@@ -61,7 +61,7 @@ EOF
 | --- | --- |
 | `korea-daily-news` | `Add/update {date} Korea market daily post` |
 | `post-from-sources` | `Add/update post: {slug or topic}` |
-| `naver-research-short-term` | `Add/update {date} naver research brief` |
+| `naver-research-short-term` | `Add/update {date} broker research brief` |
 
 ### 4. Push
 

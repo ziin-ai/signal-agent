@@ -5,10 +5,12 @@
 ## Filename
 
 ```
-src/content/posts/YYYY-MM-DD-naver-research-short-term-brief.md
+src/content/posts/YYYY-MM-DD-<content-kebab>.md
 ```
 
-fallback anchor일 때도 **anchorDate** 기준 (리포트 발행일).
+- **content kebab** = 당일 thesis hook (지수·섹터·촉매). 예: `2026-06-19-kospi-nine-thousand-research-brief.md`
+- `naver-*` slug **금지** — 네이버는 수집 경로일 뿐 ([post-from-sources Title Policy](../post-from-sources/SKILL.md#title-policy-naver-as-search--discovery-source))
+- fallback anchor일 때도 **anchorDate** 기준 (리포트 발행일)
 
 ## Frontmatter defaults
 
@@ -43,8 +45,12 @@ fallback anchor일 때도 **anchorDate** 기준 (리포트 발행일).
 
 ## Title patterns
 
-- `{YYYY-MM-DD} 증권사 리서치 브리핑: {한 줄 hook}`
-- `{anchorDate} 네이버 리서치 — 단기 체크: {핵심 테마}`
+**원칙:** 리서치·뉴스 **내용**(시장 성격, 변수, 섹터·종목)만 반영. `네이버`/`Naver`/`네이버 리서치`/`네이버 경제` 등 **수집처 표기 금지**.
+
+- ✅ `{anchorDate} 증권사 리서치 브리핑: {한 줄 hook — 지수·촉매·섹터}`
+- ✅ `{anchorDate} 코스피 {N}천피·{테마}: 단기 체크포인트`
+- ❌ `{anchorDate} 네이버 리서치 — …`
+- ❌ `네이버 경제 헤드라인이 가리키는 …`
 
 ## Body structure
 

@@ -108,7 +108,8 @@ disable-model-invocation: true
 - **한국어** 분석 톤. AI·생성 언급 금지(본문). frontmatter `aiAssisted: true`는 유지.
 - 기존 레포 톤 참고:
   - `src/content/posts/2026-05-14-korea-equity-market-daily-summary.md` (장 마감형)
-  - `src/content/posts/2026-06-10-naver-economy-market-outlook.md` (장 전·헤드라인형)
+  - `src/content/posts/2026-06-10-korea-8000-cpi-volatility.md` (장 전·전망형)
+- **제목·파일명:** 네이버 뉴스로 검색·선별해도 [post-from-sources Title Policy](../post-from-sources/SKILL.md#title-policy-naver-as-search--discovery-source) 적용 — `title`·slug·shorts에 `네이버`/`naver-*` 금지, 당일 시장 변수·hook 기준.
 
 ## Step 4: Output Modes
 
@@ -156,8 +157,8 @@ disable-model-invocation: true
 **Filename:**
 
 - 장 마감: `YYYY-MM-DD-korea-equity-market-daily-summary.md`
-- 장 전/전망: `YYYY-MM-DD-korea-market-outlook.md` 또는 주제 kebab slug
-- 네이버 헤드라인 중심: `YYYY-MM-DD-naver-economy-market-outlook.md`
+- 장 전/전망: `YYYY-MM-DD-korea-market-outlook.md` 또는 **당일 thesis** kebab slug (예: `…-msci-week-ahead.md`)
+- 네이버로 헤드라인을 모았어도 slug에 `naver-*` **사용 금지** — 내용 hook으로 kebab 작성
 
 **Body structure (daily — adapt freely):**
 

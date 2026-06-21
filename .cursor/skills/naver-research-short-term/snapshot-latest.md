@@ -1,6 +1,6 @@
 # Snapshot — 2026-06-19 (fallback when 2026-06-20 has 0 reports)
 
-> 주말·공휴일에는 당일 리포트가 없을 수 있다. 아래는 **최근 거래일** 기준 단기 투자자 공유 예시다. 실행 시 `fetch-research.mjs`로 최신 데이터를 가져온 뒤 **`src/content/posts/YYYY-MM-DD-naver-research-short-term-brief.md`** 포스트를 작성한다(기본). 상세 템플릿은 [post-template.md](post-template.md).
+> 주말·공휴일에는 당일 리포트가 없을 수 있다. 아래는 **최근 거래일** 기준 단기 투자자 공유 예시다. 실행 시 `fetch-research.mjs`로 최신 데이터를 가져온 뒤 **`src/content/posts/YYYY-MM-DD-<content-kebab>.md`** 포스트를 작성한다(기본). `title`·slug에 `네이버`/`naver-*` 금지 — [post-template.md](post-template.md) Title patterns 참고.
 
 ## Market one-liner
 

@@ -39,7 +39,7 @@
 sources YAML 초안 + 5대 변수 표 + 추천 제목 3개.
 ```
 
-**네이버 헤드라인 중심 (참고 포스트: `2026-06-10-naver-economy-market-outlook.md`):**
+**장 전·변동성 전망 (참고 포스트: `2026-06-10-korea-8000-cpi-volatility.md`):**
 
 ```text
 `korea-daily-news`로 네이버 경제·IT 헤드라인 기준 오늘 증시 전망 포스트 작성.

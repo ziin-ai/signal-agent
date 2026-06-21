@@ -497,6 +497,28 @@ Guidelines:
 - Align title, opening answer, and section headings to the same search intent
 - Do not promise rankings or guaranteed featured snippets
 
+## Title Policy (Naver as search / discovery source)
+
+When the agent **finds or triages material via Naver** (e.g. `site:n.news.naver.com`, Naver News economy section, `stock.naver.com/research`), treat Naver as a **pipeline only**. Readers care about market substance, not where it was fetched.
+
+**Do not** put Naver-branded wording in post-facing titles:
+
+- Post frontmatter `title`
+- Filename slug (`YYYY-MM-DD-<kebab-topic>.md`)
+- `shorts.title` / `shorts.thumbnail.headline` (unless the **company** NAVER Corp. is the subject)
+
+Avoid phrases such as: `네이버`, `Naver`, `네이버 리서치`, `네이버 경제`, `네이버 헤드라인`, `naver-economy`, `naver-research`.
+
+**Do** derive titles from **content**: anchor-date market character, dominant catalysts, sector/theme, issuer names, macro calendar — same intent as SEO/snippet rules below.
+
+| Bad (source-branded) | Good (content-based) |
+| --- | --- |
+| `네이버 리서치 — 단기 체크: 9천피` | `2026-06-19 코스피 9천피·코스닥 디커플 — 증권사 리서치 단기 체크` |
+| `네이버 경제 헤드라인이 가리키는 MSCI 변수` | `2026-06-20 한국 증시: 9050→MSCI·반도체 쏠림 주간 변수` |
+| `naver-research-short-term-brief.md` | `2026-06-19-kospi-nine-thousand-research-brief.md` (thesis kebab) |
+
+`sources[*].url` may still point to Naver; `sources[*].title` stays the **original report/article headline**.
+
 ## File Naming
 
 Use:
@@ -508,6 +530,7 @@ Slug rules:
 - lowercase
 - numbers and hyphens only
 - no spaces or underscores
+- **content/thesis kebab**, not search-provider names (`naver-*` forbidden when Naver was only the discovery channel)
 
 ## Workflow
 
