@@ -6,8 +6,8 @@ market: "KRX"
 scope: "market"
 category: "policy"
 impact: "high"
-summary: "Annual Market Classification Review — 관찰대상국(Watch List) 등재 여부(한국시간 6/24 전후 발표). 접근성 리뷰에서 투자상품 '+' 상향 후 핵심 변수."
-sourceUrl: "https://www.msci.com/market-classification"
+summary: "2026 연례 시장 분류 — 한국 관찰대상국(워치리스트) 불발, EM 유지. 역외 원화 환전 제한·시장 접근성 미해결. 6/23 전일 급락에 선반영, 당일 추가 영향은 제한적."
+sourceUrl: "https://www.yna.co.kr/view/AKR20260624017300002"
 tags: ["MSCI", "재분류", "코리아디스카운트"]
 ---
 
