@@ -6,8 +6,8 @@ market: "NASDAQ"
 scope: "all"
 category: "earnings"
 impact: "high"
-summary: "마이크론 FQ3(5월 말 분기) 실적. FQ2 이후 가이드 매출 335억±7.5억달러·non-GAAP EPS 19.15 — 국내 메모리(삼성·SK하이닉스) 2Q ASP·HBM read-through."
-sourceUrl: "https://finance.yahoo.com/markets/stocks/articles/micron-q2-earnings-crush-estimates-125100398.html"
+summary: "마이크론 FQ3(3~5월) 매출 414.6억달러(+345.7% YoY), 영업이익률 81.2%, EPS 25.11달러(컨센 20.78). 코스피200 야간선물 +5.58% — 삼성·SK하이닉스·ADR 공모 read-through."
+sourceUrl: "https://www.yna.co.kr/view/AKR20260625016900008"
 tags: ["Micron", "메모리", "HBM", "실적"]
 ---
 
