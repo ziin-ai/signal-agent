@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "policy"
 impact: "high"
-summary: "이재명 대통령 주재 총수 간담회에서 삼성·SK 호남·충청 반도체 투자 등 대규모 CAPEX·균형발전 프로젝트 공개 가능성. 6/10 보도된 fab 루머의 공식화 일정 후보."
+summary: "6/29 靑 '대도약 3대 메가프로젝트'(AI·에너지·바이오) 발표·총수 간담회. 코스피 약보합·코스닥 +8% 순환매 — 대형 반도체 직격, 정책 모멘텀은 제한적."
 sourceUrl: "https://view.asiae.co.kr/article/2026061006594945385"
 tags: ["CAPEX", "반도체", "균형발전", "정책"]
 ---

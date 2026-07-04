@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "통계청 6월 CPI — 유가·농산물 둔화 vs 내수. BOK 금리 경로·금융주·내수주 변동성 변수. 6/26 주간 매크로 차주 1대 국내 지표."
+summary: "6월 CPI +3.2% YoY(30개월 최고)·석유류 +24.7%. 한은 7월 CPI는 6월보다 다소 낮을 전망 — BOK 7/16 금통위·금융주 변수."
 sourceUrl: "https://www.bok.or.kr/portal/stats/statsPublictSchdul/listCldr.do?date=2026-07&menuNo=200775"
 tags: ["CPI", "물가", "BOK", "매크로"]
 ---

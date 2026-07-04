@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS 6월 비농업 고용·실업률 — 7/4 독립기념일 연휴로 7/2(목) 조기. Fed 금리 경로·달러·외국인 KRX 수급·VKOSPI 후속 변수."
+summary: "6월 NFP +5.7만(컨센 ~11.5만)·실업률 4.2%. 7/3 원·달러 -30.2원·코스피 +5.76% V반등 — Fed 조기 긴축 기대 완화."
 sourceUrl: "https://tmsstory.co.kr/us-economic-indicator-calendar/"
 tags: ["NFP", "Fed", "고용", "매크로"]
 ---

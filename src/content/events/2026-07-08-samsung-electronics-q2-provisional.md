@@ -1,7 +1,7 @@
 ---
 id: "samsung-electronics-q2-provisional-2026"
 title: "삼성전자 2분기 잠정 실적(예상)"
-date: 2026-07-08
+date: 2026-07-07
 symbol: "005930"
 market: "KRX"
 scope: "symbol"
