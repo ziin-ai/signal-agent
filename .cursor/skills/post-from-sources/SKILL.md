@@ -227,11 +227,36 @@ entities:
 
 ## 경쟁 구도 비교
 
-| 구분 | A사 | B사 | 자사 |
-|---|---|---|---|
-| 시장 점유율 | 32% | 24% | 18% |
-| 주요 제품 | ... | ... | ... |
-| 차별 포인트 | ... | ... | ... |
+<table>
+  <thead>
+    <tr>
+      <th scope="col">구분</th>
+      <th scope="col">A사</th>
+      <th scope="col">B사</th>
+      <th scope="col">자사</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">시장 점유율</th>
+      <td>32%</td>
+      <td>24%</td>
+      <td>18%</td>
+    </tr>
+    <tr>
+      <th scope="row">주요 제품</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th scope="row">차별 포인트</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+  </tbody>
+</table>
 
 *자료: 2026 IR 자료 기준{{cite:src-1}}*
 
@@ -348,7 +373,7 @@ Every post must include rich visualization. Do not ship a text-only wall.
 ### Minimum Requirement
 
 - At least **3 distinct visual elements** per post, mixing **2 or more different types** from the supported list below
-- At least **1 comparison table** when the post discusses competitors, scenarios, regulations, products, or financial metrics
+- At least **1 comparison table** (HTML `<table>`) when the post discusses competitors, scenarios, regulations, products, or financial metrics
 - Place visuals near the section they support, not stacked at the top/bottom
 - Add a one-line caption (italic or plain text) under each non-trivial visual, with `{{cite:src-x}}` if data is sourced
 
@@ -356,9 +381,12 @@ Every post must include rich visualization. Do not ship a text-only wall.
 
 The post body is rendered by `MarkdownViewer.astro`, which supports standard markdown plus inline HTML/SVG and iframes. Use any combination of:
 
-1. **Comparison tables** (Markdown GFM tables)
+1. **Comparison tables** (HTML `<table>` — **not** Markdown pipe tables)
    - Use for competitor matrices, before/after policy, scenario tables, financials, KPI breakdowns
-   - Always include header row and at least 3 columns when feasible
+   - Always use semantic markup: `<thead>` / `<tbody>`, `<th scope="col">` for column headers, `<th scope="row">` for row labels when applicable
+   - Include header row and at least 3 columns when feasible
+   - Keep styling minimal — `.markdown-viewer` applies borders, padding, and header background automatically; do **not** add inline styles unless a callout needs emphasis
+   - Place a one-line caption (italic) **below** the table with `{{cite:src-x}}` when data is sourced
 
 2. **Source images** (`![alt](https://...)`)
    - Prefer official company/IR/government/press images
@@ -403,6 +431,7 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
 
 ### Not Supported (Do Not Use)
 
+- **Markdown GFM pipe tables** (`| col | col |`) in post body — use HTML `<table>` instead (see Supported Visual Types §1)
 - ` ```mermaid ``` ` code blocks — Mermaid is not configured in `astro.config.mjs`; these will render as plain text
 - External JS-based chart libraries (Chart.js, Recharts) inside markdown — markdown is not a script context
 - Image URLs from sources that frequently break hotlinks (e.g., google search image cache, paywalled CDN) — use a stable mirror or omit
@@ -484,7 +513,7 @@ Use this structure by default when the user asks for SEO visibility, snippet exp
 3. `## 결론 요약 (TL;DR)` with 2-3 bullets
 4. At least one question-style heading (for example, `## ~인가?`)
 5. Direct answer paragraph immediately below that heading (2-4 sentences)
-6. Supporting bullets/table with concrete facts
+6. Supporting bullets or HTML `<table>` with concrete facts
 7. `## 체크할 리스크` or equivalent downside section
 8. `## 자주 묻는 질문 (FAQ)` with short Q/A pairs when relevant
 9. `## 출처` list with source title + URL + date
@@ -493,7 +522,7 @@ Guidelines:
 
 - Prioritize answer-first formatting over long introductions
 - Keep paragraphs short and information-dense
-- Prefer lists/tables for scannability when facts are structured
+- Prefer lists or HTML `<table>` for scannability when facts are structured
 - Align title, opening answer, and section headings to the same search intent
 - Do not promise rankings or guaranteed featured snippets
 
@@ -543,7 +572,7 @@ Slug rules:
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
 8. Unless the user opted out, add **`shorts`** after `sources` and before `entities`: derive hook/scenes/thumbnail from the finalized thesis and `summary`; match `duration` to scene timeline; validate against **Shorts** table above.
 9. Re-check all source metadata fields and date formats.
-10. Verify visuals: tables have headers, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks, captions cite sources where applicable.
+10. Verify visuals: HTML tables use `<thead>`/`<th scope>`, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or Markdown pipe tables, captions cite sources where applicable.
 11. Save or update the target post file and any event files.
 12. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
 
