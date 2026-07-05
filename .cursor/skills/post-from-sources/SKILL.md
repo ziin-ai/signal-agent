@@ -6,7 +6,8 @@ description: >-
   entries in src/content/events (timeline / 대시보드 외부 이벤트).
   For each new or revised post, generate frontmatter `shorts` (YouTube Shorts-style
   hook, scenes, thumbnail, hashtags) after `sources` and before `entities`, aligned
-  with src/content.config.ts. In topic-driven mode, include and cite user-supplied
+  with src/content.config.ts. Post body tables must use HTML `<table>`, not Markdown
+  pipe syntax. In topic-driven mode, include and cite user-supplied
   anchor URLs as required references, while keeping topic research and source
   diversification as the primary method. After saving files, run git add, commit,
   and push per _shared/git-publish.md unless the user opts out or there are no changes.
