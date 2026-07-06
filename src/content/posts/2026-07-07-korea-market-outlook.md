@@ -158,57 +158,16 @@ entities:
 
 ## 전일·장 전 확정 숫자
 
-<table>
-  <thead>
-    <tr>
-      <th scope="col">항목</th>
-      <th scope="col">수치</th>
-      <th scope="col">해석</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">코스피 (7/6 마감)</th>
-      <td>8,051.33 (-37.01p, -0.46%)</td>
-      <td>장중 고저차 511.73p{{cite:src-2}}</td>
-    </tr>
-    <tr>
-      <th scope="row">코스닥 (7/6 마감)</th>
-      <td>847.07 (-21.34p, -2.46%)</td>
-      <td>대형주 대비 중소형 약세{{cite:src-2}}</td>
-    </tr>
-    <tr>
-      <th scope="row">원/달러 (7/6 마감)</th>
-      <td>1,530.3원 (+4.7원)</td>
-      <td>외국인 매도·달러 강세 연동{{cite:src-2}}</td>
-    </tr>
-    <tr>
-      <th scope="row">삼성전자 2Q OI (7/7 잠정)</th>
-      <td>89조4,000억 (YoY +1,810%)</td>
-      <td>컨센 84조 상회, 매출 171조{{cite:src-1}}{{cite:src-3}}</td>
-    </tr>
-    <tr>
-      <th scope="row">외국인 (7/6, 코스피)</th>
-      <td>1조3,338억 순매도</td>
-      <td>12거래일 연속, 누적 158.6조+{{cite:src-2}}{{cite:src-6}}</td>
-    </tr>
-    <tr>
-      <th scope="row">개인 (7/6, 코스피)</th>
-      <td>2조6,461억 순매수</td>
-      <td>8천피 방어 주력{{cite:src-2}}{{cite:src-6}}</td>
-    </tr>
-    <tr>
-      <th scope="row">다우 (7/6 現지 마감)</th>
-      <td>53,055.91 (+0.29%)</td>
-      <td>사상 첫 53,000 돌파{{cite:src-1}}{{cite:src-8}}</td>
-    </tr>
-    <tr>
-      <th scope="row">나스닥 (7/6 現지 마감)</th>
-      <td>26,121.16 (+1.12%)</td>
-      <td>테크·반도체 저가 매수{{cite:src-1}}{{cite:src-4}}</td>
-    </tr>
-  </tbody>
-</table>
+| 항목 | 수치 | 해석 |
+| --- | --- | --- |
+| 코스피 (7/6 마감) | 8,051.33 (-37.01p, -0.46%) | 장중 고저차 511.73p{{cite:src-2}} |
+| 코스닥 (7/6 마감) | 847.07 (-21.34p, -2.46%) | 대형주 대비 중소형 약세{{cite:src-2}} |
+| 원/달러 (7/6 마감) | 1,530.3원 (+4.7원) | 외국인 매도·달러 강세 연동{{cite:src-2}} |
+| 삼성전자 2Q OI (7/7 잠정) | 89조4,000억 (YoY +1,810%) | 컨센 84조 상회, 매출 171조{{cite:src-1}}{{cite:src-3}} |
+| 외국인 (7/6, 코스피) | 1조3,338억 순매도 | 12거래일 연속, 누적 158.6조+{{cite:src-2}}{{cite:src-6}} |
+| 개인 (7/6, 코스피) | 2조6,461억 순매수 | 8천피 방어 주력{{cite:src-2}}{{cite:src-6}} |
+| 다우 (7/6 現지 마감) | 53,055.91 (+0.29%) | 사상 첫 53,000 돌파{{cite:src-1}}{{cite:src-8}} |
+| 나스닥 (7/6 現지 마감) | 26,121.16 (+1.12%) | 테크·반도체 저가 매수{{cite:src-1}}{{cite:src-4}} |
 
 *7/7 당일 코스피·수급·VKOSPI 종가는 장 마감 후 확정된다.*
 
@@ -280,42 +239,13 @@ entities:
   </g>
 </svg>
 
-<table>
-  <thead>
-    <tr>
-      <th scope="col">신호</th>
-      <th scope="col">상방(지지)</th>
-      <th scope="col">하방(압력)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">실적</th>
-      <td>삼전 OI 89.4조 beat, D램·NAND ASP 급등{{cite:src-3}}</td>
-      <td>AI 둔화·메타 쇼크 잔존 우려{{cite:src-7}}</td>
-    </tr>
-    <tr>
-      <th scope="row">글로벌</th>
-      <td>美 3대지수↑, 필라반 +2.17%{{cite:src-8}}</td>
-      <td>FOMC 의사록·금리 재점화{{cite:src-8}}</td>
-    </tr>
-    <tr>
-      <th scope="row">수급</th>
-      <td>개인 2.6조+·ETF 17.9조(6~7/6){{cite:src-6}}</td>
-      <td>외국인 12일 연속·누적 159조{{cite:src-5}}</td>
-    </tr>
-    <tr>
-      <th scope="row">환율</th>
-      <td>—</td>
-      <td>1530원+ 고환율·외국인 이탈 연동{{cite:src-2}}{{cite:src-5}}</td>
-    </tr>
-    <tr>
-      <th scope="row">섹터</th>
-      <td>삼전·증권·조선 순환매{{cite:src-2}}</td>
-      <td>코스닥 -2.46%, 기판·2차전지 약세{{cite:src-2}}</td>
-    </tr>
-  </tbody>
-</table>
+| 신호 | 상방(지지) | 하방(압력) |
+| --- | --- | --- |
+| 실적 | 삼전 OI 89.4조 beat, D램·NAND ASP 급등{{cite:src-3}} | AI 둔화·메타 쇼크 잔존 우려{{cite:src-7}} |
+| 글로벌 | 美 3대지수↑, 필라반 +2.17%{{cite:src-8}} | FOMC 의사록·금리 재점화{{cite:src-8}} |
+| 수급 | 개인 2.6조+·ETF 17.9조(6~7/6){{cite:src-6}} | 외국인 12일 연속·누적 159조{{cite:src-5}} |
+| 환율 | — | 1530원+ 고환율·외국인 이탈 연동{{cite:src-2}}{{cite:src-5}} |
+| 섹터 | 삼전·증권·조선 순환매{{cite:src-2}} | 코스닥 -2.46%, 기판·2차전지 약세{{cite:src-2}} |
 
 *7/6 거래대금 코스피 31.9조·코스닥 6.1조원{{cite:src-2}}.*
 

@@ -6,8 +6,8 @@ description: >-
   entries in src/content/events (timeline / 대시보드 외부 이벤트).
   For each new or revised post, generate frontmatter `shorts` (YouTube Shorts-style
   hook, scenes, thumbnail, hashtags) after `sources` and before `entities`, aligned
-  with src/content.config.ts. Post body tables must use HTML `<table>`, not Markdown
-  pipe syntax. In topic-driven mode, include and cite user-supplied
+  with src/content.config.ts. Post body tables must use Markdown GFM pipe syntax
+  (`| col |`), not HTML `<table>`. In topic-driven mode, include and cite user-supplied
   anchor URLs as required references, while keeping topic research and source
   diversification as the primary method. After saving files, run git add, commit,
   and push per _shared/git-publish.md unless the user opts out or there are no changes.
@@ -228,36 +228,11 @@ entities:
 
 ## 경쟁 구도 비교
 
-<table>
-  <thead>
-    <tr>
-      <th scope="col">구분</th>
-      <th scope="col">A사</th>
-      <th scope="col">B사</th>
-      <th scope="col">자사</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">시장 점유율</th>
-      <td>32%</td>
-      <td>24%</td>
-      <td>18%</td>
-    </tr>
-    <tr>
-      <th scope="row">주요 제품</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th scope="row">차별 포인트</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-  </tbody>
-</table>
+| 구분 | A사 | B사 | 자사 |
+| --- | --- | --- | --- |
+| 시장 점유율 | 32% | 24% | 18% |
+| 주요 제품 | ... | ... | ... |
+| 차별 포인트 | ... | ... | ... |
 
 *자료: 2026 IR 자료 기준{{cite:src-1}}*
 
@@ -391,7 +366,7 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 | **TL;DR / bullet lists** | Bold **only** tier labels or section lead-ins (`티어 A`, `관전 포인트`) — not tickers, percentages, or amounts repeated in tables |
 | **Body paragraphs** | No bold on numbers, tickers, dates, or “서프라이즈”. Plain text + `{{cite:}}` |
 | **Subheadings (`###`)** | Carry the emphasis; do not repeat the same emphasis in the paragraph below |
-| **HTML tables** | Plain text in cells. **No `{{cite:}}` inside `<table>`** — cite in prose or post-table caption only. Use `<strong>` sparingly (see emphasis budget) |
+| **GFM tables** | Plain text in cells; `{{cite:src-x}}` allowed per cell when sourced. Use `<strong>` sparingly (see emphasis budget) |
 | **Blockquotes** | Max **2** per post; no bold inside unless one defined term |
 | **기준일 / disclaimer line** | Plain or italic; do not bold the entire disclaimer |
 
@@ -410,9 +385,9 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 
 ### Numbers and tables
 
-- **Put comparable figures in HTML `<table>`**; prose explains *why* and *so what*
-- **`{{cite:src-x}}` does not render inside HTML `<table>` cells** (MarkdownViewer processes citations in markdown, not raw HTML table content). **Never** put cite tags in `<td>`, `<th>`, or anywhere inside `<table>…</table>`
-- Attribute table data via **prose immediately above or below** the table, or an **italic caption on the line after `</table>`** (outside the table element) — e.g. `*출처: 2026 IR 기준{{cite:src-1}}*`
+- **Put comparable figures in GFM pipe tables** (`| col |`); prose explains *why* and *so what*
+- **`{{cite:src-x}}` renders in markdown table cells** — append cites on the same row when the figure is sourced
+- Optional: italic caption on the line after the table when prose above does not already cite — e.g. `*출처: 2026 IR 기준{{cite:src-1}}*`
 - If the preceding paragraph already cites the same sources, skip the table caption — do not duplicate
 - Repeat a number in prose only when interpreting it (beat magnitude, revision, surprise vs priced-in) — not when listing
 - Percentages and amounts: plain text in prose (`+33.7%`, `85.6조`) unless the table already shows them
@@ -430,7 +405,7 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 ### Before save — emphasis pass
 
 1. Count `**` pairs in body; if >12, remove bold from numbers and tickers first  
-2. For each HTML table row, check if the paragraph above/below repeats the same numbers — delete duplication or drop bold from prose  
+2. For each table row, check if the paragraph above/below repeats the same numbers — delete duplication or drop bold from prose  
 3. Read one paragraph aloud: if it sounds like a slide deck, rewrite in plain analyst prose  
 
 ### Bad vs good (body prose)
@@ -458,7 +433,7 @@ Every post must include rich visualization. Do not ship a text-only wall.
 ### Minimum Requirement
 
 - At least **3 distinct visual elements** per post, mixing **2 or more different types** from the supported list below
-- At least **1 comparison table** (HTML `<table>`) when the post discusses competitors, scenarios, regulations, products, or financial metrics
+- At least **1 comparison table** (GFM pipe syntax) when the post discusses competitors, scenarios, regulations, products, or financial metrics
 - Place visuals near the section they support, not stacked at the top/bottom
 - Add a one-line caption (italic or plain text) under each non-trivial visual, with `{{cite:src-x}}` if data is sourced
 
@@ -466,14 +441,11 @@ Every post must include rich visualization. Do not ship a text-only wall.
 
 The post body is rendered by `MarkdownViewer.astro`, which supports standard markdown plus inline HTML/SVG and iframes. Use any combination of:
 
-1. **Comparison tables** (HTML `<table>` — **not** Markdown pipe tables)
+1. **Comparison tables** (Markdown GFM pipe syntax — **not** HTML `<table>`)
    - Use for competitor matrices, before/after policy, scenario tables, financials, KPI breakdowns
-   - Always use semantic markup: `<thead>` / `<tbody>`, `<th scope="col">` for column headers, `<th scope="row">` for row labels when applicable
-   - Include header row and at least 3 columns when feasible
-   - Keep styling minimal — `.markdown-viewer` applies borders, padding, and header background automatically; do **not** add inline styles unless a callout needs emphasis
-   - Prefer plain text in `<td>`; see **Report Writing Style → Numbers and tables**
-   - **Do not** put `{{cite:src-x}}` inside the table — citations go in adjacent prose or italic caption **after** `</table>`
-   - Optional: one-line italic caption below the table with `{{cite:src-x}}` when prose above does not already cite
+   - Include header row and separator (`| --- |`) and at least 3 columns when feasible
+   - Keep cells plain text; see **Report Writing Style → Numbers and tables**
+   - **`{{cite:src-x}}` in cells** when the row figure is sourced; optional italic caption below when prose does not already cite
 
 2. **Source images** (`![alt](https://...)`)
    - Prefer official company/IR/government/press images
@@ -511,15 +483,14 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
 
 - Diagrams must reflect facts from `sources`. Do not fabricate numbers in SVG/ASCII to look quantitative
 - Mark estimates and scenario figures explicitly (예: `추정`, `시나리오`, `가정치`)
-- Cite the source with `{{cite:src-x}}` in prose or in italic text **below** the visual (never inside HTML `<table>` cells)
+- Cite the source with `{{cite:src-x}}` in table cells, prose, or italic text below the visual
 - Tables of competitive/market share data must show "as of" date if known
 - Do not duplicate the same fact across a table and a long paragraph; pick the format that reads better
 - Visuals should add information density, not decoration. Remove a visual if it only restates an adjacent sentence
 
 ### Not Supported (Do Not Use)
 
-- **Markdown GFM pipe tables** (`| col | col |`) in post body — use HTML `<table>` instead (see Supported Visual Types §1)
-- **`{{cite:src-x}}` inside HTML `<table>`** — renderer does not process cites in table cells; use prose or post-table caption instead
+- **HTML `<table>` in post body** — use GFM pipe tables instead (see Supported Visual Types §1)
 - ` ```mermaid ``` ` code blocks — Mermaid is not configured in `astro.config.mjs`; these will render as plain text
 - External JS-based chart libraries (Chart.js, Recharts) inside markdown — markdown is not a script context
 - Image URLs from sources that frequently break hotlinks (e.g., google search image cache, paywalled CDN) — use a stable mirror or omit
@@ -602,7 +573,7 @@ Use this structure by default when the user asks for SEO visibility, snippet exp
 3. `## 결론 요약 (TL;DR)` with 2-3 bullets
 4. At least one question-style heading (for example, `## ~인가?`)
 5. Direct answer paragraph immediately below that heading (2-4 sentences)
-6. Supporting bullets or HTML `<table>` with concrete facts
+6. Supporting bullets or GFM tables with concrete facts
 7. `## 체크할 리스크` or equivalent downside section
 8. `## 자주 묻는 질문 (FAQ)` with short Q/A pairs when relevant
 9. `## 출처` list with source title + URL + date
@@ -611,7 +582,7 @@ Guidelines:
 
 - Prioritize answer-first formatting over long introductions
 - Keep paragraphs short and information-dense
-- Prefer lists or HTML `<table>` for scannability when facts are structured
+- Prefer lists or GFM tables for scannability when facts are structured
 - Align title, opening answer, and section headings to the same search intent
 - Do not promise rankings or guaranteed featured snippets
 
@@ -661,7 +632,7 @@ Slug rules:
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
 8. Unless the user opted out, add **`shorts`** after `sources` and before `entities`: derive hook/scenes/thumbnail from the finalized thesis and `summary`; match `duration` to scene timeline; validate against **Shorts** table above.
 9. Re-check all source metadata fields and date formats.
-10. Verify visuals: HTML tables use `<thead>`/`<th scope>`, no `{{cite:}}` inside `<table>`, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or Markdown pipe tables, citations in prose/post-table captions where needed.
+10. Verify visuals: GFM tables have header + separator rows, `{{cite:}}` in cells where sourced, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or HTML `<table>`, citations consistent with prose.
 11. **Emphasis pass:** count body `**` pairs (target ≤12); strip bold from numbers/tickers duplicated in tables; confirm TL;DR and blockquotes follow Report Writing Style.
 12. Save or update the target post file and any event files.
 13. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
