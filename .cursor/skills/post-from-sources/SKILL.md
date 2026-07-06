@@ -366,6 +366,87 @@ Reference examples in-repo: `src/content/events/2026-01-15-bok-rate-decision.md`
 - Prefer Korean prose unless user asks otherwise
 - Create genuinely new synthesis from source facts (do not paraphrase each source one-by-one)
 - Prioritize causal reasoning, implications, and decision relevance over source recap
+- Follow **Report Writing Style** below for typography, emphasis, and readability — this overrides “highlight everything important” instincts
+
+## Report Writing Style
+
+Write like a **sell-side / buy-side research note**: calm, dense, scannable without looking like a highlighted handout. The reader should grasp hierarchy from **headings, tables, and sentence order** — not from bold on every number and ticker.
+
+### Tone
+
+- Declarative, third-person or neutral analyst voice (“증권가는…”, “시장은…”)
+- Short paragraphs (2–4 sentences); one idea per paragraph
+- Prefer connected prose over bullet stacks when the logic is sequential
+- Avoid hype adjectives unless sourced (“역대급”, “폭등”, “대박”) — use measured verbs: “상회”, “확대”, “부합”, “둔화”
+- Do not bold for emotional punch; bold is a **structural** tool only (see budget below)
+
+### Emphasis budget (critical)
+
+**Default: no bold in body prose.** Most “important” facts belong in a table, heading, or the opening thesis sentence — not in `**…**`.
+
+| Element | Bold / `<strong>` rule |
+| --- | --- |
+| **Whole post** | Aim for **≤12** bold spans in body (excluding frontmatter). If over budget, cut bold before cutting content |
+| **Opening paragraph** | At most **one** bold phrase (thesis or anchor date). Never bold every metric in the lede |
+| **TL;DR / bullet lists** | Bold **only** tier labels or section lead-ins (`티어 A`, `관전 포인트`) — not tickers, percentages, or amounts repeated in tables |
+| **Body paragraphs** | No bold on numbers, tickers, dates, or “서프라이즈”. Plain text + `{{cite:}}` |
+| **Subheadings (`###`)** | Carry the emphasis; do not repeat the same emphasis in the paragraph below |
+| **HTML tables** | Plain text in cells. Use `<strong>` only for a **single** column that is the takeaway (e.g. “vs 컨센” gap) — never bold every numeric cell |
+| **Blockquotes** | Max **2** per post; no bold inside unless one defined term |
+| **기준일 / disclaimer line** | Plain or italic; do not bold the entire disclaimer |
+
+**When bold is allowed (pick one per local context):**
+
+1. First introduction of a **named framework** the post owns (e.g. `티어 A`) — once per section
+2. A **single** contrarian or disconfirming line in blockquote
+3. Shorts/thumbnail copy (separate from long-form body rules)
+
+**Never:**
+
+- Bold a ticker **and** its OI **and** the % gap **and** the catalyst in one sentence
+- Duplicate table figures in bold prose (“표에 있으면 본문은 해석만”)
+- Chain bold fragments: `**A** **B** **C**` — rewrite as one plain sentence
+- Bold inside FAQ answers except the direct one-word answer if needed
+
+### Numbers and tables
+
+- **Put comparable figures in HTML `<table>`**; prose explains *why* and *so what*
+- Repeat a number in prose only when interpreting it (beat magnitude, revision, surprise vs priced-in) — not when listing
+- Percentages and amounts: plain text in prose (`+33.7%`, `85.6조`) unless the table already shows them
+- Dates: plain (`7/7`, `6/24`) — not `**7/7**`
+
+### Structure (research note flow)
+
+1. **Lede (2–3 sentences):** context date → thesis → why it matters now  
+2. **결론 요약:** 3–5 bullets, labels only lightly marked; numbers in plain text  
+3. **Framework section:** one comparison table + short interpretation paragraph  
+4. **Issuer / theme sections:** subheading names the name; body avoids re-bolding the name  
+5. **리스크:** plain bullets, no bold on every risk keyword  
+6. **결론:** 2 paragraphs max, restate thesis without re-highlighting every ticker  
+
+### Before save — emphasis pass
+
+1. Count `**` pairs in body; if >12, remove bold from numbers and tickers first  
+2. For each HTML table row, check if the paragraph above/below repeats the same numbers — delete duplication or drop bold from prose  
+3. Read one paragraph aloud: if it sounds like a slide deck, rewrite in plain analyst prose  
+
+### Bad vs good (body prose)
+
+**Bad (over-highlighted):**
+
+> **7648** 급락 이후 **LG전자**(**+50%**)·**LG이노텍**(**+34%**)가 **서프라이즈** 후보다.
+
+**Good (research note):**
+
+> 7648 급락 이후 시장은 메모리 대형주 밸류에이션을 먼저 조정했다. 같은 2분기 시즌에서 컨센 대비 갭이 남은 LG전자(+50%p), LG이노텍(+34%p) 등 비메모리는 상대적 서프라이즈 후보로 보는 시각이 유효하다.
+
+**Bad (TL;DR):**
+
+> - **티어 A**: **LG전자**(**+50%**), **LG이노텍**(**+33.7%**)
+
+**Good (TL;DR):**
+
+> - 티어 A(컨센 갭): LG전자 +50%p, LG이노텍 +33.7%p, 증권 업종 NI +20~42%p{{cite:src-4}}
 
 ## Visual Enrichment Policy
 
@@ -387,6 +468,7 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
    - Always use semantic markup: `<thead>` / `<tbody>`, `<th scope="col">` for column headers, `<th scope="row">` for row labels when applicable
    - Include header row and at least 3 columns when feasible
    - Keep styling minimal — `.markdown-viewer` applies borders, padding, and header background automatically; do **not** add inline styles unless a callout needs emphasis
+   - Prefer plain text in `<td>`; see **Report Writing Style → Numbers and tables**
    - Place a one-line caption (italic) **below** the table with `{{cite:src-x}}` when data is sourced
 
 2. **Source images** (`![alt](https://...)`)
@@ -408,8 +490,8 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
      ```
 
 5. **Quote / highlight blocks** (`> ...` blockquotes)
-   - Best for one-line thesis, key metric callouts, contrarian counter-thesis
-   - Use sparingly so they retain emphasis (max 2-3 per post)
+   - Best for one-line thesis or contrarian counter-thesis — not for re-stating table numbers
+   - Use sparingly (max **2** per post); **no bold** inside the quote unless one defined term
 
 6. **Embedded charts via iframe** (`<iframe src="..." ...>`)
    - TradingView symbol embed, Google Trends embed, FRED graph embed, public Datawrapper iframes
@@ -496,6 +578,7 @@ tags: ["실적", "가이던스"]
 
 - Never mention AI, model limitations, or that the text is generated
 - Avoid formulaic phrasing such as "종합하면", "정리하면" repeated mechanically
+- **Readability over highlighting:** if a fact is already in a table or heading, do not bold it again in prose (see Report Writing Style)
 - Keep high structural freedom in body sections:
   - You may rename headings or change order by topic
   - You may merge/split sections when it improves readability
@@ -568,14 +651,15 @@ Slug rules:
 2. If input is topic (+ optional anchor URLs), run Topic-Driven Research Mode as the primary flow, and apply **Topic mode + anchor URLs** to include anchors as required references within that flow. If topic-only with no anchors, run Topic-Driven Research Mode only.
 3. Draft frontmatter first and validate schema fields.
 4. For YouTube sources, extract transcript-backed points (or best-effort metadata summary with confidence note).
-5. Draft body sections using source-backed claims and synthesized reasoning.
+5. Draft body sections using source-backed claims and synthesized reasoning; apply **Report Writing Style** (emphasis budget, table-first numbers).
 6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections.
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
 8. Unless the user opted out, add **`shorts`** after `sources` and before `entities`: derive hook/scenes/thumbnail from the finalized thesis and `summary`; match `duration` to scene timeline; validate against **Shorts** table above.
 9. Re-check all source metadata fields and date formats.
 10. Verify visuals: HTML tables use `<thead>`/`<th scope>`, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or Markdown pipe tables, captions cite sources where applicable.
-11. Save or update the target post file and any event files.
-12. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
+11. **Emphasis pass:** count body `**` pairs (target ≤12); strip bold from numbers/tickers duplicated in tables; confirm TL;DR and blockquotes follow Report Writing Style.
+12. Save or update the target post file and any event files.
+13. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
 
 ## Final Response To User
 

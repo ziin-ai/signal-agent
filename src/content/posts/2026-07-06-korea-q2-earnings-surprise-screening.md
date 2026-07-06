@@ -180,16 +180,16 @@ entities:
     - "컨센서스"
 ---
 
-**기준일: 2026-07-06(KST)** — 2분기(4~6월) 실적은 **7/7 삼성 잠정**을 시작으로 **7월 말 SK하이닉스**까지 검증된다. 본문의 브로커 추정·컨센서스 갭은 발표 전 **전망치**이며, 투자 권유가 아니다.
+*기준일: 2026-07-06(KST)* — 2분기(4~6월) 실적은 7/7 삼성 잠정을 시작으로 7월 말 SK하이닉스까지 검증된다. 본문의 브로커 추정·컨센서스 갭은 발표 전 전망치이며, 투자 권유가 아니다.
 
-7월 2일 코스피 **7648** 급락 이후, 2분기 **어닝 서프라이즈** 발굴 프레임은 6월과 같지 않다. **152조+**까지 올라간 메모리 컨센서스는 **마이크론 FQ3**(6/24, DRAM ASP **+low-60%** seq, FQ4 가이드 **500억달러**)로 업황은 확인됐지만{{cite:src-8}}, **주가는 AI 피크아웃·공급과잉 공포**를 먼저 반영했다{{cite:src-11}}. 따라서 7월 시즌의 핵심 질문은 “컨센을 이기는가”를 넘어 **“beat 이후 3Q 가이드·조정 OI·성과급 믹스가 7648 이후 밸류에이션을 지탱하는가”**다.
+7월 2일 코스피 7648 급락 이후, 2분기 어닝 서프라이즈 발굴 프레임은 6월과 같지 않다. 메모리 컨센서스(합산 152조+)는 마이크론 FQ3(6/24, DRAM ASP +low-60% seq, FQ4 가이드 500억달러)로 업황이 확인됐지만{{cite:src-8}}, 주가는 AI 피크아웃·공급과잉 공포를 먼저 반영했다{{cite:src-11}}. **7월 시즌의 핵심은 컨센 beat를 넘어, beat 이후 3Q 가이드·조정 OI·성과급 믹스가 7648 이후 밸류에이션을 지탱하는지 여부다.**
 
 ## 결론 요약 (TL;DR)
 
-- **티어 A(컨센 대비 +% 명확)**: **LG전자**(연결 OI 컨센 **+50%**·관세 환급 ~3000억){{cite:src-4}}{{cite:src-5}}, **LG이노텍**(OI **+33.7%** vs FnGuide){{cite:src-2}}, **증권**(5대 순익 컨센 **+42%**·키움 **+29%**){{cite:src-3}}{{cite:src-7}}, **삼성전기**(OI **+4.7%** vs 컨센·YoY **+87.8%**){{cite:src-2}}.
-- **티어 B(고벽·Micron read-through)**: **삼성전자·SK하이닉스** — 합산 컨센 **152.6조**{{cite:src-9}}, 브로커 상단 **86~91조·61~65조**. beat 가능하나 **피크아웃 공포 구간**에서 EPS beat ≠ 주가 beat{{cite:src-1}}{{cite:src-6}}{{cite:src-11}}.
-- **단기 분수령**: **7/7(화) 삼성전자 2Q 잠정** — FnGuide OI **85.6조**, 성과급 **18조** 일괄 반영 여부가 조정 OI 관건{{cite:src-1}}{{cite:src-10}}.
-- **선행 확인 완료**: **6/24 Micron** — 한국 메모리 2Q ASP·마진 read-through **긍정**{{cite:src-8}}.
+- 티어 A(컨센 갭): LG전자 +50%p(관세 환급 ~3000억){{cite:src-4}}{{cite:src-5}}, LG이노텍 +33.7%p{{cite:src-2}}, 증권 5대 NI +42%p·키움 +29%p{{cite:src-3}}{{cite:src-7}}, 삼성전기 +4.7%p{{cite:src-2}}.
+- 티어 B(메모리): 삼성·SK하이닉스 합산 컨센 152.6조{{cite:src-9}}, 브로커 상단 86~91조·61~65조 — beat 가능하나 피크아웃 공포 구간에서 EPS beat와 주가 beat는 분리{{cite:src-1}}{{cite:src-6}}{{cite:src-11}}.
+- 단기 분수령: 7/7 삼성 2Q 잠정 — FnGuide OI 85.6조, 성과급 18조 일괄 반영 여부가 조정 OI 관건{{cite:src-1}}{{cite:src-10}}.
+- 선행 확인: 6/24 Micron — 한국 메모리 2Q ASP·마진 read-through 긍정{{cite:src-8}}.
 
 ## 7월 시즌에서 '서프라이즈'를 가르는 기준은?
 
@@ -205,27 +205,27 @@ entities:
     <tr>
       <th scope="row">Beat vs 컨센</th>
       <td>FnGuide·1M 평균 OI 상회</td>
-      <td>동일 — 다만 메모리 컨센 <strong>152조+</strong>로 장벽 ↑{{cite:src-9}}</td>
+      <td>동일 — 다만 메모리 컨센 152조+로 장벽 ↑{{cite:src-9}}</td>
     </tr>
     <tr>
       <th scope="row">Beat vs 주가</th>
       <td>9천피·280만닉스 선반영</td>
-      <td><strong>7648</strong> 급락으로 일부 해소 — <strong>3Q 가이드</strong>가 더 중요{{cite:src-11}}</td>
+      <td>7648 급락으로 일부 해소 — 3Q 가이드가 더 중요{{cite:src-11}}</td>
     </tr>
     <tr>
       <th scope="row">Read-through</th>
       <td>6/24 Micron 대기</td>
-      <td><strong>Micron beat 확인</strong> → 삼성·하이닉스 ASP 가설 강화{{cite:src-8}}</td>
+      <td>Micron beat 확인 → 삼성·하이닉스 ASP 가설 강화{{cite:src-8}}</td>
     </tr>
     <tr>
       <th scope="row">일회성 vs 구조</th>
       <td>관세·성과급 구분</td>
-      <td><strong>LG전자 관세 환급</strong>, <strong>삼성 성과급 18조</strong> 분리 필수{{cite:src-1}}{{cite:src-4}}</td>
+      <td>LG전자 관세 환급, 삼성 성과급 18조 분리 필수{{cite:src-1}}{{cite:src-4}}</td>
     </tr>
   </tbody>
 </table>
 
-> **핵심:** 유튜브 분석(6/28)에서도 강조하듯, 삼성 1Q **DS OI 53.7조**가 전사의 **94%** — “반도체 회사” 구조는 2Q도 유지{{cite:src-12}}. 비메모리 beat는 **지수 기여는 제한**되지만, **7648 이후 순환매·밸류에이션 갭** 관점에서는 상대적 매력이 커진다.
+> 유튜브 분석(6/28)도 같은 프레임을 제시한다. 삼성 1Q DS OI 53.7조가 전사 94%를 차지해 “반도체 회사” 구조는 2Q에도 유지될 가능성이 크다{{cite:src-12}}. 비메모리 beat는 지수 기여는 제한적이나, 7648 이후 순환매·밸류에이션 갭 관점에서는 상대적 매력이 커진다.
 
 ```text
 6/24 Micron ASP↑ 확인
@@ -243,7 +243,7 @@ entities:
 
 #### 1) LG전자 (066570) — 관세 환급 + 본업 방어
 
-교보증권(6/23)은 2Q **연결 OI 1조5011억** — **컨센 9976억 대비 약 +50%** — 을 전망했다{{cite:src-4}}. 관세 환급을 보수적으로 **~3000억**으로 잡았고, **LG이노텍 2022억**·**VS 6분기 연속 흑자**가 연결 beat를 보강한다{{cite:src-4}}. 하나증권(7/3)은 별도 OI **1조2489억(+100% YoY)** 으로 컨센 상회를 재확인하며, **일회성 제외 판가·원가 효율**도 긍정 평가했다{{cite:src-5}}.
+교보증권(6/23)은 2Q 연결 OI 1조5011억(컨센 9976억 대비 약 +50%)을 전망했다{{cite:src-4}}. 관세 환급을 보수적으로 ~3000억으로 잡았고, LG이노텍 2022억·VS 6분기 연속 흑자가 연결 beat를 보강한다{{cite:src-4}}. 하나증권(7/3)은 별도 OI 1조2489억(+100% YoY)으로 컨센 상회를 재확인하며, 일회성을 제외한 판가·원가 효율도 긍정 평가했다{{cite:src-5}}.
 
 <table>
   <thead>
@@ -257,9 +257,9 @@ entities:
   <tbody>
     <tr>
       <th scope="row">2Q 연결 OI</th>
-      <td><strong>1조5011억</strong></td>
+      <td>1조5011억</td>
       <td>9976억</td>
-      <td><strong>~+50%</strong></td>
+      <td>~+50%</td>
     </tr>
     <tr>
       <th scope="row">일회성</th>
@@ -270,15 +270,15 @@ entities:
   </tbody>
 </table>
 
-> **관전:** 환급 규모·인식 시점이 분기 beat의 **질**을 가른다. 컨콜에서 **쿨링·로보틱스** 로드맵보다 **조정 OI** 설명이 우선이다{{cite:src-5}}.
+> 관전: 환급 규모·인식 시점이 분기 beat의 질을 가른다. 컨콜에서는 쿨링·로보틱스 로드맵보다 조정 OI 설명이 우선이다{{cite:src-5}}.
 
 #### 2) LG이노텍 (011070) — AI 기판, +33.7% OI 갭
 
-에프앤가이드 기준(7/5) 2Q **OI 2039억(+1690% YoY)** — **컨센 1526억 대비 +33.7%**{{cite:src-2}}. AI 서버·데이터센터 **FC-BGA·SOCAMM** 수요가 6월 글(+39%, KB) 대비 컨센 상향으로 **갭은 축소**됐지만, **절대 YoY 폭**은 여전히 크다. **광학 비수기**인 2Q에 2000억+ OI는 **3Q 가이던스**로 일회성 vs 구조를 가른다.
+에프앤가이드 기준(7/5) 2Q OI 2039억(+1690% YoY), 컨센 1526억 대비 +33.7%{{cite:src-2}}. AI 서버·데이터센터 FC-BGA·SOCAMM 수요가 6월 추정(+39%, KB) 대비 컨센 상향으로 갭은 축소됐지만, 절대 YoY 폭은 여전히 크다. 광학 비수기인 2Q에 2000억+ OI는 3Q 가이던스로 일회성 vs 구조를 가른다.
 
 #### 3) 증권 — 거래대금 90~100조, NI 컨센 +20~42%
 
-2Q **일평균 거래대금 90조(+35% QoQ)**, 5·6월 **100조** 구간{{cite:src-3}}{{cite:src-7}}. 연합인포맥스(7/4): **NH·삼성·키움 NI 컨센 +20%** 상회{{cite:src-3}}. 머니투데이(7/2): **5대 순익 ~4.2조** vs FnGuide **2.96조(+42%)**{{cite:src-7}}. **키움**은 미래에셋 기준 **5311억 vs 컨센 4109억(+29%)**{{cite:src-3}}.
+2Q 일평균 거래대금 90조(+35% QoQ), 5·6월 100조 구간{{cite:src-3}}{{cite:src-7}}. 연합인포맥스(7/4)는 NH·삼성·키움 NI가 컨센 대비 +20% 상회할 것으로 본다{{cite:src-3}}. 머니투데이(7/2)는 5대 순익 ~4.2조 vs FnGuide 2.96조(+42%)를 집계했다{{cite:src-7}}. 키움은 미래에셋 기준 5311억 vs 컨센 4109억(+29%){{cite:src-3}}.
 
 <table>
   <thead>
@@ -299,13 +299,13 @@ entities:
     <tr>
       <th scope="row">NH투자증권</th>
       <td>4795억</td>
-      <td><strong>+20.3%</strong></td>
+      <td>+20.3%</td>
       <td>브로커리지·신용{{cite:src-3}}</td>
     </tr>
     <tr>
       <th scope="row">삼성증권</th>
       <td>5198억</td>
-      <td><strong>+20.2%</strong></td>
+      <td>+20.2%</td>
       <td>거래대금 수혜{{cite:src-3}}</td>
     </tr>
   </tbody>
@@ -313,7 +313,7 @@ entities:
 
 #### 4) 삼성전기 (009150) — MLCC·FC-BGA, 완만한 beat
 
-2Q **OI 4001억(+87.8% YoY)** — **컨센 3820억 +4.7%**{{cite:src-2}}. 갭은 좁지만 **1Q 3조+ 매출 돌파** 이후 **AI 서버 MLCC·기판** 호황이 **연속 beat**를 뒷받침한다. **컨센 beat %**보다 **가격·LTA·QoQ 추세**가 2Q 관건.
+2Q OI 4001억(+87.8% YoY), 컨센 3820억 대비 +4.7%{{cite:src-2}}. 갭은 좁지만 1Q 3조+ 매출 돌파 이후 AI 서버 MLCC·기판 호황이 연속 beat를 뒷받침한다. 컨센 beat %보다 가격·LTA·QoQ 추세가 2Q 관건이다.
 
 <table>
   <thead>
@@ -328,25 +328,25 @@ entities:
     <tr>
       <th scope="row">LG전자</th>
       <td>1조5011억(연결)</td>
-      <td><strong>~+50%</strong></td>
+      <td>~+50%</td>
       <td>관세 환급·VS{{cite:src-4}}</td>
     </tr>
     <tr>
       <th scope="row">LG이노텍</th>
       <td>2039억</td>
-      <td><strong>+33.7%</strong></td>
+      <td>+33.7%</td>
       <td>AI 기판{{cite:src-2}}</td>
     </tr>
     <tr>
       <th scope="row">키움증권</th>
       <td>NI 5311억</td>
-      <td><strong>+29%</strong></td>
+      <td>+29%</td>
       <td>100조 거래대금{{cite:src-3}}</td>
     </tr>
     <tr>
       <th scope="row">삼성전기</th>
       <td>4001억</td>
-      <td><strong>+4.7%</strong></td>
+      <td>+4.7%</td>
       <td>MLCC·FC-BGA{{cite:src-2}}</td>
     </tr>
   </tbody>
@@ -354,7 +354,7 @@ entities:
 
 ### 티어 B: 초대형 메모리 — 실적은 크지만 '서프라이즈 체감'은 약할 수 있음
 
-연합인포맥스(7/5) 15개사 컨센: **삼성 88.3조·하이닉스 64.3조**, **합산 152.6조**{{cite:src-9}}. FnGuide(7/6) 삼성 2Q OI **85.6조** — 1Q **57.2조** 대비 **+49.5%**{{cite:src-10}}. IBK는 하이닉스 **2Q OI 61조**·**HBM3 이후 11분기 연속 beat** 전망{{cite:src-6}}.
+연합인포맥스(7/5) 15개사 컨센 기준 삼성 88.3조·하이닉스 64.3조, 합산 152.6조{{cite:src-9}}. FnGuide(7/6) 삼성 2Q OI 85.6조는 1Q 57.2조 대비 +49.5%{{cite:src-10}}. IBK는 하이닉스 2Q OI 61조·HBM3 이후 11분기 연속 beat를 전망한다{{cite:src-6}}.
 
 <table>
   <thead>
@@ -368,20 +368,20 @@ entities:
   <tbody>
     <tr>
       <th scope="row">삼성전자 2Q OI</th>
-      <td><strong>85.6조</strong>{{cite:src-10}}</td>
-      <td><strong>86~91조</strong>{{cite:src-1}}</td>
-      <td><strong>성과급 18조</strong> 일괄 차감{{cite:src-1}}</td>
+      <td>85.6조{{cite:src-10}}</td>
+      <td>86~91조{{cite:src-1}}</td>
+      <td>성과급 18조 일괄 차감{{cite:src-1}}</td>
     </tr>
     <tr>
       <th scope="row">SK하이닉스 2Q OI</th>
-      <td><strong>64.3조</strong>{{cite:src-9}}</td>
-      <td><strong>61~65조</strong>{{cite:src-6}}</td>
-      <td>DRAM ASP <strong>+32%</strong>·NAND <strong>+45%</strong> QoQ</td>
+      <td>64.3조{{cite:src-9}}</td>
+      <td>61~65조{{cite:src-6}}</td>
+      <td>DRAM ASP +32%·NAND +45% QoQ</td>
     </tr>
   </tbody>
 </table>
 
-**마이크론 read-through:** FQ3 매출 **414.6억달러**, DRAM ASP **+low-60s%** seq, FQ4 **500억달러±10억·GM ~86%**{{cite:src-8}}. 한국 메모리 2Q beat **확률은 높**지만, **7648** 이후 시장은 **3Q 가이드·LTA·SCA(전략적 고객 계약)** 를 더 민감하게 본다{{cite:src-8}}{{cite:src-11}}.
+마이크론 read-through: FQ3 매출 414.6억달러, DRAM ASP +low-60s% seq, FQ4 500억달러±10억·GM ~86%{{cite:src-8}}. 한국 메모리 2Q beat 확률은 높지만, 7648 이후 시장은 3Q 가이드·LTA·SCA(전략적 고객 계약)를 더 민감하게 본다{{cite:src-8}}{{cite:src-11}}.
 
 <svg viewBox="0 0 540 140" role="img" aria-label="2026 2Q 실적 검증 캘린더">
   <title>2026 2Q 실적 검증 캘린더</title>
@@ -424,27 +424,27 @@ entities:
   <tbody>
     <tr>
       <td>1</td>
-      <td><strong>컨센 대비 +10% 이상</strong> 갭이 남았는가?</td>
+      <td>컨센 대비 +10%p 이상 갭이 남았는가?</td>
       <td>LG전자·LG이노텍·증권{{cite:src-2}}{{cite:src-4}}{{cite:src-7}}</td>
     </tr>
     <tr>
       <td>2</td>
-      <td><strong>조정 OI</strong>(성과급·환급 제외)도 beat인가?</td>
-      <td>삼성 <strong>18조</strong>·LG <strong>3000억</strong>{{cite:src-1}}{{cite:src-4}}</td>
+      <td>조정 OI(성과급·환급 제외)도 beat인가?</td>
+      <td>삼성 18조·LG 3000억{{cite:src-1}}{{cite:src-4}}</td>
     </tr>
     <tr>
       <td>3</td>
-      <td><strong>3Q 가이드</strong>가 피크아웃 논쟁을 반박하는가?</td>
-      <td>Micron FQ4 <strong>500억</strong>·tight beyond 2027{{cite:src-8}}</td>
+      <td>3Q 가이드가 피크아웃 논쟁을 반박하는가?</td>
+      <td>Micron FQ4 500억·tight beyond 2027{{cite:src-8}}</td>
     </tr>
     <tr>
       <td>4</td>
-      <td><strong>주가가 beat를 선반영</strong>했는가?</td>
-      <td>7648 이후 메모리 — <strong>가이드 &gt; EPS</strong>{{cite:src-11}}</td>
+      <td>주가가 beat를 선반영했는가?</td>
+      <td>7648 이후 메모리 — 가이드 &gt; EPS{{cite:src-11}}</td>
     </tr>
     <tr>
       <td>5</td>
-      <td><strong>비메모리 beat</strong>가 순환매 재료인가?</td>
+      <td>비메모리 beat가 순환매 재료인가?</td>
       <td>LG전자·증권·삼성전기{{cite:src-2}}{{cite:src-5}}</td>
     </tr>
   </tbody>
@@ -452,31 +452,31 @@ entities:
 
 ## 체크할 리스크
 
-- **성과급 일괄 반영**: 삼성 **1·2Q 18조** — headline OI와 **조정 OI** 괴리{{cite:src-1}}.
-- **일회성 환급**: LG전자 **관세 ~3000억** — 3Q 이익률 정상화 속도{{cite:src-4}}.
-- **컨센 상향 속도**: 메모리 1M 컨센 상향으로 **beat 정의**가 바뀜{{cite:src-9}}.
-- **피크아웃 narrative**: Meta·공급과잉 공포 — **실적 beat 후에도 밸류에이션 디스카운트** 지속 가능{{cite:src-11}}.
-- **환율·금리**: 1550원+·FOMC — 증권·수출 믹스{{cite:src-7}}.
+- 성과급 일괄 반영: 삼성 1·2Q 18조 — headline OI와 조정 OI 괴리{{cite:src-1}}.
+- 일회성 환급: LG전자 관세 ~3000억 — 3Q 이익률 정상화 속도{{cite:src-4}}.
+- 컨센 상향 속도: 메모리 1M 컨센 상향으로 beat 정의가 바뀜{{cite:src-9}}.
+- 피크아웃 narrative: Meta·공급과잉 공포 — 실적 beat 후에도 밸류에이션 디스카운트 지속 가능{{cite:src-11}}.
+- 환율·금리: 1550원+·FOMC — 증권·수출 믹스{{cite:src-7}}.
 
 ## 자주 묻는 질문 (FAQ)
 
 **Q. 7월 2분기 서프라이즈 1순위는?**
 
-A. **컨센 대비 % 갭** 기준 **LG전자(~+50%)**·**LG이노텍(+34%)**·**키움(+29%)**. **절대 OI**는 **삼성·하이닉스**{{cite:src-2}}{{cite:src-4}}{{cite:src-9}}.
+A. 컨센 대비 % 갭 기준 LG전자(~+50%p), LG이노텍(+34%p), 키움(+29%p). 절대 OI는 삼성·하이닉스{{cite:src-2}}{{cite:src-4}}{{cite:src-9}}.
 
 **Q. 삼성·하이닉스는 더 이상 서프라이즈가 아닌가?**
 
-A. **152조 컨센**으로 장벽은 높다. 다만 **7648** 이후 **3Q 가이드 beat**가 주가 분수령일 수 있다{{cite:src-9}}{{cite:src-11}}.
+A. 152조 컨센으로 장벽은 높다. 다만 7648 이후 3Q 가이드 beat가 주가 분수령일 수 있다{{cite:src-9}}{{cite:src-11}}.
 
 **Q. 마이크론 이후 무엇을 보나?**
 
-A. **7/7 삼성 잠정**(조정 OI·성과급) → **7/29 SK하이닉스**(11분기 beat 연장 여부){{cite:src-1}}{{cite:src-6}}.
+A. 7/7 삼성 잠정(조정 OI·성과급) → 7/29 SK하이닉스(11분기 beat 연장 여부){{cite:src-1}}{{cite:src-6}}.
 
 ## 결론
 
-2026년 2분기 **어닝 서프라이즈 발굴**은 **7648 급락** 이후 더욱 **이중 필터**다 — **(1) 컨센 beat**와 **(2) beat가 3Q·조정 OI로 이어지는가**. **마이크론**(6/24)이 메모리 read-through를 확인했고{{cite:src-8}}, **7/7 삼성 잠정**이 단기 분수령이다{{cite:src-1}}.
+2026년 2분기 어닝 서프라이즈 발굴은 7648 급락 이후 이중 필터로 접근하는 것이 타당하다 — (1) 컨센 beat, (2) beat가 3Q·조정 OI로 이어지는가. 마이크론(6/24)이 메모리 read-through를 확인했고{{cite:src-8}}, 7/7 삼성 잠정이 단기 분수령이다{{cite:src-1}}.
 
-**LG전자·LG이노텍·증권·삼성전기**는 FnGuide 대비 **+% 갭**이 분명해 **비메모리 순환매** 후보로 유효하고{{cite:src-2}}{{cite:src-4}}{{cite:src-7}}, **삼성·하이닉스**는 **152조** 규모 beat 가능성과 **서프라이즈 ‘체감’** 사이의 괴리를 동시에 본다{{cite:src-9}}{{cite:src-11}}. 유튜브 분석이 정리하듯, Susquehanna **85만원**·특별배당 논의는 **EPS beat**를 넘어 **캐피털 정책** 변수까지 확장된 장세 — 2Q 숫자만으로는 부족하다{{cite:src-12}}.
+LG전자·LG이노텍·증권·삼성전기는 FnGuide 대비 +% 갭이 분명해 비메모리 순환매 후보로 유효하다{{cite:src-2}}{{cite:src-4}}{{cite:src-7}}. 삼성·하이닉스는 152조 규모 beat 가능성과 서프라이즈 ‘체감’ 사이의 괴리를 동시에 봐야 한다{{cite:src-9}}{{cite:src-11}}. Susquehanna 85만원·특별배당 논의는 EPS beat를 넘어 캐피털 정책 변수까지 확장된 장세를 시사한다 — 2Q 숫자만으로는 부족하다{{cite:src-12}}.
 
 ## 출처
 
