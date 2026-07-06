@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { TimelineEvent } from "../../lib/timeline";
 import {
   type EventMarketFilter,
@@ -7,6 +7,7 @@ import {
   eventCategoryLabel,
   filterDashboardTimelineEvents,
   type MarketCategoryOptionSets,
+  parseDashboardFiltersFromUrl,
 } from "../../lib/dashboard-event-filters";
 import { themeIndexDefinitions, type ThemeChartLine } from "../../lib/market";
 import { buildTimelineChartLayout, formatYearMonth } from "../../lib/timeline-chart-layout";
@@ -45,6 +46,57 @@ const PRICE_GRADIENT_DOM_ID = "ziin-dashboard-timeline-price-fill";
 /** 지수(THEME) 모드 가격선 — viewBox 왜곡과 무관하게 얇은 헤어라인(px) */
 const THEME_INDEX_STROKE_PX = 0.28;
 
+/** View Transition·popstate 후 URL과 props 불일치 방지 — 필터·href 기준 경로를 주소창에서 재동기화 */
+function useDashboardFilterSync(
+  filterPathAndQuery: string,
+  initialMarket: EventMarketFilter,
+  initialCategories: string[],
+  postMarket: Props["market"],
+  allEvents: TimelineEvent[],
+  marketCategoryOptions?: MarketCategoryOptionSets,
+): {
+  pathWithQuery: string;
+  marketFilter: EventMarketFilter;
+  categories: string[];
+} {
+  const [urlRevision, setUrlRevision] = useState(0);
+
+  useEffect(() => {
+    const bump = () => setUrlRevision((n) => n + 1);
+    document.addEventListener("astro:page-load", bump);
+    window.addEventListener("popstate", bump);
+    return () => {
+      document.removeEventListener("astro:page-load", bump);
+      window.removeEventListener("popstate", bump);
+    };
+  }, []);
+
+  return useMemo(() => {
+    if (typeof window === "undefined") {
+      return {
+        pathWithQuery: filterPathAndQuery,
+        marketFilter: initialMarket,
+        categories: initialCategories ?? [],
+      };
+    }
+    const pageUrl = new URL(window.location.href);
+    const parsed = parseDashboardFiltersFromUrl(pageUrl, allEvents, postMarket, marketCategoryOptions);
+    return {
+      pathWithQuery: `${pageUrl.pathname}${pageUrl.search}${pageUrl.hash}`,
+      marketFilter: parsed.market,
+      categories: parsed.categories,
+    };
+  }, [
+    urlRevision,
+    filterPathAndQuery,
+    initialMarket,
+    initialCategories,
+    postMarket,
+    allEvents,
+    marketCategoryOptions,
+  ]);
+}
+
 export default function DashboardTimelineInteractive({
   allEvents,
   windowStart,
@@ -63,9 +115,14 @@ export default function DashboardTimelineInteractive({
   initialCategories,
   marketCategoryOptions,
 }: Props) {
-  /** 필터는 항상 URL·서버 props와 일치 — 링크 네비로만 갱신 (React state·replaceState 불사용) */
-  const marketFilter = initialMarket;
-  const categories = initialCategories ?? [];
+  const { pathWithQuery, marketFilter, categories } = useDashboardFilterSync(
+    filterPathAndQuery,
+    initialMarket,
+    initialCategories,
+    market,
+    allEvents,
+    marketCategoryOptions,
+  );
 
   const currency = market === "KRX" ? "KRW" : "USD";
   const moneyFormatter = useMemo(
@@ -150,11 +207,11 @@ export default function DashboardTimelineInteractive({
   }
 
   function hrefForMarket(nextMarket: EventMarketFilter): string {
-    return dashboardTimelineFilterHref(filterPathAndQuery, nextMarket, categoriesAfterMarketSwitch(nextMarket));
+    return dashboardTimelineFilterHref(pathWithQuery, nextMarket, categoriesAfterMarketSwitch(nextMarket));
   }
 
   function hrefClearCategories(): string {
-    return dashboardTimelineFilterHref(filterPathAndQuery, marketFilter, []);
+    return dashboardTimelineFilterHref(pathWithQuery, marketFilter, []);
   }
 
   function hrefToggleCategory(cat: string): string {
@@ -162,7 +219,7 @@ export default function DashboardTimelineInteractive({
     if (next.has(cat)) next.delete(cat);
     else next.add(cat);
     const nextArr = [...next].sort();
-    return dashboardTimelineFilterHref(filterPathAndQuery, marketFilter, nextArr);
+    return dashboardTimelineFilterHref(pathWithQuery, marketFilter, nextArr);
   }
 
   function kindDotClass(kind: TimelineEvent["kind"]): string {

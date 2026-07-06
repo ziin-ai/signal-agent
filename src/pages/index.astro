@@ -223,7 +223,7 @@ const currentPrice =
     <section class="relative z-20 mt-3 scroll-mt-8" id="recent-flow" aria-label="최근 흐름 타임라인">
       <DashboardTimelineInteractive
         client:load
-        key={activePost?.id ?? "global"}
+        key={`${activePost?.id ?? "global"}|${selectedEventMarket}|${selectedEventCategories.join(",")}`}
         allEvents={dashboardEvents}
         windowStart={dashboardWindowStart.toISOString()}
         windowEnd={dashboardWindowEnd.toISOString()}
