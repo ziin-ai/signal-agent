@@ -193,6 +193,8 @@ entities:
 
 ## 7월 시즌에서 '서프라이즈'를 가르는 기준은?
 
+6월 대비 7/6(7648 이후) 관점 변화는 아래와 같다{{cite:src-8}}{{cite:src-9}}{{cite:src-11}}.
+
 <table>
   <thead>
     <tr>
@@ -205,22 +207,22 @@ entities:
     <tr>
       <th scope="row">Beat vs 컨센</th>
       <td>FnGuide·1M 평균 OI 상회</td>
-      <td>동일 — 다만 메모리 컨센 152조+로 장벽 ↑{{cite:src-9}}</td>
+      <td>동일 — 다만 메모리 컨센 152조+로 장벽 ↑</td>
     </tr>
     <tr>
       <th scope="row">Beat vs 주가</th>
       <td>9천피·280만닉스 선반영</td>
-      <td>7648 급락으로 일부 해소 — 3Q 가이드가 더 중요{{cite:src-11}}</td>
+      <td>7648 급락으로 일부 해소 — 3Q 가이드가 더 중요</td>
     </tr>
     <tr>
       <th scope="row">Read-through</th>
       <td>6/24 Micron 대기</td>
-      <td>Micron beat 확인 → 삼성·하이닉스 ASP 가설 강화{{cite:src-8}}</td>
+      <td>Micron beat 확인 → 삼성·하이닉스 ASP 가설 강화</td>
     </tr>
     <tr>
       <th scope="row">일회성 vs 구조</th>
       <td>관세·성과급 구분</td>
-      <td>LG전자 관세 환급, 삼성 성과급 18조 분리 필수{{cite:src-1}}{{cite:src-4}}</td>
+      <td>LG전자 관세 환급, 삼성 성과급 18조 분리 필수</td>
     </tr>
   </tbody>
 </table>
@@ -293,20 +295,20 @@ entities:
     <tr>
       <th scope="row">키움증권</th>
       <td>5311억</td>
-      <td><strong>+29%</strong></td>
-      <td>거래대금·트레이딩{{cite:src-3}}</td>
+      <td>+29%</td>
+      <td>거래대금·트레이딩</td>
     </tr>
     <tr>
       <th scope="row">NH투자증권</th>
       <td>4795억</td>
       <td>+20.3%</td>
-      <td>브로커리지·신용{{cite:src-3}}</td>
+      <td>브로커리지·신용</td>
     </tr>
     <tr>
       <th scope="row">삼성증권</th>
       <td>5198억</td>
       <td>+20.2%</td>
-      <td>거래대금 수혜{{cite:src-3}}</td>
+      <td>거래대금 수혜</td>
     </tr>
   </tbody>
 </table>
@@ -329,25 +331,25 @@ entities:
       <th scope="row">LG전자</th>
       <td>1조5011억(연결)</td>
       <td>~+50%</td>
-      <td>관세 환급·VS{{cite:src-4}}</td>
+      <td>관세 환급·VS</td>
     </tr>
     <tr>
       <th scope="row">LG이노텍</th>
       <td>2039억</td>
       <td>+33.7%</td>
-      <td>AI 기판{{cite:src-2}}</td>
+      <td>AI 기판</td>
     </tr>
     <tr>
       <th scope="row">키움증권</th>
       <td>NI 5311억</td>
       <td>+29%</td>
-      <td>100조 거래대금{{cite:src-3}}</td>
+      <td>100조 거래대금</td>
     </tr>
     <tr>
       <th scope="row">삼성전기</th>
       <td>4001억</td>
       <td>+4.7%</td>
-      <td>MLCC·FC-BGA{{cite:src-2}}</td>
+      <td>MLCC·FC-BGA</td>
     </tr>
   </tbody>
 </table>
@@ -368,14 +370,14 @@ entities:
   <tbody>
     <tr>
       <th scope="row">삼성전자 2Q OI</th>
-      <td>85.6조{{cite:src-10}}</td>
-      <td>86~91조{{cite:src-1}}</td>
-      <td>성과급 18조 일괄 차감{{cite:src-1}}</td>
+      <td>85.6조</td>
+      <td>86~91조</td>
+      <td>성과급 18조 일괄 차감</td>
     </tr>
     <tr>
       <th scope="row">SK하이닉스 2Q OI</th>
-      <td>64.3조{{cite:src-9}}</td>
-      <td>61~65조{{cite:src-6}}</td>
+      <td>64.3조</td>
+      <td>61~65조</td>
       <td>DRAM ASP +32%·NAND +45% QoQ</td>
     </tr>
   </tbody>
@@ -413,6 +415,8 @@ entities:
 
 ## 7648 급락 이후 발굴 체크리스트
 
+공시 전 아래 항목으로 서프라이즈·재평가 신호를 점검한다{{cite:src-1}}{{cite:src-2}}{{cite:src-4}}{{cite:src-5}}{{cite:src-7}}{{cite:src-8}}{{cite:src-11}}.
+
 <table>
   <thead>
     <tr>
@@ -425,27 +429,27 @@ entities:
     <tr>
       <td>1</td>
       <td>컨센 대비 +10%p 이상 갭이 남았는가?</td>
-      <td>LG전자·LG이노텍·증권{{cite:src-2}}{{cite:src-4}}{{cite:src-7}}</td>
+      <td>LG전자·LG이노텍·증권</td>
     </tr>
     <tr>
       <td>2</td>
       <td>조정 OI(성과급·환급 제외)도 beat인가?</td>
-      <td>삼성 18조·LG 3000억{{cite:src-1}}{{cite:src-4}}</td>
+      <td>삼성 18조·LG 3000억</td>
     </tr>
     <tr>
       <td>3</td>
       <td>3Q 가이드가 피크아웃 논쟁을 반박하는가?</td>
-      <td>Micron FQ4 500억·tight beyond 2027{{cite:src-8}}</td>
+      <td>Micron FQ4 500억·tight beyond 2027</td>
     </tr>
     <tr>
       <td>4</td>
       <td>주가가 beat를 선반영했는가?</td>
-      <td>7648 이후 메모리 — 가이드 &gt; EPS{{cite:src-11}}</td>
+      <td>7648 이후 메모리 — 가이드 &gt; EPS</td>
     </tr>
     <tr>
       <td>5</td>
       <td>비메모리 beat가 순환매 재료인가?</td>
-      <td>LG전자·증권·삼성전기{{cite:src-2}}{{cite:src-5}}</td>
+      <td>LG전자·증권·삼성전기</td>
     </tr>
   </tbody>
 </table>

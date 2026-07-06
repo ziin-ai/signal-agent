@@ -391,7 +391,7 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 | **TL;DR / bullet lists** | Bold **only** tier labels or section lead-ins (`티어 A`, `관전 포인트`) — not tickers, percentages, or amounts repeated in tables |
 | **Body paragraphs** | No bold on numbers, tickers, dates, or “서프라이즈”. Plain text + `{{cite:}}` |
 | **Subheadings (`###`)** | Carry the emphasis; do not repeat the same emphasis in the paragraph below |
-| **HTML tables** | Plain text in cells. Use `<strong>` only for a **single** column that is the takeaway (e.g. “vs 컨센” gap) — never bold every numeric cell |
+| **HTML tables** | Plain text in cells. **No `{{cite:}}` inside `<table>`** — cite in prose or post-table caption only. Use `<strong>` sparingly (see emphasis budget) |
 | **Blockquotes** | Max **2** per post; no bold inside unless one defined term |
 | **기준일 / disclaimer line** | Plain or italic; do not bold the entire disclaimer |
 
@@ -411,6 +411,9 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 ### Numbers and tables
 
 - **Put comparable figures in HTML `<table>`**; prose explains *why* and *so what*
+- **`{{cite:src-x}}` does not render inside HTML `<table>` cells** (MarkdownViewer processes citations in markdown, not raw HTML table content). **Never** put cite tags in `<td>`, `<th>`, or anywhere inside `<table>…</table>`
+- Attribute table data via **prose immediately above or below** the table, or an **italic caption on the line after `</table>`** (outside the table element) — e.g. `*출처: 2026 IR 기준{{cite:src-1}}*`
+- If the preceding paragraph already cites the same sources, skip the table caption — do not duplicate
 - Repeat a number in prose only when interpreting it (beat magnitude, revision, surprise vs priced-in) — not when listing
 - Percentages and amounts: plain text in prose (`+33.7%`, `85.6조`) unless the table already shows them
 - Dates: plain (`7/7`, `6/24`) — not `**7/7**`
@@ -469,7 +472,8 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
    - Include header row and at least 3 columns when feasible
    - Keep styling minimal — `.markdown-viewer` applies borders, padding, and header background automatically; do **not** add inline styles unless a callout needs emphasis
    - Prefer plain text in `<td>`; see **Report Writing Style → Numbers and tables**
-   - Place a one-line caption (italic) **below** the table with `{{cite:src-x}}` when data is sourced
+   - **Do not** put `{{cite:src-x}}` inside the table — citations go in adjacent prose or italic caption **after** `</table>`
+   - Optional: one-line italic caption below the table with `{{cite:src-x}}` when prose above does not already cite
 
 2. **Source images** (`![alt](https://...)`)
    - Prefer official company/IR/government/press images
@@ -507,7 +511,7 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
 
 - Diagrams must reflect facts from `sources`. Do not fabricate numbers in SVG/ASCII to look quantitative
 - Mark estimates and scenario figures explicitly (예: `추정`, `시나리오`, `가정치`)
-- Cite the source with `{{cite:src-x}}` directly under any visual that uses sourced numbers
+- Cite the source with `{{cite:src-x}}` in prose or in italic text **below** the visual (never inside HTML `<table>` cells)
 - Tables of competitive/market share data must show "as of" date if known
 - Do not duplicate the same fact across a table and a long paragraph; pick the format that reads better
 - Visuals should add information density, not decoration. Remove a visual if it only restates an adjacent sentence
@@ -515,6 +519,7 @@ The post body is rendered by `MarkdownViewer.astro`, which supports standard mar
 ### Not Supported (Do Not Use)
 
 - **Markdown GFM pipe tables** (`| col | col |`) in post body — use HTML `<table>` instead (see Supported Visual Types §1)
+- **`{{cite:src-x}}` inside HTML `<table>`** — renderer does not process cites in table cells; use prose or post-table caption instead
 - ` ```mermaid ``` ` code blocks — Mermaid is not configured in `astro.config.mjs`; these will render as plain text
 - External JS-based chart libraries (Chart.js, Recharts) inside markdown — markdown is not a script context
 - Image URLs from sources that frequently break hotlinks (e.g., google search image cache, paywalled CDN) — use a stable mirror or omit
@@ -656,7 +661,7 @@ Slug rules:
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
 8. Unless the user opted out, add **`shorts`** after `sources` and before `entities`: derive hook/scenes/thumbnail from the finalized thesis and `summary`; match `duration` to scene timeline; validate against **Shorts** table above.
 9. Re-check all source metadata fields and date formats.
-10. Verify visuals: HTML tables use `<thead>`/`<th scope>`, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or Markdown pipe tables, captions cite sources where applicable.
+10. Verify visuals: HTML tables use `<thead>`/`<th scope>`, no `{{cite:}}` inside `<table>`, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or Markdown pipe tables, citations in prose/post-table captions where needed.
 11. **Emphasis pass:** count body `**` pairs (target ≤12); strip bold from numbers/tickers duplicated in tables; confirm TL;DR and blockquotes follow Report Writing Style.
 12. Save or update the target post file and any event files.
 13. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
