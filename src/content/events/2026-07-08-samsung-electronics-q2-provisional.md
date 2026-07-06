@@ -7,8 +7,8 @@ market: "KRX"
 scope: "symbol"
 category: "earnings"
 impact: "high"
-summary: "7/7(화) 2Q 잠정 공시 — FnGuide OI ≈85.6조·브로커 86~91조. 1·2Q 성과급 18조 일괄 차감·조정 OI·3Q 가이드가 7648 급락 이후 단기 분수령. 6/24 Micron FQ3 beat read-through."
-sourceUrl: "https://biz.newdaily.co.kr/site/data/html/2026/07/05/2026070500011.html"
+summary: "7/7(화) 2Q 잠정 — 매출 171조·OI 89.4조(YoY +1810%), 컨센 84조 약 6% 상회. 3분기 연속 최대·단일 분기 89조 돌파 국내 최초. D램 ASP +40%대·NAND +60%대. 이달말 확정실적·콜에서 3Q 가이드·LTA 관전."
+sourceUrl: "https://www.mt.co.kr/industry/2026/07/07/2026070707182646222"
 tags: ["2분기실적", "삼성전자", "잠정실적", "성과급", "어닝서프라이즈"]
 ---
 
