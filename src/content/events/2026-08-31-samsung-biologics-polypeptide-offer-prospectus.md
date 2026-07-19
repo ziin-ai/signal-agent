@@ -1,0 +1,15 @@
+---
+id: "samsung-biologics-polypeptide-prospectus-2026-08"
+title: "폴리펩타이드 공개매수 오퍼 프로스펙터스 공표 목표일"
+date: 2026-08-31
+symbol: "207940.KS"
+market: "KRX"
+scope: "symbol"
+category: "news"
+impact: "mid"
+summary: "피인수사 공시 기준 삼성바이오로직스의 오퍼 프로스펙터스는 2026년 8월 31일 이전 공표가 목표다. 정식 조건·응모 일정·스위스 인수절차가 확정되는 구간으로, 거래 가시성과 일정 리스크를 재점검하는 촉매다."
+sourceUrl: "https://www.polypeptide.com/wp-content/uploads/2022/09/PolyPeptide-preliminary-HY-results-and-tender-offer.pdf"
+tags: ["삼성바이오로직스", "폴리펩타이드", "공개매수", "M&A"]
+---
+
+사전공고 이후 쿨링오프·최소 응모기간 등 스위스 절차가 이어진다. 실제 공표일이 앞당겨지거나 지연될 수 있어 타임라인 모니터링용 체크포인트로 둔다.
