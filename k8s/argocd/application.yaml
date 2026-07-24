@@ -11,7 +11,7 @@ spec:
     path: k8s/overlay/prod
   destination:
     server: https://kubernetes.default.svc
-    namespace: signal-agent
+    namespace: ziin-ai
   syncPolicy:
     automated:
       prune: true

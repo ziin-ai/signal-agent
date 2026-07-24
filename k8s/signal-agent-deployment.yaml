@@ -1,11 +1,11 @@
 # GHCR: ghcr.io/ziin-ai/signal-agent (GitHub Actions .github/workflows/build.yml)
-# Namespace: signal-agent
+# Namespace: ziin-ai
 # Astro SSR (@astrojs/node) listens on PORT (default 4321 in Dockerfile).
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: signal-agent
-  namespace: signal-agent
+  namespace: ziin-ai
   labels:
     app.kubernetes.io/name: signal-agent
     app.kubernetes.io/component: web

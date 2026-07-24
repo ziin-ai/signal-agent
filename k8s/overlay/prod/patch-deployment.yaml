@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: signal-agent
-  namespace: signal-agent
+  namespace: ziin-ai
 spec:
   replicas: 2
   template:
