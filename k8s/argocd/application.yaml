@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: signal-agent
+  name: ziin-ai
   namespace: argocd
 spec:
   project: default
