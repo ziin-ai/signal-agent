@@ -14,8 +14,8 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 >
   <SiteDoc title="연락처" updated="2026-07-28">
     <p>
-      콘텐츠 오류 신고, 출처·인용 관련 문의, 개인정보·광고 관련 요청, 제휴·기타 문의는 아래 이메일로 보내 주세요.
-      영업일 기준 가능한 한 빠르게 확인합니다.
+      글 오류·출처 문의, 개인정보·광고 관련 요청, 사이트 이용 관련 메모는 아래 이메일로 보내 주세요. 개인이 운영하는
+      블로그라 답장이 늦을 수 있습니다.
     </p>
 
     <h2>이메일</h2>
@@ -23,26 +23,26 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
       <a href="mailto:contact@ziin.ai">contact@ziin.ai</a>
     </p>
     <p class="text-sm text-slate-500 dark:text-slate-400">
-      메일에 관련 URL(분석글 주소), 문제 설명, 가능하면 출처 링크를 함께 적어 주시면 처리가 빨라집니다.
+      관련 글 URL, 무엇이 틀렸는지, 가능하면 출처 링크를 같이 적어 주시면 확인이 쉽습니다.
     </p>
 
-    <h2>답변 범위</h2>
+    <h2>답할 수 있는 것 / 없는 것</h2>
     <ul>
-      <li>사실관계·출처 오류 정정 요청</li>
+      <li>사실관계·출처 오류 정정</li>
       <li>개인정보·쿠키·광고 관련 문의</li>
-      <li>사이트 이용·기술 이슈</li>
+      <li>사이트 이용·표시 이슈</li>
     </ul>
     <p>
-      개별 종목·포트폴리오에 대한 <strong>투자 자문·매매 추천</strong>은 제공하지 않습니다. 자세한 면책은
-      <a href={`${rootPath}terms`}>이용약관·면책조항</a>을 참고하세요.
+      개별 종목·포트폴리오에 대한 <strong>투자 자문·매매 추천</strong>은 하지 않습니다. 면책은
+      <a href={`${rootPath}terms`}>이용약관·면책조항</a>을 보세요.
     </p>
 
     <h2>기타</h2>
     <ul>
-      <li><a href={`${rootPath}about`}>사이트 소개</a></li>
+      <li><a href={`${rootPath}about`}>소개</a></li>
       <li><a href={`${rootPath}privacy`}>개인정보처리방침</a></li>
       <li>
-        오픈소스·이슈 트래커(개발자용):
+        코드·이슈(개발용):
         <a
           href="https://github.com/ziin-ai/signal-agent/issues"
           target="_blank"

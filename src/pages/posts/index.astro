@@ -17,13 +17,13 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 ---
 
 <Base
-  title="분석글 아카이브 | 내 곁에 지인"
-  description="출처 기반 주식 분석글과 교육 가이드를 최신 발행 순으로 모아보는 아카이브 페이지."
+  title="글 목록 | 내 곁에 지인"
+  description="출처 기반 증시·매크로 메모와 교육 가이드를 모아 둔 개인 블로그 글 목록."
 >
   <section class="mb-4">
-    <h1 class="font-sans text-3xl font-semibold tracking-tight">분석글</h1>
+    <h1 class="font-sans text-3xl font-semibold tracking-tight">글</h1>
     <p class="mt-1 text-sm text-slate-600 dark:text-slate-300">
-      시황·테마 분석과 함께, 반복해서 쓰는 <strong>교육 가이드</strong>를 공개합니다. 투자 권유가 아닙니다.
+      시황·테마 메모와 교육용 정리 글을 모아 둡니다. 투자 권유가 아닙니다.
     </p>
   </section>
 
@@ -32,7 +32,7 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
       <section class="mb-6" aria-label="교육 가이드">
         <h2 class="font-sans text-lg font-semibold tracking-tight">교육 가이드</h2>
         <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-          AdSense·검색 리뷰어와 독자가 먼저 읽기 좋은 정적 해설 글입니다.
+          반복해서 쓰는 개념·읽기 틀을 따로 모아 둔 글입니다.
         </p>
         <ul class="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
           {guidePosts.map((post) => {

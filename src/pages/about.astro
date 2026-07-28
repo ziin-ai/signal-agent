@@ -9,59 +9,55 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 ---
 
 <Base
-  title="사이트 소개 | 내 곁에 지인"
-  description="지인.ai(ziin.ai)는 출처 기반 주식·시장 분석과 타임라인을 제공하는 한국어 투자 참고 사이트입니다."
+  title="소개 | 내 곁에 지인"
+  description="지인.ai는 출처를 붙인 증시·매크로 메모를 올리는 개인 블로그입니다. 투자 자문이 아닙니다."
 >
-  <SiteDoc title="사이트 소개" updated="2026-07-28">
+  <SiteDoc title="소개" updated="2026-07-28">
     <p>
-      <strong>지인.ai(ziin.ai)</strong>는 한국·글로벌 주식·매크로 이슈를 <strong>출처와 함께</strong> 정리하고,
-      대시보드·분석글·이벤트 타임라인으로 살펴볼 수 있게 돕는 투자 <strong>참고 정보</strong> 사이트입니다.
-      투자 권유·자문이 아니며, 최종 판단과 손익은 이용자 본인에게 있습니다.
+      <strong>지인.ai(ziin.ai)</strong>는 제가 한국·글로벌 주식·매크로 이슈를 <strong>출처와 함께</strong> 정리해 두는
+      <strong>개인 블로그</strong>입니다. 회사·금융기관·투자자문사가 아니며, 앞으로도 그런 형태로 키울 계획이 없습니다.
+      글은 투자 <strong>참고용 메모</strong>일 뿐이고, 매수·매도·보유를 권유하지 않습니다. 최종 판단과 손익은 읽는 분
+      본인에게 있습니다.
     </p>
 
-    <h2>무엇을 하나요</h2>
+    <h2>무엇을 올려 두나</h2>
     <ul>
       <li>
-        <a href={rootPath}>대시보드</a> — 최신 분석 요약, 신뢰도·출처 지표, 관련 타임라인
+        <a href={rootPath}>홈</a> — 최근 글 요약과 관련 일정 타임라인
       </li>
       <li>
-        <a href={`${rootPath}posts`}>분석글</a> — 시황·종목·테마 분석 (본문 인라인 출처 표시)
+        <a href={`${rootPath}posts`}>글 목록</a> — 시황·테마·교육용 메모 (본문에 출처 표시)
       </li>
       <li>
-        <a href={`${rootPath}timeline`}>타임라인</a> — 실적·정책·매크로 등 이벤트 흐름
+        <a href={`${rootPath}timeline`}>타임라인</a> — 실적·정책·매크로 등 날짜가 있는 이벤트
       </li>
     </ul>
 
-    <h2>데이터와 분석 방법</h2>
+    <h2>어떻게 쓰나</h2>
     <p>
-      본문의 수치·인용은 가능한 한 <strong>1차·보도 출처 URL</strong>과 함께 표시합니다. 시세·차트는 Yahoo Finance 등
-      공개 시세 API를 보조로 사용하며, 지연·오류가 있을 수 있습니다. 출처 티어·신뢰도 점수는 내부 휴리스틱으로
-      참고용이며 절대적 검증이 아닙니다.
+      숫자·인용은 가능한 한 <strong>1차·보도 출처 URL</strong>과 함께 둡니다. 시세·차트는 Yahoo Finance 등 공개 API를
+      보조로 쓰며 지연·오류가 있을 수 있습니다. 출처 티어·신뢰도 점수는 제 정리용 휴리스틱일 뿐, 검증 결과가 아닙니다.
     </p>
     <p>
-      일부 초안·구조화·요약에는 <strong>AI 도구를 보조로 사용</strong>할 수 있습니다. 발행 전 사람이 출처·사실관계·면책
-      표현을 검수하는 것을 원칙으로 하되, 오류가 남을 수 있습니다. 발견 시
-      <a href={`${rootPath}contact`}>문의</a>로 알려 주시면 검토·정정하겠습니다.
-    </p>
-
-    <h2>운영·발행자</h2>
-    <p>
-      사이트는 <strong>지인.ai(ziin.ai)</strong>를 운영하는 <strong>소규모 개인·팀</strong>이 발행합니다. 별도의 금융투자업
-      라이선스·투자자문 자격이 없으며, 콘텐츠는 공시·보도·공개 자료를 바탕으로 한 <strong>참고용 정리</strong>입니다.
-    </p>
-    <ul>
-      <li>문의·정정: <a href={`${rootPath}contact`}>연락처</a> · <a href="mailto:contact@ziin.ai">contact@ziin.ai</a></li>
-      <li>법인·사업자 등록번호·사업장 주소는 확정되는 대로 본 섹션에 공개합니다. (현재 미등록·미게시)</li>
-    </ul>
-
-    <h2>정정 정책</h2>
-    <p>
-      사실관계·수치·출처 링크 오류를 발견하시면
-      <a href={`${rootPath}contact`}>연락처</a>로 알려 주세요. 확인되는 경우 해당 글을 수정하고, 중요 정정은
-      글 상단 또는 본문에 정정 이력을 남기는 것을 원칙으로 합니다.
+      초안·구조화에 <strong>AI를 보조로 쓸 수 있습니다</strong>. 올리기 전에 출처·사실관계·면책 표현을 제가 다시 보는
+      것을 원칙으로 하되, 오류가 남을 수 있습니다. 발견하시면
+      <a href={`${rootPath}contact`}>연락처</a>로 알려 주세요.
     </p>
 
-    <h2>관련 정책</h2>
+    <h2>작성자</h2>
+    <p>
+      이 사이트는 <strong>개인이 운영하는 블로그</strong>입니다. 금융투자업·투자자문 자격·법인 등록이 없고, 사업자
+      정보를 게시할 계획도 없습니다. 문의는
+      <a href={`${rootPath}contact`}>연락처</a> ·
+      <a href="mailto:contact@ziin.ai">contact@ziin.ai</a>로 보내 주세요.
+    </p>
+
+    <h2>정정</h2>
+    <p>
+      사실·수치·출처 링크 오류를 알려 주시면 확인 후 글을 고치고, 중요하면 본문에 정정 이력을 남기겠습니다.
+    </p>
+
+    <h2>관련 페이지</h2>
     <ul>
       <li><a href={`${rootPath}privacy`}>개인정보처리방침</a></li>
       <li><a href={`${rootPath}terms`}>이용약관·면책조항</a></li>
