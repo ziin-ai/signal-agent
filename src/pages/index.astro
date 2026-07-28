@@ -169,6 +169,30 @@ const currentPrice =
       : undefined
   }
 >
+  <section
+    class="relative z-10 mb-3 rounded-lg border border-slate-300/70 bg-white/90 px-4 py-3 dark:border-slate-700/70 dark:bg-slate-900/90"
+    aria-label="사이트 소개"
+  >
+    <p class="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+      <strong>지인.ai</strong>는 출처를 붙인 한국·글로벌 증시 분석과 이벤트 타임라인을 공개하는 투자
+      <strong>참고</strong> 사이트입니다. 투자 권유가 아니며,
+      <a href={`${rootPath}about`} class="text-info hover:underline">소개</a>·
+      <a href={`${rootPath}posts`} class="text-info hover:underline">분석글</a>에서 본문을 바로 읽을 수 있습니다.
+    </p>
+    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
+      교육 가이드:
+      <a href={`${rootPath}posts/2026-07-28-how-to-read-foreign-investor-flows`} class="text-info hover:underline">외국인 수급</a>
+      ·
+      <a href={`${rootPath}posts/2026-07-28-forward-per-valuation-guide`} class="text-info hover:underline">선행 PER</a>
+      ·
+      <a href={`${rootPath}posts/2026-07-28-krx-sidecar-circuit-breaker-guide`} class="text-info hover:underline">사이드카·CB</a>
+      ·
+      <a href={`${rootPath}posts/2026-07-28-usd-krw-and-korea-equities`} class="text-info hover:underline">원/달러</a>
+      ·
+      <a href={`${rootPath}posts/2026-07-28-etf-vs-individual-stocks-krx`} class="text-info hover:underline">ETF vs 개별주</a>
+    </p>
+  </section>
+
   {activePost && (
     <section
       transition:name="dashboard-hero"

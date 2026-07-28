@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import SiteDoc from "../components/layout/SiteDoc.astro";
 
+export const prerender = true;
+
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 ---
@@ -42,11 +44,15 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
       <a href={`${rootPath}contact`}>문의</a>로 알려 주시면 검토·정정하겠습니다.
     </p>
 
-    <h2>운영</h2>
+    <h2>운영·발행자</h2>
     <p>
-      사이트는 <strong>지인.ai(ziin.ai)</strong> 팀에서 운영합니다. 법인·사업자 등록 정보가 확정되면 본 페이지에
-      추가합니다. 문의는 <a href={`${rootPath}contact`}>연락처</a>를 이용해 주세요.
+      사이트는 <strong>지인.ai(ziin.ai)</strong>를 운영하는 <strong>소규모 개인·팀</strong>이 발행합니다. 별도의 금융투자업
+      라이선스·투자자문 자격이 없으며, 콘텐츠는 공시·보도·공개 자료를 바탕으로 한 <strong>참고용 정리</strong>입니다.
     </p>
+    <ul>
+      <li>문의·정정: <a href={`${rootPath}contact`}>연락처</a> · <a href="mailto:contact@ziin.ai">contact@ziin.ai</a></li>
+      <li>법인·사업자 등록번호·사업장 주소는 확정되는 대로 본 섹션에 공개합니다. (현재 미등록·미게시)</li>
+    </ul>
 
     <h2>정정 정책</h2>
     <p>

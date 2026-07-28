@@ -3,6 +3,8 @@ import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import { calculateScore } from "../../lib/credibility";
 
+export const prerender = true;
+
 const allPosts = await getCollection("posts");
 const posts =
   allPosts.filter((post) => post.data.draft !== true).length > 0
