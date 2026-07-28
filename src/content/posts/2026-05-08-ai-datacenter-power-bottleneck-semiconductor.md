@@ -152,14 +152,22 @@ entities:
     - "메모리 슈퍼사이클"
 ---
 
-핵심 답부터 말하면, **2026년 반도체 수요의 실질 상한은 팹 캐파가 아니라 전력**이다.  
-전력은 단기 출하 곡선을 이연시키는 동시에, 부족 구조를 길게 끌어 가속기·HBM의 가격 결정력을 보호한다.
+> **CALL.** 전력 부족은 AI 반도체 수요를 없애기보다 가동·출하 시점을 늦춰 사이클을 평탄화한다. 핵심 리스크는 수요 둔화보다 전력 지연이 매출 인식으로 전이되는 속도다.
 
-## 결론 요약 (TL;DR)
+## 결론 요약
 
 - 가용 전력이 부족해 일부 GPU 재고가 가동되지 못하는 구간이 시작됐고, 이 흐름은 2026년 내내 이어질 가능성이 높다.
 - 그러나 전력 부족은 AI 가속기 수요를 줄이는 것이 아니라 **시점을 분산**시킨다. ASP 방어와 사이클 장기화에 우호적이다.
 - 한국 메모리(HBM) 입장에서는 사이클의 폭은 줄어도 길이는 늘어나는 형태로 작용할 가능성이 크다.
+
+## 우선순위
+
+1. **계통 연계와 자가 전원 가동 일정**
+2. **가속기 출하와 실제 데이터센터 가동의 시차**
+3. **HBM·N3 공급 제약이 가격과 물량에 미치는 영향**
+
+핵심 답부터 말하면, **2026년 반도체 수요의 실질 상한은 팹 캐파가 아니라 전력**이다.
+전력은 단기 출하 곡선을 이연시키는 동시에, 부족 구조를 길게 끌어 가속기·HBM의 가격 결정력을 보호한다.
 
 ## 왜 전력이 반도체 수요의 상한이 되었나
 
@@ -199,7 +207,7 @@ HBM 입장에서 전력 병목은 양면 성격을 가진다.
 | 메모리 사이클 형태 | 짧고 가파른 슈퍼사이클 | 길고 평탄한 구조적 호황{{cite:src-hbm-supercycle}} |
 | 자본 배분 | 가속기 단가 + 팹 캐파 | 가속기 + 자가 전원 인프라{{cite:src-rabobank-parallel-energy}} |
 
-## 체크할 리스크
+## 가드레일
 
 - **자가 전원 가동 일정 미스.** 가스·원전 PPA가 지연되면 GPU 가동 차질이 더 빠르게 매출 미스로 전이된다.
 - **AI 워크로드 ROI 의문.** 일부에서는 데이터센터 자본 회수 가시성에 회의가 제기되며, 자본 사이클 자체의 둔화 가능성이 거론된다{{cite:src-overcapacity-risk}}.
@@ -207,35 +215,22 @@ HBM 입장에서 전력 병목은 양면 성격을 가진다.
 - **국내 송전 인프라 정책 지연.** 전력망 확충 특별법 등 제도 정비가 늦어지면 한국 내 데이터센터 신증설 매출 인식이 반복 지연될 수 있다{{cite:src-korea-grid-gap}}.
 - **전력 비용 인상.** 직접 PPA 가격이 spot 대비 2~3배 수준에서 형성되며 클라우드 단가 전가가 충분하지 못할 경우 마진을 압박한다{{cite:src-hyperscaler-2026-power}}.
 
-## 자주 묻는 질문 (FAQ)
-
-**Q1. 전력 병목이 풀리지 않으면 NVIDIA 매출은 둔화되나?**  
-A. 즉각 둔화보다는 **시점 분산**으로 나타날 가능성이 높다. Rubin 비중 하향분이 Blackwell 라이프 연장으로 채워지고 있어 단가·매출 합산은 유지되는 그림이다{{cite:src-rubin-delay}}.
-
-**Q2. 한국 메모리 입장에서는 호재인가 악재인가?**  
-A. 매출 절대 규모로는 호재 쪽에 가깝다. 다만 분기별 변동성은 커질 수 있어, "분기 어닝 서프라이즈" 트레이딩보다 "장기 LTA 잔량과 단가 방어력"을 추적하는 접근이 더 합리적이다{{cite:src-hbm-supercycle}}.
-
-**Q3. 전력 병목이 언제쯤 의미 있게 완화되나?**  
-A. 비하인드-더-미터 자가 전원 130GW 파이프라인이 본격 가동되는 시점부터 단계적 완화가 시작될 가능성이 있으나, 송전 계통 자체의 시차는 여전히 수년 단위로 남는다{{cite:src-rabobank-parallel-energy}}.
-
-**Q4. AI 거품 우려는 이 흐름과 어떻게 충돌하나?**  
-A. 자본 회수 의문은 분명한 다운사이드 변수다. 다만 단기적으로는 **물리적 공급 제약 자체가 과잉투자 위험을 자연 차단**하는 측면이 있어, 거품 시나리오의 발현 시점은 가격이 아닌 가동률·전력 가용성으로 가늠하는 편이 정확하다{{cite:src-overcapacity-risk}}.
 
 ## 출처
 
-- Datacenter Knowledge, "The Breaking Points: Power Emerges as AI's Defining Limit" (2026-04-22)  
+- Datacenter Knowledge, "The Breaking Points: Power Emerges as AI's Defining Limit" (2026-04-22)
   https://www.datacenterknowledge.com/energy-power-supply/the-breaking-points-power-emerges-as-ai-s-defining-limit
-- Datacenter Knowledge, "AI-First Hyperscalers: 2026's Sprint Meets the Power Bottleneck" (2026-04-30)  
+- Datacenter Knowledge, "AI-First Hyperscalers: 2026's Sprint Meets the Power Bottleneck" (2026-04-30)
   https://www.datacenterknowledge.com/hyperscalers/hyperscalers-in-2026-what-s-next-for-the-world-s-largest-data-center-operators-
-- Rabobank, "The Sprint: Data Centers Are Building a Parallel Energy System in the US" (2026-04-15)  
+- Rabobank, "The Sprint: Data Centers Are Building a Parallel Energy System in the US" (2026-04-15)
   https://www.rabobank.com/knowledge/d011524694-the-sprint-data-centers-are-building-a-parallel-energy-system-in-the-us
-- SemiAnalysis, "The Great AI Silicon Shortage" (2026-04-10)  
+- SemiAnalysis, "The Great AI Silicon Shortage" (2026-04-10)
   https://newsletter.semianalysis.com/p/the-great-ai-silicon-shortage
-- Network World, "Nvidia Rubin GPUs may be delayed, slowing the next phase of AI infrastructure" (2026-04-12)  
+- Network World, "Nvidia Rubin GPUs may be delayed, slowing the next phase of AI infrastructure" (2026-04-12)
   https://www.networkworld.com/article/4156508/nvidia-rubin-gpus-may-be-delayed-slowing-the-next-phase-of-ai-infrastructure.html
-- 이투데이, "AI 데이터센터 '폭증'하는데…전력망은 20년째 제자리" (2026-04-25)  
+- 이투데이, "AI 데이터센터 '폭증'하는데…전력망은 20년째 제자리" (2026-04-25)
   https://www.etoday.co.kr/news/view/2533460
-- 이코노미트리뷴, "SK하이닉스가 그린 2026년 반도체 지도…HBM이 이끄는 메모리 슈퍼사이클" (2026-04-29)  
+- 이코노미트리뷴, "SK하이닉스가 그린 2026년 반도체 지도…HBM이 이끄는 메모리 슈퍼사이클" (2026-04-29)
   https://www.economytribune.co.kr/news/articleView.html?idxno=3901383
-- The Register, "Goldman Sachs warns AI bubble could burst datacenter boom" (2025-09-02)  
+- The Register, "Goldman Sachs warns AI bubble could burst datacenter boom" (2025-09-02)
   https://www.theregister.com/2025/09/02/goldman_sachs_ai_datacenters/

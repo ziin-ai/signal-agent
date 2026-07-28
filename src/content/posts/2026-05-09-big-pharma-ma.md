@@ -141,14 +141,22 @@ entities:
     - "자가면역 치료"
 ---
 
-빅파마 인수합병의 초점은 지금 "매출 공백을 메울 자산"에서 "제조 병목까지 줄일 플랫폼"으로 이동했다.  
-in vivo CAR-T가 거래 중심에 선 이유는 임상 성공 가능성만이 아니라, 치료 접근성과 공급 확장성을 동시에 개선할 수 있다는 기대 때문이다.
+> **CALL.** 빅파마의 in vivo CAR-T 인수는 특허절벽과 제조 병목을 함께 겨냥하지만, 높은 거래가치는 임상 재현성·안전성·상업화 비용이 증명될 때만 정당화된다.
 
-## 결론 요약 (TL;DR)
+## 결론 요약
 
 - 최근 딜의 공통점은 후기 임상 자산 단건 매입보다, 플랫폼형 기술을 조기 선점하는 구조다.
 - 앵커 기사의 "열풍" 진단은 방향성은 맞지만, 개별 거래의 밸류에이션 정당성은 아직 임상 재현성 검증이 필요하다.
 - 투자 관점에서는 인수 발표일의 모멘텀보다, 12~24개월 내 임상·규제 마일스톤 달성률이 더 중요하다.
+
+## 우선순위
+
+1. **플랫폼의 임상 재현성과 장기 안전성**
+2. **조건부 마일스톤의 실제 지급 전환**
+3. **적응증 확장과 규제 이정표의 일정 준수**
+
+빅파마 인수합병의 초점은 지금 "매출 공백을 메울 자산"에서 "제조 병목까지 줄일 플랫폼"으로 이동했다.
+in vivo CAR-T가 거래 중심에 선 이유는 임상 성공 가능성만이 아니라, 치료 접근성과 공급 확장성을 동시에 개선할 수 있다는 기대 때문이다.
 
 ## 왜 in vivo CAR-T에 돈이 몰리나?
 
@@ -202,7 +210,7 @@ in vivo CAR-T가 거래 중심에 선 이유는 임상 성공 가능성만이 �
 
 ## 앵커 기사와 1차 출처가 갈리는 지점
 
-앵커 기사는 "인수 대상이 부족하다"는 수급 논리를 제시한다{{cite:src-1}}. 이 관점은 EY가 제시한 성장 공백과 거래 가속 데이터와 방향성은 맞물린다{{cite:src-3}}.  
+앵커 기사는 "인수 대상이 부족하다"는 수급 논리를 제시한다{{cite:src-1}}. 이 관점은 EY가 제시한 성장 공백과 거래 가속 데이터와 방향성은 맞물린다{{cite:src-3}}.
 다만 1차 발표 문서들을 보면, 빅딜 상당수는 "즉시 매출 인식형 후기 자산"보다 "리스크는 높지만 잠재 시장이 큰 조기 플랫폼"에 베팅하는 성격이 강하다{{cite:src-2}}{{cite:src-4}}{{cite:src-6}}.
 
 즉, **매물 부족이 곧 가격 정당화**를 의미하지는 않는다. 현재 밸류에이션은 임상 성공 확률과 제조 단순화의 실증 속도에 의존적이다.
@@ -217,31 +225,32 @@ in vivo CAR-T가 거래 중심에 선 이유는 임상 성공 가능성만이 �
 
 *딜 발표 이후 가치 확정의 3단 분리 프레임*
 
-## 체크할 리스크
+## 가드레일
 
 - in vivo 전달 플랫폼의 장기 안전성/재현성 데이터 부족
 - 마일스톤 조건부 딜에서 후속 지급 전환 실패 가능성
 - 자가면역·종양학 적응증 확장 과정의 규제 지연
 - 높은 선반영 구간에서 임상 업데이트 공백 시 멀티플 조정
 
-## 결론
+**판단.**
 
-빅파마 M&A는 당분간 "후기 자산 구매"와 "플랫폼 선점"이 병행되겠지만, 시장 프리미엄은 점차 후자에 더 크게 붙을 가능성이 높다.  
+
+빅파마 M&A는 당분간 "후기 자산 구매"와 "플랫폼 선점"이 병행되겠지만, 시장 프리미엄은 점차 후자에 더 크게 붙을 가능성이 높다.
 다만 플랫폼형 딜은 성공 시 파급력이 큰 대신 실패 확률도 높다. 따라서 투자 해석의 중심은 인수 발표 자체가 아니라, 각 딜이 약속한 임상·규제 이정표를 일정대로 통과하는지에 둬야 한다.
 
 ## 출처
 
-- 이데일리, "글로벌 빅파마 인수합병 열풍 이끄는 치료제는?" (2026-05-09)  
+- 이데일리, "글로벌 빅파마 인수합병 열풍 이끄는 치료제는?" (2026-05-09)
   https://n.news.naver.com/mnews/article/018/0006276520
-- Eli Lilly, "Lilly to acquire Kelonia Therapeutics to advance in vivo CAR-T cell therapies" (2026-04-20)  
+- Eli Lilly, "Lilly to acquire Kelonia Therapeutics to advance in vivo CAR-T cell therapies" (2026-04-20)
   https://lilly.gcs-web.com/news-releases/news-release-details/lilly-acquire-kelonia-therapeutics-advance-vivo-car-t-cell
-- EY, "Life sciences M&A spending accelerates, as the industry faces growth gaps and looks to AI and China for innovation" (2026-01-27)  
+- EY, "Life sciences M&A spending accelerates, as the industry faces growth gaps and looks to AI and China for innovation" (2026-01-27)
   https://www.ey.com/en_gl/newsroom/2026/01/life-sciences-m-a-spending-accelerates-as-the-industry-faces-growth-gaps-and-looks-to-ai-and-china-for-innovation
-- AstraZeneca, "AstraZeneca to acquire EsoBiotec to advance cell therapy ambition" (2025-03-17)  
+- AstraZeneca, "AstraZeneca to acquire EsoBiotec to advance cell therapy ambition" (2025-03-17)
   https://www.astrazeneca.com/media-centre/press-releases/2025/astrazeneca-to-acquire-esobiotec.html
-- AbbVie, "AbbVie to Acquire Capstan Therapeutics" (2025-06-30)  
+- AbbVie, "AbbVie to Acquire Capstan Therapeutics" (2025-06-30)
   https://www.prnewswire.com/news-releases/abbvie-to-acquire-capstan-therapeutics-further-strengthening-commitment-to-transforming-patient-care-in-immunology-302494390.html
-- Bristol Myers Squibb, "Acquisition of Orbital Therapeutics" (2025-10-10)  
+- Bristol Myers Squibb, "Acquisition of Orbital Therapeutics" (2025-10-10)
   https://news.bms.com/news/corporate-financial/2025/Bristol-Myers-Squibb-Strengthens-and-Diversifies-Cell-Therapy-Portfolio-with-Acquisition-of-Orbital-Therapeutics/default.aspx
-- Gilead, "Kite to Acquire Interius BioTherapeutics to Advance In Vivo Platform" (2025-08-21)  
+- Gilead, "Kite to Acquire Interius BioTherapeutics to Advance In Vivo Platform" (2025-08-21)
   https://www.gilead.com/news/news-details/2025/kite-to-acquire-interius-biotherapeutics-to-advance-in-vivo-platform

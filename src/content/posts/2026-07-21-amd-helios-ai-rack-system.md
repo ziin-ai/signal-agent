@@ -144,16 +144,26 @@ entities:
     - "데이터센터 추론"
 ---
 
+**CALL — 고객 로스터보다 2026년 하반기 출하, ROCm 이식, 토큰당 TCO를 우선 확인한다.** 랙스케일 전환의 가치는 실제 가동률과 경제성이 증명할 때만 실적으로 연결된다{{cite:src-1}}{{cite:src-2}}{{cite:src-5}}.
+
 2026년 7월 20일 Microsoft가 Azure에 AMD Helios를 배치한다고 발표하면서, Helios 논쟁은 ‘공개 스펙’ 단계에서 ‘하이퍼스케일 조달’ 단계로 넘어갔다{{cite:src-1}}. Helios는 Instinct MI455X·EPYC Venice·Pensando·ROCm을 ORW 더블와이드 랙으로 통합한 AMD의 첫 랙스케일 AI 시스템이며, 고객 출하는 2026년 하반기로 제시된다{{cite:src-2}}.
 
-## 결론 요약 (TL;DR)
+## 결론 요약
 
 - 티어 A(플랫폼 전환): 단품 GPU 판매 → 랙스케일 턴키. Nvidia Grace Blackwell / Vera Rubin NVL급과 같은 ‘랙’ 단위 경쟁으로 이동{{cite:src-1}}{{cite:src-3}}
 - 티어 A(수요 가시성): MS Azure + Meta(장기 최대 6GW·올해 Helios 1GW)·OpenAI·Oracle 등 고객 로스터가 겹침{{cite:src-1}}{{cite:src-4}}
 - 티어 B(검증 숙제): 하반기 출하 램프, ROCm 워크로드 이식, 토큰당 TCO가 ASP 프리미엄을 상쇄하는지{{cite:src-5}}{{cite:src-7}}
 - 관전 트리거: Azure ND MI455X급 인스턴스 상용화 시점, Meta 1GW Helios 배치 진도, 2027년 DC AI 매출에서 Helios 비중 코멘트{{cite:src-4}}
 
-## Helios는 무엇인가?
+## 우선순위
+
+1. **출하 램프**: Azure 상용 인스턴스와 Meta 배치가 2026년 하반기 출하 계획대로 진행되는지 확인한다{{cite:src-1}}{{cite:src-4}}.
+2. **소프트웨어 전환**: ROCm의 워크로드 이식·프레임워크 최적화가 고객 도입 비용을 낮추는지 본다{{cite:src-2}}{{cite:src-7}}.
+3. **경제성 증명**: 공식 스펙이 아니라 토큰당 TCO와 가동률이 ASP 프리미엄을 상쇄하는지 평가한다{{cite:src-5}}.
+
+## 근거
+
+### Helios는 무엇인가?
 
 Helios는 서버 보드 묶음이 아니라, 컴퓨트 트레이·인터커넥트·냉각·스케일아웃까지 한 랙 레퍼런스로 고정한 시스템이다. 공식 구성은 랙당 Instinct MI455X 72개와 EPYC Venice CPU, Pensando Vulcano 네트워킹이며, Meta가 OCP에 제출한 Open Rack Wide(ORW) 더블와이드 폼팩터를 따른다{{cite:src-2}}{{cite:src-6}}.
 
@@ -224,7 +234,7 @@ CES 2026 공개 → 고객 약정(Meta/OpenAI/Oracle 등)
 핵심 지표 한 줄: 고객 로스터(질) × H2 출하(양) × ROCm 이식(전환비용) = Helios 멀티플
 </aside>
 
-## 체크할 리스크
+## 가드레일
 
 - 출하 일정 지연: H2 2026 ‘시작’과 2027 볼륨 램프 사이의 갭{{cite:src-2}}{{cite:src-7}}
 - 소프트웨어: CUDA 대비 ROCm 성숙도·프레임워크 최적화 속도{{cite:src-7}}
@@ -232,27 +242,9 @@ CES 2026 공개 → 고객 약정(Meta/OpenAI/Oracle 등)
 - 공급망: HBM4·첨단 패키징·액체냉각·전력 인프라 병목이 랙 납기를 제약
 - 경쟁 반응: Nvidia 차세대 랙·소프트웨어·번들 가격 정책이 상대 TCO를 다시 좁힐 수 있음
 
-## Helios는 Nvidia 독주를 깨는가?
+### Helios는 Nvidia 독주를 깨는가?
 
 단기적으로 ‘독주 붕괴’보다 ‘조달 다변화의 실물화’에 가깝다. MS가 Nvidia·자체 Maia와 병행해 Helios를 넣는 구조는, 하이퍼스케일러가 단일 벤더 리스크를 줄이려는 전형적인 포트폴리오 전략이다{{cite:src-1}}{{cite:src-5}}. 점유율 재평가는 Azure 상용 인스턴스 가동, Meta 1GW 배치, 2027년 Helios 매출 코멘트가 숫자로 확인될 때 가능하다{{cite:src-4}}.
-
-## 결론
-
-Helios는 AMD를 AI 가속기 공급자에서 랙스케일 인프라 벤더로 재정의하는 제품이다. 2026년 7월 Microsoft 합류로 고객 질은 한 단계 올라갔고, 하반기 출하가 스토리를 재무로 옮기는 첫 관문이다{{cite:src-1}}. 컨빅션 4의 근거는 플랫폼 전환의 비가역성과 하이퍼스케일 고객 로스터이며, 상향 여지는 ROCm·램프 실행, 하향 리스크는 일정 지연과 TCO 미증명에 묶여 있다.
-
-## 자주 묻는 질문 (FAQ)
-
-**Q. Helios는 언제부터 팔리나?**  
-A. AMD는 볼륨 배포·고객 출하를 2026년 하반기로 제시한다. Microsoft 포함 고객 출하도 같은 윈도우다{{cite:src-1}}{{cite:src-2}}.
-
-**Q. 랙 하나에 GPU가 몇 장인가?**  
-A. Instinct MI455X 72장. 트레이당 보통 4GPU+1CPU, 18트레이 구성으로 보도된다{{cite:src-2}}{{cite:src-7}}.
-
-**Q. Nvidia보다 싼가?**  
-A. Futurum 추산으로는 Helios ASP가 Vera Rubin보다 높을 수 있다. 선택 논거는 ASP가 아니라 토큰당 비용·TCO다{{cite:src-5}}.
-
-**Q. 한국 투자자에게 직접 노출은?**  
-A. 1차 티커는 NASDAQ:AMD. 간접으로는 HBM·서버·전력·액체냉각 밸류체인이 Helios 램프와 연동될 수 있으나, 본 노트는 AMD 플랫폼 논지에 한정한다.
 
 ## 출처
 

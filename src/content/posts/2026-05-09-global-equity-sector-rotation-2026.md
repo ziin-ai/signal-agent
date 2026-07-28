@@ -125,13 +125,21 @@ entities:
     - "경기민감주"
 ---
 
-2026년 글로벌 순환매의 핵심은 단순한 "기술주 약세"가 아니라, **같은 AI 테마 안에서 밸류에이션 프리미엄이 재배분되는 과정**이다. 연초 이후 관찰되는 신호는 대형 인프라 공급자 독주에서 실적 가시성이 높은 업종과 비미국 구간으로 자금이 분산되는 쪽에 가깝다{{cite:src-3}}{{cite:src-4}}{{cite:src-5}}.
+> **CALL.** 2026년 글로벌 순환매는 AI의 소멸이 아니라 AI 인프라 집중에서 현금흐름·밸류에이션이 확인되는 업종과 비미국 시장으로 리더십이 넓어지는 과정이다.
 
-## 결론 요약 (TL;DR)
+## 결론 요약
 
 - 2026년 순환매의 1차 축은 **대형 AI 인프라주 -> AI 수혜 확산 업종(헬스케어·유틸리티·금융 등)** 전환이다{{cite:src-4}}{{cite:src-5}}.
 - 2차 축은 **미국 집중 -> 비미국 및 신흥시장 비중 확대**이며, 약달러와 정책 격차가 이를 강화한다{{cite:src-3}}.
 - 3차 축은 **지수 이벤트(5월 MSCI 리뷰) + 통화정책 이벤트(FOMC SEP 회의)**가 수급 재배치를 가속하는 구조다{{cite:src-1}}{{cite:src-2}}.
+
+## 우선순위
+
+1. **AI CAPEX의 수익화 지표**
+2. **달러와 FOMC 경로의 변화**
+3. **MSCI 리뷰 전후의 패시브 수급**
+
+2026년 글로벌 순환매의 핵심은 단순한 "기술주 약세"가 아니라, **같은 AI 테마 안에서 밸류에이션 프리미엄이 재배분되는 과정**이다. 연초 이후 관찰되는 신호는 대형 인프라 공급자 독주에서 실적 가시성이 높은 업종과 비미국 구간으로 자금이 분산되는 쪽에 가깝다{{cite:src-3}}{{cite:src-4}}{{cite:src-5}}.
 
 ## 2026년 순환매는 왜 지금 강해졌나?
 
@@ -196,7 +204,7 @@ MSCI 일정은 "무엇을 담을지"를, FOMC 일정은 "얼마에 할인할지"
 2. **미국/비미국 바벨**: 미국 퀄리티 코어를 유지하되, 비미국(유럽·일본·EM)의 밸류 구간을 함께 담아 변동성을 완충한다{{cite:src-3}}{{cite:src-5}}.
 3. **이벤트 캘린더 기반 리밸런싱**: MSCI 공지·반영일, FOMC SEP 회의 전후를 사전 리밸런싱 포인트로 사용하는 것이 실행력 측면에서 유리하다{{cite:src-1}}{{cite:src-2}}.
 
-## 체크할 리스크
+## 가드레일
 
 - **AI 수익화 지연**: capex 대비 매출·이익 전환 속도가 기대를 하회하면 성장주 전체 멀티플이 동시 조정될 수 있다{{cite:src-4}}.
 - **달러 재강세**: 연준 경로가 시장 기대보다 매파적으로 바뀌면 비미국·EM 순환 논리가 약해질 수 있다{{cite:src-1}}{{cite:src-3}}.
@@ -204,13 +212,13 @@ MSCI 일정은 "무엇을 담을지"를, FOMC 일정은 "얼마에 할인할지"
 
 ## 출처
 
-- Federal Reserve, "Meeting calendars and information" (2026-04-29)  
+- Federal Reserve, "Meeting calendars and information" (2026-04-29)
   https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
-- MSCI, "MSCI May Index Review Announcement Scheduled for May 12, 2026" (2026-05-05)  
+- MSCI, "MSCI May Index Review Announcement Scheduled for May 12, 2026" (2026-05-05)
   https://app2.msci.com/webapp/index_ann/DocGet?format=html&lang=en&pub_key=bN889ud22q4%3D
-- Invesco, "2026 Annual Investment Outlook: Resilience and Rebalancing" (2025-12-02)  
+- Invesco, "2026 Annual Investment Outlook: Resilience and Rebalancing" (2025-12-02)
   https://www.invesco.com/content/dam/invesco/hk/en/pdf/quicklink/2025/december/2026-investment-outlook.pdf
-- Morgan Stanley, "Why Good News Isn’t Moving Stocks" (2026-02-18)  
+- Morgan Stanley, "Why Good News Isn’t Moving Stocks" (2026-02-18)
   http://www.morganstanley.com/insights/articles/magnificent-seven-rotation-portfolio-strategies-2026
-- UBS, "Position for a broadening rally" (2026-05-06)  
+- UBS, "Position for a broadening rally" (2026-05-06)
   https://www.ubs.com/global/en/wealthmanagement/insights/marketnews/article.3020364.html
