@@ -1,16 +1,35 @@
+---
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+const policyLinks = [
+  { href: `${rootPath}about`, label: "소개" },
+  { href: `${rootPath}privacy`, label: "개인정보처리방침" },
+  { href: `${rootPath}terms`, label: "이용약관·면책" },
+  { href: `${rootPath}contact`, label: "연락처" },
+];
+---
+
 <footer class="mt-10 border-t border-slate-300/60 px-4 py-6 text-sm text-slate-600 dark:border-slate-700/60 dark:text-slate-300">
-  <div class="mx-auto flex w-full max-w-6xl flex-col gap-2">
-    <p>면책 고지: 본 사이트의 모든 내용은 투자 참고 정보이며, 투자 손익의 책임은 투자자 본인에게 있습니다.</p>
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-3">
     <p>
-      문의:{" "}
-      <a
-        href="https://github.com/ziin-ai/signal-agent/issues"
-        class="font-medium text-info hover:underline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        GitHub Issues에서 문의
-      </a>
+      면책 고지: 본 사이트의 모든 내용은 투자 참고 정보이며, 투자 손익의 책임은 투자자 본인에게 있습니다. 자세한
+      내용은
+      <a href={`${rootPath}terms`} class="font-medium text-info hover:underline">이용약관·면책조항</a>을 확인하세요.
+    </p>
+    <nav class="flex flex-wrap gap-x-4 gap-y-1" aria-label="정책 및 소개">
+      {
+        policyLinks.map((link) => (
+          <a href={link.href} class="font-medium text-info hover:underline">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <p>
+      문의:
+      <a href="mailto:contact@ziin.ai" class="font-medium text-info hover:underline">contact@ziin.ai</a>
+      ·
+      <a href={`${rootPath}contact`} class="font-medium text-info hover:underline">연락처 페이지</a>
     </p>
     <p>© {new Date().getFullYear()} ziin.ai. All rights reserved.</p>
   </div>

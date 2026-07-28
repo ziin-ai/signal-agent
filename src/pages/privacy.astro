@@ -1,0 +1,134 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteDoc from "../components/layout/SiteDoc.astro";
+
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+---
+
+<Base
+  title="개인정보처리방침 | 내 곁에 지인"
+  description="지인.ai의 개인정보·쿠키·광고(Google AdSense) 관련 수집·이용에 대한 안내입니다."
+>
+  <SiteDoc title="개인정보처리방침" updated="2026-07-28">
+    <p>
+      지인.ai(이하 “사이트”)는 이용자의 개인정보를 중요하게 여기며, 관련 법령과 Google 광고·분석 정책을 반영해
+      아래와 같이 처리합니다. 본 방침은 사이트의 서비스 제공·개선, 보안, 광고 게재(예정·운영)와 관련된 개인정보·쿠키
+      처리에 적용됩니다.
+    </p>
+
+    <h2>1. 수집하는 정보</h2>
+    <h3>1-1. 이용자가 직접 제공하는 정보</h3>
+    <p>
+      문의 이메일(<a href="mailto:contact@ziin.ai">contact@ziin.ai</a>)로 연락하시면 회신에 필요한 이메일 주소와
+      메시지 내용이 수집될 수 있습니다. 별도의 회원 가입·로그인 기능은 현재 제공하지 않습니다.
+    </p>
+    <h3>1-2. 자동으로 수집·생성되는 정보</h3>
+    <ul>
+      <li>접속 로그, IP 주소, 브라우저·기기 유형, 방문 페이지·시간 등 (서버·보안·장애 대응 목적)</li>
+      <li>
+        <strong>쿠키 및 유사 기술</strong> — 사이트 기능, 방문 통계, 광고 게재·측정에 사용될 수 있습니다.
+      </li>
+    </ul>
+
+    <h2>2. 쿠키·광고·제3자 (Google AdSense 등)</h2>
+    <p>
+      사이트는 <strong>Google AdSense</strong> 등 제3자 광고 서비스를 사용하거나 사용할 수 있습니다. 광고 파트너는
+      이용자의 기기에서 <strong>쿠키 또는 유사 기술</strong>을 사용해 관심사에 기반한 광고를 게재하고, 광고 노출·클릭을
+      측정할 수 있습니다.
+    </p>
+    <ul>
+      <li>
+        Google을 포함한 제3자 공급업체는 쿠키를 사용해 사용자의 사이트 및 다른 사이트 방문 기록을 기반으로 광고를
+        게재합니다.
+      </li>
+      <li>
+        Google의 광고 쿠키 사용을 통해 Google과 파트너는 사용자의 사이트 및/또는 인터넷상의 다른 사이트 방문 기록을
+        기반으로 광고를 게재할 수 있습니다.
+      </li>
+      <li>
+        사용자는
+        <a
+          href="https://www.google.com/settings/ads"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Google 광고 설정</a
+        >에서 맞춤 광고를 옵트아웃할 수 있습니다.
+      </li>
+      <li>
+        또는
+        <a
+          href="https://www.aboutads.info/choices/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >www.aboutads.info</a
+        >를 방문해 제3자 공급업체의 맞춤 광고용 쿠키 사용을 옵트아웃할 수 있습니다.
+      </li>
+    </ul>
+    <p>
+      Google의 광고·쿠키 정책에 대한 자세한 내용은
+      <a
+        href="https://policies.google.com/technologies/ads"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Google 광고 기술 정책</a
+      >을 참고하세요. AdSense 사용 시 사이트는
+      <a href={`${rootPath}ads.txt`}>ads.txt</a>로 승인된 판매자를 고지합니다.
+    </p>
+    <p>
+      또한 사이트는 방문 통계를 위해 <strong>Google Analytics(GA4)</strong>를 사용할 수 있습니다. Google Analytics는
+      쿠키 등을 통해 익명화된·집계된 이용 정보를 수집할 수 있으며, Google의
+      <a
+        href="https://policies.google.com/privacy"
+        target="_blank"
+        rel="noopener noreferrer"
+      >개인정보처리방침</a
+      >이 적용됩니다.
+    </p>
+
+    <h2>3. 이용 목적</h2>
+    <ul>
+      <li>서비스 제공·유지·보안·오류 분석</li>
+      <li>문의 응대</li>
+      <li>방문자 통계·콘텐츠 개선</li>
+      <li>광고 게재·측정(AdSense 등 제3자 서비스 이용 시)</li>
+      <li>법령상 의무 이행</li>
+    </ul>
+
+    <h2>4. 보관 기간</h2>
+    <p>
+      문의 이메일은 응대에 필요한 기간 동안 보관한 뒤 삭제합니다. 서버 로그·분석 데이터는 보안·운영상 필요한
+      합리적인 기간 동안 보관될 수 있으며, 제3자(광고·분석) 측 보관은 해당 사업자의 정책에 따릅니다.
+    </p>
+
+    <h2>5. 제3자 제공·처리위탁</h2>
+    <p>
+      법령에 근거하거나 이용자 동의가 있는 경우, 또는 서비스 운영에 필수적인 호스팅·CDN·광고·분석 제공자에게
+      처리가 위탁·공유될 수 있습니다. 대표적으로 Google(AdSense, Analytics)이 해당될 수 있습니다.
+    </p>
+
+    <h2>6. 이용자의 권리</h2>
+    <p>
+      관련 법령이 허용하는 범위에서 본인 정보에 대한 열람·정정·삭제·처리 정지를 요청할 수 있습니다. 문의는
+      <a href="mailto:contact@ziin.ai">contact@ziin.ai</a> 또는
+      <a href={`${rootPath}contact`}>연락처</a> 페이지를 이용해 주세요.
+    </p>
+
+    <h2>7. 아동의 개인정보</h2>
+    <p>
+      사이트는 만 14세 미만 아동을 대상으로 하지 않으며, 고의로 아동의 개인정보를 수집하지 않습니다.
+    </p>
+
+    <h2>8. 방침 변경</h2>
+    <p>
+      본 방침은 법령·서비스 변경에 따라 수정될 수 있으며, 중요한 변경은 본 페이지의 “최종 업데이트” 일자와 함께
+      게시합니다.
+    </p>
+
+    <h2>9. 문의</h2>
+    <p>
+      개인정보 관련 문의: <a href="mailto:contact@ziin.ai">contact@ziin.ai</a><br />
+      사이트: <a href="https://ziin.ai">https://ziin.ai</a>
+    </p>
+  </SiteDoc>
+</Base>

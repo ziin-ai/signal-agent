@@ -4,6 +4,7 @@ import { render } from "astro:content";
 import Panel from "../ui/Panel.astro";
 import CitationBadge from "../post/CitationBadge.astro";
 import MarkdownViewer from "../post/MarkdownViewer.astro";
+import PostTrustMeta from "../post/PostTrustMeta.astro";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -74,6 +75,7 @@ const yahooFinanceUrl = yahooSymbol
         )
       }
     </p>
+    <PostTrustMeta aiAssisted={post.data.aiAssisted} compact />
 
     <div class="mt-3">
       <blockquote class="rounded-lg border-l-4 border-info/70 bg-info/5 px-4 py-3 text-[15px] leading-relaxed text-slate-700 dark:border-info/60 dark:bg-info/10 dark:text-slate-200">
