@@ -349,11 +349,29 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 
 ### Tone
 
-- Declarative, third-person or neutral analyst voice (“증권가는…”, “시장은…”)
+- Decisive analyst voice: state **what you prioritize today**, then evidence — not a balanced slide deck of equal bullets
 - Short paragraphs (2–4 sentences); one idea per paragraph
 - Prefer connected prose over bullet stacks when the logic is sequential
 - Avoid hype adjectives unless sourced (“역대급”, “폭등”, “대박”) — use measured verbs: “상회”, “확대”, “부합”, “둔화”
+- Avoid meta-AI phrasing: “읽기 틀”, “한 줄로 정리하면”, “다음과 같이 볼 수 있다”, “종합하면” stacked mechanically
+- Prefer: “우선 …로 본다”, “아직 단정하지 않는다”, “틀리면 이 조건에서 해석을 바꾼다”
 - Do not bold for emotional punch; bold is a **structural** tool only (see budget below)
+
+### Expert voice (required — anti-generic / anti-AI pattern)
+
+Every research or market post must include these three beats **in the body** (names of headings may vary):
+
+1. **콜 (call)** — Opening 1–3 sentences: a ranked judgment for this piece (what matters most today / this thesis). Numbers come after, not before.
+2. **순위 (priority)** — Explicit hierarchy of drivers (e.g. 1순위 / 감시 / 노이즈, or a 3-row priority table). Do **not** present 4–5 equal “변수” without ranking.
+3. **가드레일 (falsifier)** — One short block: what would make you **change** today’s call (price, flow, event, or data print). Optional: one line linking to the **prior session’s** read if a related post exists (“어제 …로 읽었는데 오늘은 …”).
+
+**Do less by default:**
+
+- Skip FAQ on daily market briefs unless the user asks for SEO/snippet mode
+- Skip “N대 변수” equal lists; merge into ranked sections
+- Quote at most **one** external analyst for the primary call; add one sentence of agreement or dissent — do not stack three broker quotes as the thesis
+
+**Allowed asymmetry:** It is better to be wrong with a clear falsifier than to be “balanced” with no priority.
 
 ### Emphasis budget (critical)
 
@@ -395,12 +413,15 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 
 ### Structure (research note flow)
 
-1. **Lede (2–3 sentences):** context date → thesis → why it matters now  
-2. **결론 요약:** 3–5 bullets, labels only lightly marked; numbers in plain text  
-3. **Framework section:** one comparison table + short interpretation paragraph  
-4. **Issuer / theme sections:** subheading names the name; body avoids re-bolding the name  
-5. **리스크:** plain bullets, no bold on every risk keyword  
-6. **결론:** 2 paragraphs max, restate thesis without re-highlighting every ticker  
+1. **Lede = 콜:** ranked thesis first (date → call → why now); numbers deferred to table  
+2. **결론 요약:** 3–5 bullets — lead bullet restates the call; then facts  
+3. **순위:** 1순위 / 감시 / 노이즈 (table or short subsections — not equal “5대”)  
+4. **가드레일:** what would falsify today’s call (+ optional prior-day memory)  
+5. **Evidence sections:** tables/visuals near claims; one primary broker quote max for the call  
+6. **리스크:** plain bullets tied to the ranked drivers  
+7. **결론:** 2 paragraphs max; restate call + falsifier — no FAQ unless snippet mode  
+
+FAQ is **optional** (see Snippet-Oriented Structure). Daily market briefs should usually omit FAQ.
 
 ### Before save — emphasis pass
 
@@ -554,22 +575,24 @@ tags: ["실적", "가이던스"]
 
 - Never mention AI, model limitations, or that the text is generated
 - Avoid formulaic phrasing such as "종합하면", "정리하면" repeated mechanically
+- **Expert voice first:** enforce **콜 · 순위 · 가드레일** (Report Writing Style → Expert voice) before filling equal-length sections
 - **Readability over highlighting:** if a fact is already in a table or heading, do not bold it again in prose (see Report Writing Style)
 - Keep high structural freedom in body sections:
   - You may rename headings or change order by topic
   - You may merge/split sections when it improves readability
   - You are not required to use the exact sample headings
+  - You are not required to use FAQ, “5대 변수”, or equal bullet stacks
 - Keep the analysis decisive but calibrated:
   - State conviction drivers clearly
-  - Explicitly note uncertainty boundaries and trigger conditions
+  - Explicitly note uncertainty boundaries and trigger conditions (가드레일)
 - Prioritize insight density over length; remove filler sentences
 
 ## Snippet-Oriented Structure (Google Search)
 
-Use this structure by default when the user asks for SEO visibility, snippet exposure, or search-friendly writing:
+Use this structure **only when** the user asks for SEO visibility, snippet exposure, or search-friendly writing. Default market/research posts use Expert voice + Structure above instead.
 
 1. Title includes the core query intent
-2. First 1-2 lines answer the core question directly
+2. First 1-2 lines answer the core question directly (still include a ranked call)
 3. `## 결론 요약 (TL;DR)` with 2-3 bullets
 4. At least one question-style heading (for example, `## ~인가?`)
 5. Direct answer paragraph immediately below that heading (2-4 sentences)
@@ -585,6 +608,7 @@ Guidelines:
 - Prefer lists or GFM tables for scannability when facts are structured
 - Align title, opening answer, and section headings to the same search intent
 - Do not promise rankings or guaranteed featured snippets
+- Still include **가드레일** even in snippet mode
 
 ## Title Policy (Naver as search / discovery source)
 
@@ -627,7 +651,7 @@ Slug rules:
 2. If input is topic (+ optional anchor URLs), run Topic-Driven Research Mode as the primary flow, and apply **Topic mode + anchor URLs** to include anchors as required references within that flow. If topic-only with no anchors, run Topic-Driven Research Mode only.
 3. Draft frontmatter first and validate schema fields.
 4. For YouTube sources, extract transcript-backed points (or best-effort metadata summary with confidence note).
-5. Draft body sections using source-backed claims and synthesized reasoning; apply **Report Writing Style** (emphasis budget, table-first numbers).
+5. Draft body sections using source-backed claims and synthesized reasoning; apply **Report Writing Style** (expert voice: 콜·순위·가드레일; emphasis budget; table-first numbers).
 6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections.
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
 8. Unless the user opted out, add **`shorts`** after `sources` and before `entities`: derive hook/scenes/thumbnail from the finalized thesis and `summary`; match `duration` to scene timeline; validate against **Shorts** table above.
