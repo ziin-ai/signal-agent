@@ -15,21 +15,21 @@ draft: false
 sources:
   - id: "src-1"
     tier: 1
-    type: "data"
+    type: "report"
     title: "한국은행 경제통계시스템 금리 통계"
     date: 2026-07-28
     url: "https://ecos.bok.or.kr/"
     excerpt: "국고채 수익률을 비롯한 금융시장 금리는 기준과 만기를 구분해 조회할 수 있다."
   - id: "src-2"
     tier: 1
-    type: "data"
+    type: "report"
     title: "한국거래소 채권시장 정보"
     date: 2026-07-28
     url: "https://bond.krx.co.kr/"
     excerpt: "채권 수익률과 시장 정보는 채권의 만기 및 거래 조건을 함께 확인해야 한다."
   - id: "src-3"
     tier: 1
-    type: "data"
+    type: "report"
     title: "FnGuide 지수 및 기업 재무 정보"
     date: 2026-07-28
     url: "https://www.fnguide.com/"

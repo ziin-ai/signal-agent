@@ -15,21 +15,21 @@ draft: false
 sources:
   - id: "src-1"
     tier: 1
-    type: "guide"
+    type: "report"
     title: "한국거래소 파생상품시장 안내"
     date: 2026-07-28
     url: "https://global.krx.co.kr/contents/GLB/03/0301/0301010000/GLB0301010000.jsp"
     excerpt: "파생상품의 계약 구조와 거래 제도는 현물시장과의 관계를 이해하는 기초다."
   - id: "src-2"
     tier: 1
-    type: "data"
+    type: "report"
     title: "KRX 정보데이터시스템 프로그램매매 통계"
     date: 2026-07-28
     url: "https://data.krx.co.kr/"
     excerpt: "시장·투자자·거래 구분별 통계는 집계 기준과 기간을 확인하여 이용해야 한다."
   - id: "src-3"
     tier: 1
-    type: "guide"
+    type: "report"
     title: "한국거래소 시장안정화장치 안내"
     date: 2026-07-28
     url: "https://global.krx.co.kr/contents/GLB/06/0603/0603010000/GLB0603010000.jsp"

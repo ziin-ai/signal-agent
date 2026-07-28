@@ -6,23 +6,23 @@
 | --- | --- |
 | Project | ziin-ai / signal-agent |
 | Intent | AdSense approval readiness |
-| Current phase | CONSTRUCTION complete → git publish |
-| Updated (UTC) | 2026-07-28T06:35:00Z |
+| Current phase | OPERATIONS (checklist + polish) |
+| Updated (UTC) | 2026-07-28T06:36:00Z |
 
 ## Stage Progress
 
-### Inception — Completed (defaults via user `계속`)
-
+### Inception — Completed
 ### Construction — Completed
+### Operations — In progress
 
-| Unit | Status |
+| Item | Status |
 | --- | --- |
-| evergreen-content | Completed |
-| publisher-chrome | Completed |
-| crawl-hardening | Completed |
-| daily-voice-sample | Completed |
-| Build and Test | Completed (`pnpm run build` OK) |
-
-### Operations
-
-Manual: submit sitemap in Google Search Console; set `PUBLIC_ADSENSE_CLIENT_ID` in prod when applying.
+| ads.txt live verify | Done |
+| robots.txt live verify | Done |
+| Ops checklist doc | Done |
+| Header Contact | Done |
+| /posts guide hub | Done |
+| +5 educational guides | Done (schema types fixed) |
+| GSC sitemap submit | Manual — operator |
+| AdSense apply | Manual — operator |
+| Ad units | Deferred until approval |

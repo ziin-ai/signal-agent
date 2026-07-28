@@ -15,14 +15,14 @@ draft: false
 sources:
   - id: "src-1"
     tier: 1
-    type: "guide"
+    type: "report"
     title: "한국거래소 KOSPI 지수 산출 방법론"
     date: 2026-07-28
     url: "https://global.krx.co.kr/contents/GLB/06/0604/0604010100/GLB0604010100.jsp"
     excerpt: "지수의 구성, 산출 및 관리 원칙은 지수 방법론과 공식 공지를 기준으로 확인해야 한다."
   - id: "src-2"
     tier: 1
-    type: "data"
+    type: "report"
     title: "KRX 정보데이터시스템 상장·시가총액 통계"
     date: 2026-07-28
     url: "https://data.krx.co.kr/"

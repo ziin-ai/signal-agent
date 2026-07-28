@@ -55,6 +55,7 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 
   <section class="grid grid-cols-1 gap-3" aria-label="전체 분석글">
     <h2 class="font-sans text-lg font-semibold tracking-tight">전체 글</h2>
+    {
       orderedPosts.map((post) => {
         const score = calculateScore(post.data.sources);
         const slug = post.id.replace(/\.md$/, "");

@@ -19,7 +19,7 @@ AI-DLC Operations phase (manual + code hygiene). Code-side follow-ups shipped in
 ## Manual checklist (operator)
 
 1. [x] Open https://ziin.ai/ads.txt — expect `google.com, pub-6929869719862616, DIRECT, f08c47fec0942fa0`
-2. [ ] Open https://ziin.ai/robots.txt — `Allow: /`, Sitemap line
+2. [x] Open https://ziin.ai/robots.txt — `Allow: /`, Sitemap line (verified 2026-07-28)
 3. [ ] Google Search Console → property `https://ziin.ai` → submit `https://ziin.ai/sitemap.xml`
 4. [ ] URL Inspection on `/`, `/about`, one guide post, one outlook — confirm text in rendered HTML
 5. [ ] AdSense application → site URL `https://ziin.ai` (content pages, not only dashboard)

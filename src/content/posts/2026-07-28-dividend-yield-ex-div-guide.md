@@ -15,7 +15,7 @@ draft: false
 sources:
   - id: "src-1"
     tier: 1
-    type: "guide"
+    type: "report"
     title: "한국거래소 배당 관련 시장제도 및 정보"
     date: 2026-07-28
     url: "https://global.krx.co.kr/contents/GLB/06/0605/0605010000/GLB0605010000.jsp"
@@ -29,7 +29,7 @@ sources:
     excerpt: "배당 결정, 사업보고서 및 정정 공시는 배당의 조건과 재무 정보를 확인하는 원문이다."
   - id: "src-3"
     tier: 1
-    type: "data"
+    type: "report"
     title: "FnGuide 기업 재무 및 배당 정보"
     date: 2026-07-28
     url: "https://comp.fnguide.com/"

@@ -22,14 +22,14 @@ sources:
     excerpt: "상장법인의 정기보고서와 주요사항보고서, 실적 관련 공시는 원문 기준으로 확인할 수 있다."
   - id: "src-2"
     tier: 1
-    type: "guide"
+    type: "report"
     title: "한국거래소 기업공시채널 KIND"
     date: 2026-07-28
     url: "https://kind.krx.co.kr/"
     excerpt: "상장법인의 공시와 IR 자료는 공시 시점 및 문서 유형을 구분하여 조회할 수 있다."
   - id: "src-3"
     tier: 1
-    type: "data"
+    type: "report"
     title: "FnGuide 컨센서스 및 기업 정보"
     date: 2026-07-28
     url: "https://comp.fnguide.com/"
