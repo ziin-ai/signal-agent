@@ -120,12 +120,14 @@ disable-model-invocation: true
 ```markdown
 ## {YYYY-MM-DD} 한국 경제·증시 브리핑 ({장전|장중|장마감})
 
-### 한 줄
-...
+### 콜
+오늘 장의 본체는 … (헤드라인 말고 우선순위 1개)
 
-### 오늘의 5대 변수
-1. ...
-2. ...
+### 순위
+1. … / 감시: … / 노이즈: …
+
+### 가드레일
+이 신호가 나오면 해석을 바꾼다: …
 
 ### 확정 숫자
 | 항목 | 값 | 출처 |
@@ -160,14 +162,14 @@ disable-model-invocation: true
 - 장 전/전망: `YYYY-MM-DD-korea-market-outlook.md` 또는 **당일 thesis** kebab slug (예: `…-msci-week-ahead.md`)
 - 네이버로 헤드라인을 모았어도 slug에 `naver-*` **사용 금지** — 내용 hook으로 kebab 작성
 
-**Body structure (daily — adapt freely):**
+**Body structure (daily):** post-from-sources **Expert Voice** 필수 — 콜·순위·가드레일. FAQ·균등 N대 나열 금지.
 
-1. 첫 1~2문장: 오늘 장의 **성격** (예: 차익실현, CPI 전 관망)
-2. `## 결론 요약 (TL;DR)` — 3~5 bullets, 숫자 포함
+1. 오프닝 1~2문장: **콜** (오늘 장의 본체)
+2. `## 결론 요약` — 3~5 bullets, 숫자 + 순위 반영
 3. `## 오늘 장에서 확정된 숫자` — GFM 표
-4. `## {N}대 시장 변수` — 변수별 소제목, 인과·시나리오
+4. `## 우선순위` — 1순위 / 감시 / 노이즈 (균등 N대 변수 표 금지)
 5. `## 수급·섹터` — 표 또는 ASCII/SVG (Visual Enrichment Policy 준수)
-6. `## 체크할 리스크`
+6. `## 가드레일` — 해석을 바꾸는 신호
 7. `## 출처`
 
 `shorts` frontmatter: post-from-sources와 동일 — **`sources` 다음, `entities` 앞**. 사용자가 생략 요청 시만 제외.
@@ -222,7 +224,7 @@ Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 sk
 ```
 
 ```text
-`korea-daily-news`로 리서치만 — sources YAML 초안이랑 5대 변수 표.
+`korea-daily-news`로 리서치만 — sources YAML 초안이랑 우선순위(콜·감시·노이즈) 표.
 ```
 
 ## Related
