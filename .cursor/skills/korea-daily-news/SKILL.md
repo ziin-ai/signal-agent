@@ -194,24 +194,27 @@ Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 sk
 
 작업 완료 전 확인:
 
+- [ ] **콜 · 순위 · 가드레일** 본문에 있음 (균등 N대 변수·일간 FAQ 없음)
+- [ ] 직전 동일 시리즈 글과 **제목/섹션 골격이 복붙이 아님**
 - [ ] 모든 핵심 숫자가 `sources` 또는 fetch 본문과 일치
 - [ ] 기준일(KST)과 기사 게시일 혼동 없음 (전일 장 / 당일 장 전 구분)
-- [ ] `sources` 6건 이상, tier·type·ISO date·absolute url
+- [ ] `sources` 6건 이상; `type` ∈ `filing|ir-call|report|news|youtube|pdf|anonymous` only
 - [ ] Mode B면 visual 3종 이상(post-from-sources Visual Enrichment Policy)
-- [ ] Mode B면 `shorts` 포함(명시적 생략 제외)
+- [ ] Mode B면 `shorts` 포함(명시적 생략 제외) — 교육 가이드가 아님
 - [ ] 투자 권유·목표가 단정 표현 없음
-- [ ] Mode B면 git publish 완료 또는 skip 사유 기록
+- [ ] Mode B면 `pnpm run build`(또는 content schema sync) 통과 후 git publish
 
 ## Final Response To User
 
 1. **기준일·시각대** (KST)
-2. **선정한 3~7 변수** 한 줄씩
+2. **콜 한 줄** + 1순위 / 감시 / 노이즈
 3. **생성/수정 파일 경로** (Mode B) 또는 브리핑 요약 (Mode A)
 4. **sources shortlist** — 왜 포함했는지 1줄씩
-5. **low-confidence 구간** — 확인 못한 숫자·충돈 보도
+5. **low-confidence 구간** — 확인 못한 숫자·충돌 보도
 6. **events** co-update 목록 (해당 시)
 7. **shorts** 훅 각도 (Mode B)
-8. **Git** — commit hash·branch·push 결과 또는 skip 사유
+8. **Build/schema** — pass/fail
+9. **Git** — commit hash·branch·push 결과 또는 skip 사유
 
 ## Trigger Examples
 

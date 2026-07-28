@@ -4,15 +4,15 @@ description: >-
   Write a post under src/content/posts from sources or topic research, and when
   the thesis hinges on dated catalysts or milestones, add or update matching
   entries in src/content/events (timeline / 대시보드 외부 이벤트).
-  For each new or revised post, generate frontmatter `shorts` (YouTube Shorts-style
-  hook, scenes, thumbnail, hashtags) after `sources` and before `entities`, aligned
-  with src/content.config.ts. Post body tables must use Markdown GFM pipe syntax
-  (`| col |`), not HTML `<table>`. In topic-driven mode, include and cite user-supplied
-  anchor URLs as required references, while keeping topic research and source
-  diversification as the primary method. After saving files, run git add, commit,
-  and push per _shared/git-publish.md unless the user opts out or there are no changes.
-  Use when the user provides URLs, source
-  summaries, topics, or asks to draft or revise analysis posts for this repo.
+  Enforce expert voice (콜 · 순위 · 가드레일), valid sources[*].type enum only,
+  and AdSense-ready substance (no thin template clones). Evergreen/교육 guides
+  omit shorts by default and require depth. For each new or revised market/
+  research post, generate frontmatter `shorts` unless user opts out or the post
+  is an educational guide. Post body tables must use Markdown GFM pipe syntax
+  (`| col |`), not HTML `<table>`. After saving, validate content (build or
+  schema) then git add/commit/push per _shared/git-publish.md unless opted out.
+  Use when the user provides URLs, source summaries, topics, educational guide
+  requests, or asks to draft or revise analysis posts for this repo.
 disable-model-invocation: true
 ---
 
@@ -24,7 +24,38 @@ Create or update one file in `src/content/posts/` that matches the project's pos
 
 When the draft introduces or relies on **concrete calendar catalysts** (실적 일정, 정책·금리 결정, 제품·공장 가동, 규제 마일스톤 등), **also** add or update one or more files in `src/content/events/` so those items appear on the global/symbol timeline and in dashboard filters (`category`, `market`, `impact`). Do not invent dates; only record what sources or the user supplied with reasonable certainty.
 
-Unless the user explicitly asks to skip shorts, **fill `shorts` frontmatter** for every post: a vertical Shorts script derived from the same thesis as the long-form body (hook → tension → explanation → checkpoints → conclusion → CTA). Placement order in YAML is **`sources:` → `shorts:` → `entities:`**. Validate fields against `shortsSchema` in `src/content.config.ts`. In-repo reference: `src/content/posts/2026-05-08-2026-iljin-electric.md`.
+Unless the user explicitly asks to skip shorts, **fill `shorts` frontmatter** for market/research posts: a vertical Shorts script derived from the same thesis as the long-form body (hook → tension → explanation → checkpoints → conclusion → CTA). Placement order in YAML is **`sources:` → `shorts:` → `entities:`**. Validate fields against `shortsSchema` in `src/content.config.ts`. In-repo reference: `src/content/posts/2026-05-08-2026-iljin-electric.md`.
+
+**Exception — evergreen / 교육 guides:** omit `shorts` by default (see **Post modes**). User may still request shorts explicitly.
+
+## Post modes (required classification)
+
+Before drafting, classify the post. Do not mix daily-template shells into educational guides.
+
+| Mode | When | Shorts | Structure | Tags |
+| --- | --- | --- | --- | --- |
+| **Market / research** | Daily outlook, thematic analysis, issuer deep-dive | Required unless user opts out | Expert voice: **콜 · 순위 · 가드레일** | Topic tags; no need for `교육` |
+| **Evergreen / 교육** | Concept explainers (수급, PER, 사이드카, ETF, 환율…) | **Omit by default** | Framework + worked examples + **가드레일**; FAQ OK if short | Must include **`교육`** |
+
+### Evergreen / 교육 depth bar (AdSense / low-value review)
+
+Reviewers treat thin AI-looking pages as low-value. For every `교육` post:
+
+1. **Hangul body ≥ ~1,800 characters** (excluding frontmatter). Prefer 2,000+ with tables/examples.
+2. Open with a **usable judgment frame** (what mistake the headline causes), not a definition dump.
+3. Include **≥1 worked example or rewrite table** (잘못된 문장 → 다시 쓰기, or numeric toy example).
+4. Include **`## 가드레일`** (when the frame should be abandoned).
+5. Keep YMYL hygiene: “교육용 참고 / 투자 권유 아님” near the top; no buy/sell targets.
+6. Prefer official/primary URLs in `sources` (`filing` / `report`); news is secondary color.
+7. Do **not** clone yesterday’s daily headings (TL;DR → N대 변수 → FAQ) into guides.
+8. Reference in-repo: `src/content/posts/2026-07-28-usd-krw-and-korea-equities.md`, `…-how-to-read-foreign-investor-flows.md`.
+
+### Market / research anti-template bar
+
+1. Lead with a **ranked call**, not an equal “오늘의 5대 변수” deck.
+2. Vary section titles vs the previous same-series post when substance differs.
+3. If two drafts share the same skeleton and only swap dates/numbers, merge or rewrite one — do not ship near-duplicates.
+4. Keep `aiAssisted: true` when AI helped; never set `false` without real human rewrite evidence.
 
 ## Inputs To Request
 
@@ -38,7 +69,8 @@ Ask for missing items before drafting:
 6. Optional constraints (tone, length, Korean/English mix, key risks)
 7. Optional: explicit **calendar catalysts** to record as `events` (date + kind — 실적, FOMC, 규제 등). If omitted, infer from sources while drafting.
 8. **Topic 모드 전용:** 사용자가 “꼭 참조할 URL”“반드시 포함” 등으로 넘긴 **앵커 URL** 목록(0개 이상). 있으면 아래 **Topic mode + anchor URLs** 절의 규칙을 따른다.
-9. Optional: **shorts 생략** — “shorts 빼줘”, “세로영상 메타 없이” 등으로 명시할 때만 `shorts` 키를 넣지 않는다. 그 외에는 항상 생성한다.
+9. Optional: **shorts 생략** — “shorts 빼줘”, “세로영상 메타 없이” 등으로 명시할 때만 `shorts` 키를 넣지 않는다. **교육 가이드는 기본 생략** (위 Post modes).
+10. Optional: **모드** — “교육 가이드”, “evergreen”, “시황”, “분석”이 Ambiguous면 Post modes 표로 확인 후 진행.
 
 If the user omits some fields, propose sensible defaults and mark them clearly for confirmation.
 
@@ -274,13 +306,28 @@ entities:
 Always satisfy these constraints:
 
 - `summary` is required (do not use `thesis`)
-- `sources[*].type` must be one of:
+- `sources[*].type` must be **exactly** one of:
   - `filing`, `ir-call`, `report`, `news`, `youtube`, `pdf`, `anonymous`
+- **Forbidden types** (break `astro` content sync / build): `data`, `guide`, `article`, `blog`, `web`, `other`, `official`, `stats`, …
+- Map ambiguous sources into the enum:
+
+| If it looks like… | Use |
+| --- | --- |
+| Exchange/regulator portal, DART/EDGAR filing | `filing` |
+| Earnings call transcript / IR webcast | `ir-call` |
+| Broker note, BOK/FSS explainer, research PDF, data-vendor methodology page | `report` |
+| Newspaper / wire story | `news` |
+| YouTube | `youtube` |
+| Direct `.pdf` without better fit | `pdf` |
+| Unclear / aggregator | `anonymous` |
+
 - `sources[*].tier` must be integer 0-4
 - `sources[*].date` must be ISO date (`YYYY-MM-DD`)
 - `url` must be absolute URL
 - Keep `sources` non-empty
+- Tags for evergreen must include `교육` when Post mode is Evergreen
 
+**Before git publish:** run `pnpm run build` (or at least confirm content sync does not throw `InvalidContentEntryDataError`). Do not push posts that fail schema validation.
 **Shorts (`shorts`, optional in Zod but standard for new posts here):**
 
 When present, all of the following must satisfy `shortsSchema` in `src/content.config.ts`:
@@ -359,17 +406,24 @@ Write like a **sell-side / buy-side research note**: calm, dense, scannable with
 
 ### Expert voice (required — anti-generic / anti-AI pattern)
 
-Every research or market post must include these three beats **in the body** (names of headings may vary):
+**Market / research posts** must include these three beats **in the body** (heading names may vary):
 
 1. **콜 (call)** — Opening 1–3 sentences: a ranked judgment for this piece (what matters most today / this thesis). Numbers come after, not before.
 2. **순위 (priority)** — Explicit hierarchy of drivers (e.g. 1순위 / 감시 / 노이즈, or a 3-row priority table). Do **not** present 4–5 equal “변수” without ranking.
 3. **가드레일 (falsifier)** — One short block: what would make you **change** today’s call (price, flow, event, or data print). Optional: one line linking to the **prior session’s** read if a related post exists (“어제 …로 읽었는데 오늘은 …”).
+
+**Evergreen / 교육 posts** adapt the same idea:
+
+1. **콜** → the reading mistake this guide corrects (headline trap)
+2. **순위** → ordered checklist / questions (not equal FAQ dump as the spine)
+3. **가드레일** → when to abandon the frame
 
 **Do less by default:**
 
 - Skip FAQ on daily market briefs unless the user asks for SEO/snippet mode
 - Skip “N대 변수” equal lists; merge into ranked sections
 - Quote at most **one** external analyst for the primary call; add one sentence of agreement or dissent — do not stack three broker quotes as the thesis
+- Do not ship a post that only reshuffles a prior daily’s section titles
 
 **Allowed asymmetry:** It is better to be wrong with a clear falsifier than to be “balanced” with no priority.
 
@@ -647,19 +701,32 @@ Slug rules:
 
 ## Workflow
 
-1. Inspect nearby post files in `src/content/posts/` for tone/structure consistency.
+1. Classify **Post mode** (market/research vs evergreen/교육) and inspect nearby posts for tone — **and** to avoid cloning the same daily skeleton.
 2. If input is topic (+ optional anchor URLs), run Topic-Driven Research Mode as the primary flow, and apply **Topic mode + anchor URLs** to include anchors as required references within that flow. If topic-only with no anchors, run Topic-Driven Research Mode only.
-3. Draft frontmatter first and validate schema fields.
+3. Draft frontmatter first and validate schema fields — especially **`sources[*].type` enum** (no `data`/`guide`).
 4. For YouTube sources, extract transcript-backed points (or best-effort metadata summary with confidence note).
-5. Draft body sections using source-backed claims and synthesized reasoning; apply **Report Writing Style** (expert voice: 콜·순위·가드레일; emphasis budget; table-first numbers).
-6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections.
-7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies.
-8. Unless the user opted out, add **`shorts`** after `sources` and before `entities`: derive hook/scenes/thumbnail from the finalized thesis and `summary`; match `duration` to scene timeline; validate against **Shorts** table above.
+5. Draft body sections using source-backed claims and synthesized reasoning; apply **Report Writing Style** (expert voice; emphasis budget; table-first numbers). For evergreen, meet the **depth bar**.
+6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections. (Evergreen may use 2 strong tables + 1 diagram if denser than three decorative visuals.)
+7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies. **Skip events for pure evergreen concept guides** unless a concrete calendar catalyst is central.
+8. Add **`shorts`** after `sources` and before `entities` for market/research posts unless opted out; **omit shorts for 교육 guides** unless the user asks. Derive hook/scenes from the finalized thesis; validate against **Shorts** table.
 9. Re-check all source metadata fields and date formats.
 10. Verify visuals: GFM tables have header + separator rows, `{{cite:}}` in cells where sourced, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or HTML `<table>`, citations consistent with prose.
 11. **Emphasis pass:** count body `**` pairs (target ≤12); strip bold from numbers/tickers duplicated in tables; confirm TL;DR and blockquotes follow Report Writing Style.
-12. Save or update the target post file and any event files.
-13. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
+12. **Schema/build gate:** `pnpm run build` (or content sync) must succeed — fix `InvalidContentEntryDataError` before commit.
+13. Save or update the target post file and any event files.
+14. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
+
+## Quality checklist (before Final Response)
+
+- [ ] Post mode classified; `교육` tag only on evergreen
+- [ ] Expert voice: 콜 · 순위 · 가드레일 present (adapted for evergreen)
+- [ ] No equal “N대 변수” / no daily FAQ unless snippet mode or evergreen Q&A that stays short
+- [ ] Every `sources[*].type` ∈ allowed enum
+- [ ] Evergreen: body depth bar met; shorts omitted unless requested
+- [ ] Market/research: shorts present unless opted out
+- [ ] Visual enrichment met (or evergreen exception documented)
+- [ ] `pnpm run build` (or equivalent schema check) passed
+- [ ] Git publish done or skip reason recorded
 
 ## Final Response To User
 
@@ -668,27 +735,29 @@ When done, report:
 1. Created/updated file path
 2. Any assumed defaults
 3. Missing data the user may want to refine (optional)
-4. **`shorts`:** one-line note on hook angle and target `duration`, or that shorts was omitted per user request
+4. **`shorts`:** one-line note on hook angle and target `duration`, or that shorts was omitted (user request **or** evergreen/교육 default)
+5. **Post mode** + (evergreen only) approximate Hangul body length vs depth bar
 
 For URL-only mode, also report:
 
-5. URL -> inferred source mapping (`type`, `tier`, `date` basis)
+6. URL -> inferred source mapping (`type`, `tier`, `date` basis)
 
 For topic-driven mode, also report:
 
-6. Discovered-source shortlist and why each was selected
+7. Discovered-source shortlist and why each was selected
 
 For topic-driven mode **with user anchor URLs**, also report:
 
-7. Anchor URLs (in order) and which `src-n` id each received; confirm every anchor appears in `sources` and is cited in the body
+8. Anchor URLs (in order) and which `src-n` id each received; confirm every anchor appears in `sources` and is cited in the body
 
 If events were co-updated, also report:
 
-8. Created/updated event file paths and rationale
+9. Created/updated event file paths and rationale
 
 Always report (unless git skipped):
 
-9. **Git** — commit hash·branch·push result, or skip reason
+10. **Build/schema gate** — pass/fail
+11. **Git** — commit hash·branch·push result, or skip reason
 
 ## Related
 

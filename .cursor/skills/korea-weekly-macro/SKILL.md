@@ -132,19 +132,19 @@ src/content/posts/{weekEnd-YYYY-MM-DD}-korea-weekly-macro-w{n}-{thesis-kebab}.md
 ## Step 5: Quality Checklist
 
 - [ ] `weekStart`–`weekEnd`·W주차 명시
-- [ ] 일별 연대기 나열 없음 — **추세·인과** 구조
-- [ ] Signal 2~3 Deep Dive, Noise 축소
+- [ ] 일별 연대기 나열 없음 — **추세·인과** + **콜 · 순위 · 가드레일** (post-from-sources Expert voice)
+- [ ] Signal 2~3 Deep Dive, Noise 축소 — 균등 N대 나열 금지
 - [ ] 주간 수급·지수 **확정 숫자** = sources/fetch 일치
 - [ ] 차주 Key Schedule **KST** 정렬
 - [ ] visual ≥3, `shorts` 포함(생략 요청 제외)
-- [ ] `sources` ≥ 10, tier·type·ISO date·absolute url
+- [ ] `sources` ≥ 10; `type` ∈ allowed enum only (`data`/`guide` 금지)
 - [ ] 시나리오 확률 = 근거 있거나 "근거 부족" 명시
 - [ ] events co-update (해당 시)
-- [ ] git publish 완료 또는 skip 사유
+- [ ] `pnpm run build`(schema) 통과 후 git publish 또는 skip 사유
 
 ## Step 6: Git Publish
 
-파일 생성·수정 시 [_shared/git-publish.md](../_shared/git-publish.md) (`git add` → `commit` → `push`).
+파일 생성·수정 시 [_shared/git-publish.md](../_shared/git-publish.md) (`build gate` → `git add` → `commit` → `push`).
 
 Brief only / Research only / 변경 없음 / 사용자 "git 생략" → skip.
 
@@ -152,12 +152,13 @@ Brief only / Research only / 변경 없음 / 사용자 "git 생략" → skip.
 
 1. **기준 주** (`weekStart`–`weekEnd`, W{n}, fallback 여부)
 2. **생성/수정 파일 경로** (Post mode)
-3. **주간 한 줄평** + **Signal 2~3** 한 줄씩
-4. **차주 Top 3 일정** (KST)
+3. **주간 콜 한 줄** + **Signal 2~3** (순위 포함)
+4. **차주 Top 3 일정** (KST) + **가드레일** 한 줄
 5. **sources shortlist** — 포함 이유 1줄
 6. **low-confidence** — 미확인 숫자·충돌 보도
 7. **shorts** 훅 각도, **events** (해당 시)
-8. **Git** — commit hash·branch·push 또는 skip 사유
+8. **Build/schema** — pass/fail
+9. **Git** — commit hash·branch·push 또는 skip 사유
 
 ## Trigger Examples
 
