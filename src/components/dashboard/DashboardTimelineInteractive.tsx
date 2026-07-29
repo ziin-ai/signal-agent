@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { TimelineEvent } from "../../lib/timeline";
 import {
   type EventMarketFilter,
@@ -47,8 +47,8 @@ const PRICE_GRADIENT_DOM_ID = "ziin-dashboard-timeline-price-fill";
 const THEME_INDEX_STROKE_PX = 0.28;
 
 /**
- * 프리렌더 페이지는 쿼리가 바뀌어도 HTML이 같아 ClientRouter가 칩 상태를 갱신하지 못할 수 있다.
- * SSR props로 초기화한 뒤, URL·클릭·뒤로가기를 로컬 state로 동기화한다.
+ * 프리렌더 + ClientRouter 환경에서는 `<a href>` 필터가 네비게이션으로 리셋될 수 있다.
+ * 버튼 + 로컬 state로 선택하고, URL은 history.pushState로만 맞춘다.
  */
 function useDashboardFilterSync(
   filterPathAndQuery: string,
@@ -58,14 +58,29 @@ function useDashboardFilterSync(
   allEvents: TimelineEvent[],
   marketCategoryOptions?: MarketCategoryOptionSets,
 ): {
-  pathWithQuery: string;
   marketFilter: EventMarketFilter;
   categories: string[];
-  applyFilterHref: (href: string) => void;
+  setMarketFilterValue: (next: EventMarketFilter) => void;
+  toggleCategory: (cat: string) => void;
+  clearCategories: () => void;
 } {
   const [marketFilter, setMarketFilter] = useState<EventMarketFilter>(initialMarket);
   const [categories, setCategories] = useState<string[]>(() => initialCategories ?? []);
   const [pathWithQuery, setPathWithQuery] = useState(filterPathAndQuery);
+
+  function writeUrl(nextMarket: EventMarketFilter, nextCategories: string[]) {
+    const base =
+      typeof window !== "undefined"
+        ? `${window.location.pathname}${window.location.search}${window.location.hash}`
+        : pathWithQuery;
+    const nextPath = dashboardTimelineFilterHref(base, nextMarket, nextCategories);
+    setPathWithQuery(nextPath);
+    if (typeof window === "undefined") return;
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (nextPath !== current) {
+      window.history.pushState({}, "", nextPath);
+    }
+  }
 
   useEffect(() => {
     const syncFromLocation = () => {
@@ -78,28 +93,36 @@ function useDashboardFilterSync(
 
     syncFromLocation();
     document.addEventListener("astro:page-load", syncFromLocation);
-    document.addEventListener("astro:after-swap", syncFromLocation);
     window.addEventListener("popstate", syncFromLocation);
     return () => {
       document.removeEventListener("astro:page-load", syncFromLocation);
-      document.removeEventListener("astro:after-swap", syncFromLocation);
       window.removeEventListener("popstate", syncFromLocation);
     };
   }, [allEvents, postMarket, marketCategoryOptions]);
 
-  function applyFilterHref(href: string) {
-    const pageUrl = new URL(href, window.location.origin);
-    const parsed = parseDashboardFiltersFromUrl(pageUrl, allEvents, postMarket, marketCategoryOptions);
-    const nextPath = `${pageUrl.pathname}${pageUrl.search}${pageUrl.hash}`;
-    setMarketFilter(parsed.market);
-    setCategories(parsed.categories);
-    setPathWithQuery(nextPath);
-    if (nextPath !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
-      window.history.pushState({}, "", nextPath);
-    }
+  function setMarketFilterValue(next: EventMarketFilter) {
+    const opts = categoryOptionsForMarketFilter(next, marketCategoryOptions, allEvents);
+    const nextCategories = categories.filter((c) => opts.includes(c));
+    setMarketFilter(next);
+    setCategories(nextCategories);
+    writeUrl(next, nextCategories);
   }
 
-  return { pathWithQuery, marketFilter, categories, applyFilterHref };
+  function toggleCategory(cat: string) {
+    const next = new Set(categories);
+    if (next.has(cat)) next.delete(cat);
+    else next.add(cat);
+    const nextCategories = [...next].sort();
+    setCategories(nextCategories);
+    writeUrl(marketFilter, nextCategories);
+  }
+
+  function clearCategories() {
+    setCategories([]);
+    writeUrl(marketFilter, []);
+  }
+
+  return { marketFilter, categories, setMarketFilterValue, toggleCategory, clearCategories };
 }
 
 export default function DashboardTimelineInteractive({
@@ -120,22 +143,15 @@ export default function DashboardTimelineInteractive({
   initialCategories,
   marketCategoryOptions,
 }: Props) {
-  const { pathWithQuery, marketFilter, categories, applyFilterHref } = useDashboardFilterSync(
-    filterPathAndQuery,
-    initialMarket,
-    initialCategories,
-    market,
-    allEvents,
-    marketCategoryOptions,
-  );
-
-  function onFilterClick(event: MouseEvent<HTMLAnchorElement>, href: string) {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
-      return;
-    }
-    event.preventDefault();
-    applyFilterHref(href);
-  }
+  const { marketFilter, categories, setMarketFilterValue, toggleCategory, clearCategories } =
+    useDashboardFilterSync(
+      filterPathAndQuery,
+      initialMarket,
+      initialCategories,
+      market,
+      allEvents,
+      marketCategoryOptions,
+    );
 
   const currency = market === "KRX" ? "KRW" : "USD";
   const moneyFormatter = useMemo(
@@ -214,27 +230,6 @@ export default function DashboardTimelineInteractive({
         : themeIndexDefinitions(market).map((d) => d.label).join(" · ")
       : symbol;
 
-  function categoriesAfterMarketSwitch(nextMarket: EventMarketFilter): string[] {
-    const opts = categoryOptionsForMarketFilter(nextMarket, marketCategoryOptions, allEvents);
-    return categories.filter((c) => opts.includes(c));
-  }
-
-  function hrefForMarket(nextMarket: EventMarketFilter): string {
-    return dashboardTimelineFilterHref(pathWithQuery, nextMarket, categoriesAfterMarketSwitch(nextMarket));
-  }
-
-  function hrefClearCategories(): string {
-    return dashboardTimelineFilterHref(pathWithQuery, marketFilter, []);
-  }
-
-  function hrefToggleCategory(cat: string): string {
-    const next = new Set(categories);
-    if (next.has(cat)) next.delete(cat);
-    else next.add(cat);
-    const nextArr = [...next].sort();
-    return dashboardTimelineFilterHref(pathWithQuery, marketFilter, nextArr);
-  }
-
   function kindDotClass(kind: TimelineEvent["kind"]): string {
     if (kind === "post") return "bg-sky-500 ring-sky-200 dark:ring-sky-900";
     if (kind === "external_event") return "bg-orange-500 ring-orange-200 dark:ring-orange-900";
@@ -251,9 +246,9 @@ export default function DashboardTimelineInteractive({
   }
 
   const pillInactive =
-    "border-outline-variant bg-surface text-on-surface hover:bg-surface-container dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200";
-  const pillActive =
-    "border-transparent bg-primary-container text-on-primary-container shadow-sm ring-1 ring-primary/30";
+    "border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container hover:text-on-surface";
+  const pillActive = "border-primary bg-primary text-on-primary shadow-sm";
+  const pillActiveMulti = "border-primary/40 bg-primary-container text-on-primary-container shadow-sm";
 
   /** theme-empty·지수 가공 실패 시에도 priceSeriesLen≥2로 두지만, 조건을 명시해 그리드·축이 항상 보이게 함 */
   const showChartSvg =
@@ -363,9 +358,9 @@ export default function DashboardTimelineInteractive({
         </div>
       )}
 
-      <div className="relative z-10 mt-3 border-b border-slate-200/80 pb-3 dark:border-slate-700/80">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="mr-1 text-xs text-slate-500 dark:text-slate-400">시장:</span>
+      <div className="relative z-20 mt-3 border-b border-outline-variant/70 pb-3">
+        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="시장 필터">
+          <span className="mr-1 text-xs text-on-surface-variant">시장:</span>
           {(
             [
               { label: "전체", value: "all" as const },
@@ -373,53 +368,48 @@ export default function DashboardTimelineInteractive({
               { label: "한국", value: "kr" as const },
             ] as const
           ).map(({ label, value }) => {
-            const href = hrefForMarket(value);
+            const selected = marketFilter === value;
             return (
-              <a
+              <button
                 key={value}
-                href={href}
-                aria-current={marketFilter === value ? "true" : undefined}
-                onClick={(event) => onFilterClick(event, href)}
-                className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium no-underline transition-colors ${
-                  marketFilter === value ? pillActive : pillInactive
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setMarketFilterValue(value)}
+                className={`inline-flex cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
+                  selected ? pillActive : pillInactive
                 }`}
               >
                 {label}
-              </a>
+              </button>
             );
           })}
         </div>
-        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-          <span className="mr-1 text-xs text-slate-500 dark:text-slate-400">카테고리:</span>
-          {(() => {
-            const href = hrefClearCategories();
-            return (
-              <a
-                href={href}
-                aria-current={categories.length === 0 ? "true" : undefined}
-                onClick={(event) => onFilterClick(event, href)}
-                className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium no-underline transition-colors ${
-                  categories.length === 0 ? pillActive : pillInactive
-                }`}
-              >
-                전체
-              </a>
-            );
-          })()}
+        <div className="mt-1.5 flex flex-wrap items-center gap-1.5" role="group" aria-label="카테고리 필터">
+          <span className="mr-1 text-xs text-on-surface-variant">카테고리:</span>
+          <button
+            type="button"
+            aria-pressed={categories.length === 0}
+            onClick={() => clearCategories()}
+            className={`inline-flex cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
+              categories.length === 0 ? pillActive : pillInactive
+            }`}
+          >
+            전체
+          </button>
           {categoryOpts.map((cat) => {
-            const href = hrefToggleCategory(cat);
+            const selected = categories.includes(cat);
             return (
-              <a
+              <button
                 key={cat}
-                href={href}
-                aria-current={categories.includes(cat) ? "true" : undefined}
-                onClick={(event) => onFilterClick(event, href)}
-                className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs font-medium no-underline transition-colors ${
-                  categories.includes(cat) ? pillActive : pillInactive
+                type="button"
+                aria-pressed={selected}
+                onClick={() => toggleCategory(cat)}
+                className={`inline-flex cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
+                  selected ? pillActiveMulti : pillInactive
                 }`}
               >
                 {eventCategoryLabel(cat)}
-              </a>
+              </button>
             );
           })}
         </div>
