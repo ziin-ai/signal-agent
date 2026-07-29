@@ -35,32 +35,34 @@ function tierLabel(tier: number) {
 }
 ---
 
-<div class="lg:sticky lg:top-4 lg:self-start">
-  <Panel title="관련정보" titleClass="text-xs" variant="soft" class="flex flex-col">
-    <div id="post-source-sidebar" class="mt-2 space-y-2 text-[11px]">
+<div class="ziin-rise ziin-rise-delay-1 lg:sticky lg:top-4 lg:self-start">
+  <Panel title="관련정보" titleClass="!text-[11px] uppercase tracking-[0.08em]" variant="soft" class="flex flex-col">
+    <div id="post-source-sidebar" class="mt-3 space-y-2 text-[11px]">
       {sources.length === 0 ? (
-        <div class="rounded border border-dashed border-slate-300 bg-slate-50 px-2 py-3 text-[10px] text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+        <div class="rounded-md3-sm border border-dashed border-outline-variant bg-surface px-2 py-3 text-[10px] text-on-surface-variant">
           표시할 source 메타데이터가 없습니다.
         </div>
       ) : (
         sources.map((source) => (
           source.type === "youtube" ? (
             <article
-              class="rounded-lg border border-slate-200 bg-white/80 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/70"
+              class="rounded-md3 border border-outline-variant/80 bg-surface-container-lowest px-3 py-2.5"
               data-source-tier={source.tier}
             >
               <div class="flex flex-wrap items-center gap-1.5 text-[9px]">
-                <span class="rounded bg-info/15 px-1.5 py-0.5 font-semibold text-info">{tierLabel(source.tier)}</span>
-                <span class="rounded bg-slate-100 px-1.5 py-0.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                <span class="rounded-md3-sm bg-primary-container px-1.5 py-0.5 font-semibold text-on-primary-container">
+                  {tierLabel(source.tier)}
+                </span>
+                <span class="rounded-md3-sm bg-surface-container px-1.5 py-0.5 text-on-surface-variant">
                   youtube
                 </span>
-                <span class="text-slate-500 dark:text-slate-400">
+                <span class="text-on-surface-variant">
                   {source.date.toLocaleDateString("ko-KR")}
                 </span>
               </div>
               {extractYoutubeId(source.url) ? (
                 <>
-                  <div class="mt-2 aspect-video overflow-hidden rounded-lg border border-slate-200 bg-black dark:border-slate-700">
+                  <div class="mt-2 aspect-video overflow-hidden rounded-md3-sm border border-outline-variant bg-black">
                     <iframe
                       src={`https://www.youtube.com/embed/${extractYoutubeId(source.url)}`}
                       title={`${source.title} embed`}
@@ -71,34 +73,36 @@ function tierLabel(tier: number) {
                       allowfullscreen
                     />
                   </div>
-                  <div class="mt-1 flex items-center gap-3 text-[9px]">
+                  <div class="mt-1.5 flex items-center gap-3 text-[9px]">
                     <a
                       href={source.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="inline-flex text-info hover:underline"
+                      class="inline-flex font-medium text-primary hover:underline"
                     >
                       YouTube 원본 열기
                     </a>
                   </div>
                 </>
               ) : (
-                <p class="mt-1 text-[10px] text-amber-600 dark:text-amber-400">
+                <p class="mt-1 text-[10px] text-warning">
                   유효한 YouTube URL이 아니어서 임베드를 표시하지 못했습니다.
                 </p>
               )}
             </article>
           ) : (
             <article
-              class="rounded-lg border border-slate-200 bg-white/80 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/70"
+              class="rounded-md3 border border-outline-variant/80 bg-surface-container-lowest px-3 py-2.5 transition hover:border-primary/30"
               data-source-tier={source.tier}
             >
               <div class="flex flex-wrap items-center gap-1.5 text-[9px]">
-                <span class="rounded bg-info/15 px-1.5 py-0.5 font-semibold text-info">{tierLabel(source.tier)}</span>
-                <span class="rounded bg-slate-100 px-1.5 py-0.5 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                <span class="rounded-md3-sm bg-primary-container px-1.5 py-0.5 font-semibold text-on-primary-container">
+                  {tierLabel(source.tier)}
+                </span>
+                <span class="rounded-md3-sm bg-surface-container px-1.5 py-0.5 text-on-surface-variant">
                   {source.type}
                 </span>
-                <span class="text-slate-500 dark:text-slate-400">
+                <span class="text-on-surface-variant">
                   {source.date.toLocaleDateString("ko-KR")}
                 </span>
               </div>
@@ -106,12 +110,12 @@ function tierLabel(tier: number) {
                 href={source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="mt-1 block text-[11px] font-semibold text-info hover:underline"
+                class="mt-1.5 block text-[12px] font-semibold leading-snug text-primary hover:underline"
                 title={source.title}
               >
                 {source.title}
               </a>
-              <p class="mt-1 line-clamp-2 text-[10px] leading-relaxed text-slate-600 dark:text-slate-300">
+              <p class="mt-1 line-clamp-2 text-[10px] leading-relaxed text-on-surface-variant">
                 {source.excerpt}
               </p>
             </article>

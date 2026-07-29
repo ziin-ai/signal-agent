@@ -23,6 +23,8 @@ const config: Config = {
         "on-surface-variant": "var(--md-sys-color-on-surface-variant)",
         outline: "var(--md-sys-color-outline)",
         "outline-variant": "var(--md-sys-color-outline-variant)",
+        "market-up": "var(--md-sys-color-market-up)",
+        "market-down": "var(--md-sys-color-market-down)",
       },
       fontFamily: {
         sans: ["Noto Sans KR", "system-ui", "sans-serif"],

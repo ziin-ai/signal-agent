@@ -21,9 +21,9 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
   title="글 목록 | 내 곁에 지인"
   description="출처 기반 증시·매크로 메모와 교육 가이드를 모아 둔 개인 블로그 글 목록."
 >
-  <section class="mb-6">
-    <h1 class="font-sans text-3xl font-semibold tracking-tight text-on-surface">글</h1>
-    <p class="mt-1 text-sm text-on-surface-variant">
+  <section class="mb-7">
+    <h1 class="font-sans text-[1.85rem] font-bold tracking-[-0.035em] text-on-surface md:text-3xl">글</h1>
+    <p class="mt-1.5 max-w-xl text-sm text-on-surface-variant">
       시황·테마 메모와 교육용 정리 글을 모아 둡니다. 투자 권유가 아닙니다.
     </p>
   </section>
@@ -73,7 +73,7 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
                 {post.data.date.toLocaleDateString("ko-KR")}
               </span>
             </div>
-            <h2 class="mt-2 font-sans text-xl font-semibold tracking-tight text-on-surface md:text-2xl">
+            <h2 class="mt-2 font-sans text-lg font-bold tracking-[-0.025em] text-on-surface md:text-xl">
               {post.data.title}
             </h2>
             <p class="mt-1 text-sm text-on-surface-variant">{post.data.summary}</p>

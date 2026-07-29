@@ -14,12 +14,17 @@ const navItems = [
 
 <header class="md-top-app-bar sticky top-0 z-40 px-2 py-1 md:px-4">
   <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 min-h-14">
-    <div class="flex min-w-0 items-center gap-1 md:gap-4">
+    <div class="flex min-w-0 items-center gap-1 md:gap-5">
       <a
         href={rootPath}
-        class="inline-flex items-center gap-1 rounded-md3-sm px-2 py-1.5 text-[1.35rem] font-sans font-bold tracking-tight leading-none text-on-surface transition hover:bg-primary/8"
+        class="group inline-flex items-baseline gap-0 rounded-md3-sm px-2 py-1.5 leading-none transition hover:bg-primary/8"
+        aria-label="지인.ai 홈"
       >
-        <span>지인</span><span class="text-primary">.ai</span>
+        <span class="font-sans text-[1.45rem] font-bold tracking-[-0.04em] text-on-surface">지인</span>
+        <span class="font-sans text-[1.45rem] font-bold tracking-[-0.04em] text-primary">.ai</span>
+        <span class="ml-2 hidden text-[11px] font-medium tracking-wide text-on-surface-variant sm:inline">
+          내 곁에
+        </span>
       </a>
 
       <nav class="hidden items-center gap-0.5 md:flex" aria-label="주요 메뉴">
@@ -27,7 +32,7 @@ const navItems = [
           navItems.map((item) => (
             <a
               href={item.href}
-              class="md-btn-text inline-flex items-center gap-1.5 rounded-md3-sm px-3 py-2 text-sm font-medium text-on-surface-variant transition hover:bg-primary/8 hover:text-primary"
+              class="md-btn-text inline-flex items-center gap-1.5 !min-h-9 rounded-md3-sm px-3 py-2 text-sm font-medium text-on-surface-variant transition hover:bg-primary/8 hover:text-primary"
             >
               <MdIcon name={item.icon} size={18} />
               {item.label}
@@ -37,14 +42,14 @@ const navItems = [
       </nav>
     </div>
 
-    <div class="flex items-center gap-1 text-sm">
+    <div class="flex items-center gap-1.5 text-sm">
       <span
         id="kst-time"
-        class="hidden font-mono text-xs text-on-surface-variant sm:inline"
+        class="hidden font-mono text-[11px] tabular-nums text-on-surface-variant sm:inline"
       >
         KST --:--:--
       </span>
-      <span class="md-chip md-chip-error !min-h-7 px-2 text-[11px] font-semibold uppercase tracking-wide">
+      <span class="md-chip md-chip-live !min-h-7 px-2.5 text-[11px] font-semibold tracking-wide">
         Live
       </span>
       <button

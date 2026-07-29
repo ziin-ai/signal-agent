@@ -9,13 +9,17 @@ const policyLinks = [
 ];
 ---
 
-<footer class="mt-10 border-t border-outline-variant bg-surface-container-low px-4 py-8 text-sm text-on-surface-variant">
-  <div class="mx-auto flex w-full max-w-6xl flex-col gap-4">
-    <p class="text-on-surface-variant leading-relaxed">
-      면책: 본 사이트의 모든 내용은 개인 블로그의 투자 참고 메모이며, 투자 손익의 책임은 읽는 분 본인에게 있습니다.
-      자세한 내용은
-      <a href={`${rootPath}terms`} class="font-medium text-primary hover:underline">이용약관·면책조항</a>을 확인하세요.
-    </p>
+<footer class="mt-14 border-t border-outline-variant/80 bg-surface-container-low/80 px-4 py-10 text-sm text-on-surface-variant backdrop-blur-sm">
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-5">
+    <div class="flex flex-col gap-1">
+      <p class="font-sans text-lg font-bold tracking-[-0.03em] text-on-surface">
+        지인<span class="text-primary">.ai</span>
+      </p>
+      <p class="max-w-2xl text-[13px] leading-relaxed">
+        출처를 붙인 증시·매크로 메모를 올리는 개인 블로그입니다. 투자 권유가 아니며, 손익의 책임은 읽는 분에게 있습니다.
+        <a href={`${rootPath}terms`} class="font-medium text-primary hover:underline">이용약관·면책</a>
+      </p>
+    </div>
     <nav class="flex flex-wrap gap-x-1 gap-y-1" aria-label="정책 및 소개">
       {
         policyLinks.map((link) => (
@@ -25,12 +29,12 @@ const policyLinks = [
         ))
       }
     </nav>
-    <p>
-      문의:
-      <a href="mailto:contact@ziin.ai" class="font-medium text-primary hover:underline">contact@ziin.ai</a>
-      ·
-      <a href={`${rootPath}contact`} class="font-medium text-primary hover:underline">연락처 페이지</a>
-    </p>
-    <p class="text-xs text-on-surface-variant/80">© {new Date().getFullYear()} ziin.ai</p>
+    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-outline-variant/60 pt-4 text-xs">
+      <p>
+        문의
+        <a href="mailto:contact@ziin.ai" class="ml-1 font-medium text-primary hover:underline">contact@ziin.ai</a>
+      </p>
+      <p class="text-on-surface-variant/80">© {new Date().getFullYear()} ziin.ai</p>
+    </div>
   </div>
 </footer>

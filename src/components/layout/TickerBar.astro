@@ -18,18 +18,18 @@ function formatPrice(value: number): string {
 }
 ---
 
-<div class="bg-surface-container-high px-4 py-2">
-  <div class="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 font-mono text-xs">
+<div class="border-b border-outline-variant/50 bg-surface-container-high/90 px-4 py-2 backdrop-blur-sm">
+  <div class="mx-auto flex w-full max-w-6xl flex-wrap items-center gap-x-6 gap-y-1.5 font-mono text-[11px] tracking-tight">
     {
       items.map((item) => {
         const directionClass =
-          item.change > 0 ? "text-success" : item.change < 0 ? "text-danger" : "text-warning";
+          item.change > 0 ? "text-market-up" : item.change < 0 ? "text-market-down" : "text-on-surface-variant";
         const sign = item.change > 0 ? "+" : "";
         return (
           <div class="flex items-center gap-1.5 text-on-surface">
             <span class="text-on-surface-variant">{item.label}</span>
-            <span class="font-semibold">{formatPrice(item.price)}</span>
-            <span class={directionClass}>
+            <span class="font-semibold tabular-nums">{formatPrice(item.price)}</span>
+            <span class={`tabular-nums font-medium ${directionClass}`}>
               {sign}
               {item.changePercent.toFixed(2)}%
             </span>

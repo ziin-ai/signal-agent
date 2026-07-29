@@ -262,14 +262,14 @@ export default function DashboardTimelineInteractive({
     layout.priceSeriesLen >= 2;
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-secondary/20 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-      <h2 className="font-sans text-xl font-semibold tracking-tight">최근 흐름</h2>
+    <div className="md-card p-5 sm:p-6">
+      <h2 className="font-sans text-[1.35rem] font-bold tracking-[-0.03em] text-on-surface">최근 흐름</h2>
 
-      <div className="mt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-600 dark:text-slate-300">
+      <div className="mt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] text-on-surface-variant">
         <p>
-          <span className="font-semibold text-info">Today</span> 기준 · 과거 8개월 + 예정 4개월
+          <span className="font-semibold text-primary">Today</span> 기준 · 과거 8개월 + 예정 4개월
         </p>
-        <a href={`${rootPath}timeline`} className="shrink-0 font-medium text-info hover:underline">
+        <a href={`${rootPath}timeline`} className="shrink-0 font-medium text-primary hover:underline">
           전체 타임라인 →
         </a>
       </div>
@@ -426,7 +426,7 @@ export default function DashboardTimelineInteractive({
       </div>
 
       <div className="relative mt-4">
-        <div className="relative h-64 overflow-hidden rounded-xl bg-slate-100/85 dark:bg-slate-900/80" aria-hidden="true">
+        <div className="relative h-64 overflow-hidden rounded-md3-lg bg-surface-container/80" aria-hidden="true">
           {showChartSvg && (
             <svg
               viewBox="0 0 100 64"
@@ -491,7 +491,7 @@ export default function DashboardTimelineInteractive({
             </svg>
           )}
           <div
-            className="pointer-events-none absolute bottom-0 right-0 top-0 z-[1] bg-slate-100/45 dark:bg-slate-900/30"
+            className="pointer-events-none absolute bottom-0 right-0 top-0 z-[1] bg-surface-container-high/40"
             style={{ left: `${todayPct}%` }}
           />
           {layout.monthGuideTicks.map((t) => {
@@ -507,11 +507,11 @@ export default function DashboardTimelineInteractive({
             );
           })}
           <div
-            className="pointer-events-none absolute bottom-0 top-0 z-10 w-px bg-info shadow-[0_0_0_1px_rgba(255,255,255,0.8)] dark:shadow-none"
+            className="pointer-events-none absolute bottom-0 top-0 z-10 w-px bg-primary shadow-[0_0_0_1px_rgba(255,255,255,0.65)]"
             style={{ left: `${todayPct}%`, transform: "translateX(-50%)" }}
           />
           <span
-            className="pointer-events-none absolute -top-0.5 z-10 -translate-x-1/2 rounded bg-info px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white"
+            className="pointer-events-none absolute -top-0.5 z-10 -translate-x-1/2 rounded-md3-sm bg-primary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-on-primary"
             style={{ left: `${todayPct}%` }}
           >
             Today

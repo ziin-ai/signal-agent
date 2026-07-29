@@ -112,10 +112,10 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
       ) : null
     }
   </head>
-  <body class="antialiased md-surface">
+  <body class="antialiased">
     <TickerBar items={tickerItems} transition:persist="ziin-ticker" />
     <Header transition:persist="ziin-header" />
-    <main class="mx-auto w-full max-w-6xl px-4 py-6 pb-8" transition:animate="none">
+    <main class="mx-auto w-full max-w-6xl px-4 py-7 pb-10">
       <slot />
     </main>
     <Footer transition:persist="ziin-footer" />
