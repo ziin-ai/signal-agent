@@ -14,23 +14,23 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
     <p class="mt-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
       개인 블로그 ·
       {aiAssisted ? " AI 보조 초안 · 작성자 검수 · " : " "}
-      <span class="text-slate-600 dark:text-slate-300">투자 참고(자문 아님)</span>
+      <span class="text-on-surface-variant">투자 참고(자문 아님)</span>
       {" · "}
-      <a href={`${rootPath}terms`} class="text-info hover:underline">
+      <a href={`${rootPath}terms`} class="text-primary hover:underline">
         면책
       </a>
       {" · "}
-      <a href={`${rootPath}about`} class="text-info hover:underline">
+      <a href={`${rootPath}about`} class="text-primary hover:underline">
         소개
       </a>
     </p>
   ) : (
     <aside
-      class="mt-4 rounded-lg border border-slate-200/90 bg-slate-50/80 px-3.5 py-3 text-xs leading-relaxed text-slate-600 dark:border-slate-700/80 dark:bg-slate-950/40 dark:text-slate-300"
+      class="mt-4 rounded-md3 border border-outline-variant bg-surface-container-low px-3.5 py-3 text-xs leading-relaxed text-on-surface-variant"
       aria-label="작성·면책 안내"
     >
       <p>
-        <strong class="font-semibold text-slate-800 dark:text-slate-100">작성</strong>
+        <strong class="font-semibold text-on-surface">작성</strong>
         {" · "}개인 블로그(지인.ai)
         {aiAssisted ? (
           <>
@@ -39,22 +39,22 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
           </>
         ) : null}
         {" · "}
-        <a href={`${rootPath}about`} class="font-medium text-info hover:underline">
+        <a href={`${rootPath}about`} class="font-medium text-primary hover:underline">
           소개
         </a>
       </p>
       <p class="mt-1.5">
-        <strong class="font-semibold text-slate-800 dark:text-slate-100">면책</strong>
+        <strong class="font-semibold text-on-surface">면책</strong>
         {" · "}본문은 투자 자문·매매 권유가 아닌 <strong class="font-medium">참고 메모</strong>입니다. 손익은
         읽는 분 본인 책임입니다.
         {" "}
-        <a href={`${rootPath}terms`} class="font-medium text-info hover:underline">
+        <a href={`${rootPath}terms`} class="font-medium text-primary hover:underline">
           이용약관·면책
         </a>
         {" · "}
         오류 제보
         {" "}
-        <a href={`${rootPath}contact`} class="font-medium text-info hover:underline">
+        <a href={`${rootPath}contact`} class="font-medium text-primary hover:underline">
           연락처
         </a>
       </p>

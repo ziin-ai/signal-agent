@@ -1,26 +1,35 @@
 ---
+import MdIcon from "../ui/MdIcon.astro";
+
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 const navItems = [
-  { href: rootPath, label: "홈" },
-  { href: `${rootPath}posts`, label: "글" },
-  { href: `${rootPath}timeline`, label: "타임라인" },
-  { href: `${rootPath}about`, label: "소개" },
-  { href: `${rootPath}contact`, label: "문의" },
+  { href: rootPath, label: "홈", icon: "home" },
+  { href: `${rootPath}posts`, label: "글", icon: "article" },
+  { href: `${rootPath}timeline`, label: "타임라인", icon: "timeline" },
+  { href: `${rootPath}about`, label: "소개", icon: "info" },
+  { href: `${rootPath}contact`, label: "문의", icon: "mail" },
 ];
 ---
 
-<header class="border-b border-slate-300/60 px-4 py-2.5 dark:border-slate-700/60">
-  <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4">
-    <div class="flex items-center gap-8">
-      <a href={rootPath} class="text-[1.85rem] font-sans font-bold tracking-[-0.02em] leading-none">
-        <span>지인</span><span class="text-info">.ai</span>
+<header class="md-top-app-bar sticky top-0 z-40 px-2 py-1 md:px-4">
+  <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 min-h-14">
+    <div class="flex min-w-0 items-center gap-1 md:gap-4">
+      <a
+        href={rootPath}
+        class="inline-flex items-center gap-1 rounded-md3-sm px-2 py-1.5 text-[1.35rem] font-sans font-bold tracking-tight leading-none text-on-surface transition hover:bg-primary/8"
+      >
+        <span>지인</span><span class="text-primary">.ai</span>
       </a>
 
-      <nav class="hidden items-center gap-6 text-sm font-medium tracking-tight md:flex">
+      <nav class="hidden items-center gap-0.5 md:flex" aria-label="주요 메뉴">
         {
           navItems.map((item) => (
-            <a href={item.href} class="text-slate-700 transition hover:text-info dark:text-slate-300">
+            <a
+              href={item.href}
+              class="md-btn-text inline-flex items-center gap-1.5 rounded-md3-sm px-3 py-2 text-sm font-medium text-on-surface-variant transition hover:bg-primary/8 hover:text-primary"
+            >
+              <MdIcon name={item.icon} size={18} />
               {item.label}
             </a>
           ))
@@ -28,31 +37,37 @@ const navItems = [
       </nav>
     </div>
 
-    <div class="flex items-center gap-2 text-sm">
-      <span id="kst-time" class="font-mono text-slate-600 dark:text-slate-300">KST --:--:--</span>
-      <span class="rounded-full bg-danger px-2 py-0.5 text-xs font-semibold text-white">LIVE</span>
+    <div class="flex items-center gap-1 text-sm">
+      <span
+        id="kst-time"
+        class="hidden font-mono text-xs text-on-surface-variant sm:inline"
+      >
+        KST --:--:--
+      </span>
+      <span class="md-chip md-chip-error !min-h-7 px-2 text-[11px] font-semibold uppercase tracking-wide">
+        Live
+      </span>
       <button
         id="mobile-menu-toggle"
         type="button"
-        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-info/50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 md:hidden"
+        class="md-btn-icon md:hidden"
         aria-label="메뉴 열기"
         aria-controls="mobile-nav"
         aria-expanded="false"
       >
-        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
-        </svg>
+        <MdIcon name="menu" size={24} />
       </button>
     </div>
   </div>
-  <nav id="mobile-nav" class="mx-auto hidden w-full max-w-6xl pt-2 md:hidden">
-    <div class="grid gap-1 rounded-lg border border-slate-300/80 bg-white p-2 dark:border-slate-700/80 dark:bg-slate-900">
+  <nav id="mobile-nav" class="mx-auto hidden w-full max-w-6xl pb-2 md:hidden" aria-label="모바일 메뉴">
+    <div class="md-surface-container md-shape-md grid gap-0.5 p-2">
       {
         navItems.map((item) => (
           <a
             href={item.href}
-            class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-info dark:text-slate-200 dark:hover:bg-slate-800"
+            class="inline-flex items-center gap-3 rounded-md3-sm px-3 py-2.5 text-sm font-medium text-on-surface transition hover:bg-primary/10 hover:text-primary"
           >
+            <MdIcon name={item.icon} size={20} />
             {item.label}
           </a>
         ))
@@ -111,11 +126,17 @@ const navItems = [
         const next = !isExpanded;
         toggle.setAttribute("aria-expanded", String(next));
         menu.classList.toggle("hidden", !next);
+        const icon = toggle.querySelector(".material-symbols-outlined");
+        if (icon) icon.textContent = next ? "close" : "menu";
+        toggle.setAttribute("aria-label", next ? "메뉴 닫기" : "메뉴 열기");
       };
 
       const closeMenu = () => {
         toggle.setAttribute("aria-expanded", "false");
         menu.classList.add("hidden");
+        const icon = toggle.querySelector(".material-symbols-outlined");
+        if (icon) icon.textContent = "menu";
+        toggle.setAttribute("aria-label", "메뉴 열기");
       };
 
       window.matchMedia("(min-width: 768px)").addEventListener("change", (e) => {
