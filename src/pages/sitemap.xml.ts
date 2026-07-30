@@ -14,6 +14,10 @@ export const GET: APIRoute = async ({ site }) => {
     { loc: `${origin}/`, lastmod: undefined },
     { loc: `${origin}/posts`, lastmod: undefined },
     { loc: `${origin}/timeline`, lastmod: undefined },
+    { loc: `${origin}/about`, lastmod: undefined },
+    { loc: `${origin}/privacy`, lastmod: undefined },
+    { loc: `${origin}/terms`, lastmod: undefined },
+    { loc: `${origin}/contact`, lastmod: undefined },
   ];
 
   const postUrls = published.map((post) => {

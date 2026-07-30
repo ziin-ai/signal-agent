@@ -120,12 +120,14 @@ disable-model-invocation: true
 ```markdown
 ## {YYYY-MM-DD} 한국 경제·증시 브리핑 ({장전|장중|장마감})
 
-### 한 줄
-...
+### 콜
+오늘 장의 본체는 … (헤드라인 말고 우선순위 1개)
 
-### 오늘의 5대 변수
-1. ...
-2. ...
+### 순위
+1. … / 감시: … / 노이즈: …
+
+### 가드레일
+이 신호가 나오면 해석을 바꾼다: …
 
 ### 확정 숫자
 | 항목 | 값 | 출처 |
@@ -160,14 +162,14 @@ disable-model-invocation: true
 - 장 전/전망: `YYYY-MM-DD-korea-market-outlook.md` 또는 **당일 thesis** kebab slug (예: `…-msci-week-ahead.md`)
 - 네이버로 헤드라인을 모았어도 slug에 `naver-*` **사용 금지** — 내용 hook으로 kebab 작성
 
-**Body structure (daily — adapt freely):**
+**Body structure (daily):** post-from-sources **Expert Voice** 필수 — 콜·순위·가드레일. FAQ·균등 N대 나열 금지.
 
-1. 첫 1~2문장: 오늘 장의 **성격** (예: 차익실현, CPI 전 관망)
-2. `## 결론 요약 (TL;DR)` — 3~5 bullets, 숫자 포함
+1. 오프닝 1~2문장: **콜** (오늘 장의 본체)
+2. `## 결론 요약` — 3~5 bullets, 숫자 + 순위 반영
 3. `## 오늘 장에서 확정된 숫자` — GFM 표
-4. `## {N}대 시장 변수` — 변수별 소제목, 인과·시나리오
+4. `## 우선순위` — 1순위 / 감시 / 노이즈 (균등 N대 변수 표 금지)
 5. `## 수급·섹터` — 표 또는 ASCII/SVG (Visual Enrichment Policy 준수)
-6. `## 체크할 리스크`
+6. `## 가드레일` — 해석을 바꾸는 신호
 7. `## 출처`
 
 `shorts` frontmatter: post-from-sources와 동일 — **`sources` 다음, `entities` 앞**. 사용자가 생략 요청 시만 제외.
@@ -192,24 +194,27 @@ Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 sk
 
 작업 완료 전 확인:
 
+- [ ] **콜 · 순위 · 가드레일** 본문에 있음 (균등 N대 변수·일간 FAQ 없음)
+- [ ] 직전 동일 시리즈 글과 **제목/섹션 골격이 복붙이 아님**
 - [ ] 모든 핵심 숫자가 `sources` 또는 fetch 본문과 일치
 - [ ] 기준일(KST)과 기사 게시일 혼동 없음 (전일 장 / 당일 장 전 구분)
-- [ ] `sources` 6건 이상, tier·type·ISO date·absolute url
+- [ ] `sources` 6건 이상; `type` ∈ `filing|ir-call|report|news|youtube|pdf|anonymous` only
 - [ ] Mode B면 visual 3종 이상(post-from-sources Visual Enrichment Policy)
-- [ ] Mode B면 `shorts` 포함(명시적 생략 제외)
+- [ ] Mode B면 `shorts` 포함(명시적 생략 제외) — 교육 가이드가 아님
 - [ ] 투자 권유·목표가 단정 표현 없음
-- [ ] Mode B면 git publish 완료 또는 skip 사유 기록
+- [ ] Mode B면 `pnpm run build`(또는 content schema sync) 통과 후 git publish
 
 ## Final Response To User
 
 1. **기준일·시각대** (KST)
-2. **선정한 3~7 변수** 한 줄씩
+2. **콜 한 줄** + 1순위 / 감시 / 노이즈
 3. **생성/수정 파일 경로** (Mode B) 또는 브리핑 요약 (Mode A)
 4. **sources shortlist** — 왜 포함했는지 1줄씩
-5. **low-confidence 구간** — 확인 못한 숫자·충돈 보도
+5. **low-confidence 구간** — 확인 못한 숫자·충돌 보도
 6. **events** co-update 목록 (해당 시)
 7. **shorts** 훅 각도 (Mode B)
-8. **Git** — commit hash·branch·push 결과 또는 skip 사유
+8. **Build/schema** — pass/fail
+9. **Git** — commit hash·branch·push 결과 또는 skip 사유
 
 ## Trigger Examples
 
@@ -222,7 +227,7 @@ Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 sk
 ```
 
 ```text
-`korea-daily-news`로 리서치만 — sources YAML 초안이랑 5대 변수 표.
+`korea-daily-news`로 리서치만 — sources YAML 초안이랑 우선순위(콜·감시·노이즈) 표.
 ```
 
 ## Related

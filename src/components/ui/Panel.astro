@@ -9,13 +9,17 @@ interface Props {
 const { title, titleClass = "", class: className = "", variant = "default" } = Astro.props;
 const variantClass =
   variant === "info"
-    ? "border-info/20 bg-info/10 dark:bg-info/15"
+    ? "md-card border-primary/20 bg-primary-container/40"
     : variant === "soft"
-      ? "border-slate-200 bg-secondary/20 dark:border-slate-700 dark:bg-slate-900"
-      : "border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900";
+      ? "md-card md-card-filled"
+      : "md-card";
 ---
 
-<section class={`rounded-xl border p-5 shadow-sm ${variantClass} ${className}`}>
-  {title && <h2 class={`font-sans text-xl font-semibold tracking-tight ${titleClass}`}>{title}</h2>}
+<section class={`${variantClass} p-5 ${className}`}>
+  {title && (
+    <h2 class={`font-sans text-sm font-semibold tracking-wide text-on-surface-variant ${titleClass}`}>
+      {title}
+    </h2>
+  )}
   <slot />
 </section>

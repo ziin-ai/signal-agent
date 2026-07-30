@@ -157,8 +157,8 @@ const currentPrice =
 ---
 
 <Base
-  title="내 곁에 지인 | 주식 투자 대시보드"
-  description="최신 분석글, 신뢰도 지표, 외부 이벤트 타임라인을 한 화면에서 확인하는 주식 투자 대시보드."
+  title="내 곁에 지인 | 개인 증시 블로그"
+  description="출처를 붙인 한국·글로벌 증시·매크로 메모와 일정 타임라인을 올리는 개인 블로그. 투자 자문이 아닙니다."
   agentContext={
     activePost
       ? {
@@ -172,7 +172,7 @@ const currentPrice =
   {activePost && (
     <section
       transition:name="dashboard-hero"
-      class="relative z-10 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3"
+      class="ziin-rise ziin-rise-delay-1 relative z-10 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3"
     >
       <HeroCard post={activePost} />
       <TrustCard post={activePost} />
@@ -181,26 +181,22 @@ const currentPrice =
 
   {activeMeta && (
     <section transition:name="dashboard-meta" class="relative z-10 mt-2 flex flex-wrap items-center justify-between gap-2">
-      <p class="text-xs text-slate-500 dark:text-slate-300">
-        기준 글: <span class="text-info">{activeMeta.title}</span>
+      <p class="text-xs text-on-surface-variant">
+        기준 글: <span class="text-primary">{activeMeta.title}</span>
       </p>
       <div class="flex items-center gap-2 text-xs">
         <a
           href={newerPostHref}
-          class={`rounded border px-2 py-1 ${
-            newerPostSlug
-              ? "border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-              : "pointer-events-none border-slate-200 text-slate-400 dark:border-slate-700 dark:text-slate-500"
+          class={`md-btn-tonal !min-h-8 px-3 text-xs ${
+            newerPostSlug ? "" : "pointer-events-none opacity-40"
           }`}
         >
           더 최신 글
         </a>
         <a
           href={olderPostHref}
-          class={`rounded border px-2 py-1 ${
-            olderPostSlug
-              ? "border-slate-300 text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-              : "pointer-events-none border-slate-200 text-slate-400 dark:border-slate-700 dark:text-slate-500"
+          class={`md-btn-tonal !min-h-8 px-3 text-xs ${
+            olderPostSlug ? "" : "pointer-events-none opacity-40"
           }`}
         >
           이전 글
@@ -220,7 +216,7 @@ const currentPrice =
   )}
 
   {publishedPosts.length > 0 && (
-    <section class="relative z-20 mt-3 scroll-mt-8" id="recent-flow" aria-label="최근 흐름 타임라인">
+    <section class="ziin-rise ziin-rise-delay-2 relative z-20 mt-4 scroll-mt-8" id="recent-flow" aria-label="최근 흐름 타임라인">
       <DashboardTimelineInteractive
         client:load
         key={`${activePost?.id ?? "global"}|${selectedEventMarket}|${selectedEventCategories.join(",")}`}

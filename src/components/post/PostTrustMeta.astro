@@ -1,0 +1,63 @@
+---
+interface Props {
+  aiAssisted?: boolean;
+  compact?: boolean;
+}
+
+const { aiAssisted = false, compact = false } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+---
+
+{
+  compact ? (
+    <p class="mt-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+      개인 블로그 ·
+      {aiAssisted ? " AI 보조 초안 · 작성자 검수 · " : " "}
+      <span class="text-on-surface-variant">투자 참고(자문 아님)</span>
+      {" · "}
+      <a href={`${rootPath}terms`} class="text-primary hover:underline">
+        면책
+      </a>
+      {" · "}
+      <a href={`${rootPath}about`} class="text-primary hover:underline">
+        소개
+      </a>
+    </p>
+  ) : (
+    <aside
+      class="mt-4 rounded-md3 border border-outline-variant bg-surface-container-low px-3.5 py-3 text-xs leading-relaxed text-on-surface-variant"
+      aria-label="작성·면책 안내"
+    >
+      <p>
+        <strong class="font-semibold text-on-surface">작성</strong>
+        {" · "}개인 블로그(지인.ai)
+        {aiAssisted ? (
+          <>
+            {" · "}
+            <span>일부 AI 보조 초안 후 작성자 검수</span>
+          </>
+        ) : null}
+        {" · "}
+        <a href={`${rootPath}about`} class="font-medium text-primary hover:underline">
+          소개
+        </a>
+      </p>
+      <p class="mt-1.5">
+        <strong class="font-semibold text-on-surface">면책</strong>
+        {" · "}본문은 투자 자문·매매 권유가 아닌 <strong class="font-medium">참고 메모</strong>입니다. 손익은
+        읽는 분 본인 책임입니다.
+        {" "}
+        <a href={`${rootPath}terms`} class="font-medium text-primary hover:underline">
+          이용약관·면책
+        </a>
+        {" · "}
+        오류 제보
+        {" "}
+        <a href={`${rootPath}contact`} class="font-medium text-primary hover:underline">
+          연락처
+        </a>
+      </p>
+    </aside>
+  )
+}

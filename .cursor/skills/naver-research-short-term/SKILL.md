@@ -166,16 +166,18 @@ node .cursor/skills/naver-research-short-term/scripts/fetch-research.mjs --date 
 
 - [ ] `anchorDate`·fallback 명시
 - [ ] `sources` ≥ 6, 리포트 URL `stock.naver.com/research/...`
+- [ ] `sources[*].type` ∈ allowed enum (`report`/`news` 등 — `data`/`guide` 금지)
 - [ ] 핵심 숫자 = news fetch와 일치
+- [ ] **콜 · 순위 · 가드레일** (post-from-sources Expert voice); 균등 나열·일간 FAQ 골격 복붙 금지
 - [ ] visual 3종+, `shorts` 포함(생략 요청 제외)
 - [ ] 공유 포인트 5~8, 중복 모닝 브리프 과다 없음
 - [ ] 투자 권유·미확인 목표가 없음
 - [ ] events co-update (해당 시)
-- [ ] git publish 완료 또는 skip 사유 기록
+- [ ] `pnpm run build`(schema) 통과 후 git publish 또는 skip 사유
 
 ## Step 7: Git Publish
 
-**Post + excerpt** 등 파일 생성·수정 시 [_shared/git-publish.md](../_shared/git-publish.md) 실행 (`git add` → `commit` → `push`).
+**Post + excerpt** 등 파일 생성·수정 시 [_shared/git-publish.md](../_shared/git-publish.md) 실행 (`build gate` → `git add` → `commit` → `push`).
 
 **Brief only / Research only** 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 skip.
 
@@ -183,13 +185,14 @@ node .cursor/skills/naver-research-short-term/scripts/fetch-research.mjs --date 
 
 1. **기준일·anchor·fallback** (KST)
 2. **생성/수정 파일 경로**
-3. **선정 5~8 포인트** 한 줄씩
+3. **콜 한 줄** + **선정 5~8 포인트** (순위 반영)
 4. **대표 리포트 3~5** 링크
 5. **sources shortlist** — 포함 이유 1줄
 6. **low-confidence** — PDF 미확인
 7. **shorts** 훅 각도, **events** (해당 시)
 8. **DM용 요약** (default mode)
-9. **Git** — commit hash·branch·push 결과 또는 skip 사유
+9. **Build/schema** — pass/fail
+10. **Git** — commit hash·branch·push 결과 또는 skip 사유
 
 ## Trigger Examples
 

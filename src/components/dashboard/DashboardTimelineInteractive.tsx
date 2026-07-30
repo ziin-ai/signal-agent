@@ -46,7 +46,10 @@ const PRICE_GRADIENT_DOM_ID = "ziin-dashboard-timeline-price-fill";
 /** 지수(THEME) 모드 가격선 — viewBox 왜곡과 무관하게 얇은 헤어라인(px) */
 const THEME_INDEX_STROKE_PX = 0.28;
 
-/** View Transition·popstate 후 URL과 props 불일치 방지 — 필터·href 기준 경로를 주소창에서 재동기화 */
+/**
+ * 프리렌더 + ClientRouter 환경에서는 `<a href>` 필터가 네비게이션으로 리셋될 수 있다.
+ * 버튼 + 로컬 state로 선택하고, URL은 history.pushState로만 맞춘다.
+ */
 function useDashboardFilterSync(
   filterPathAndQuery: string,
   initialMarket: EventMarketFilter,
@@ -55,46 +58,71 @@ function useDashboardFilterSync(
   allEvents: TimelineEvent[],
   marketCategoryOptions?: MarketCategoryOptionSets,
 ): {
-  pathWithQuery: string;
   marketFilter: EventMarketFilter;
   categories: string[];
+  setMarketFilterValue: (next: EventMarketFilter) => void;
+  toggleCategory: (cat: string) => void;
+  clearCategories: () => void;
 } {
-  const [urlRevision, setUrlRevision] = useState(0);
+  const [marketFilter, setMarketFilter] = useState<EventMarketFilter>(initialMarket);
+  const [categories, setCategories] = useState<string[]>(() => initialCategories ?? []);
+  const [pathWithQuery, setPathWithQuery] = useState(filterPathAndQuery);
+
+  function writeUrl(nextMarket: EventMarketFilter, nextCategories: string[]) {
+    const base =
+      typeof window !== "undefined"
+        ? `${window.location.pathname}${window.location.search}${window.location.hash}`
+        : pathWithQuery;
+    const nextPath = dashboardTimelineFilterHref(base, nextMarket, nextCategories);
+    setPathWithQuery(nextPath);
+    if (typeof window === "undefined") return;
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (nextPath !== current) {
+      window.history.pushState({}, "", nextPath);
+    }
+  }
 
   useEffect(() => {
-    const bump = () => setUrlRevision((n) => n + 1);
-    document.addEventListener("astro:page-load", bump);
-    window.addEventListener("popstate", bump);
-    return () => {
-      document.removeEventListener("astro:page-load", bump);
-      window.removeEventListener("popstate", bump);
+    const syncFromLocation = () => {
+      const pageUrl = new URL(window.location.href);
+      const parsed = parseDashboardFiltersFromUrl(pageUrl, allEvents, postMarket, marketCategoryOptions);
+      setMarketFilter(parsed.market);
+      setCategories(parsed.categories);
+      setPathWithQuery(`${pageUrl.pathname}${pageUrl.search}${pageUrl.hash}`);
     };
-  }, []);
 
-  return useMemo(() => {
-    if (typeof window === "undefined") {
-      return {
-        pathWithQuery: filterPathAndQuery,
-        marketFilter: initialMarket,
-        categories: initialCategories ?? [],
-      };
-    }
-    const pageUrl = new URL(window.location.href);
-    const parsed = parseDashboardFiltersFromUrl(pageUrl, allEvents, postMarket, marketCategoryOptions);
-    return {
-      pathWithQuery: `${pageUrl.pathname}${pageUrl.search}${pageUrl.hash}`,
-      marketFilter: parsed.market,
-      categories: parsed.categories,
+    syncFromLocation();
+    document.addEventListener("astro:page-load", syncFromLocation);
+    window.addEventListener("popstate", syncFromLocation);
+    return () => {
+      document.removeEventListener("astro:page-load", syncFromLocation);
+      window.removeEventListener("popstate", syncFromLocation);
     };
-  }, [
-    urlRevision,
-    filterPathAndQuery,
-    initialMarket,
-    initialCategories,
-    postMarket,
-    allEvents,
-    marketCategoryOptions,
-  ]);
+  }, [allEvents, postMarket, marketCategoryOptions]);
+
+  function setMarketFilterValue(next: EventMarketFilter) {
+    const opts = categoryOptionsForMarketFilter(next, marketCategoryOptions, allEvents);
+    const nextCategories = categories.filter((c) => opts.includes(c));
+    setMarketFilter(next);
+    setCategories(nextCategories);
+    writeUrl(next, nextCategories);
+  }
+
+  function toggleCategory(cat: string) {
+    const next = new Set(categories);
+    if (next.has(cat)) next.delete(cat);
+    else next.add(cat);
+    const nextCategories = [...next].sort();
+    setCategories(nextCategories);
+    writeUrl(marketFilter, nextCategories);
+  }
+
+  function clearCategories() {
+    setCategories([]);
+    writeUrl(marketFilter, []);
+  }
+
+  return { marketFilter, categories, setMarketFilterValue, toggleCategory, clearCategories };
 }
 
 export default function DashboardTimelineInteractive({
@@ -115,14 +143,15 @@ export default function DashboardTimelineInteractive({
   initialCategories,
   marketCategoryOptions,
 }: Props) {
-  const { pathWithQuery, marketFilter, categories } = useDashboardFilterSync(
-    filterPathAndQuery,
-    initialMarket,
-    initialCategories,
-    market,
-    allEvents,
-    marketCategoryOptions,
-  );
+  const { marketFilter, categories, setMarketFilterValue, toggleCategory, clearCategories } =
+    useDashboardFilterSync(
+      filterPathAndQuery,
+      initialMarket,
+      initialCategories,
+      market,
+      allEvents,
+      marketCategoryOptions,
+    );
 
   const currency = market === "KRX" ? "KRW" : "USD";
   const moneyFormatter = useMemo(
@@ -201,27 +230,6 @@ export default function DashboardTimelineInteractive({
         : themeIndexDefinitions(market).map((d) => d.label).join(" · ")
       : symbol;
 
-  function categoriesAfterMarketSwitch(nextMarket: EventMarketFilter): string[] {
-    const opts = categoryOptionsForMarketFilter(nextMarket, marketCategoryOptions, allEvents);
-    return categories.filter((c) => opts.includes(c));
-  }
-
-  function hrefForMarket(nextMarket: EventMarketFilter): string {
-    return dashboardTimelineFilterHref(pathWithQuery, nextMarket, categoriesAfterMarketSwitch(nextMarket));
-  }
-
-  function hrefClearCategories(): string {
-    return dashboardTimelineFilterHref(pathWithQuery, marketFilter, []);
-  }
-
-  function hrefToggleCategory(cat: string): string {
-    const next = new Set(categories);
-    if (next.has(cat)) next.delete(cat);
-    else next.add(cat);
-    const nextArr = [...next].sort();
-    return dashboardTimelineFilterHref(pathWithQuery, marketFilter, nextArr);
-  }
-
   function kindDotClass(kind: TimelineEvent["kind"]): string {
     if (kind === "post") return "bg-sky-500 ring-sky-200 dark:ring-sky-900";
     if (kind === "external_event") return "bg-orange-500 ring-orange-200 dark:ring-orange-900";
@@ -238,8 +246,9 @@ export default function DashboardTimelineInteractive({
   }
 
   const pillInactive =
-    "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200";
-  const pillActive = "border-info bg-info/15 text-info";
+    "border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:bg-surface-container hover:text-on-surface";
+  const pillActive = "border-primary bg-primary text-on-primary shadow-sm";
+  const pillActiveMulti = "border-primary/40 bg-primary-container text-on-primary-container shadow-sm";
 
   /** theme-empty·지수 가공 실패 시에도 priceSeriesLen≥2로 두지만, 조건을 명시해 그리드·축이 항상 보이게 함 */
   const showChartSvg =
@@ -248,14 +257,14 @@ export default function DashboardTimelineInteractive({
     layout.priceSeriesLen >= 2;
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-secondary/20 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-      <h2 className="font-sans text-xl font-semibold tracking-tight">최근 흐름</h2>
+    <div className="md-card p-5 sm:p-6">
+      <h2 className="font-sans text-[1.35rem] font-bold tracking-[-0.03em] text-on-surface">최근 흐름</h2>
 
-      <div className="mt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-600 dark:text-slate-300">
+      <div className="mt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] text-on-surface-variant">
         <p>
-          <span className="font-semibold text-info">Today</span> 기준 · 과거 8개월 + 예정 4개월
+          <span className="font-semibold text-primary">Today</span> 기준 · 과거 8개월 + 예정 4개월
         </p>
-        <a href={`${rootPath}timeline`} className="shrink-0 font-medium text-info hover:underline">
+        <a href={`${rootPath}timeline`} className="shrink-0 font-medium text-primary hover:underline">
           전체 타임라인 →
         </a>
       </div>
@@ -349,56 +358,65 @@ export default function DashboardTimelineInteractive({
         </div>
       )}
 
-      <div className="relative z-10 mt-3 border-b border-slate-200/80 pb-3 dark:border-slate-700/80">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="mr-1 text-xs text-slate-500 dark:text-slate-400">시장:</span>
+      <div className="relative z-20 mt-3 border-b border-outline-variant/70 pb-3">
+        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="시장 필터">
+          <span className="mr-1 text-xs text-on-surface-variant">시장:</span>
           {(
             [
               { label: "전체", value: "all" as const },
               { label: "미국", value: "us" as const },
               { label: "한국", value: "kr" as const },
             ] as const
-          ).map(({ label, value }) => (
-            <a
-              key={value}
-              href={hrefForMarket(value)}
-              aria-current={marketFilter === value ? "true" : undefined}
-              className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs no-underline ${
-                marketFilter === value ? pillActive : pillInactive
-              }`}
-            >
-              {label}
-            </a>
-          ))}
+          ).map(({ label, value }) => {
+            const selected = marketFilter === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setMarketFilterValue(value)}
+                className={`inline-flex cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
+                  selected ? pillActive : pillInactive
+                }`}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
-        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-          <span className="mr-1 text-xs text-slate-500 dark:text-slate-400">카테고리:</span>
-          <a
-            href={hrefClearCategories()}
-            aria-current={categories.length === 0 ? "true" : undefined}
-            className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs no-underline ${
+        <div className="mt-1.5 flex flex-wrap items-center gap-1.5" role="group" aria-label="카테고리 필터">
+          <span className="mr-1 text-xs text-on-surface-variant">카테고리:</span>
+          <button
+            type="button"
+            aria-pressed={categories.length === 0}
+            onClick={() => clearCategories()}
+            className={`inline-flex cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
               categories.length === 0 ? pillActive : pillInactive
             }`}
           >
             전체
-          </a>
-          {categoryOpts.map((cat) => (
-            <a
-              key={cat}
-              href={hrefToggleCategory(cat)}
-              aria-current={categories.includes(cat) ? "true" : undefined}
-              className={`inline-flex rounded-full border px-2.5 py-0.5 text-xs no-underline ${
-                categories.includes(cat) ? pillActive : pillInactive
-              }`}
-            >
-              {eventCategoryLabel(cat)}
-            </a>
-          ))}
+          </button>
+          {categoryOpts.map((cat) => {
+            const selected = categories.includes(cat);
+            return (
+              <button
+                key={cat}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => toggleCategory(cat)}
+                className={`inline-flex cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
+                  selected ? pillActiveMulti : pillInactive
+                }`}
+              >
+                {eventCategoryLabel(cat)}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       <div className="relative mt-4">
-        <div className="relative h-64 overflow-hidden rounded-xl bg-slate-100/85 dark:bg-slate-900/80" aria-hidden="true">
+        <div className="relative h-64 overflow-hidden rounded-md3-lg bg-surface-container/80" aria-hidden="true">
           {showChartSvg && (
             <svg
               viewBox="0 0 100 64"
@@ -463,7 +481,7 @@ export default function DashboardTimelineInteractive({
             </svg>
           )}
           <div
-            className="pointer-events-none absolute bottom-0 right-0 top-0 z-[1] bg-slate-100/45 dark:bg-slate-900/30"
+            className="pointer-events-none absolute bottom-0 right-0 top-0 z-[1] bg-surface-container-high/40"
             style={{ left: `${todayPct}%` }}
           />
           {layout.monthGuideTicks.map((t) => {
@@ -479,11 +497,11 @@ export default function DashboardTimelineInteractive({
             );
           })}
           <div
-            className="pointer-events-none absolute bottom-0 top-0 z-10 w-px bg-info shadow-[0_0_0_1px_rgba(255,255,255,0.8)] dark:shadow-none"
+            className="pointer-events-none absolute bottom-0 top-0 z-10 w-px bg-primary shadow-[0_0_0_1px_rgba(255,255,255,0.65)]"
             style={{ left: `${todayPct}%`, transform: "translateX(-50%)" }}
           />
           <span
-            className="pointer-events-none absolute -top-0.5 z-10 -translate-x-1/2 rounded bg-info px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white"
+            className="pointer-events-none absolute -top-0.5 z-10 -translate-x-1/2 rounded-md3-sm bg-primary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-on-primary"
             style={{ left: `${todayPct}%` }}
           >
             Today

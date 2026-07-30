@@ -44,6 +44,10 @@ git log -5 --oneline
 
 ### 3. Commit message
 
+**Before commit when posts/events changed:** run `pnpm run build` (or confirm Astro content sync has no `InvalidContentEntryDataError`). Fix schema failures first — especially illegal `sources[*].type` values (`data`, `guide`, etc. are forbidden; see post-from-sources Schema Guardrails).
+
+Do not `git commit` a broken content collection that fails the build.
+
 HEREDOC 사용. **why** 중심, 1~2문장. 스킬·날짜·주제 반영.
 
 ```bash
@@ -95,13 +99,13 @@ git status
 
 ## Final Response Addition
 
-스킬 Final Response 목록 **마지막 항목**으로 항상 포함:
+스킬 Final Response 목록 **마지막 항목들**로 항상 포함:
 
 ```
-9. **Git:** `{commit hash short}` pushed to `{branch}` — {1-line message}
+N. **Build/schema:** pass (or fail + fix)
+N+1. **Git:** `{commit hash short}` pushed to `{branch}` — {1-line message}
    또는 skip 사유 (변경 없음 / 사용자 요청 / git unavailable)
 ```
-
 ## Opt-Out Trigger Phrases
 
 "커밋하지 마", "push 하지 마", "git 생략", "no commit", "no push"

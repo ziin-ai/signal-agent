@@ -127,11 +127,9 @@ entities:
     - "파운드리 경쟁"
 ---
 
-## 한 줄 결론
+> **CALL.** 애플과의 예비 합의 보도는 인텔 파운드리의 고객 확장 가능성을 높였지만, 가치 재평가는 예비 합의가 아닌 18A·18AP의 양산 수율과 실제 물량으로 결정된다.
 
-**‘예비 합의’와 ‘양산·수율 검증’은 다른 문제다.** WSJ 계열 보도가 시장에 준 것은 인텔 파운드리의 고객 스펙트럼 확장 기대이고, 블룸버그가 며칠 전까지 강조한 것은 같은 테마 안에서도 **협상 초기성·규모 불확실성**이다. 둘을 시간축으로 겹쳐 보면 모순이 아니라 **뉴스가 성숙해진 단계**로 읽는 편이 분석적으로 덜 어색하다.
-
-## 결론 요약 (TL;DR)
+## 결론 요약
 
 - 애플이 파운드리 의존도를 TSMC 단일축에서 일부 분산하려는 동기(첨단 공정 포화·지정학)는 CNA·WSJ 전달과 디지털데일리 정리가 같게 가리킨다{{cite:src-1}}{{cite:src-2}}.
 - 인텔 측은 1분기 Intel Foundry 매출이 전년 대비 두 자릿수 성장 구간에 있고, 테라팹 등 전략 고객 라인은 공식 실적 자료에서도 확인된다{{cite:src-4}}.
@@ -139,6 +137,14 @@ entities:
 - 일정 측면에서 5월 13일(현지) 연차 주주총회는 경영진 메시지·질의응답을 통해 파운드리 내러티브가 **주가 변동성**으로 이어질 수 있는 근접 촉매다{{cite:src-5}}.
 
 > 행정력·지분 구조가 고객을 ‘테이블’로 끌어낸 사례는 단기 밸류에이션을 밀어 올리지만, 파운드리 프리미엄은 최종적으로 **공정 안정성과 수율·단가**가 증명할 때만 지속 가능하다.
+
+## 우선순위
+
+1. **공식 발표와 고객 PO·물량의 확인**
+2. **18A·18AP 공정의 수율·가동 안정성**
+3. **정책 기대와 파운드리 이익 전환의 간극**
+
+**‘예비 합의’와 ‘양산·수율 검증’은 다른 문제다.** WSJ 계열 보도가 시장에 준 것은 인텔 파운드리의 고객 스펙트럼 확장 기대이고, 블룸버그가 며칠 전까지 강조한 것은 같은 테마 안에서도 **협상 초기성·규모 불확실성**이다. 둘을 시간축으로 겹쳐 보면 모순이 아니라 **뉴스가 성숙해진 단계**로 읽는 편이 분석적으로 덜 어색하다.
 
 ## 무엇이 달라졌나: 보도 프레임의 ‘시차’
 
@@ -201,33 +207,23 @@ CNA는 애플이 TSMC에 크게 의존하면서, AI 칩메이커들이 첨단 �
 
 디지털데일리는 삼성·TSMC가 양분해 온 파운드리 시장에 **미국 중심 연합**이 균열을 낸다는 서술로 확장한다{{cite:src-1}}. 이는 중기 시나리오로는 설득력이 있으나, 단기 실무에서는 **공정 리더십·수율·패키징·고객 믹스**가 여전히 TSMC·삼성 쪽 증명된 레퍼런스를 갖고 있다는 점이 상쇄 변수다. 블룸버그가 삼성 미국 라인을 애플 옵션으로 병치한 것도 같은 맥락에서 **다각화가 인텔 일각화가 아님**을 시사한다{{cite:src-3}}.
 
-## 체크할 리스크
+## 가드레일
 
 - **합의 대 양산**: 예비 합의·보도와 실제 램프·수율 달성 사이의 시차{{cite:src-2}}{{cite:src-3}}.
 - **단일·2차 보도 의존 구간**: 18AP 세부, 인력·소송의 법적 성격 등은 확인 가능성이 열린 상태{{cite:src-1}}.
 - **정책 의존**: 행정부 역할이 강조될수록 규제·정치 일정 변화에 민감해질 수 있음{{cite:src-2}}.
 - **밸류에이션**: 뉴스 레벨에서의 주가 급반응과 펀더멘털 개선 속도의 괴리{{cite:src-2}}{{cite:src-4}}.
 
-## 자주 묻는 질문 (FAQ)
-
-**Q1. 블룸버그와 WSJ 보도가 서로 모순인가?**  
-A. 필연적 모순이라기보다 **협상 단계·정보원 층위·보도 시점** 차이로 읽는 경우가 많다. 후속 공시·실적 코멘트로 수렴이 드러나는지가 핵심이다{{cite:src-3}}{{cite:src-2}}.
-
-**Q2. 인텔 파운드리 매출 성장이 곧 파운드리 사업의 이익 체질을 의미하나?**  
-A. 세그먼트 매출 성장은 필요 조건에 가깝고, **고객 믹스·가동률·학습 곡선**이 이익 전환을 가른다. 1분기 실적은 방향성을 보여 줄 뿐, 애플 뉴스는 향후 멀티이어 검증 과제다{{cite:src-4}}.
-
-**Q3. 가장 가까운 일정 촉매는 무엇인가?**  
-A. 공식 IR 기준으로 5월 13일 연차 주주총회가 잡혀 있으며, 전략·거버넌스 관련 질의가 시장에 새 정보를 줄 수 있다{{cite:src-5}}.
 
 ## 출처
 
-- 디지털데일리, "인텔 파운드리, 애플·엔비디아·스페이스X ‘빅3’ 잡았다…‘미국 제조’ 부활의 신호탄" (2026-05-09)  
+- 디지털데일리, "인텔 파운드리, 애플·엔비디아·스페이스X ‘빅3’ 잡았다…‘미국 제조’ 부활의 신호탄" (2026-05-09)
   https://www.ddaily.co.kr/page/view/2026050910421841443
-- CNA, "Apple, Intel reach preliminary chip-making deal, WSJ reports" (2026-05-09)  
+- CNA, "Apple, Intel reach preliminary chip-making deal, WSJ reports" (2026-05-09)
   https://www.channelnewsasia.com/business/apple-intel-have-reached-preliminary-chip-making-deal-wsj-reports-6110201
-- Bloomberg, "Apple Explores Using Intel and Samsung to Build Main Device Chips in the US" (2026-05-05)  
+- Bloomberg, "Apple Explores Using Intel and Samsung to Build Main Device Chips in the US" (2026-05-05)
   https://www.bloomberg.com/news/articles/2026-05-05/apple-explores-using-intel-and-samsung-to-build-main-device-chips-in-the-us
-- Intel, "Intel Reports First-Quarter 2026 Financial Results" (2026-04-23)  
+- Intel, "Intel Reports First-Quarter 2026 Financial Results" (2026-04-23)
   https://www.intc.com/news-events/press-releases/detail/1767/intel-reports-first-quarter-2026-financial-results
-- Intel IR Calendar, "2026 Annual Stockholders' Meeting" (2026-05-09)  
+- Intel IR Calendar, "2026 Annual Stockholders' Meeting" (2026-05-09)
   https://www.intc.com/news-events/ir-calendar/detail/20260513-2026-annual-stockholders-meeting

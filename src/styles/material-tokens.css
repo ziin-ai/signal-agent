@@ -1,0 +1,436 @@
+/**
+ * Material Design 3 tokens — ziin.ai “곁에 있는 지인”
+ * Seed: deep ink (trust) on cool stone paper — not default Material blue / purple wash.
+ */
+
+:root {
+  color-scheme: light;
+
+  --md-ref-typeface-brand: "Noto Sans KR", system-ui, sans-serif;
+  --md-ref-typeface-plain: "Noto Sans KR", system-ui, sans-serif;
+  --md-ref-typeface-weight-regular: 400;
+  --md-ref-typeface-weight-medium: 500;
+  --md-ref-typeface-weight-bold: 700;
+
+  /* Ink primary — calm authority for a personal finance memo */
+  --md-sys-color-primary: #1a4d63;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #cce7f2;
+  --md-sys-color-on-primary-container: #002433;
+  --md-sys-color-secondary: #4f5d66;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #d3e1ea;
+  --md-sys-color-on-secondary-container: #0b1a22;
+  --md-sys-color-tertiary: #5c5748;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #e8e2d4;
+  --md-sys-color-on-tertiary-container: #1c1a12;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #410002;
+
+  /* Cool stone paper (not cream, not lavender) */
+  --md-sys-color-background: #f2f5f7;
+  --md-sys-color-on-background: #161d22;
+  --md-sys-color-surface: #f2f5f7;
+  --md-sys-color-on-surface: #161d22;
+  --md-sys-color-surface-variant: #dbe3e8;
+  --md-sys-color-on-surface-variant: #40484e;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #ecf0f3;
+  --md-sys-color-surface-container: #e6ebef;
+  --md-sys-color-surface-container-high: #e0e6ea;
+  --md-sys-color-surface-container-highest: #dae1e6;
+  --md-sys-color-outline: #70787e;
+  --md-sys-color-outline-variant: #c0c8ce;
+  --md-sys-color-inverse-surface: #2b3237;
+  --md-sys-color-inverse-on-surface: #ecf1f4;
+  --md-sys-color-inverse-primary: #8fcfe3;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+
+  --md-sys-color-success: #0f766e;
+  --md-sys-color-on-success: #ffffff;
+  --md-sys-color-warning: #b45309;
+  --md-sys-color-on-warning: #ffffff;
+
+  /* Korean market convention: up=red, down=blue */
+  --md-sys-color-market-up: #c62828;
+  --md-sys-color-market-down: #1565c0;
+
+  --md-sys-shape-corner-none: 0;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 14px;
+  --md-sys-shape-corner-large: 20px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 9999px;
+
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1:
+    0 1px 2px 0 color-mix(in srgb, var(--md-sys-color-shadow) 6%, transparent),
+    0 1px 3px 1px color-mix(in srgb, var(--md-sys-color-shadow) 4%, transparent);
+  --md-sys-elevation-2:
+    0 1px 2px 0 color-mix(in srgb, var(--md-sys-color-shadow) 8%, transparent),
+    0 3px 10px 2px color-mix(in srgb, var(--md-sys-color-shadow) 6%, transparent);
+  --md-sys-elevation-3:
+    0 2px 4px 0 color-mix(in srgb, var(--md-sys-color-shadow) 10%, transparent),
+    0 8px 20px 4px color-mix(in srgb, var(--md-sys-color-shadow) 8%, transparent);
+
+  --md-sys-typescale-display-small-size: 2.25rem;
+  --md-sys-typescale-headline-large-size: 2rem;
+  --md-sys-typescale-headline-medium-size: 1.75rem;
+  --md-sys-typescale-headline-small-size: 1.5rem;
+  --md-sys-typescale-title-large-size: 1.375rem;
+  --md-sys-typescale-title-medium-size: 1rem;
+  --md-sys-typescale-title-small-size: 0.875rem;
+  --md-sys-typescale-body-large-size: 1rem;
+  --md-sys-typescale-body-medium-size: 0.875rem;
+  --md-sys-typescale-body-small-size: 0.75rem;
+  --md-sys-typescale-label-large-size: 0.875rem;
+  --md-sys-typescale-label-medium-size: 0.75rem;
+  --md-sys-typescale-label-small-size: 0.6875rem;
+
+  --md-icon-font: "Material Symbols Outlined";
+  --md-icon-size: 24px;
+
+  --ziin-atmosphere:
+    radial-gradient(ellipse 90% 55% at 8% -10%, color-mix(in srgb, var(--md-sys-color-primary) 14%, transparent), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 100% 0%, color-mix(in srgb, var(--md-sys-color-secondary) 10%, transparent), transparent 50%),
+    linear-gradient(180deg, var(--md-sys-color-background) 0%, var(--md-sys-color-surface-container-low) 100%);
+
+  --color-info: var(--md-sys-color-primary);
+  --color-success: var(--md-sys-color-success);
+  --color-danger: var(--md-sys-color-error);
+  --color-warning: var(--md-sys-color-warning);
+  --color-secondary: var(--md-sys-color-surface-container);
+  --color-bg: var(--md-sys-color-background);
+  --color-fg: var(--md-sys-color-on-background);
+  --color-market-up: var(--md-sys-color-market-up);
+  --color-market-down: var(--md-sys-color-market-down);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --md-sys-color-primary: #8fcfe3;
+  --md-sys-color-on-primary: #003546;
+  --md-sys-color-primary-container: #0f3d50;
+  --md-sys-color-on-primary-container: #cce7f2;
+  --md-sys-color-secondary: #b7c8d2;
+  --md-sys-color-on-secondary: #21333c;
+  --md-sys-color-secondary-container: #374954;
+  --md-sys-color-on-secondary-container: #d3e1ea;
+  --md-sys-color-tertiary: #cbc4b4;
+  --md-sys-color-on-tertiary: #332f24;
+  --md-sys-color-tertiary-container: #4a4539;
+  --md-sys-color-on-tertiary-container: #e8e2d4;
+  --md-sys-color-error: #ffb4ab;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000a;
+  --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-background: #0e1316;
+  --md-sys-color-on-background: #dde3e7;
+  --md-sys-color-surface: #0e1316;
+  --md-sys-color-on-surface: #dde3e7;
+  --md-sys-color-surface-variant: #40484e;
+  --md-sys-color-on-surface-variant: #c0c8ce;
+  --md-sys-color-surface-container-lowest: #090d0f;
+  --md-sys-color-surface-container-low: #161d22;
+  --md-sys-color-surface-container: #1a2227;
+  --md-sys-color-surface-container-high: #252d32;
+  --md-sys-color-surface-container-highest: #30383d;
+  --md-sys-color-outline: #8a9298;
+  --md-sys-color-outline-variant: #40484e;
+  --md-sys-color-inverse-surface: #dde3e7;
+  --md-sys-color-inverse-on-surface: #2b3237;
+  --md-sys-color-inverse-primary: #1a4d63;
+
+  --md-sys-color-success: #5eead4;
+  --md-sys-color-on-success: #003731;
+  --md-sys-color-warning: #fbbf24;
+  --md-sys-color-on-warning: #422006;
+  --md-sys-color-market-up: #ff8a80;
+  --md-sys-color-market-down: #82b1ff;
+
+  --ziin-atmosphere:
+    radial-gradient(ellipse 80% 50% at 0% 0%, color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent), transparent 55%),
+    linear-gradient(180deg, var(--md-sys-color-background) 0%, var(--md-sys-color-surface-container-low) 100%);
+}
+
+.md-surface {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-surface-container {
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-surface-container-low {
+  background-color: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-surface-container-high {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-elevation-1 {
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.md-elevation-2 {
+  box-shadow: var(--md-sys-elevation-2);
+}
+
+.md-elevation-3 {
+  box-shadow: var(--md-sys-elevation-3);
+}
+
+.md-shape-sm {
+  border-radius: var(--md-sys-shape-corner-small);
+}
+
+.md-shape-md {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+
+.md-shape-lg {
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+.md-shape-xl {
+  border-radius: var(--md-sys-shape-corner-extra-large);
+}
+
+.md-shape-full {
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+.material-symbols-outlined {
+  font-family: var(--md-icon-font);
+  font-weight: normal;
+  font-style: normal;
+  font-size: var(--md-icon-size);
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  user-select: none;
+  vertical-align: middle;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.md-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0 1.5rem;
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  font-family: var(--md-ref-typeface-plain);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-ref-typeface-weight-medium);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.md-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.md-btn-filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: var(--md-sys-elevation-0);
+}
+
+.md-btn-filled:hover {
+  box-shadow: var(--md-sys-elevation-1);
+  filter: brightness(1.05);
+}
+
+.md-btn-tonal {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.md-btn-tonal:hover {
+  filter: brightness(0.97);
+}
+
+.md-btn-text {
+  background: transparent;
+  color: var(--md-sys-color-primary);
+  padding-inline: 0.75rem;
+}
+
+.md-btn-text:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+
+.md-btn-icon {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.md-btn-icon:hover {
+  background-color: color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+}
+
+.md-btn-icon:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.md-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 32px;
+  padding: 0 0.75rem;
+  border-radius: var(--md-sys-shape-corner-small);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-ref-typeface-weight-medium);
+}
+
+.md-chip-live {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface-container-lowest));
+  color: var(--md-sys-color-primary);
+  gap: 0.4rem;
+}
+
+.md-chip-live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent);
+  animation: ziin-live-pulse 2.2s ease-out infinite;
+}
+
+.md-chip-error {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+
+.md-top-app-bar {
+  background-color: color-mix(in srgb, var(--md-sys-color-surface) 82%, transparent);
+  color: var(--md-sys-color-on-surface);
+  border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 70%, transparent);
+  backdrop-filter: saturate(1.2) blur(14px);
+  -webkit-backdrop-filter: saturate(1.2) blur(14px);
+}
+
+.md-card {
+  background-color: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface);
+  border-radius: var(--md-sys-shape-corner-large);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-outline-variant) 80%, transparent);
+  box-shadow: var(--md-sys-elevation-1);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.md-card:hover {
+  box-shadow: var(--md-sys-elevation-2);
+  border-color: color-mix(in srgb, var(--md-sys-color-primary) 22%, var(--md-sys-color-outline-variant));
+}
+
+.md-card-filled {
+  background-color: var(--md-sys-color-surface-container-low);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.md-card-filled:hover {
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+@keyframes ziin-live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@keyframes ziin-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ziin-rise {
+  animation: ziin-rise 0.45s ease-out both;
+}
+
+.ziin-rise-delay-1 {
+  animation-delay: 0.06s;
+}
+
+.ziin-rise-delay-2 {
+  animation-delay: 0.12s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-chip-live::before,
+  .ziin-rise,
+  .ziin-rise-delay-1,
+  .ziin-rise-delay-2 {
+    animation: none !important;
+  }
+}

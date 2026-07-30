@@ -1,17 +1,40 @@
-<footer class="mt-10 border-t border-slate-300/60 px-4 py-6 text-sm text-slate-600 dark:border-slate-700/60 dark:text-slate-300">
-  <div class="mx-auto flex w-full max-w-6xl flex-col gap-2">
-    <p>면책 고지: 본 사이트의 모든 내용은 투자 참고 정보이며, 투자 손익의 책임은 투자자 본인에게 있습니다.</p>
-    <p>
-      문의:{" "}
-      <a
-        href="https://github.com/ziin-ai/signal-agent/issues"
-        class="font-medium text-info hover:underline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        GitHub Issues에서 문의
-      </a>
-    </p>
-    <p>© {new Date().getFullYear()} ziin.ai. All rights reserved.</p>
+---
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+const policyLinks = [
+  { href: `${rootPath}about`, label: "소개" },
+  { href: `${rootPath}privacy`, label: "개인정보처리방침" },
+  { href: `${rootPath}terms`, label: "이용약관·면책" },
+  { href: `${rootPath}contact`, label: "연락처" },
+];
+---
+
+<footer class="mt-14 border-t border-outline-variant/80 bg-surface-container-low/80 px-4 py-10 text-sm text-on-surface-variant backdrop-blur-sm">
+  <div class="mx-auto flex w-full max-w-6xl flex-col gap-5">
+    <div class="flex flex-col gap-1">
+      <p class="font-sans text-lg font-bold tracking-[-0.03em] text-on-surface">
+        지인<span class="text-primary">.ai</span>
+      </p>
+      <p class="max-w-2xl text-[13px] leading-relaxed">
+        출처를 붙인 증시·매크로 메모를 올리는 개인 블로그입니다. 투자 권유가 아니며, 손익의 책임은 읽는 분에게 있습니다.
+        <a href={`${rootPath}terms`} class="font-medium text-primary hover:underline">이용약관·면책</a>
+      </p>
+    </div>
+    <nav class="flex flex-wrap gap-x-1 gap-y-1" aria-label="정책 및 소개">
+      {
+        policyLinks.map((link) => (
+          <a href={link.href} class="md-btn-text !min-h-8 !px-2 text-sm">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-outline-variant/60 pt-4 text-xs">
+      <p>
+        문의
+        <a href="mailto:contact@ziin.ai" class="ml-1 font-medium text-primary hover:underline">contact@ziin.ai</a>
+      </p>
+      <p class="text-on-surface-variant/80">© {new Date().getFullYear()} ziin.ai</p>
+    </div>
   </div>
 </footer>
