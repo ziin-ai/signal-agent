@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "mid"
-summary: "8/13 20:30 KST 발표 예정. 컨센 MoM +0.2%(전월 -0.3%)·YoY 4.9%(전월 5.5%), 코어 MoM +0.3%·YoY 4.2%. CPI 익일 파이프라인 물가가 근원으로 전이되는지 확인. 한국 세션은 발표 전 6808 저점·외인 1.49조 현물 지속 여부로 먼저 판정."
+summary: "8/13 20:30 KST 발표 예정. 컨센 MoM +0.2%(전월 -0.3%)·YoY 4.9%(전월 5.5%), 코어 MoM +0.3%·YoY 4.2%. CPI 익일 파이프라인 물가가 근원으로 전이되는지 확인. 한국 세션은 발표 전 외인 반도체 현물(11:34 KRX +1.49조) 지속 여부로 먼저 판정."
 sourceUrl: "https://www.bls.gov/ppi/"
 tags: ["거시", "물가", "PPI", "금리"]
 ---
