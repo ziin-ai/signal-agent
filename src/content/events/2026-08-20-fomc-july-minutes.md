@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "mid"
-summary: "7월 동결(3.50~3.75%) 회의록. 소매판매 −0.6%·미시간 51.0·유가 주간 +6%가 이미 쌓인 뒤의 문구다. 한국 현물은 8/18 창구 다음, 8/21 PMI 앞 할인율 필터."
+summary: "7월 동결 회의록(19일 ET, 한국 20일 새벽). 소매 −0.6%·미시간 51·유가 주간 +6%·60일 시한 만료가 이미 쌓인 뒤의 문구다. 한국 현물은 8/18 창구 다음, 같은 주 월마트·21일 PMI 앞 할인율 필터."
 sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
 tags: ["FOMC", "Fed", "금리", "매크로", "의사록"]
 ---
