@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "mid"
-summary: "7월 동결 회의록(19일 ET, 한국 20일 새벽). 소매 −0.6%·미시간 51·유가 주간 +6%·60일 시한 만료가 이미 쌓인 뒤의 문구다. 한국 현물은 8/18 창구 다음, 같은 주 월마트·21일 PMI 앞 할인율 필터."
+summary: "7월 동결 회의록(19일 ET, 한국 20일 새벽). 공개 전에 8/17 ET 10년 4.73%·30년 5.31%(2007년 이후 최고)·브렌트 90.87이 이미 찍혔다. 3명 25bp 인상 반대 문구가 이 금리 위를 확인하는 자리다."
 sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
 tags: ["FOMC", "Fed", "금리", "매크로", "의사록"]
 ---
