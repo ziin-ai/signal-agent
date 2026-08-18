@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "mid"
-summary: "소매·외식 7636억달러, MoM −0.6%(컨센 +0.1%)·YoY +5.0%. 같은 날 미시간 8월 예비 51.0. 한국 첫 현금 8/18 앞 층은 8/17 ET 브렌트 90.87·30년 5.31%·홈디포 실적이다. 창구 1순위는 외인 전기전자 부호."
+summary: "소매·외식 7636억달러, MoM −0.6%·YoY +5.0%. 8/18 한국 오전은 전기전자 창구로 7000을 열었고, 소비 확인은 당일 밤 홈디포로 미뤄졌다. 창구 1순위는 외인 전기전자 유지 여부."
 sourceUrl: "https://www.census.gov/retail/sales.html"
 tags: ["거시", "소비", "소매판매", "금리", "미시간"]
 ---
