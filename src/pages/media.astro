@@ -207,7 +207,7 @@ const weekPulse = weekKeyList.map((isoKey) => {
             ))
           }
         </div>
-        <p class="media-mono text-[11px] text-[var(--mt-text-2)]">
+        <p class="media-mono media-consensus text-[11px] text-[var(--mt-text-2)]">
           {formatDayShort(selectedDay)}
           <span class="mx-1.5 text-[var(--mt-muted)]">·</span>
           오늘의 유튜브 컨센서스:{" "}
@@ -373,23 +373,23 @@ const weekPulse = weekKeyList.map((isoKey) => {
           <h2 class="media-panel-label">Watchlist</h2>
           <span class="media-mono text-[10px] text-[var(--mt-muted)]">{MEDIA_CHANNELS.length}</span>
         </div>
-        <ul class="min-h-0 flex-1 overflow-auto">
+        <ul class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
           {
             channelStats.map(({ ch, latest, isLive, isNew }) => {
               const on = activeChannels.includes(ch.id);
               return (
-                <li class="border-b border-[var(--mt-border)] last:border-b-0">
+                <li class="min-w-0 border-b border-[var(--mt-border)] last:border-b-0">
                   <a
                     href={mediaHref({ channels: on ? [] : [ch.id] })}
                     class:list={[
-                      "block px-3 py-2.5 transition hover:bg-[color-mix(in_oklab,var(--mt-accent)_6%,transparent)]",
+                      "block min-w-0 overflow-hidden px-3 py-2.5 transition hover:bg-[color-mix(in_oklab,var(--mt-accent)_6%,transparent)]",
                       on && "bg-[color-mix(in_oklab,var(--mt-accent)_8%,transparent)]",
                     ]}
                     aria-pressed={on}
                   >
-                    <div class="flex items-center justify-between gap-2">
-                      <p class="text-[13px] font-semibold text-[var(--mt-text)]">{ch.name}</p>
-                      <div class="flex items-center gap-1.5">
+                    <div class="flex min-w-0 items-center justify-between gap-2">
+                      <p class="min-w-0 truncate text-[13px] font-semibold text-[var(--mt-text)]">{ch.name}</p>
+                      <div class="flex shrink-0 items-center gap-1.5">
                         {isLive && (
                           <span class="inline-flex items-center gap-1 media-mono text-[10px] font-semibold text-[var(--mt-live)]">
                             <span class="media-live-dot" aria-hidden="true" />
@@ -404,10 +404,12 @@ const weekPulse = weekKeyList.map((isoKey) => {
                     <p class="mt-0.5 text-[11px] leading-snug text-[var(--mt-muted)]">{ch.blurb}</p>
                     {
                       latest && (
-                        <p class="media-mono mt-1 text-[10px] text-[var(--mt-text-2)]">
-                          {formatRelativeAgo(latest.data.publishedAt, today)}
-                          <span class="mx-1 text-[var(--mt-muted)]">·</span>
-                          <span class="truncate">{latest.data.title}</span>
+                        <p class="media-mono mt-1 flex min-w-0 items-baseline gap-1 text-[10px] text-[var(--mt-text-2)]">
+                          <span class="shrink-0">{formatRelativeAgo(latest.data.publishedAt, today)}</span>
+                          <span class="shrink-0 text-[var(--mt-muted)]">·</span>
+                          <span class="min-w-0 truncate" title={latest.data.title}>
+                            {latest.data.title}
+                          </span>
                         </p>
                       )
                     }
@@ -425,17 +427,23 @@ const weekPulse = weekKeyList.map((isoKey) => {
           <h2 class="media-panel-label">Tape / Time & Sales</h2>
           <span class="media-mono text-[10px] text-[var(--mt-muted)]">{tapeItems.length} rows</span>
         </div>
-        <div class="min-h-0 flex-1 overflow-auto">
-          <table class="w-full border-collapse text-left">
+        <div class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden">
+          <table class="w-full table-fixed border-collapse text-left">
             <thead class="sticky top-0 bg-[var(--mt-surface)]">
               <tr class="media-mono text-[10px] uppercase tracking-wide text-[var(--mt-muted)]">
-                <th class="border-b border-[var(--mt-border)] px-2 py-1.5 font-medium sm:px-3">시간</th>
-                <th class="border-b border-[var(--mt-border)] px-2 py-1.5 font-medium">채널</th>
+                <th class="w-[3.25rem] border-b border-[var(--mt-border)] px-2 py-1.5 font-medium sm:w-[4rem] sm:px-3">
+                  시간
+                </th>
+                <th class="w-[4.5rem] border-b border-[var(--mt-border)] px-1 py-1.5 font-medium sm:w-[6.5rem] sm:px-2">
+                  채널
+                </th>
                 <th class="border-b border-[var(--mt-border)] px-2 py-1.5 font-medium">제목 / 뷰</th>
-                <th class="hidden border-b border-[var(--mt-border)] px-2 py-1.5 font-medium md:table-cell">
+                <th class="hidden w-[5.5rem] border-b border-[var(--mt-border)] px-2 py-1.5 font-medium md:table-cell">
                   자산
                 </th>
-                <th class="border-b border-[var(--mt-border)] px-2 py-1.5 font-medium text-right">보기</th>
+                <th class="w-10 border-b border-[var(--mt-border)] px-1 py-1.5 font-medium text-right sm:w-12">
+                  보기
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -456,10 +464,13 @@ const weekPulse = weekKeyList.map((isoKey) => {
                         <td class="media-mono whitespace-nowrap px-2 py-2 text-[11px] text-[var(--mt-text-2)] sm:px-3">
                           {formatTapeTime(item.data.publishedAt)}
                         </td>
-                        <td class="media-mono whitespace-nowrap px-2 py-2 text-[11px] text-[var(--mt-text)]">
+                        <td
+                          class="media-mono truncate px-1 py-2 text-[11px] text-[var(--mt-text)] sm:px-2"
+                          title={ch?.name ?? item.data.channel}
+                        >
                           {ch?.name ?? item.data.channel}
                         </td>
-                        <td class="max-w-[12rem] px-2 py-2 sm:max-w-md">
+                        <td class="min-w-0 px-2 py-2">
                           <p
                             class="media-tape-title truncate text-[12px] font-medium text-[var(--mt-text)]"
                             title={`${item.data.title} — ${oneLine}`}
@@ -471,13 +482,13 @@ const weekPulse = weekKeyList.map((isoKey) => {
                           </p>
                         </td>
                         <td class="hidden px-2 py-2 md:table-cell">
-                          <div class="flex flex-wrap gap-1">
+                          <div class="flex flex-wrap gap-1 overflow-hidden">
                             {assets.map((a) => (
                               <span class="media-mono text-[10px] text-[var(--mt-accent)]">{a}</span>
                             ))}
                           </div>
                         </td>
-                        <td class="px-2 py-2 text-right">
+                        <td class="px-1 py-2 text-right">
                           <button
                             type="button"
                             class="media-chip !px-2 !py-1"

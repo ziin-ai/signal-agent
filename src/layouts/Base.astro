@@ -109,7 +109,7 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
     <Header transition:persist="ziin-header" />
     <main
       class:list={[
-        isTerminal ? "mx-auto w-full max-w-[1600px] px-0 py-0 pb-0" : "mx-auto w-full max-w-7xl px-4 py-7 pb-10",
+        isTerminal ? "mx-auto w-full max-w-[1600px] overflow-x-hidden px-0 py-0 pb-0" : "mx-auto w-full max-w-7xl px-4 py-7 pb-10",
       ]}
     >
       <slot />
