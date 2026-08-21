@@ -196,7 +196,7 @@ const TICKER_BAR_DEFS = [
   { symbol: "^KQ11", label: "KOSDAQ" },
   { symbol: "^GSPC", label: "S&P 500" },
   { symbol: "KRW=X", label: "USD/KRW" },
-  { symbol: "^VIX", label: "VIX" },
+  { symbol: "^TNX", label: "US10Y" },
 ] as const;
 
 const TICKER_BAR_TTL_MS = 60_000;

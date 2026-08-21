@@ -9,17 +9,32 @@ export interface TickerItem {
 
 interface Props {
   items: TickerItem[];
+  /** KST 초 단위 시계 + LIVE 인디케이터 */
+  showClock?: boolean;
 }
 
-const { items } = Astro.props;
+const { items, showClock = false } = Astro.props;
 
 function formatPrice(value: number): string {
   return new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 2 }).format(value);
 }
 ---
 
-<div class="border-b border-outline-variant/50 bg-surface-container-high/90 px-4 py-2 backdrop-blur-sm">
-  <div class="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-x-6 gap-y-1.5 font-mono text-[11px] tracking-tight">
+<div class="ziin-ticker border-b border-outline-variant/50 bg-surface-container-high/90 px-4 py-2 backdrop-blur-sm">
+  <div class="mx-auto flex w-full max-w-7xl flex-wrap items-center gap-x-5 gap-y-1.5 font-mono text-[11px] tracking-tight">
+    {
+      showClock && (
+        <div class="flex items-center gap-2 pr-1 text-on-surface">
+          <span id="ticker-kst-time" class="tabular-nums text-on-surface-variant">
+            KST --:--:--
+          </span>
+          <span class="inline-flex items-center gap-1.5 font-semibold tracking-wide text-market-up">
+            <span class="media-live-dot inline-block" aria-hidden="true" />
+            LIVE
+          </span>
+        </div>
+      )
+    }
     {
       items.map((item) => {
         const directionClass =
@@ -39,3 +54,71 @@ function formatPrice(value: number): string {
     }
   </div>
 </div>
+
+{
+  showClock && (
+    <script is:inline>
+      (function () {
+        let intervalId = /** @type {ReturnType<typeof setInterval> | undefined} */ (undefined);
+        const formatter = new Intl.DateTimeFormat("ko-KR", {
+          timeZone: "Asia/Seoul",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        });
+
+        function update() {
+          const el = document.getElementById("ticker-kst-time");
+          if (!el) return;
+          try {
+            el.textContent = "KST " + formatter.format(new Date());
+          } catch {
+            el.textContent = "KST " + new Date().toLocaleTimeString("ko-KR", { hour12: false });
+          }
+        }
+
+        function start() {
+          update();
+          if (intervalId !== undefined) clearInterval(intervalId);
+          intervalId = setInterval(update, 1000);
+        }
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", start, { once: true });
+        } else {
+          start();
+        }
+        document.addEventListener("astro:page-load", start);
+      })();
+    </script>
+  )
+}
+
+<style>
+  .media-live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--md-sys-color-market-up, #ef4444);
+    animation: ticker-live-pulse 1.4s ease-out infinite;
+  }
+
+  @keyframes ticker-live-pulse {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--md-sys-color-market-up, #ef4444) 55%, transparent);
+    }
+    70% {
+      box-shadow: 0 0 0 6px transparent;
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-live-dot {
+      animation: none;
+    }
+  }
+</style>

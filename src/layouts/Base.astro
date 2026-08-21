@@ -13,6 +13,8 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   noindex?: boolean;
+  /** media 터미널 모니터용 셸 */
+  shell?: "default" | "terminal";
 }
 
 const {
@@ -21,7 +23,10 @@ const {
   image = "/favicon.svg",
   type = "website",
   noindex = false,
+  shell = "default",
 } = Astro.props;
+
+const isTerminal = shell === "terminal";
 
 const tickerItems = await fetchTickerBarQuotes();
 
@@ -40,7 +45,7 @@ const canonical = siteOrigin
 const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
 ---
 
-<html lang="ko">
+<html lang="ko" class:list={[isTerminal && "media-terminal"]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -99,13 +104,17 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
       ) : null
     }
   </head>
-  <body class="antialiased">
-    <TickerBar items={tickerItems} transition:persist="ziin-ticker" />
+  <body class:list={["antialiased", isTerminal && "media-terminal"]}>
+    <TickerBar items={tickerItems} showClock={true} transition:persist="ziin-ticker" />
     <Header transition:persist="ziin-header" />
-    <main class="mx-auto w-full max-w-7xl px-4 py-7 pb-10">
+    <main
+      class:list={[
+        isTerminal ? "mx-auto w-full max-w-[1600px] px-0 py-0 pb-0" : "mx-auto w-full max-w-7xl px-4 py-7 pb-10",
+      ]}
+    >
       <slot />
     </main>
-    <Footer transition:persist="ziin-footer" />
+    {!isTerminal && <Footer transition:persist="ziin-footer" />}
     <script is:inline>
       const SCROLL_KEY = "ziin-vt-scroll-y";
       document.addEventListener("astro:before-preparation", (e) => {

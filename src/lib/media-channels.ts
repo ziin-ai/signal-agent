@@ -64,3 +64,39 @@ export function formatDuration(sec: number): string {
   const s = sec % 60;
   return `${m}:${String(s).padStart(2, "0")}`;
 }
+
+export function formatTimestampChip(sec: number): string {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
+export function sentimentLabel(s: string | undefined): string {
+  if (s === "hawkish") return "매파";
+  if (s === "dovish") return "비둘기";
+  if (s === "mixed") return "혼조";
+  if (s === "neutral") return "중립";
+  return "";
+}
+
+export function youtubeEmbedUrl(youtubeId: string, startSec = 0): string {
+  const params = new URLSearchParams({
+    autoplay: "1",
+    rel: "0",
+    modestbranding: "1",
+  });
+  if (startSec > 0) params.set("start", String(Math.floor(startSec)));
+  return `https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?${params.toString()}`;
+}
+
+/** 상대 경과 (모니터 NEW 뱃지용) */
+export function formatRelativeAgo(from: Date, now = new Date()): string {
+  const sec = Math.max(0, Math.floor((now.getTime() - from.getTime()) / 1000));
+  if (sec < 60) return `${sec}s ago`;
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 48) return `${hr}h ago`;
+  const day = Math.floor(hr / 24);
+  return `${day}d ago`;
+}

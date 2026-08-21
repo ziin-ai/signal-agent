@@ -105,6 +105,21 @@ const media = defineCollection({
       impact: z.enum(["low", "mid", "high"]),
       /** 지인이 고른 이유 (1–2문장) */
       why: z.string().min(1),
+      /** AI/편집 3줄 핵심 요약 (브리프 카드) */
+      summaryBullets: z.array(z.string().min(1)).max(5).default([]),
+      /** 인라인 플레이어 점프용 타임스탬프 */
+      timestamps: z
+        .array(
+          z.object({
+            label: z.string().min(1),
+            timeSeconds: z.number().int().nonnegative(),
+          }),
+        )
+        .default([]),
+      marketSentiment: z.enum(["hawkish", "dovish", "neutral", "mixed"]).optional(),
+      relatedAssets: z.array(z.string().min(1)).default([]),
+      /** 큐레이션 시점 라이브 스트림 여부 (API 없이 수동) */
+      live: z.boolean().default(false),
       durationSec: z.number().int().positive().optional(),
       lang: z.enum(["ko", "en"]).default("ko"),
       relatedPost: z.string().min(1).optional(),
