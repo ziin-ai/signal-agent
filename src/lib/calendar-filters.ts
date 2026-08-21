@@ -1,7 +1,7 @@
 /**
  * 홈 월 캘린더 필터.
  * 축: 글 · 이벤트 (이벤트 종류 = 실적 / 매크로 / 정책).
- * 기본값 = 글 + 이벤트(High) · 실적/매크로.
+ * 기본값 = 글 + 이벤트(High) · 실적/매크로/정책 (칩 전부 선택).
  * URL에 kind|category가 있으면 명시 선택으로 해석.
  */
 
@@ -10,7 +10,8 @@ import { eventCategoryLabel } from "./dashboard-event-filters";
 
 export const HOME_CAL_DEFAULT_INCLUDE_POSTS = true;
 export const HOME_CAL_DEFAULT_INCLUDE_EVENTS = true;
-export const HOME_CAL_DEFAULT_CATEGORIES = ["earnings", "macro"] as const;
+/** 기본 = 노출 칩 전부 (실적·매크로·정책) */
+export const HOME_CAL_DEFAULT_CATEGORIES = ["earnings", "macro", "policy"] as const;
 
 /** 홈 캘린더는 High 영향도 이벤트만 (칩으로 노출하지 않음) */
 export const HOME_CAL_EVENT_IMPACT = "high" as const;

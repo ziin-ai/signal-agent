@@ -20,7 +20,7 @@ describe("resolveHomeCalendarFilters", () => {
     expect(state.isCustom).toBe(false);
     expect(state.includePosts).toBe(true);
     expect(state.includeEvents).toBe(true);
-    expect(state.categories).toEqual(["earnings", "macro"]);
+    expect(state.categories).toEqual(["earnings", "macro", "policy"]);
   });
 
   it("reads explicit kind and category", () => {
@@ -77,9 +77,9 @@ describe("filterHomeCalendarEvents", () => {
     const out = filterHomeCalendarEvents(sample, {
       includePosts: true,
       includeEvents: true,
-      categories: ["earnings", "macro"],
+      categories: ["earnings", "macro", "policy"],
     });
-    expect(out.map((e) => e.id)).toEqual(["p1", "e1"]);
+    expect(out.map((e) => e.id)).toEqual(["p1", "e1", "e3"]);
   });
 
   it("hides events when events toggle is off", () => {
