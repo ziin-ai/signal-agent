@@ -53,7 +53,7 @@ function kindLabel(kind: string) {
 ---
 
 <aside
-  class="flex h-full flex-col rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest p-5 shadow-md3-1 lg:sticky lg:top-20"
+  class="flex flex-col rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest p-4 shadow-md3-1 sm:p-5"
   aria-label={`주간 일정 ${rangeLabel}`}
 >
   <p class="text-[12px] font-medium text-on-surface-variant">이번 주</p>
@@ -64,84 +64,79 @@ function kindLabel(kind: string) {
 
   {
     weekEventCount === 0 ? (
-      <p class="mt-6 text-[13px] leading-relaxed text-on-surface-variant">{emptyHint}</p>
+      <p class="mt-5 text-[13px] leading-relaxed text-on-surface-variant">{emptyHint}</p>
     ) : (
-      <div class="mt-4 max-h-[min(70vh,640px)] space-y-4 overflow-y-auto pr-0.5">
-        {weekDays.map((day) => (
-          <section
-            class:list={[
-              "rounded-[14px] px-3 py-2.5",
-              day.isSelected && "bg-primary/[0.06]",
-              day.isToday && !day.isSelected && "bg-surface-container-low",
-            ]}
-            aria-label={`${day.weekday} ${day.dayNum}일`}
-          >
-            <div class="flex items-baseline justify-between gap-2">
-              {dayHref ? (
-                <a
-                  href={dayHref(day.isoKey)}
-                  class:list={[
-                    "text-[13px] font-semibold tracking-tight",
-                    day.isToday ? "text-primary" : "text-on-surface hover:text-primary",
-                  ]}
-                >
-                  {day.weekday}
-                  <span class="ml-1.5 tabular-nums font-medium text-on-surface-variant">
-                    {day.dayNum}
-                  </span>
-                  {day.isToday && (
-                    <span class="ml-1.5 text-[10px] font-medium text-primary">오늘</span>
-                  )}
-                </a>
-              ) : (
-                <p
-                  class:list={[
-                    "text-[13px] font-semibold tracking-tight",
-                    day.isToday ? "text-primary" : "text-on-surface",
-                  ]}
-                >
-                  {day.weekday}
-                  <span class="ml-1.5 tabular-nums font-medium text-on-surface-variant">
-                    {day.dayNum}
-                  </span>
-                </p>
-              )}
-              <span class="text-[10px] tabular-nums text-on-surface-variant/70">
-                {day.events.length ? `${day.events.length}` : ""}
-              </span>
-            </div>
+      <div class="mt-3 divide-y divide-outline-variant/35">
+        {weekDays.map((day) => {
+          const hasEvents = day.events.length > 0;
+          return (
+            <section
+              class:list={[
+                "py-2.5 first:pt-1 last:pb-0",
+                day.isSelected && "rounded-[12px] bg-primary/[0.06] px-2.5 -mx-1",
+              ]}
+              aria-label={`${day.weekday} ${day.dayNum}일`}
+            >
+              <div class="flex items-baseline gap-2">
+                {dayHref ? (
+                  <a
+                    href={dayHref(day.isoKey)}
+                    class:list={[
+                      "shrink-0 text-[12px] font-semibold tracking-tight",
+                      day.isToday ? "text-primary" : "text-on-surface hover:text-primary",
+                    ]}
+                  >
+                    <span class="inline-block w-3.5">{day.weekday}</span>
+                    <span class="ml-1 tabular-nums font-medium text-on-surface-variant">{day.dayNum}</span>
+                    {day.isToday && <span class="ml-1 text-[10px] font-medium text-primary">오늘</span>}
+                  </a>
+                ) : (
+                  <p
+                    class:list={[
+                      "shrink-0 text-[12px] font-semibold tracking-tight",
+                      day.isToday ? "text-primary" : "text-on-surface",
+                    ]}
+                  >
+                    <span class="inline-block w-3.5">{day.weekday}</span>
+                    <span class="ml-1 tabular-nums font-medium text-on-surface-variant">{day.dayNum}</span>
+                  </p>
+                )}
 
-            {day.events.length === 0 ? (
-              <p class="mt-1.5 text-[11px] text-on-surface-variant/55">—</p>
-            ) : (
-              <ul class="mt-2 space-y-2">
-                {day.events.map((ev) => (
-                  <li>
-                    <p class="text-[10px] text-on-surface-variant">
-                      {kindLabel(ev.kind)}
-                      {ev.meta?.impact === "high" && <span class="text-warning"> · High</span>}
-                    </p>
-                    <p class="mt-0.5 text-[13px] font-semibold leading-snug tracking-[-0.01em] text-on-surface">
-                      {ev.href ? (
-                        <a
-                          href={withBase(ev.href)}
-                          class="transition-colors hover:text-primary"
-                          {...(ev.href.startsWith("http")
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                        >
-                          {ev.title}
-                        </a>
-                      ) : (
-                        ev.title
-                      )}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        ))}
+                {!hasEvents && (
+                  <span class="text-[11px] text-on-surface-variant/45">없음</span>
+                )}
+              </div>
+
+              {hasEvents && (
+                <ul class="mt-1.5 space-y-1.5 pl-0.5">
+                  {day.events.map((ev) => (
+                    <li>
+                      <p class="text-[13px] font-semibold leading-snug tracking-[-0.01em] text-on-surface">
+                        {ev.href ? (
+                          <a
+                            href={withBase(ev.href)}
+                            class="transition-colors hover:text-primary"
+                            {...(ev.href.startsWith("http")
+                              ? { target: "_blank", rel: "noopener noreferrer" }
+                              : {})}
+                          >
+                            {ev.title}
+                          </a>
+                        ) : (
+                          ev.title
+                        )}
+                      </p>
+                      <p class="text-[10px] text-on-surface-variant">
+                        {kindLabel(ev.kind)}
+                        {ev.meta?.impact === "high" && <span class="text-warning"> · High</span>}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          );
+        })}
       </div>
     )
   }
