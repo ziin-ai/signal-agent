@@ -143,7 +143,7 @@ export function getTimelineEvents(
   const results: AgentCitation[] = events.map((event) => ({
     slug: event.id,
     title: event.title,
-    href: event.href ?? "/timeline",
+    href: event.href ?? "/",
     excerpt: event.summary ?? "",
   }));
 

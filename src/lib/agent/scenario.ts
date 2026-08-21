@@ -136,7 +136,7 @@ export function buildScenarioJourney(
   const score = (credibility?.raw as { score?: number })?.score;
   const contraCount = post?.data.sources.filter((source) => source.tier === 0).length ?? 0;
 
-  const timelineHref = symbol ? `/timeline?symbol=${encodeURIComponent(symbol)}` : "/timeline";
+  const timelineHref = symbol ? `/?symbol=${encodeURIComponent(symbol)}` : "/";
   const postHref = slug ? `/posts/${slug}` : undefined;
 
   const checklist: ChecklistItem[] = [
@@ -149,7 +149,7 @@ export function buildScenarioJourney(
     {
       id: "catalyst",
       label: "다가오는 촉매 일정",
-      hint: events.length > 0 ? `90일 내 ${events.length}건 — 타임라인에서 확인` : "등록된 촉매가 적어요.",
+      hint: events.length > 0 ? `90일 내 ${events.length}건 — 대시보드에서 확인` : "등록된 촉매가 적어요.",
       href: timelineHref,
     },
     {

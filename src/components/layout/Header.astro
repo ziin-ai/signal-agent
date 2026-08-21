@@ -4,9 +4,9 @@ import MdIcon from "../ui/MdIcon.astro";
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 const navItems = [
-  { href: rootPath, label: "홈", icon: "home", title: "월 캘린더 + 오늘 읽을 글" },
+  { href: rootPath, label: "대시보드", icon: "dashboard", title: "종목·필터 달력 대시보드" },
+  { href: `${rootPath}today`, label: "오늘", icon: "home", title: "월 캘린더 + 오늘 읽을 글" },
   { href: `${rootPath}posts`, label: "글", icon: "article" },
-  { href: `${rootPath}timeline`, label: "타임라인", icon: "timeline", title: "종목·필터 전체 일정 허브" },
   { href: `${rootPath}about`, label: "소개", icon: "info" },
   { href: `${rootPath}contact`, label: "문의", icon: "mail" },
 ];

@@ -23,13 +23,13 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
     <h2>무엇을 올려 두나</h2>
     <ul>
       <li>
-        <a href={rootPath}>홈</a> — 월 캘린더 + 오늘 읽을 글
+        <a href={rootPath}>대시보드</a> — 종목·필터 달력 일정 허브
+      </li>
+      <li>
+        <a href={`${rootPath}today`}>오늘</a> — 월 캘린더 + 오늘 읽을 글
       </li>
       <li>
         <a href={`${rootPath}posts`}>글 목록</a> — 시황·테마·교육용 메모 (본문에 출처 표시)
-      </li>
-      <li>
-        <a href={`${rootPath}timeline`}>타임라인</a> — 종목·필터 전체 일정 허브
       </li>
     </ul>
 

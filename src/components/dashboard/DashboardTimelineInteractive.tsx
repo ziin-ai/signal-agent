@@ -270,8 +270,8 @@ export default function DashboardTimelineInteractive({
         <p>
           <span className="font-semibold text-primary">Today</span> 기준 · 과거 8개월 + 예정 4개월
         </p>
-        <a href={`${rootPath}timeline`} className="shrink-0 font-medium text-primary hover:underline">
-          전체 타임라인 →
+        <a href={rootPath} className="shrink-0 font-medium text-primary hover:underline">
+          전체 대시보드 →
         </a>
       </div>
 

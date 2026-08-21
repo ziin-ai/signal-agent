@@ -136,9 +136,12 @@ id, title, date, symbol?, market?, category, impact, summary, sourceUrl?, tags[]
   - `TimelineEventKind`에 `external_event` 추가
   - `buildGlobalTimelineEvents(...)`에 events merge
   - `buildSymbolTimelineEvents(...)`에 symbol/global 정책 반영 merge
-- `src/pages/timeline.astro`
+- `src/pages/index.astro` (메인 대시보드)
   - collection fetch에 `events` 포함
   - 라벨/색상/링크 처리 분기 추가
+  - `/timeline`은 `/`로 리다이렉트
+- `src/pages/today.astro`
+  - 구 홈: 월 캘린더 + 오늘 읽을 글
 - `src/components/dashboard/DashboardTimeline.astro`
   - event dot class에 `external_event` 스타일 추가
 
