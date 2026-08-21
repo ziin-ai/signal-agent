@@ -3,8 +3,8 @@ import type { TimelineEvent } from "../../lib/timeline";
 import type { MonthGridDay } from "../../lib/calendar-grid";
 import {
   kindBadgeClass,
-  kindShortLabel,
   kindSurfaceClass,
+  timelineItemShortLabel,
 } from "../../lib/timeline-kind-styles";
 
 interface Props {
@@ -163,7 +163,7 @@ const maxShow = compact ? 3 : 5;
                         kindBadgeClass(ev.kind),
                       ]}
                     >
-                      {kindShortLabel(ev.kind)}
+                      {timelineItemShortLabel(ev)}
                     </span>
                     <span class="min-w-0 line-clamp-2">{ev.title}</span>
                   </>
@@ -175,12 +175,12 @@ const maxShow = compact ? 3 : 5;
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
                     class={chipClass}
-                    title={`${kindShortLabel(ev.kind)} · ${ev.title}`}
+                    title={`${timelineItemShortLabel(ev)} · ${ev.title}`}
                   >
                     {chipInner}
                   </a>
                 ) : (
-                  <span class={chipClass} title={`${kindShortLabel(ev.kind)} · ${ev.title}`}>
+                  <span class={chipClass} title={`${timelineItemShortLabel(ev)} · ${ev.title}`}>
                     {chipInner}
                   </span>
                 );
@@ -212,9 +212,9 @@ const maxShow = compact ? 3 : 5;
       </span>
       <span class="inline-flex items-center gap-1.5">
         <span class={`inline-flex h-4 items-center rounded px-1 text-[9px] font-bold ${kindBadgeClass("external_event")}`}>
-          이벤트
+          실적
         </span>
-        <span>이벤트</span>
+        <span>실적·매크로 등</span>
       </span>
       {compact && <span class="text-on-surface-variant/70">제목 → 이동 · 날짜 → 그 주</span>}
     </div>

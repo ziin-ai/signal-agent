@@ -2,9 +2,9 @@
 import type { TimelineEvent } from "../../lib/timeline";
 import {
   kindBadgeClass,
-  kindLongLabel,
-  kindShortLabel,
   kindSurfaceClass,
+  timelineItemLongLabel,
+  timelineItemShortLabel,
 } from "../../lib/timeline-kind-styles";
 
 interface Props {
@@ -60,12 +60,12 @@ function withBase(href: string): string {
                     kindBadgeClass(ev.kind),
                   ]}
                 >
-                  {kindShortLabel(ev.kind)}
+                  {timelineItemShortLabel(ev)}
                 </span>
                 <span class="min-w-0">
                   <span class="block text-[14px] font-semibold leading-snug tracking-[-0.015em]">{ev.title}</span>
                   <span class="mt-0.5 block text-[10px] opacity-80">
-                    {kindLongLabel(ev.kind)}
+                    {timelineItemLongLabel(ev)}
                     {ev.meta?.impact === "high" ? " · High" : ""}
                   </span>
                   {ev.summary && (
@@ -81,7 +81,7 @@ function withBase(href: string): string {
                     kindBadgeClass(ev.kind),
                   ]}
                 >
-                  {kindShortLabel(ev.kind)}
+                  {timelineItemShortLabel(ev)}
                 </span>
                 <span class="text-[14px] font-semibold leading-snug">{ev.title}</span>
               </div>

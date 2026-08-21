@@ -1,17 +1,33 @@
 /** 분석글 vs 외부 이벤트 — 색·라벨 공통 토큰 (캘린더·주간 리스트 공유) */
 
+import { eventCategoryLabel } from "./dashboard-event-filters";
+
 export type TimelineKind = "post" | "external_event" | string;
 
-export function kindShortLabel(kind: TimelineKind): string {
+export type TimelineLabelSource = {
+  kind: TimelineKind;
+  meta?: { category?: string };
+};
+
+/** 캘린더·리스트 배지 짧은 라벨 (글 / 실적 / 매크로 …) */
+export function kindShortLabel(kind: TimelineKind, category?: string): string {
   if (kind === "post") return "글";
-  if (kind === "external_event") return "이벤트";
+  if (kind === "external_event") return eventCategoryLabel(category ?? "");
   return "기타";
 }
 
-export function kindLongLabel(kind: TimelineKind): string {
+export function kindLongLabel(kind: TimelineKind, category?: string): string {
   if (kind === "post") return "분석글";
-  if (kind === "external_event") return "이벤트";
+  if (kind === "external_event") return eventCategoryLabel(category ?? "");
   return "기타";
+}
+
+export function timelineItemShortLabel(ev: TimelineLabelSource): string {
+  return kindShortLabel(ev.kind, ev.meta?.category);
+}
+
+export function timelineItemLongLabel(ev: TimelineLabelSource): string {
+  return kindLongLabel(ev.kind, ev.meta?.category);
 }
 
 /** 캘린더 칸·리스트 행 배경 */
@@ -25,7 +41,7 @@ export function kindSurfaceClass(kind: TimelineKind): string {
   return "bg-surface-container text-on-surface ring-1 ring-inset ring-outline-variant";
 }
 
-/** 작은 배지 (글 / 이벤트) */
+/** 작은 배지 (글 / 실적·매크로 등) */
 export function kindBadgeClass(kind: TimelineKind): string {
   if (kind === "post") {
     return "bg-sky-600 text-white dark:bg-sky-500";
