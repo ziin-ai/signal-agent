@@ -9,7 +9,6 @@ import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../lib/calenda
 import {
   buildSymbolSearchEntries,
   resolveSymbolFromQuery,
-  symbolOptionCaption,
 } from "../lib/symbol-search";
 
 export const prerender = false;
@@ -31,7 +30,6 @@ const exactTickerKnown =
   (publishedPosts.some((p) => p.data.symbol === rawSymbol) ||
     externalEvents.some((e) => e.data.symbol === rawSymbol));
 const activeSymbol = resolvedSymbol ?? (exactTickerKnown ? rawSymbol : "");
-const symbolKnown = Boolean(rawSymbol && activeSymbol);
 const symbolPosts = activeSymbol ? publishedPosts.filter((p) => p.data.symbol === activeSymbol) : [];
 const activeMarket = symbolPosts[0]?.data.market;
 
@@ -210,125 +208,7 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
       : "분석글과 외부 이벤트를 월 단위 달력 타임라인으로 보는 메인 대시보드."
   }
 >
-  <section class="mb-4">
-    <div class="flex flex-wrap items-end justify-between gap-3">
-      <div>
-        <h1 class="font-sans text-3xl font-semibold tracking-tight text-on-surface">
-          {
-            activeSymbol ? (
-              <>
-                대시보드 · <span class="font-mono text-primary">{activeSymbol}</span>
-              </>
-            ) : (
-              "대시보드"
-            )
-          }
-        </h1>
-        <p class="mt-1 max-w-3xl text-sm leading-relaxed text-on-surface-variant">
-          {
-            activeSymbol ? (
-              <>
-                이 종목의 <strong>분석·외부 이벤트</strong>를 달력 격자에 표시합니다. 날짜를 고르면 오른쪽에서 일정을
-                확인합니다.
-              </>
-            ) : (
-              <>
-                분석글과 외부 이벤트를 <strong>월 단위 달력</strong>으로 묶어 날짜 맥락을 읽습니다. 종목·필터로 일정을
-                좁힐 수 있습니다.
-              </>
-            )
-          }
-        </p>
-      </div>
-      {
-        activeSymbol && (
-          <a
-            href={timelineHref({ symbol: "", month: monthQueryValue, day: null })}
-            class="rounded-md3-sm border border-outline-variant px-3 py-1.5 text-sm font-medium text-on-surface transition hover:bg-surface-container"
-          >
-            전체 대시보드
-          </a>
-        )
-      }
-    </div>
-
-    <div class="mt-4 space-y-3">
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <span class="shrink-0 text-xs font-medium text-on-surface-variant sm:w-14">종목</span>
-        <form
-          method="get"
-          action={rootPath}
-          class="relative flex min-w-0 flex-1 flex-wrap items-center gap-2"
-        >
-          <input type="hidden" name="month" value={monthQueryValue} />
-          {selectedDayKey && <input type="hidden" name="day" value={selectedDayKey} />}
-          {selectedKinds.map((k) => <input type="hidden" name="kind" value={k} />)}
-          {selectedImpacts.map((i) => <input type="hidden" name="impact" value={i} />)}
-          {selectedCategories.map((c) => <input type="hidden" name="category" value={c} />)}
-          <div class="relative min-w-0 flex-1">
-            <span
-              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
-              aria-hidden="true"
-            >
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                ></path>
-              </svg>
-            </span>
-            <input
-              type="search"
-              name="symbol"
-              id="timeline-symbol-search"
-              placeholder="티커 또는 회사명 (예: NVDA, 일진전기)"
-              list="timeline-symbol-options"
-              autocomplete="off"
-              value={symbolKnown ? activeSymbol : rawSymbol}
-              class="w-full rounded-md3-sm border border-outline-variant bg-surface-container-lowest py-2 pl-10 pr-3 text-sm text-on-surface shadow-sm placeholder:text-on-surface-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25"
-            />
-            <datalist id="timeline-symbol-options">
-              {
-                symbolSearchEntries.map((entry) => (
-                  <option value={entry.symbol}>{symbolOptionCaption(entry)}</option>
-                ))
-              }
-            </datalist>
-          </div>
-          <button
-            type="submit"
-            class="shrink-0 rounded-md3-sm border border-outline-variant bg-surface-container-lowest px-4 py-2 text-sm font-medium text-on-surface transition hover:bg-surface-container"
-          >
-            적용
-          </button>
-          {
-            activeSymbol && (
-              <a
-                href={timelineHref({ symbol: "", month: monthQueryValue, day: null })}
-                class="shrink-0 rounded-md3-sm border border-transparent px-3 py-2 text-sm text-on-surface-variant underline-offset-2 hover:text-primary hover:underline"
-              >
-                초기화
-              </a>
-            )
-          }
-        </form>
-      </div>
-
-      {
-        rawSymbol && !symbolKnown && (
-          <p class="rounded-md3-sm border border-warning/40 bg-warning-container/40 px-3 py-2 text-sm text-on-surface">
-            <span class="font-mono">{rawSymbol}</span>는 게시된 분석·이벤트 기록에 없어 전체 대시보드를 보여줍니다.
-          </p>
-        )
-      }
-
-      <p class="text-[11px] leading-relaxed text-on-surface-variant">
-        유형·영향도·카테고리는 여러 개를 동시에 선택할 수 있습니다. 아무 것도 선택하지 않으면 해당 항목 전체가
-        표시됩니다.
-      </p>
-
+  <section class="mb-4 space-y-3">
       <div class="flex flex-wrap items-start gap-x-3 gap-y-2">
         <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-on-surface-variant">유형</span>
         <div class="flex min-w-0 flex-1 flex-wrap gap-1.5">
@@ -417,7 +297,6 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
           }
         </div>
       </div>
-    </div>
   </section>
 
   <section class="grid grid-cols-1 gap-4 lg:grid-cols-12">
