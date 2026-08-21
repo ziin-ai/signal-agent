@@ -12,7 +12,7 @@ export const MEDIA_CHANNELS: readonly MediaChannel[] = [
   {
     id: "hankyung-tv",
     name: "한국경제TV",
-    url: "https://www.youtube.com/@wowtv",
+    url: "https://www.youtube.com/@hkwowtv",
     blurb: "국내 시황·글로벌 마감·매크로 브리핑",
   },
   {
@@ -30,7 +30,7 @@ export const MEDIA_CHANNELS: readonly MediaChannel[] = [
   {
     id: "bok-official",
     name: "한국은행",
-    url: "https://www.youtube.com/@bankofkorea",
+    url: "https://www.youtube.com/@theBankofKoreakr",
     blurb: "금통위·금융안정·공식 브리핑",
   },
 ] as const;
