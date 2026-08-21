@@ -18,8 +18,8 @@ interface Props {
   filteredTotalCount: number;
   rootPath: string;
   /**
-   * compact: 홈 — 이벤트는 점으로만, 제목은 사이드 리스트에.
-   * full: 타임라인 — 칸 안 제목 칩 유지.
+   * compact: 홈 — 칸당 제목 2개 + 더보기.
+   * full: 타임라인 — 칸당 제목 4개.
    */
   compact?: boolean;
 }
@@ -68,8 +68,9 @@ function kindCalendarChip(kind: string): string {
   return "border-l-[3px] border-outline bg-surface-container font-medium text-on-surface";
 }
 
-const cellMin = compact ? "min-h-[72px] sm:min-h-[80px]" : "min-h-[108px]";
-const maxShow = compact ? 0 : 4;
+const cellMin = compact ? "min-h-[96px] sm:min-h-[104px]" : "min-h-[108px]";
+/** 홈도 제목을 바로 보여 직관적으로 읽히게 — 점은 보조가 아님 */
+const maxShow = compact ? 2 : 4;
 ---
 
 <div class="overflow-hidden rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest shadow-md3-1">
@@ -116,140 +117,115 @@ const maxShow = compact ? 0 : 4;
     {
       monthGrid.map((cell) => {
         const dayEvents = eventsByDay.get(cell.isoKey) ?? [];
-        const shown = maxShow > 0 ? dayEvents.slice(0, maxShow) : [];
-        const more = maxShow > 0 ? Math.max(0, dayEvents.length - shown.length) : 0;
+        const shown = dayEvents.slice(0, maxShow);
+        const more = Math.max(0, dayEvents.length - shown.length);
         const isToday = cell.isoKey === todayDayKey;
         const isSelected = selectedDayKey === cell.isoKey;
         const dayLink = dayHref?.(cell.isoKey);
-        const posts = dayEvents.filter((e) => e.kind === "post").length;
-        const externals = dayEvents.filter((e) => e.kind === "external_event").length;
         const dayClass = [
-          `group flex ${cellMin} flex-col bg-surface-container-lowest p-1.5 transition-colors`,
+          `flex ${cellMin} flex-col bg-surface-container-lowest p-1.5 transition-colors`,
           !cell.inMonth && "bg-surface-container-low/50",
           isSelected && "bg-primary/[0.07]",
-          dayLink && "cursor-pointer hover:bg-surface-container/80",
         ]
           .filter(Boolean)
           .join(" ");
 
-        const dayNumberEl = dayLink && !compact ? (
-          <a
-            href={dayLink}
-            class:list={[
-              "inline-flex h-7 min-w-[1.75rem] items-center justify-center rounded-full text-[13px] tabular-nums transition",
-              isToday && "bg-primary font-semibold text-on-primary",
-              !isToday && isSelected && "font-semibold text-primary",
-              !isToday && !isSelected && cell.inMonth && "text-on-surface hover:bg-surface-container",
-              !isToday && !isSelected && !cell.inMonth && "text-on-surface-variant/55 hover:bg-surface-container",
-            ]}
-            aria-current={isSelected ? "date" : undefined}
-            aria-label={`${cell.isoKey} 일정`}
-          >
-            {cell.day}
-          </a>
-        ) : (
-          <span
-            class:list={[
-              "inline-flex h-7 min-w-[1.75rem] items-center justify-center rounded-full text-[13px] tabular-nums",
-              isToday && "bg-primary font-semibold text-on-primary",
-              !isToday && isSelected && "font-semibold text-primary",
-              !isToday && !isSelected && cell.inMonth && "text-on-surface",
-              !isToday && !isSelected && !cell.inMonth && "text-on-surface-variant/55",
-            ]}
-          >
-            {cell.day}
-          </span>
-        );
-
-        const dots = compact && (
-          <div class="mt-auto flex min-h-[10px] flex-wrap items-center gap-0.5 pb-0.5 pt-1">
-            {posts > 0 && (
-              <span class="h-1.5 w-1.5 rounded-full bg-sky-500" title={`분석 ${posts}`} aria-hidden="true" />
-            )}
-            {externals > 0 && (
-              <span class="h-1.5 w-1.5 rounded-full bg-teal-600" title={`이벤트 ${externals}`} aria-hidden="true" />
-            )}
-            {dayEvents.length > 2 && (
-              <span class="text-[9px] font-medium text-on-surface-variant/70">+{dayEvents.length - 2}</span>
-            )}
-          </div>
-        );
-
-        const chips = !compact && (
-          <div class="mt-1 min-h-0 flex-1 space-y-0.5 overflow-hidden">
-            {shown.map((ev) =>
-              ev.href ? (
+        return (
+          <div class={dayClass}>
+            <div class="flex shrink-0 justify-start">
+              {dayLink ? (
                 <a
-                  href={withBase(ev.href)}
-                  {...(ev.href.startsWith("http")
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
+                  href={dayLink}
                   class:list={[
-                    "block max-w-full truncate rounded-sm px-1 py-0.5 text-left text-[11px] leading-snug transition-colors",
-                    kindCalendarChip(ev.kind),
+                    "inline-flex h-7 min-w-[1.75rem] items-center justify-center rounded-full text-[13px] tabular-nums transition",
+                    isToday && "bg-primary font-semibold text-on-primary",
+                    !isToday && isSelected && "font-semibold text-primary",
+                    !isToday && !isSelected && cell.inMonth && "text-on-surface hover:bg-surface-container",
+                    !isToday && !isSelected && !cell.inMonth && "text-on-surface-variant/55 hover:bg-surface-container",
                   ]}
-                  title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                  aria-current={isSelected ? "date" : undefined}
+                  aria-label={`${cell.isoKey} 일정 목록`}
+                  title="이 날짜 일정 보기"
                 >
-                  {ev.title}
+                  {cell.day}
                 </a>
               ) : (
                 <span
                   class:list={[
-                    "block max-w-full truncate rounded-sm px-1 py-0.5 text-[11px] leading-snug",
-                    kindCalendarChip(ev.kind),
+                    "inline-flex h-7 min-w-[1.75rem] items-center justify-center rounded-full text-[13px] tabular-nums",
+                    isToday && "bg-primary font-semibold text-on-primary",
+                    !isToday && isSelected && "font-semibold text-primary",
+                    !isToday && !isSelected && cell.inMonth && "text-on-surface",
+                    !isToday && !isSelected && !cell.inMonth && "text-on-surface-variant/55",
                   ]}
-                  title={`${kindLabel(ev.kind)} · ${ev.title}`}
                 >
-                  {ev.title}
+                  {cell.day}
                 </span>
-              ),
-            )}
-            {more > 0 && (
-              <p class="truncate pl-1 text-[10px] font-medium text-on-surface-variant">+{more}개</p>
-            )}
-          </div>
-        );
-
-        /** compact: 칸 전체가 day 링크. full: 숫자만 링크(이벤트 칩과 중첩 방지) */
-        return compact && dayLink ? (
-          <a
-            href={dayLink}
-            class={dayClass}
-            aria-current={isSelected ? "date" : undefined}
-            aria-label={`${cell.isoKey}${dayEvents.length ? ` · ${dayEvents.length}건` : ""}`}
-          >
-            <div class="flex shrink-0 justify-start">{dayNumberEl}</div>
-            {dots}
-          </a>
-        ) : (
-          <div class={dayClass}>
-            <div class="flex shrink-0 justify-start">{dayNumberEl}</div>
-            {chips}
+              )}
+            </div>
+            <div class="mt-1 min-h-0 flex-1 space-y-0.5 overflow-hidden">
+              {shown.map((ev) =>
+                ev.href ? (
+                  <a
+                    href={withBase(ev.href)}
+                    {...(ev.href.startsWith("http")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    class:list={[
+                      "block max-w-full truncate rounded-sm px-1 py-0.5 text-left text-[11px] leading-snug transition-colors",
+                      kindCalendarChip(ev.kind),
+                    ]}
+                    title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                  >
+                    {ev.title}
+                  </a>
+                ) : (
+                  <span
+                    class:list={[
+                      "block max-w-full truncate rounded-sm px-1 py-0.5 text-[11px] leading-snug",
+                      kindCalendarChip(ev.kind),
+                    ]}
+                    title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                  >
+                    {ev.title}
+                  </span>
+                ),
+              )}
+              {more > 0 && dayLink ? (
+                <a
+                  href={dayLink}
+                  class="block truncate pl-1 text-[10px] font-medium text-primary hover:underline"
+                >
+                  +{more}개 더보기
+                </a>
+              ) : more > 0 ? (
+                <p class="truncate pl-1 text-[10px] font-medium text-on-surface-variant">+{more}개</p>
+              ) : null}
+            </div>
           </div>
         );
       })
     }
   </div>
 
-  {
-    !compact && (
-      <div class="flex flex-wrap items-center justify-between gap-3 border-t border-outline-variant/40 px-4 py-2.5 text-[11px] text-on-surface-variant">
-        <div class="flex items-center gap-4">
-          <span class="inline-flex items-center gap-1.5">
-            <span class="h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-            분석
-          </span>
-          <span class="inline-flex items-center gap-1.5">
-            <span class="h-1.5 w-1.5 rounded-full bg-teal-600" aria-hidden="true" />
-            이벤트
-          </span>
-        </div>
-        <p class="tabular-nums">
-          {eventsInMonthCount}
-          <span class="text-on-surface-variant/70"> / {filteredTotalCount}</span>
-        </p>
-        <slot name="footer" />
-      </div>
-    )
-  }
+  <div class="flex flex-wrap items-center justify-between gap-3 border-t border-outline-variant/40 px-4 py-2.5 text-[11px] text-on-surface-variant">
+    <div class="flex items-center gap-4">
+      <span class="inline-flex items-center gap-1.5">
+        <span class="h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
+        분석
+      </span>
+      <span class="inline-flex items-center gap-1.5">
+        <span class="h-1.5 w-1.5 rounded-full bg-teal-600" aria-hidden="true" />
+        이벤트
+      </span>
+      {compact && <span class="text-on-surface-variant/70">제목 탭 → 바로 이동 · 날짜 → 목록</span>}
+    </div>
+    {!compact && (
+      <p class="tabular-nums">
+        {eventsInMonthCount}
+        <span class="text-on-surface-variant/70"> / {filteredTotalCount}</span>
+      </p>
+    )}
+    <slot name="footer" />
+  </div>
 </div>
