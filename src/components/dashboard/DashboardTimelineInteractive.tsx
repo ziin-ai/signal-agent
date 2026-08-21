@@ -32,7 +32,8 @@ export interface Props {
   initialMarket: EventMarketFilter;
   initialCategories: string[];
   /** 글 스코프와 무관하게 events 컬렉션+기간으로 계산한 카테고리 칩 (미국 필터 시 빈 목록 방지) */
-  marketCategoryOptions?: MarketCategoryOptionSets;
+  /** 홈 details 안에 넣을 때 바깥 카드·중복 제목 제거 */
+  embedded?: boolean;
 }
 
 function withBase(rootPath: string, href: string): string {
@@ -142,6 +143,7 @@ export default function DashboardTimelineInteractive({
   initialMarket,
   initialCategories,
   marketCategoryOptions,
+  embedded = false,
 }: Props) {
   const { marketFilter, categories, setMarketFilterValue, toggleCategory, clearCategories } =
     useDashboardFilterSync(
@@ -257,10 +259,14 @@ export default function DashboardTimelineInteractive({
     layout.priceSeriesLen >= 2;
 
   return (
-    <div className="md-card p-5 sm:p-6">
-      <h2 className="font-sans text-[1.35rem] font-bold tracking-[-0.03em] text-on-surface">최근 흐름</h2>
+    <div className={embedded ? "bg-surface-container-lowest p-5 sm:p-6" : "md-card p-5 sm:p-6"}>
+      {!embedded && (
+        <h2 className="font-sans text-[1.35rem] font-bold tracking-[-0.03em] text-on-surface">최근 흐름</h2>
+      )}
 
-      <div className="mt-1 flex flex-wrap items-center justify-between gap-2 text-[11px] text-on-surface-variant">
+      <div
+        className={`flex flex-wrap items-center justify-between gap-2 text-[11px] text-on-surface-variant ${embedded ? "" : "mt-1"}`}
+      >
         <p>
           <span className="font-semibold text-primary">Today</span> 기준 · 과거 8개월 + 예정 4개월
         </p>

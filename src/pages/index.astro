@@ -235,20 +235,20 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
       : undefined
   }
 >
-  <section class="ziin-rise ziin-rise-delay-1 relative z-10" aria-label="월 캘린더">
-    <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
-      <div>
-        <h1 class="font-sans text-2xl font-semibold tracking-tight text-on-surface md:text-3xl">이번 달 일정</h1>
-        <p class="mt-1 text-sm text-on-surface-variant">
-          분석글 전부와 High 영향의 실적·매크로 이벤트만 표시합니다.
-        </p>
-      </div>
-      <a href={`${rootPath}timeline`} class="text-sm font-medium text-primary hover:underline">
-        전체 타임라인 →
+  <section class="ziin-rise relative z-10" aria-label="월 캘린더">
+    <div class="mb-4 flex items-baseline justify-between gap-3">
+      <p class="text-[13px] text-on-surface-variant">
+        High · 실적/매크로 · 분석글
+      </p>
+      <a
+        href={`${rootPath}timeline`}
+        class="shrink-0 text-[13px] font-medium text-primary transition hover:underline"
+      >
+        전체 일정
       </a>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+    <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 lg:gap-5">
       <div class="lg:col-span-2">
         <MonthCalendar
           compact
@@ -265,22 +265,20 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
           eventsInMonthCount={eventsInCalendarMonth.length}
           filteredTotalCount={homeCalendarEvents.length}
           rootPath={rootPath}
-        >
-          <span slot="footer" class="text-on-surface-variant">홈은 High · 실적/매크로만</span>
-        </MonthCalendar>
+        />
       </div>
       <DayEventList
         dayKey={selectedDayKey}
         events={selectedDayEvents}
         rootPath={rootPath}
-        emptyHint="이 날짜에 표시할 홈 일정이 없습니다. 전체 타임라인에서 더 볼 수 있습니다."
+        emptyHint="이 날짜에 표시할 일정이 없습니다. 전체 일정에서 더 볼 수 있습니다."
       />
     </div>
   </section>
 
   {
     activePost && (
-      <section transition:name="dashboard-hero" class="ziin-rise ziin-rise-delay-1 relative z-10 mt-6">
+      <section transition:name="dashboard-hero" class="ziin-rise ziin-rise-delay-1 relative z-10 mt-8">
         <HeroCompact
           post={activePost}
           newerHref={newerPostHref}
@@ -294,10 +292,10 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
 
   {
     !latestPost && (
-      <section class="mt-6 rounded-xl border border-outline-variant bg-surface-container-lowest p-6">
+      <section class="mt-8 rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest p-6">
         <p class="text-sm text-on-surface-variant">표시할 published post가 아직 없습니다.</p>
         <p class="mt-2 text-xs text-on-surface-variant">
-          로컬 개발 중이라면 <code class="rounded bg-surface-container px-1">npm run dev</code>를 재시작하거나
+          로컬 개발 중이라면 <code class="rounded bg-surface-container px-1">pnpm dev</code>를 재시작하거나
           <a href={`${rootPath}posts/`} class="text-primary hover:underline">
             분석글 목록
           </a>
@@ -309,31 +307,42 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
 
   {
     publishedPosts.length > 0 && (
-      <section
-        class="ziin-rise ziin-rise-delay-2 relative z-20 mt-6 scroll-mt-8"
-        id="recent-flow"
-        aria-label="최근 흐름 타임라인"
-      >
-        <DashboardTimelineInteractive
-          client:load
-          key={`${activePost?.id ?? "global"}|${selectedEventMarket}|${selectedEventCategories.join(",")}`}
-          allEvents={dashboardEvents}
-          windowStart={dashboardWindowStart.toISOString()}
-          windowEnd={dashboardWindowEnd.toISOString()}
-          todayPct={dashboardTodayPct}
-          pricePoints={activeChartPoints}
-          themeChartLines={themeChartLines ?? []}
-          timelineChartVariant={timelineChartVariant}
-          symbol={activePost?.data.symbol}
-          market={activePost?.data.market}
-          currentPrice={currentPrice}
-          priceDataStatusMessage={priceDataStatusMessage}
-          rootPath={rootPath}
-          filterPathAndQuery={filterPathAndQuery}
-          initialMarket={selectedEventMarket}
-          initialCategories={selectedEventCategories}
-          marketCategoryOptions={marketCategoryOptions}
-        />
+      <section class="ziin-rise ziin-rise-delay-2 relative z-20 mt-8" id="recent-flow" aria-label="최근 흐름 타임라인">
+        <details class="group">
+          <summary class="mb-3 cursor-pointer list-none marker:content-none [&::-webkit-details-marker]:hidden">
+            <div class="flex items-center justify-between gap-3 rounded-[16px] border border-outline-variant/50 bg-surface-container-lowest px-4 py-3.5 shadow-md3-1 transition hover:bg-surface-container-low group-open:rounded-b-none group-open:border-b-0 group-open:shadow-none">
+              <div>
+                <p class="text-[15px] font-semibold tracking-[-0.02em] text-on-surface">최근 흐름</p>
+                <p class="mt-0.5 text-[12px] text-on-surface-variant">가격선 · 이벤트 마커</p>
+              </div>
+              <span class="text-[13px] font-medium text-primary group-open:hidden">펼치기</span>
+              <span class="hidden text-[13px] font-medium text-on-surface-variant group-open:inline">접기</span>
+            </div>
+          </summary>
+          <div class="overflow-hidden rounded-b-[20px] border border-outline-variant/50 border-t-0">
+            <DashboardTimelineInteractive
+              client:load
+              embedded
+              key={`${activePost?.id ?? "global"}|${selectedEventMarket}|${selectedEventCategories.join(",")}`}
+              allEvents={dashboardEvents}
+              windowStart={dashboardWindowStart.toISOString()}
+              windowEnd={dashboardWindowEnd.toISOString()}
+              todayPct={dashboardTodayPct}
+              pricePoints={activeChartPoints}
+              themeChartLines={themeChartLines ?? []}
+              timelineChartVariant={timelineChartVariant}
+              symbol={activePost?.data.symbol}
+              market={activePost?.data.market}
+              currentPrice={currentPrice}
+              priceDataStatusMessage={priceDataStatusMessage}
+              rootPath={rootPath}
+              filterPathAndQuery={filterPathAndQuery}
+              initialMarket={selectedEventMarket}
+              initialCategories={selectedEventCategories}
+              marketCategoryOptions={marketCategoryOptions}
+            />
+          </div>
+        </details>
       </section>
     )
   }

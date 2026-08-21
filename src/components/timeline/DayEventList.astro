@@ -14,7 +14,6 @@ const label = (() => {
   const [y, m, d] = dayKey.split("-").map(Number);
   if (!y || !m || !d) return dayKey;
   return new Date(y, m - 1, d).toLocaleDateString("ko-KR", {
-    year: "numeric",
     month: "long",
     day: "numeric",
     weekday: "short",
@@ -33,30 +32,31 @@ function kindLabel(kind: string) {
 }
 ---
 
-<aside class="md-card md-card-filled flex flex-col p-4" aria-label={`${label} 일정`}>
-  <h2 class="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-on-surface-variant">
-    선택일 일정
-  </h2>
-  <p class="mt-1 text-sm font-semibold tracking-tight text-on-surface">{label}</p>
-  <p class="mt-0.5 text-xs tabular-nums text-on-surface-variant">{events.length}건</p>
+<aside
+  class="flex h-full flex-col rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest p-5 shadow-md3-1 lg:sticky lg:top-20"
+  aria-label={`${label} 일정`}
+>
+  <p class="text-[13px] font-medium text-on-surface-variant">{label}</p>
+  <p class="mt-0.5 text-[11px] tabular-nums text-on-surface-variant/80">
+    {events.length === 0 ? "일정 없음" : `${events.length}건`}
+  </p>
 
   {
     events.length === 0 ? (
-      <p class="mt-4 text-xs leading-relaxed text-on-surface-variant">{emptyHint}</p>
+      <p class="mt-6 text-[13px] leading-relaxed text-on-surface-variant">{emptyHint}</p>
     ) : (
-      <ul class="mt-4 space-y-3 border-t border-outline-variant/70 pt-3">
+      <ul class="mt-5 divide-y divide-outline-variant/40">
         {events.map((ev) => (
-          <li>
-            <p class="text-[10px] font-medium uppercase tracking-wide text-on-surface-variant">
+          <li class="py-3.5 first:pt-0 last:pb-0">
+            <p class="text-[11px] text-on-surface-variant">
               {kindLabel(ev.kind)}
-              {ev.meta?.impact === "high" && <span class="ml-1 text-warning">· High</span>}
-              {ev.meta?.category && <span class="ml-1">· {ev.meta.category}</span>}
+              {ev.meta?.impact === "high" && <span class="text-warning"> · High</span>}
             </p>
-            <p class="mt-0.5 text-sm font-semibold leading-snug text-on-surface">
+            <p class="mt-1 text-[15px] font-semibold leading-snug tracking-[-0.015em] text-on-surface">
               {ev.href ? (
                 <a
                   href={withBase(ev.href)}
-                  class="hover:text-primary"
+                  class="transition-colors hover:text-primary"
                   {...(ev.href.startsWith("http")
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
@@ -68,7 +68,9 @@ function kindLabel(kind: string) {
               )}
             </p>
             {ev.summary && (
-              <p class="mt-1 line-clamp-3 text-[11px] leading-relaxed text-on-surface-variant">{ev.summary}</p>
+              <p class="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-on-surface-variant">
+                {ev.summary}
+              </p>
             )}
           </li>
         ))}
