@@ -10,6 +10,7 @@ import {
   mediaCategoryLabel,
   mediaChannelById,
   sentimentLabel,
+  youtubeEmbedUrl,
   youtubeWatchUrl,
 } from "../lib/media-channels";
 import "../styles/media-terminal.css";
@@ -280,15 +281,17 @@ const weekPulse = weekKeyList.map((isoKey) => {
             <p class="p-4 text-sm text-[var(--mt-text-2)]">선택일에 High 브리프가 없습니다.</p>
           ) : (
             <ul class="grid min-h-0 flex-1 gap-0 overflow-auto lg:grid-cols-2">
-              {mustWatch.map((item) => {
+              {mustWatch.map((item, index) => {
                 const ch = mediaChannelById(item.data.channel);
                 const bullets =
                   item.data.summaryBullets.length > 0
                     ? item.data.summaryBullets.slice(0, 3)
                     : [item.data.why];
                 const stamps = item.data.timestamps.slice(0, 4);
+                const frameId = `brief-player-${index}`;
+                const embedSrc = youtubeEmbedUrl(item.data.youtubeId);
                 return (
-                  <li class="flex flex-col border-[var(--mt-border)] p-3 lg:border-r lg:[&:nth-child(2n)]:border-r-0 lg:border-b-0 border-b last:border-b-0">
+                  <li class="flex flex-col border-b border-[var(--mt-border)] p-3 last:border-b-0 lg:border-r lg:border-b-0 lg:[&:nth-child(2n)]:border-r-0">
                     <div class="flex flex-wrap items-center gap-1.5 media-mono text-[10px] text-[var(--mt-text-2)]">
                       <span class="font-semibold text-[var(--mt-bull)]">HIGH</span>
                       <span class="text-[var(--mt-muted)]">·</span>
@@ -309,6 +312,18 @@ const weekPulse = weekKeyList.map((isoKey) => {
                     <h3 class="mt-2 text-[15px] font-semibold leading-snug tracking-[-0.02em] text-[var(--mt-text)]">
                       {item.data.title}
                     </h3>
+                    <div class="media-brief-player mt-2.5 aspect-video w-full shrink-0 overflow-hidden bg-black">
+                      <iframe
+                        id={frameId}
+                        title={`${item.data.title} 플레이어`}
+                        src={embedSrc}
+                        class="h-full w-full"
+                        loading={index === 0 ? "eager" : "lazy"}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                      />
+                    </div>
                     <ul class="mt-2.5 space-y-1.5 text-[13px] leading-snug text-[var(--mt-text-2)]">
                       {bullets.map((b) => (
                         <li class="flex gap-2">
@@ -324,9 +339,9 @@ const weekPulse = weekKeyList.map((isoKey) => {
                             <button
                               type="button"
                               class="media-chip"
-                              data-media-play={item.data.youtubeId}
+                              data-brief-frame={frameId}
+                              data-brief-seek={item.data.youtubeId}
                               data-media-start={ts.timeSeconds}
-                              data-media-title={item.data.title}
                             >
                               {formatTimestampChip(ts.timeSeconds)} {ts.label}
                             </button>
@@ -334,16 +349,7 @@ const weekPulse = weekKeyList.map((isoKey) => {
                         </div>
                       )
                     }
-                    <div class="mt-auto flex flex-wrap gap-2 pt-3">
-                      <button
-                        type="button"
-                        class="media-chip"
-                        data-media-play={item.data.youtubeId}
-                        data-media-start="0"
-                        data-media-title={item.data.title}
-                      >
-                        인라인 재생
-                      </button>
+                    <div class="mt-3 flex flex-wrap gap-2">
                       <a
                         href={youtubeWatchUrl(item.data.youtubeId)}
                         target="_blank"
@@ -543,20 +549,36 @@ const weekPulse = weekKeyList.map((isoKey) => {
 
   <script is:inline>
     (function () {
+      function embedUrl(id, start, autoplay) {
+        var params = "rel=0&modestbranding=1&playsinline=1";
+        if (autoplay) params += "&autoplay=1";
+        var startSec = Number(start) || 0;
+        if (startSec > 0) params += "&start=" + Math.floor(startSec);
+        return "https://www.youtube.com/embed/" + encodeURIComponent(id) + "?" + params;
+      }
+
       function wire() {
-        const modal = document.getElementById("media-player-modal");
-        const frame = document.getElementById("media-player-frame");
-        const titleEl = document.getElementById("media-player-title");
-        const closeBtn = document.getElementById("media-player-close");
+        document.querySelectorAll("[data-brief-seek]").forEach(function (el) {
+          if (!(el instanceof HTMLElement)) return;
+          el.onclick = function (e) {
+            e.preventDefault();
+            var yt = el.getAttribute("data-brief-seek");
+            var frameId = el.getAttribute("data-brief-frame");
+            if (!yt || !frameId) return;
+            var frame = document.getElementById(frameId);
+            if (!(frame instanceof HTMLIFrameElement)) return;
+            frame.src = embedUrl(yt, el.getAttribute("data-media-start") || "0", true);
+          };
+        });
+
+        var modal = document.getElementById("media-player-modal");
+        var frame = document.getElementById("media-player-frame");
+        var titleEl = document.getElementById("media-player-title");
+        var closeBtn = document.getElementById("media-player-close");
         if (!(modal instanceof HTMLDialogElement) || !(frame instanceof HTMLIFrameElement)) return;
 
         function openPlayer(id, start, title) {
-          const startSec = Number(start) || 0;
-          frame.src =
-            "https://www.youtube.com/embed/" +
-            encodeURIComponent(id) +
-            "?autoplay=1&rel=0&modestbranding=1" +
-            (startSec > 0 ? "&start=" + Math.floor(startSec) : "");
+          frame.src = embedUrl(id, start, true);
           if (titleEl) titleEl.textContent = title || "";
           if (!modal.open) modal.showModal();
         }
@@ -566,11 +588,11 @@ const weekPulse = weekKeyList.map((isoKey) => {
           if (modal.open) modal.close();
         }
 
-        document.querySelectorAll("[data-media-play]").forEach((el) => {
+        document.querySelectorAll("[data-media-play]").forEach(function (el) {
           if (!(el instanceof HTMLElement)) return;
-          el.onclick = (e) => {
+          el.onclick = function (e) {
             e.preventDefault();
-            const id = el.getAttribute("data-media-play");
+            var id = el.getAttribute("data-media-play");
             if (!id) return;
             openPlayer(id, el.getAttribute("data-media-start") || "0", el.getAttribute("data-media-title") || "");
           };
@@ -579,10 +601,10 @@ const weekPulse = weekKeyList.map((isoKey) => {
         if (closeBtn instanceof HTMLButtonElement) {
           closeBtn.onclick = closePlayer;
         }
-        modal.onclose = () => {
+        modal.onclose = function () {
           frame.src = "";
         };
-        modal.onclick = (e) => {
+        modal.onclick = function (e) {
           if (e.target === modal) closePlayer();
         };
       }

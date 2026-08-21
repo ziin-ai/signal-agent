@@ -79,13 +79,19 @@ export function sentimentLabel(s: string | undefined): string {
   return "";
 }
 
-export function youtubeEmbedUrl(youtubeId: string, startSec = 0): string {
+export function youtubeEmbedUrl(
+  youtubeId: string,
+  opts: { startSec?: number; autoplay?: boolean } = {},
+): string {
   const params = new URLSearchParams({
-    autoplay: "1",
     rel: "0",
     modestbranding: "1",
+    playsinline: "1",
   });
-  if (startSec > 0) params.set("start", String(Math.floor(startSec)));
+  if (opts.autoplay) params.set("autoplay", "1");
+  if (opts.startSec != null && opts.startSec > 0) {
+    params.set("start", String(Math.floor(opts.startSec)));
+  }
   return `https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?${params.toString()}`;
 }
 
