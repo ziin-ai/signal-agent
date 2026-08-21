@@ -247,8 +247,8 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
       </a>
     </div>
 
-    <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 lg:gap-5">
-      <div class="lg:col-span-2">
+    <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-12 lg:gap-5">
+      <div class="lg:col-span-9">
         <MonthCalendar
           compact
           viewYear={viewYear}
@@ -266,6 +266,7 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
           rootPath={rootPath}
         />
       </div>
+      <div class="lg:col-span-3">
       <WeekEventList
         anchorDayKey={selectedDayKey}
         eventsByDay={eventsByDay}
@@ -274,6 +275,7 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
         dayHref={(isoKey) => homeHref({ day: isoKey, month: isoKey.slice(0, 7) })}
         emptyHint="이번 주에 표시할 일정이 없습니다. 전체 일정에서 더 볼 수 있습니다."
       />
+      </div>
     </div>
   </section>
 
