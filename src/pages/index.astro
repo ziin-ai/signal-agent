@@ -3,14 +3,9 @@ import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Panel from "../components/ui/Panel.astro";
 import MonthCalendar from "../components/timeline/MonthCalendar.astro";
-import WeekAgenda from "../components/timeline/WeekAgenda.astro";
+import DayEventList from "../components/timeline/DayEventList.astro";
 import { buildGlobalTimelineEvents, buildSymbolTimelineEvents } from "../lib/timeline";
-import {
-  buildGregorianMonthGrid,
-  localIsoKey,
-  shiftMonth,
-  shiftWeekIsoKey,
-} from "../lib/calendar-grid";
+import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../lib/calendar-grid";
 import {
   buildSymbolSearchEntries,
   resolveSymbolFromQuery,
@@ -53,8 +48,13 @@ const selectedImpacts = [...new Set(Astro.url.searchParams.getAll("impact"))].fi
 const hasExplicitFilters =
   rawKinds.length > 0 || rawCategories.length > 0 || selectedImpacts.length > 0;
 
+/** 분석글 on/off. kind 파라미터가 없으면 ON */
 const includePosts = rawKinds.length === 0 ? true : rawKinds.includes("post");
 
+/**
+ * 이벤트 하위 종류. category 파라미터가 없으면 전부 ON.
+ * category=none → 전부 OFF.
+ */
 const activeCategories =
   rawCategories.length === 0
     ? [...categoryOptions]
@@ -70,9 +70,6 @@ const filteredEvents = events.filter((ev) => {
   }
   return true;
 });
-
-const viewParam = Astro.url.searchParams.get("view")?.trim() ?? "";
-const calendarView: "week" | "month" = viewParam === "month" ? "month" : "week";
 
 const monthParam = Astro.url.searchParams.get("month")?.trim() ?? "";
 const dayParam = Astro.url.searchParams.get("day")?.trim() ?? "";
@@ -120,7 +117,14 @@ const firstOfMonthKey = localIsoKey(viewYear, viewMonth - 1, 1);
 const todayInViewMonth = today.getFullYear() === viewYear && today.getMonth() + 1 === viewMonth;
 const defaultDayKey = todayInViewMonth ? todayDayKey : firstOfMonthKey;
 
-const selectedDayKey = /^\d{4}-\d{2}-\d{2}$/.test(dayParam) ? dayParam : defaultDayKey;
+const selectedDayKey =
+  /^\d{4}-\d{2}-\d{2}$/.test(dayParam) && dayParam.startsWith(monthQueryValue)
+    ? dayParam
+    : /^\d{4}-\d{2}-\d{2}$/.test(dayParam)
+      ? dayParam
+      : defaultDayKey;
+
+const selectedDayEvents = eventsByDay.get(selectedDayKey) ?? [];
 
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
@@ -130,18 +134,17 @@ function timelineHref(next: {
   includePosts?: boolean;
   categories?: string[];
   impacts?: string[];
+  /** 필터를 URL에 기록. false면 기본(전체) URL */
   writeFilters?: boolean;
-  view?: "week" | "month";
   month?: string;
   day?: string | null;
-} = {}) {
+}) {
   const params = new URLSearchParams();
   const symbolValue = next.symbol !== undefined ? next.symbol : activeSymbol;
   const postsValue = next.includePosts ?? includePosts;
   const categoriesValue = next.categories ?? activeCategories;
   const impactsValue = next.impacts !== undefined ? next.impacts : selectedImpacts;
   const writeFilters = next.writeFilters ?? hasExplicitFilters;
-  const viewValue = next.view ?? calendarView;
   const monthValue = next.month ?? monthQueryValue;
   const dayValue = next.day !== undefined ? next.day : selectedDayKey;
   if (symbolValue) params.set("symbol", symbolValue);
@@ -155,13 +158,16 @@ function timelineHref(next: {
     }
     for (const i of impactsValue) params.append("impact", i);
   }
-  if (viewValue === "month") params.set("view", "month");
   params.set("month", monthValue);
   if (dayValue) params.set("day", dayValue);
   const qs = params.toString();
   return qs ? `${rootPath}?${qs}` : rootPath;
 }
 
+/**
+ * 영향도: 빈 배열 = 전체 ON.
+ * 클릭 시 실제 켜진 집합을 기준으로 토글하고, 전부 켜지면 다시 []로 정규화한다.
+ */
 function toggleAxis(selected: string[], id: string, allIds: readonly string[]): string[] {
   const on = new Set(selected.length === 0 ? allIds : selected);
   if (on.has(id)) on.delete(id);
@@ -177,6 +183,7 @@ function toggleListMember(list: string[], id: string): string[] {
   return [...s];
 }
 
+/** 영향도: 선택 없음 = 전체 ON */
 function axisOn(selected: string[], id: string): boolean {
   return selected.length === 0 || selected.includes(id);
 }
@@ -198,12 +205,6 @@ function filterTabClass(active: boolean, tone: "default" | "post" | "event" = "d
   return `${base} bg-primary/12 font-semibold text-primary`;
 }
 
-function viewTabClass(active: boolean): string {
-  return active
-    ? "rounded-md3-sm bg-on-surface px-3 py-1.5 text-[13px] font-semibold text-surface"
-    : "rounded-md3-sm px-3 py-1.5 text-[13px] font-medium text-on-surface-variant transition hover:bg-surface-container hover:text-on-surface";
-}
-
 function categoryLabel(category: string) {
   if (category === "macro") return "매크로";
   if (category === "earnings") return "실적";
@@ -221,189 +222,130 @@ const filterResetHref = timelineHref({
   writeFilters: false,
   day: selectedDayKey,
 });
-
-const prevWeekDay = shiftWeekIsoKey(selectedDayKey, -1);
-const nextWeekDay = shiftWeekIsoKey(selectedDayKey, 1);
 ---
 
 <Base
   title={activeSymbol ? `캘린더 · ${activeSymbol} | 내 곁에 지인` : "캘린더 | 내 곁에 지인"}
   description={
     activeSymbol
-      ? `${activeSymbol} 관련 분석글·이벤트를 주간 아젠다로 제공합니다.`
-      : "분석글과 외부 이벤트를 주간 아젠다·영향도 위계로 읽는 캘린더."
+      ? `${activeSymbol} 관련 분석글/외부 이벤트 일정을 달력형 타임라인으로 제공합니다.`
+      : "분석글과 외부 이벤트를 월 단위 달력으로 보는 메인 캘린더."
   }
 >
-  <div class="mb-4 space-y-3 rounded-[16px] border border-outline-variant/40 bg-surface-container-low/30 px-3 py-3 sm:px-4">
-    <section
-      class="flex flex-wrap items-center gap-x-0.5 gap-y-1.5"
-      role="group"
-      aria-label="캘린더 일정 필터"
+  <section
+    class="mb-3 flex flex-wrap items-center gap-x-0.5 gap-y-1.5"
+    role="group"
+    aria-label="일정 필터"
+  >
+    <a
+      href={timelineHref({
+        includePosts: !includePosts,
+        writeFilters: true,
+        day: selectedDayKey,
+      })}
+      class={filterTabClass(includePosts, "post")}
+      aria-pressed={includePosts}
+      title={includePosts ? "분석 끄기" : "분석 켜기"}
     >
-      <a
-        href={timelineHref({
-          includePosts: !includePosts,
-          writeFilters: true,
-          day: selectedDayKey,
-        })}
-        class={filterTabClass(includePosts, "post")}
-        aria-pressed={includePosts}
-        title={includePosts ? "분석 끄기" : "분석 켜기"}
-      >
-        분석
-      </a>
+      분석
+    </a>
 
-      <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
+    <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
 
-      {
-        categoryOptions.map((category) => {
-          const on = activeCategories.includes(category);
-          return (
-            <a
-              href={timelineHref({
-                categories: toggleListMember(activeCategories, category),
-                writeFilters: true,
-                day: selectedDayKey,
-              })}
-              class={filterTabClass(on, "event")}
-              aria-pressed={on}
-              title={on ? `${categoryLabel(category)} 끄기` : `${categoryLabel(category)} 켜기`}
-            >
-              {categoryLabel(category)}
-            </a>
-          );
-        })
-      }
-
-      <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
-
-      {
-        IMPACT_ALL.map((id) => {
-          const on = axisOn(selectedImpacts, id);
-          return (
-            <a
-              href={timelineHref({
-                impacts: toggleAxis(selectedImpacts, id, IMPACT_ALL),
-                writeFilters: true,
-                day: selectedDayKey,
-              })}
-              class={filterTabClass(on)}
-              aria-pressed={on}
-              title={on ? `${id} 끄기` : `${id} 켜기`}
-            >
-              {id === "high" ? "High" : id === "mid" ? "Mid" : "Low"}
-            </a>
-          );
-        })
-      }
-
-      {
-        hasExplicitFilters && (
+    {
+      categoryOptions.map((category) => {
+        const on = activeCategories.includes(category);
+        return (
           <a
-            href={filterResetHref}
-            class="ml-1 text-[12px] font-medium text-on-surface-variant transition hover:text-primary"
+            href={timelineHref({
+              categories: toggleListMember(activeCategories, category),
+              writeFilters: true,
+              day: selectedDayKey,
+            })}
+            class={filterTabClass(on, "event")}
+            aria-pressed={on}
+            title={on ? `${categoryLabel(category)} 끄기` : `${categoryLabel(category)} 켜기`}
           >
-            전체
+            {categoryLabel(category)}
           </a>
-        )
-      }
-    </section>
+        );
+      })
+    }
 
-    <div
-      class="flex flex-wrap items-center justify-between gap-2 border-t border-outline-variant/35 pt-3"
-      role="group"
-      aria-label="보기 전환"
-    >
-      <div class="flex items-center gap-0.5 rounded-md3-sm bg-surface-container-lowest p-0.5">
-        <a
-          href={timelineHref({ view: "week", day: selectedDayKey })}
-          class={viewTabClass(calendarView === "week")}
-          aria-current={calendarView === "week" ? "page" : undefined}
-        >
-          주간
-        </a>
-        <a
-          href={timelineHref({
-            view: "month",
-            month: selectedDayKey.slice(0, 7),
-            day: selectedDayKey,
-          })}
-          class={viewTabClass(calendarView === "month")}
-          aria-current={calendarView === "month" ? "page" : undefined}
-        >
-          월간
-        </a>
-      </div>
-      <p class="text-[11px] text-on-surface-variant">
-        {calendarView === "week"
-          ? "제목·요약을 잘리지 않게 표시 · High 강조"
-          : "밀도만 표시 · 날짜 클릭 시 주간으로"}
-      </p>
-    </div>
-  </div>
+    <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
 
-  {
-    calendarView === "week" ? (
-      <WeekAgenda
-        anchorDayKey={selectedDayKey}
-        eventsByDay={eventsByDay}
-        todayDayKey={todayDayKey}
-        rootPath={rootPath}
-        prevWeekHref={timelineHref({
-          view: "week",
-          day: prevWeekDay,
-          month: prevWeekDay.slice(0, 7),
-        })}
-        nextWeekHref={timelineHref({
-          view: "week",
-          day: nextWeekDay,
-          month: nextWeekDay.slice(0, 7),
-        })}
-        todayHref={timelineHref({ view: "week", month: todayMonthStr, day: todayDayKey })}
-        dayHref={(isoKey) =>
-          timelineHref({ view: "week", day: isoKey, month: isoKey.slice(0, 7) })
-        }
-      />
-    ) : (
+    {
+      IMPACT_ALL.map((id) => {
+        const on = axisOn(selectedImpacts, id);
+        return (
+          <a
+            href={timelineHref({
+              impacts: toggleAxis(selectedImpacts, id, IMPACT_ALL),
+              writeFilters: true,
+              day: selectedDayKey,
+            })}
+            class={filterTabClass(on)}
+            aria-pressed={on}
+            title={on ? `${id} 끄기` : `${id} 켜기`}
+          >
+            {id === "high" ? "High" : id === "mid" ? "Mid" : "Low"}
+          </a>
+        );
+      })
+    }
+
+    {
+      hasExplicitFilters && (
+        <a
+          href={filterResetHref}
+          class="ml-1 text-[12px] font-medium text-on-surface-variant transition hover:text-primary"
+        >
+          전체
+        </a>
+      )
+    }
+  </section>
+
+  <section class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+    <div class="space-y-4 lg:col-span-9">
       <MonthCalendar
-        density="dots"
         viewYear={viewYear}
         viewMonth={viewMonth}
         monthGrid={monthGrid}
         eventsByDay={eventsByDay}
         todayDayKey={todayDayKey}
         selectedDayKey={selectedDayKey}
-        todayHref={timelineHref({ view: "month", month: todayMonthStr, day: todayDayKey })}
-        prevMonthHref={timelineHref({ view: "month", month: prevMonthStr, day: null })}
-        nextMonthHref={timelineHref({ view: "month", month: nextMonthStr, day: null })}
-        dayHref={(isoKey) =>
-          timelineHref({ view: "week", day: isoKey, month: isoKey.slice(0, 7) })
-        }
+        todayHref={timelineHref({ month: todayMonthStr, day: todayDayKey })}
+        prevMonthHref={timelineHref({ month: prevMonthStr, day: null })}
+        nextMonthHref={timelineHref({ month: nextMonthStr, day: null })}
+        dayHref={(isoKey) => timelineHref({ day: isoKey, month: isoKey.slice(0, 7) })}
         eventsInMonthCount={eventsInCalendarMonth.length}
         filteredTotalCount={filteredEvents.length}
         rootPath={rootPath}
       />
-    )
-  }
+    </div>
 
-  {
-    activeSymbol && symbolPosts.length > 0 && (
-      <div class="mt-4">
-        <Panel title="이 종목 분석글">
-          <ul class="mt-3 space-y-2">
-            {symbolPosts.slice(0, 6).map((post) => (
-              <li class="rounded-lg bg-secondary/30 px-3 py-2 text-sm">
-                <a href={`${rootPath}posts/${post.id.replace(/\.md$/, "")}`} class="hover:text-primary">
-                  {post.data.title}
-                </a>
-                <p class="mt-0.5 text-[10px] text-on-surface-variant">
-                  {post.data.date.toLocaleDateString("ko-KR")} · 확신 {post.data.conviction}/5
-                </p>
-              </li>
-            ))}
-          </ul>
-        </Panel>
-      </div>
-    )
-  }
+    <aside class="space-y-4 lg:col-span-3">
+      <DayEventList dayKey={selectedDayKey} events={selectedDayEvents} rootPath={rootPath} />
+
+      {
+        activeSymbol && symbolPosts.length > 0 && (
+          <Panel title="이 종목 분석글">
+            <ul class="mt-3 space-y-2">
+              {symbolPosts.slice(0, 6).map((post) => (
+                <li class="rounded-lg bg-secondary/30 px-3 py-2 text-sm">
+                  <a href={`${rootPath}posts/${post.id.replace(/\.md$/, "")}`} class="hover:text-primary">
+                    {post.data.title}
+                  </a>
+                  <p class="mt-0.5 text-[10px] text-on-surface-variant">
+                    {post.data.date.toLocaleDateString("ko-KR")} · 확신 {post.data.conviction}/5
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        )
+      }
+    </aside>
+  </section>
 </Base>

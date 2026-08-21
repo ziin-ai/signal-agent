@@ -137,7 +137,7 @@ function withBase(href: string): string {
                           <span
                             class:list={[
                               "mt-0.5 inline-flex h-4 shrink-0 items-center rounded px-1 text-[9px] font-bold leading-none",
-                              kindBadgeClass(ev.kind, ev.meta?.impact),
+                              kindBadgeClass(ev.kind),
                             ]}
                           >
                             {timelineItemShortLabel(ev)}
@@ -157,7 +157,7 @@ function withBase(href: string): string {
                           <span
                             class:list={[
                               "mt-0.5 inline-flex h-4 shrink-0 items-center rounded px-1 text-[9px] font-bold leading-none",
-                              kindBadgeClass(ev.kind, ev.meta?.impact),
+                              kindBadgeClass(ev.kind),
                             ]}
                           >
                             {timelineItemShortLabel(ev)}
