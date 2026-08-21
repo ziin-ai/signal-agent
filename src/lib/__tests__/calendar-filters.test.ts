@@ -19,27 +19,34 @@ describe("resolveHomeCalendarFilters", () => {
     const state = resolveHomeCalendarFilters(new URL("https://example.com/"));
     expect(state.isCustom).toBe(false);
     expect(state.includePosts).toBe(true);
-    expect(state.impacts).toEqual(["high"]);
+    expect(state.includeEvents).toBe(true);
     expect(state.categories).toEqual(["earnings", "macro"]);
   });
 
-  it("reads explicit kind/impact/category", () => {
+  it("reads explicit kind and category", () => {
     const url = new URL(
-      "https://example.com/?kind=post&impact=high&category=earnings&category=policy",
+      "https://example.com/?kind=post&kind=external_event&category=earnings&category=policy",
     );
     expect(hasExplicitHomeCalendarFilters(url)).toBe(true);
     const state = resolveHomeCalendarFilters(url);
     expect(state.isCustom).toBe(true);
     expect(state.includePosts).toBe(true);
-    expect(state.impacts).toEqual(["high"]);
+    expect(state.includeEvents).toBe(true);
     expect(state.categories).toEqual(["earnings", "policy"]);
   });
 
-  it("turns posts off when kind is present without post", () => {
+  it("turns posts off when kind omits post", () => {
     const state = resolveHomeCalendarFilters(
-      new URL("https://example.com/?kind=external_event&impact=high&category=macro"),
+      new URL("https://example.com/?kind=external_event&category=macro"),
     );
     expect(state.includePosts).toBe(false);
+    expect(state.includeEvents).toBe(true);
+  });
+
+  it("turns events off when kind omits external_event", () => {
+    const state = resolveHomeCalendarFilters(new URL("https://example.com/?kind=post&category=macro"));
+    expect(state.includePosts).toBe(true);
+    expect(state.includeEvents).toBe(false);
   });
 });
 
@@ -69,25 +76,34 @@ describe("filterHomeCalendarEvents", () => {
   it("matches default curation", () => {
     const out = filterHomeCalendarEvents(sample, {
       includePosts: true,
-      impacts: ["high"],
+      includeEvents: true,
       categories: ["earnings", "macro"],
     });
     expect(out.map((e) => e.id)).toEqual(["p1", "e1"]);
   });
 
-  it("hides events when a filter axis is empty", () => {
+  it("hides events when events toggle is off", () => {
     const out = filterHomeCalendarEvents(sample, {
       includePosts: true,
-      impacts: ["high"],
+      includeEvents: false,
+      categories: ["earnings", "macro", "policy"],
+    });
+    expect(out.map((e) => e.id)).toEqual(["p1"]);
+  });
+
+  it("hides events when no categories selected", () => {
+    const out = filterHomeCalendarEvents(sample, {
+      includePosts: true,
+      includeEvents: true,
       categories: [],
     });
     expect(out.map((e) => e.id)).toEqual(["p1"]);
   });
 
-  it("can include policy with high", () => {
+  it("can include policy events only", () => {
     const out = filterHomeCalendarEvents(sample, {
       includePosts: false,
-      impacts: ["high"],
+      includeEvents: true,
       categories: ["policy"],
     });
     expect(out.map((e) => e.id)).toEqual(["e3"]);

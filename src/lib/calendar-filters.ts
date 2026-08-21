@@ -1,22 +1,26 @@
 /**
  * 홈 월 캘린더 필터.
- * 기본값 = 분석글 + High · 실적/매크로 (기존 큐레이션 유지).
- * URL에 kind|impact|category가 하나라도 있으면 명시 선택으로 해석.
+ * 축: 글 · 이벤트 (이벤트 종류 = 실적 / 매크로 / 정책).
+ * 기본값 = 글 + 이벤트(High) · 실적/매크로.
+ * URL에 kind|category가 있으면 명시 선택으로 해석.
  */
 
 import type { TimelineEvent } from "./timeline";
 import { eventCategoryLabel } from "./dashboard-event-filters";
 
 export const HOME_CAL_DEFAULT_INCLUDE_POSTS = true;
-export const HOME_CAL_DEFAULT_IMPACTS = ["high"] as const;
+export const HOME_CAL_DEFAULT_INCLUDE_EVENTS = true;
 export const HOME_CAL_DEFAULT_CATEGORIES = ["earnings", "macro"] as const;
 
-/** 홈에 노출하는 카테고리 칩 (타임라인 전체 목록보다 축소) */
+/** 홈 캘린더는 High 영향도 이벤트만 (칩으로 노출하지 않음) */
+export const HOME_CAL_EVENT_IMPACT = "high" as const;
+
+/** 이벤트 하위 종류 칩 */
 export const HOME_CAL_CATEGORY_OPTIONS = ["earnings", "macro", "policy"] as const;
 
 export type HomeCalendarFilterState = {
   includePosts: boolean;
-  impacts: string[];
+  includeEvents: boolean;
   categories: string[];
   /** URL에 필터 파라미터가 있어 기본값이 아닌 경우 */
   isCustom: boolean;
@@ -24,52 +28,52 @@ export type HomeCalendarFilterState = {
 
 export function hasExplicitHomeCalendarFilters(url: URL): boolean {
   const sp = url.searchParams;
-  return sp.has("kind") || sp.has("impact") || sp.has("category");
+  return sp.has("kind") || sp.has("category");
 }
 
 export function resolveHomeCalendarFilters(url: URL): HomeCalendarFilterState {
   if (!hasExplicitHomeCalendarFilters(url)) {
     return {
       includePosts: HOME_CAL_DEFAULT_INCLUDE_POSTS,
-      impacts: [...HOME_CAL_DEFAULT_IMPACTS],
+      includeEvents: HOME_CAL_DEFAULT_INCLUDE_EVENTS,
       categories: [...HOME_CAL_DEFAULT_CATEGORIES],
       isCustom: false,
     };
   }
 
   const kinds = [...new Set(url.searchParams.getAll("kind"))];
-  const impacts = [...new Set(url.searchParams.getAll("impact"))].filter(
-    (k): k is "high" | "mid" | "low" => k === "high" || k === "mid" || k === "low",
-  );
   const allowed = new Set<string>(HOME_CAL_CATEGORY_OPTIONS);
   const categories = [...new Set(url.searchParams.getAll("category"))].filter((c) => allowed.has(c));
 
+  // kind가 없으면(category만) 글·이벤트 모두 켠 상태로 보고 종류만 커스텀
+  const includePosts = kinds.length > 0 ? kinds.includes("post") : true;
+  const includeEvents = kinds.length > 0 ? kinds.includes("external_event") : true;
+
   return {
-    // kind 파라미터가 있으면 post 포함 여부로 글 on/off. kind 자체가 없으면(impact/category만) 글 유지.
-    includePosts: kinds.length > 0 ? kinds.includes("post") : true,
-    impacts,
+    includePosts,
+    includeEvents,
     categories,
     isCustom: true,
   };
 }
 
 /**
- * 글은 includePosts만 본다.
- * 이벤트는 impact·category 축이 비어 있으면 숨김(칩을 모두 끈 상태).
- * 축이 채워져 있으면 AND — 선택한 impact와 category를 모두 만족해야 함.
+ * 글 = includePosts.
+ * 이벤트 = includeEvents + High + 선택한 종류(category).
+ * 종류 칩이 전부 꺼지면 이벤트는 표시하지 않음.
  */
 export function filterHomeCalendarEvents(
   events: TimelineEvent[],
-  state: Pick<HomeCalendarFilterState, "includePosts" | "impacts" | "categories">,
+  state: Pick<HomeCalendarFilterState, "includePosts" | "includeEvents" | "categories">,
 ): TimelineEvent[] {
-  const { includePosts, impacts, categories } = state;
-  const showEvents = impacts.length > 0 && categories.length > 0;
+  const { includePosts, includeEvents, categories } = state;
+  const showEvents = includeEvents && categories.length > 0;
 
   return events.filter((ev) => {
     if (ev.kind === "post") return includePosts;
     if (ev.kind !== "external_event") return false;
     if (!showEvents) return false;
-    if (!ev.meta?.impact || !impacts.includes(ev.meta.impact)) return false;
+    if (ev.meta?.impact !== HOME_CAL_EVENT_IMPACT) return false;
     if (!ev.meta?.category || !categories.includes(ev.meta.category)) return false;
     return true;
   });
@@ -86,7 +90,6 @@ export function homeCalCategoryLabel(category: string): string {
   return eventCategoryLabel(category);
 }
 
-/** 칩 활성 스타일 — 타임라인과 동일 톤 */
 export function homeCalChipClass(active: boolean): string {
   return active
     ? "border-primary bg-primary text-on-primary"

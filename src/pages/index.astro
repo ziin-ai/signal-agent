@@ -220,7 +220,7 @@ function homeHref(
     month?: string;
     day?: string | null;
     includePosts?: boolean;
-    impacts?: string[];
+    includeEvents?: boolean;
     categories?: string[];
     /** 필터를 URL에 기록 (칩 토글·커스텀 유지). false면 기본 큐레이션 URL(필터 생략) */
     writeFilters?: boolean;
@@ -234,14 +234,14 @@ function homeHref(
   if (dayValue) params.set("day", dayValue);
 
   const includePosts = next.includePosts ?? calFilter.includePosts;
-  const impacts = next.impacts ?? calFilter.impacts;
+  const includeEvents = next.includeEvents ?? calFilter.includeEvents;
   const categories = next.categories ?? calFilter.categories;
   const writeFilters = next.writeFilters ?? calFilter.isCustom;
 
   if (writeFilters) {
     if (includePosts) params.append("kind", "post");
-    else params.append("kind", "external_event");
-    for (const i of impacts) params.append("impact", i);
+    if (includeEvents) params.append("kind", "external_event");
+    if (!includePosts && !includeEvents) params.append("kind", "none");
     for (const c of categories) params.append("category", c);
   }
 
@@ -250,7 +250,6 @@ function homeHref(
 }
 
 const filterResetHref = homeHref({ writeFilters: false });
-const highOn = calFilter.impacts.includes("high");
 ---
 
 <Base
@@ -280,24 +279,29 @@ const highOn = calFilter.impacts.includes("high");
         </a>
         <a
           href={homeHref({
-            impacts: highOn ? calFilter.impacts.filter((i) => i !== "high") : [...calFilter.impacts, "high"],
+            includeEvents: !calFilter.includeEvents,
             writeFilters: true,
           })}
-          class:list={["rounded-full border px-2.5 py-1 text-[12px] font-medium transition", homeCalChipClass(highOn)]}
+          class:list={["rounded-full border px-2.5 py-1 text-[12px] font-medium transition", homeCalChipClass(calFilter.includeEvents)]}
         >
-          High
+          이벤트
         </a>
         <span class="mx-0.5 h-3 w-px bg-outline-variant/60" aria-hidden="true" />
         {
           HOME_CAL_CATEGORY_OPTIONS.map((cat) => {
-            const on = calFilter.categories.includes(cat);
+            const on = calFilter.includeEvents && calFilter.categories.includes(cat);
             return (
               <a
                 href={homeHref({
+                  includeEvents: true,
                   categories: toggleListMember(calFilter.categories, cat),
                   writeFilters: true,
                 })}
-                class:list={["rounded-full border px-2.5 py-1 text-[12px] font-medium transition", homeCalChipClass(on)]}
+                class:list={[
+                  "rounded-full border px-2.5 py-1 text-[12px] font-medium transition",
+                  homeCalChipClass(on),
+                  !calFilter.includeEvents && "opacity-55",
+                ]}
               >
                 {homeCalCategoryLabel(cat)}
               </a>
