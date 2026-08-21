@@ -23,8 +23,8 @@ interface Props {
   filteredTotalCount: number;
   rootPath: string;
   /**
-   * compact: 홈 — 칸당 제목 2개 + 더보기.
-   * full: 타임라인 — 칸당 제목 4개.
+   * compact: 홈 — 칸당 제목 3개 + 더보기.
+   * full: 타임라인 — 칸당 제목 5개.
    */
   compact?: boolean;
 }
@@ -57,8 +57,10 @@ function withBase(href: string): string {
   return `${rootPath}${href.slice(1)}`;
 }
 
-const cellMin = compact ? "min-h-[96px] sm:min-h-[104px]" : "min-h-[108px]";
-const maxShow = compact ? 2 : 4;
+const cellMin = compact
+  ? "min-h-[128px] sm:min-h-[144px] lg:min-h-[156px]"
+  : "min-h-[140px] sm:min-h-[156px]";
+const maxShow = compact ? 3 : 5;
 ---
 
 <div class="overflow-hidden rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest shadow-md3-1">
@@ -110,7 +112,7 @@ const maxShow = compact ? 2 : 4;
         const isSelected = selectedDayKey === cell.isoKey;
         const dayLink = dayHref?.(cell.isoKey);
         const dayClass = [
-          `flex ${cellMin} flex-col bg-surface-container-lowest p-1.5 transition-colors`,
+          `flex ${cellMin} flex-col bg-surface-container-lowest p-1.5 sm:p-2 transition-colors`,
           !cell.inMonth && "bg-surface-container-low/50",
           isSelected && "bg-primary/[0.07]",
         ]
@@ -150,20 +152,20 @@ const maxShow = compact ? 2 : 4;
                 </span>
               )}
             </div>
-            <div class="mt-1 min-h-0 flex-1 space-y-0.5 overflow-hidden">
+            <div class="mt-1 min-h-0 flex-1 space-y-1 overflow-hidden">
               {shown.map((ev) => {
-                const chipClass = `flex max-w-full items-center gap-0.5 truncate rounded-md px-1 py-0.5 text-left text-[11px] font-medium leading-snug transition-colors ${kindSurfaceClass(ev.kind)}`;
+                const chipClass = `flex max-w-full items-start gap-1 rounded-md px-1.5 py-1 text-left text-[12px] font-medium leading-snug transition-colors ${kindSurfaceClass(ev.kind)}`;
                 const chipInner = (
                   <>
                     <span
                       class:list={[
-                        "inline-flex h-3.5 shrink-0 items-center rounded px-0.5 text-[9px] font-bold leading-none",
+                        "mt-0.5 inline-flex h-4 shrink-0 items-center rounded px-1 text-[9px] font-bold leading-none",
                         kindBadgeClass(ev.kind),
                       ]}
                     >
                       {kindShortLabel(ev.kind)}
                     </span>
-                    <span class="min-w-0 truncate">{ev.title}</span>
+                    <span class="min-w-0 line-clamp-2">{ev.title}</span>
                   </>
                 );
                 return ev.href ? (
