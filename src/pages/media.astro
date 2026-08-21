@@ -1,0 +1,234 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import {
+  MEDIA_CHANNELS,
+  formatDuration,
+  mediaCategoryLabel,
+  mediaChannelById,
+  youtubeThumbUrl,
+  youtubeWatchUrl,
+} from "../lib/media-channels";
+
+export const prerender = false;
+
+const allMedia = await getCollection("media");
+const items = allMedia
+  .filter((m) => m.data.draft !== true)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+
+const categoryOptions = [...new Set(items.map((m) => m.data.category))].sort();
+const channelOptions = [...new Set(items.map((m) => m.data.channel))];
+
+const rawCategories = [...new Set(Astro.url.searchParams.getAll("category"))];
+const rawChannels = [...new Set(Astro.url.searchParams.getAll("channel"))];
+const impactOnly = Astro.url.searchParams.get("impact") === "high";
+
+const activeCategories = rawCategories.filter((c) => categoryOptions.includes(c as (typeof categoryOptions)[number]));
+const activeChannels = rawChannels.filter((c) => channelOptions.includes(c as (typeof channelOptions)[number]));
+
+const filtered = items.filter((m) => {
+  if (activeCategories.length > 0 && !activeCategories.includes(m.data.category)) return false;
+  if (activeChannels.length > 0 && !activeChannels.includes(m.data.channel)) return false;
+  if (impactOnly && m.data.impact !== "high") return false;
+  return true;
+});
+
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+
+function mediaHref(next: {
+  categories?: string[];
+  channels?: string[];
+  impactHigh?: boolean;
+}) {
+  const params = new URLSearchParams();
+  const cats = next.categories ?? activeCategories;
+  const chans = next.channels ?? activeChannels;
+  const high = next.impactHigh ?? impactOnly;
+  for (const c of cats) params.append("category", c);
+  for (const c of chans) params.append("channel", c);
+  if (high) params.set("impact", "high");
+  const qs = params.toString();
+  return qs ? `${rootPath}media?${qs}` : `${rootPath}media`;
+}
+
+function toggleList(list: string[], id: string): string[] {
+  const s = new Set(list);
+  if (s.has(id)) s.delete(id);
+  else s.add(id);
+  return [...s];
+}
+
+function chipClass(on: boolean): string {
+  return on
+    ? "rounded-md3-sm bg-primary/12 px-2.5 py-1 text-[12px] font-semibold text-primary"
+    : "rounded-md3-sm px-2.5 py-1 text-[12px] font-medium text-on-surface-variant transition hover:bg-surface-container hover:text-on-surface";
+}
+
+const hasFilters = activeCategories.length > 0 || activeChannels.length > 0 || impactOnly;
+---
+
+<Base
+  title="미디어 | 내 곁에 지인"
+  description="주요 경제·증시 유튜브 채널에서 고른 영상 큐레이션. 투자 권유가 아니며 원본은 YouTube에 있습니다."
+>
+  <section class="mb-5">
+    <h1 class="font-sans text-3xl font-semibold tracking-tight text-on-surface">미디어</h1>
+    <p class="mt-2 max-w-2xl text-sm leading-relaxed text-on-surface-variant">
+      화이트리스트 채널에서 <strong>직접 고른</strong> 경제·증시 영상입니다. 자동 피드가 아니며, 투자 권유가
+      아닙니다. 재생·저작권은 YouTube·해당 채널에 있습니다.
+    </p>
+  </section>
+
+  <div class="mb-4 space-y-3 rounded-[16px] border border-outline-variant/40 bg-surface-container-low/30 px-3 py-3 sm:px-4">
+    <section class="flex flex-wrap items-center gap-x-0.5 gap-y-1.5" role="group" aria-label="채널 필터">
+      <span class="mr-1 text-[11px] font-medium text-on-surface-variant">채널</span>
+      {
+        MEDIA_CHANNELS.filter((ch) => channelOptions.includes(ch.id)).map((ch) => {
+          const on = activeChannels.includes(ch.id);
+          return (
+            <a
+              href={mediaHref({ channels: toggleList(activeChannels, ch.id) })}
+              class={chipClass(on)}
+              aria-pressed={on}
+            >
+              {ch.name}
+            </a>
+          );
+        })
+      }
+    </section>
+    <section
+      class="flex flex-wrap items-center gap-x-0.5 gap-y-1.5 border-t border-outline-variant/35 pt-3"
+      role="group"
+      aria-label="주제·영향도 필터"
+    >
+      <span class="mr-1 text-[11px] font-medium text-on-surface-variant">주제</span>
+      {
+        categoryOptions.map((cat) => {
+          const on = activeCategories.includes(cat);
+          return (
+            <a
+              href={mediaHref({ categories: toggleList(activeCategories, cat) })}
+              class={chipClass(on)}
+              aria-pressed={on}
+            >
+              {mediaCategoryLabel(cat)}
+            </a>
+          );
+        })
+      }
+      <span class="mx-1.5 h-3.5 w-px bg-outline-variant/70" aria-hidden="true" />
+      <a
+        href={mediaHref({ impactHigh: !impactOnly })}
+        class={chipClass(impactOnly)}
+        aria-pressed={impactOnly}
+      >
+        High만
+      </a>
+      {
+        hasFilters && (
+          <a href={`${rootPath}media`} class="ml-1 text-[12px] font-medium text-on-surface-variant hover:text-primary">
+            전체
+          </a>
+        )
+      }
+    </section>
+  </div>
+
+  {
+    filtered.length === 0 ? (
+      <p class="rounded-[16px] border border-outline-variant/50 bg-surface-container-lowest px-5 py-10 text-sm text-on-surface-variant">
+        조건에 맞는 큐레이션이 없습니다. 필터를 바꿔 보세요.
+      </p>
+    ) : (
+      <ul class="space-y-3">
+        {filtered.map((item) => {
+          const ch = mediaChannelById(item.data.channel);
+          const watch = youtubeWatchUrl(item.data.youtubeId);
+          const thumb = youtubeThumbUrl(item.data.youtubeId);
+          const isHigh = item.data.impact === "high";
+          return (
+            <li>
+              <a
+                href={watch}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  "flex gap-4 rounded-[16px] border border-outline-variant/50 bg-surface-container-lowest p-3 transition hover:border-primary/30 hover:bg-surface-container-low/40 sm:p-4",
+                  isHigh && "border-l-[3px] border-l-primary",
+                ]}
+              >
+                <div class="relative h-[4.5rem] w-[8rem] shrink-0 overflow-hidden rounded-md3-sm bg-surface-container sm:h-24 sm:w-40">
+                  <img
+                    src={thumb}
+                    alt=""
+                    width={320}
+                    height={180}
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                  {item.data.durationSec != null && (
+                    <span class="absolute bottom-1 right-1 rounded bg-black/75 px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-white">
+                      {formatDuration(item.data.durationSec)}
+                    </span>
+                  )}
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-center gap-2 text-[11px] text-on-surface-variant">
+                    <span class="font-medium text-on-surface">{ch?.name ?? item.data.channel}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{mediaCategoryLabel(item.data.category)}</span>
+                    {isHigh && (
+                      <>
+                        <span aria-hidden="true">·</span>
+                        <span class="font-semibold text-primary">High</span>
+                      </>
+                    )}
+                    <span aria-hidden="true">·</span>
+                    <time class="tabular-nums" datetime={item.data.publishedAt.toISOString()}>
+                      {item.data.publishedAt.toLocaleDateString("ko-KR")}
+                    </time>
+                    {item.data.lang === "en" && (
+                      <>
+                        <span aria-hidden="true">·</span>
+                        <span>EN</span>
+                      </>
+                    )}
+                  </div>
+                  <h2
+                    class:list={[
+                      "mt-1.5 leading-snug tracking-[-0.015em] text-on-surface",
+                      isHigh ? "text-[17px] font-semibold" : "text-[15px] font-medium",
+                    ]}
+                  >
+                    {item.data.title}
+                  </h2>
+                  <p class="mt-1.5 text-[13px] leading-[1.65] text-on-surface-variant">{item.data.why}</p>
+                  <p class="mt-2 text-[11px] font-medium text-primary">YouTube에서 보기 →</p>
+                </div>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
+
+  <aside class="mt-8 rounded-[16px] border border-outline-variant/40 bg-surface-container-low/25 px-4 py-4">
+    <h2 class="text-sm font-semibold text-on-surface">신뢰 채널</h2>
+    <ul class="mt-3 grid gap-3 sm:grid-cols-2">
+      {
+        MEDIA_CHANNELS.map((ch) => (
+          <li class="text-[13px] leading-relaxed">
+            <a href={ch.url} target="_blank" rel="noopener noreferrer" class="font-medium text-primary hover:underline">
+              {ch.name}
+            </a>
+            <span class="text-on-surface-variant"> — {ch.blurb}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </aside>
+</Base>

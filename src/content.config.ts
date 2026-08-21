@@ -91,7 +91,32 @@ const events = defineCollection({
     .strict(),
 });
 
+/** 경제·증시 유튜브 큐레이션 (화이트리스트 채널만) */
+const media = defineCollection({
+  loader: glob({ base: "./src/content/media", pattern: "**/*.md" }),
+  schema: z
+    .object({
+      title: z.string().min(1),
+      /** 영상 공개일 (또는 큐레이션 기준일) */
+      publishedAt: z.coerce.date(),
+      youtubeId: z.string().min(6).max(20),
+      channel: z.enum(["hankyung-tv", "yonhap-infomax", "federal-reserve", "bok-official"]),
+      category: z.enum(["macro", "earnings", "product", "policy", "supply-chain", "news", "other"]),
+      impact: z.enum(["low", "mid", "high"]),
+      /** 지인이 고른 이유 (1–2문장) */
+      why: z.string().min(1),
+      durationSec: z.number().int().positive().optional(),
+      lang: z.enum(["ko", "en"]).default("ko"),
+      relatedPost: z.string().min(1).optional(),
+      relatedEvent: z.string().min(1).optional(),
+      draft: z.boolean().default(false),
+      tags: z.array(z.string().min(1)).default([]),
+    })
+    .strict(),
+});
+
 export const collections = {
   posts,
   events,
+  media,
 };
