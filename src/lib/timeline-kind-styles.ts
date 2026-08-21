@@ -4,13 +4,13 @@ export type TimelineKind = "post" | "external_event" | string;
 
 export function kindShortLabel(kind: TimelineKind): string {
   if (kind === "post") return "글";
-  if (kind === "external_event") return "일정";
+  if (kind === "external_event") return "이벤트";
   return "기타";
 }
 
 export function kindLongLabel(kind: TimelineKind): string {
   if (kind === "post") return "분석글";
-  if (kind === "external_event") return "외부 일정";
+  if (kind === "external_event") return "이벤트";
   return "기타";
 }
 
@@ -25,7 +25,7 @@ export function kindSurfaceClass(kind: TimelineKind): string {
   return "bg-surface-container text-on-surface ring-1 ring-inset ring-outline-variant";
 }
 
-/** 작은 배지 (글 / 일정) */
+/** 작은 배지 (글 / 이벤트) */
 export function kindBadgeClass(kind: TimelineKind): string {
   if (kind === "post") {
     return "bg-sky-600 text-white dark:bg-sky-500";
