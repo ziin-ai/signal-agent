@@ -1,6 +1,11 @@
 ---
 import type { TimelineEvent } from "../../lib/timeline";
 import type { MonthGridDay } from "../../lib/calendar-grid";
+import {
+  kindBadgeClass,
+  kindShortLabel,
+  kindSurfaceClass,
+} from "../../lib/timeline-kind-styles";
 
 interface Props {
   viewYear: number;
@@ -52,29 +57,11 @@ function withBase(href: string): string {
   return `${rootPath}${href.slice(1)}`;
 }
 
-function kindLabel(kind: string) {
-  if (kind === "post") return "분석";
-  if (kind === "external_event") return "이벤트";
-  return "기타";
-}
-
-function kindCalendarChip(kind: string): string {
-  if (kind === "post") {
-    return "border-l-[3px] border-sky-600/80 bg-sky-50/90 font-medium text-sky-950 hover:bg-sky-100 dark:border-sky-400 dark:bg-sky-950/40 dark:text-sky-100";
-  }
-  if (kind === "external_event") {
-    return "border-l-[3px] border-teal-700/80 bg-teal-50/90 font-medium text-teal-950 hover:bg-teal-100 dark:border-teal-400 dark:bg-teal-950/35 dark:text-teal-100";
-  }
-  return "border-l-[3px] border-outline bg-surface-container font-medium text-on-surface";
-}
-
 const cellMin = compact ? "min-h-[96px] sm:min-h-[104px]" : "min-h-[108px]";
-/** 홈도 제목을 바로 보여 직관적으로 읽히게 — 점은 보조가 아님 */
 const maxShow = compact ? 2 : 4;
 ---
 
 <div class="overflow-hidden rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest shadow-md3-1">
-  {/* Toolbar — month title leads; controls defer */}
   <div class="flex items-center gap-3 px-4 py-3.5 sm:px-5">
     <h2 class="min-w-0 flex-1 truncate text-[1.35rem] font-semibold tracking-[-0.03em] text-on-surface sm:text-[1.5rem]">
       {monthTitle}
@@ -145,7 +132,7 @@ const maxShow = compact ? 2 : 4;
                   ]}
                   aria-current={isSelected ? "date" : undefined}
                   aria-label={`${cell.isoKey} 일정 목록`}
-                  title="이 날짜 일정 보기"
+                  title="이 날짜가 속한 주 보기"
                 >
                   {cell.day}
                 </a>
@@ -164,33 +151,38 @@ const maxShow = compact ? 2 : 4;
               )}
             </div>
             <div class="mt-1 min-h-0 flex-1 space-y-0.5 overflow-hidden">
-              {shown.map((ev) =>
-                ev.href ? (
+              {shown.map((ev) => {
+                const chipClass = `flex max-w-full items-center gap-0.5 truncate rounded-md px-1 py-0.5 text-left text-[11px] font-medium leading-snug transition-colors ${kindSurfaceClass(ev.kind)}`;
+                const chipInner = (
+                  <>
+                    <span
+                      class:list={[
+                        "inline-flex h-3.5 shrink-0 items-center rounded px-0.5 text-[9px] font-bold leading-none",
+                        kindBadgeClass(ev.kind),
+                      ]}
+                    >
+                      {kindShortLabel(ev.kind)}
+                    </span>
+                    <span class="min-w-0 truncate">{ev.title}</span>
+                  </>
+                );
+                return ev.href ? (
                   <a
                     href={withBase(ev.href)}
                     {...(ev.href.startsWith("http")
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    class:list={[
-                      "block max-w-full truncate rounded-sm px-1 py-0.5 text-left text-[11px] leading-snug transition-colors",
-                      kindCalendarChip(ev.kind),
-                    ]}
-                    title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                    class={chipClass}
+                    title={`${kindShortLabel(ev.kind)} · ${ev.title}`}
                   >
-                    {ev.title}
+                    {chipInner}
                   </a>
                 ) : (
-                  <span
-                    class:list={[
-                      "block max-w-full truncate rounded-sm px-1 py-0.5 text-[11px] leading-snug",
-                      kindCalendarChip(ev.kind),
-                    ]}
-                    title={`${kindLabel(ev.kind)} · ${ev.title}`}
-                  >
-                    {ev.title}
+                  <span class={chipClass} title={`${kindShortLabel(ev.kind)} · ${ev.title}`}>
+                    {chipInner}
                   </span>
-                ),
-              )}
+                );
+              })}
               {more > 0 && dayLink ? (
                 <a
                   href={dayLink}
@@ -209,16 +201,20 @@ const maxShow = compact ? 2 : 4;
   </div>
 
   <div class="flex flex-wrap items-center justify-between gap-3 border-t border-outline-variant/40 px-4 py-2.5 text-[11px] text-on-surface-variant">
-    <div class="flex items-center gap-4">
+    <div class="flex flex-wrap items-center gap-3">
       <span class="inline-flex items-center gap-1.5">
-        <span class="h-1.5 w-1.5 rounded-full bg-sky-500" aria-hidden="true" />
-        분석
+        <span class={`inline-flex h-4 items-center rounded px-1 text-[9px] font-bold ${kindBadgeClass("post")}`}>
+          글
+        </span>
+        <span>분석글</span>
       </span>
       <span class="inline-flex items-center gap-1.5">
-        <span class="h-1.5 w-1.5 rounded-full bg-teal-600" aria-hidden="true" />
-        이벤트
+        <span class={`inline-flex h-4 items-center rounded px-1 text-[9px] font-bold ${kindBadgeClass("external_event")}`}>
+          일정
+        </span>
+        <span>외부 일정</span>
       </span>
-      {compact && <span class="text-on-surface-variant/70">제목 → 이동 · 날짜 → 그 주 목록</span>}
+      {compact && <span class="text-on-surface-variant/70">제목 → 이동 · 날짜 → 그 주</span>}
     </div>
     {!compact && (
       <p class="tabular-nums">

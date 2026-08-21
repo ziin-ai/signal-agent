@@ -1,4 +1,3 @@
----
 /** 분석글 vs 외부 이벤트 — 색·라벨 공통 토큰 (캘린더·주간 리스트 공유) */
 
 export type TimelineKind = "post" | "external_event" | string;
