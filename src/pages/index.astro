@@ -12,6 +12,14 @@ import {
   marketCategoryOptionsInWindow,
   resolveDashboardTimelineFilters,
 } from "../lib/dashboard-event-filters";
+import {
+  filterHomeCalendarEvents,
+  HOME_CAL_CATEGORY_OPTIONS,
+  homeCalCategoryLabel,
+  homeCalChipClass,
+  resolveHomeCalendarFilters,
+  toggleListMember,
+} from "../lib/calendar-filters";
 
 export const prerender = false;
 
@@ -153,14 +161,12 @@ const currentPrice =
       ? sortedChart[sortedChart.length - 1]!.price
       : undefined;
 
-/** 홈 캘린더: 분석글 전부 + High·실적/매크로 외부 이벤트만 */
-const homeCalendarEvents = buildGlobalTimelineEvents(publishedPosts, externalEvents).filter((ev) => {
-  if (ev.kind === "post") return true;
-  if (ev.kind !== "external_event") return false;
-  const impact = ev.meta?.impact;
-  const category = ev.meta?.category;
-  return impact === "high" && (category === "earnings" || category === "macro");
-});
+/** 홈 캘린더: URL 필터(기본 = 분석글 + High · 실적/매크로) */
+const calFilter = resolveHomeCalendarFilters(Astro.url);
+const homeCalendarEvents = filterHomeCalendarEvents(
+  buildGlobalTimelineEvents(publishedPosts, externalEvents),
+  calFilter,
+);
 
 const monthParam = Astro.url.searchParams.get("month")?.trim() ?? "";
 const dayParam = Astro.url.searchParams.get("day")?.trim() ?? "";
@@ -209,16 +215,42 @@ const defaultDayKey = todayInViewMonth ? todayDayKey : firstOfMonthKey;
 
 const selectedDayKey = /^\d{4}-\d{2}-\d{2}$/.test(dayParam) ? dayParam : defaultDayKey;
 
-function homeHref(next: { month?: string; day?: string | null } = {}) {
+function homeHref(
+  next: {
+    month?: string;
+    day?: string | null;
+    includePosts?: boolean;
+    impacts?: string[];
+    categories?: string[];
+    /** 필터를 URL에 기록 (칩 토글·커스텀 유지). false면 기본 큐레이션 URL(필터 생략) */
+    writeFilters?: boolean;
+  } = {},
+) {
   const params = new URLSearchParams();
   if (requestedPost) params.set("post", requestedPost);
   const monthValue = next.month ?? monthQueryValue;
   const dayValue = next.day !== undefined ? next.day : selectedDayKey;
   params.set("month", monthValue);
   if (dayValue) params.set("day", dayValue);
+
+  const includePosts = next.includePosts ?? calFilter.includePosts;
+  const impacts = next.impacts ?? calFilter.impacts;
+  const categories = next.categories ?? calFilter.categories;
+  const writeFilters = next.writeFilters ?? calFilter.isCustom;
+
+  if (writeFilters) {
+    if (includePosts) params.append("kind", "post");
+    else params.append("kind", "external_event");
+    for (const i of impacts) params.append("impact", i);
+    for (const c of categories) params.append("category", c);
+  }
+
   const qs = params.toString();
   return qs ? `${rootPath}?${qs}` : rootPath;
 }
+
+const filterResetHref = homeHref({ writeFilters: false });
+const highOn = calFilter.impacts.includes("high");
 ---
 
 <Base
@@ -235,10 +267,54 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
   }
 >
   <section class="ziin-rise relative z-10" aria-label="월 캘린더">
-    <div class="mb-4 flex items-baseline justify-between gap-3">
-      <p class="text-[13px] text-on-surface-variant">
-        High · 실적/매크로 · 분석글
-      </p>
+    <div class="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+      <div class="flex min-w-0 flex-wrap items-center gap-1.5" role="group" aria-label="캘린더 필터">
+        <a
+          href={homeHref({
+            includePosts: !calFilter.includePosts,
+            writeFilters: true,
+          })}
+          class:list={["rounded-full border px-2.5 py-1 text-[12px] font-medium transition", homeCalChipClass(calFilter.includePosts)]}
+        >
+          글
+        </a>
+        <a
+          href={homeHref({
+            impacts: highOn ? calFilter.impacts.filter((i) => i !== "high") : [...calFilter.impacts, "high"],
+            writeFilters: true,
+          })}
+          class:list={["rounded-full border px-2.5 py-1 text-[12px] font-medium transition", homeCalChipClass(highOn)]}
+        >
+          High
+        </a>
+        <span class="mx-0.5 h-3 w-px bg-outline-variant/60" aria-hidden="true" />
+        {
+          HOME_CAL_CATEGORY_OPTIONS.map((cat) => {
+            const on = calFilter.categories.includes(cat);
+            return (
+              <a
+                href={homeHref({
+                  categories: toggleListMember(calFilter.categories, cat),
+                  writeFilters: true,
+                })}
+                class:list={["rounded-full border px-2.5 py-1 text-[12px] font-medium transition", homeCalChipClass(on)]}
+              >
+                {homeCalCategoryLabel(cat)}
+              </a>
+            );
+          })
+        }
+        {
+          calFilter.isCustom && (
+            <a
+              href={filterResetHref}
+              class="ml-0.5 text-[12px] font-medium text-on-surface-variant transition hover:text-primary"
+            >
+              기본
+            </a>
+          )
+        }
+      </div>
       <a
         href={`${rootPath}timeline`}
         class="shrink-0 text-[13px] font-medium text-primary transition hover:underline"
@@ -273,7 +349,7 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
         todayDayKey={todayDayKey}
         rootPath={rootPath}
         dayHref={(isoKey) => homeHref({ day: isoKey, month: isoKey.slice(0, 7) })}
-        emptyHint="이번 주에 표시할 일정이 없습니다. 전체 일정에서 더 볼 수 있습니다."
+        emptyHint="이번 주에 표시할 일정이 없습니다. 필터를 바꾸거나 전체 일정에서 더 볼 수 있습니다."
       />
       </div>
     </div>
