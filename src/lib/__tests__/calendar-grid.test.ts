@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../calendar-grid";
+import {
+  buildGregorianMonthGrid,
+  localIsoKey,
+  shiftMonth,
+  weekIsoKeysContaining,
+  weekRangeLabel,
+} from "../calendar-grid";
 
 describe("buildGregorianMonthGrid", () => {
   it("always returns 42 cells (6 weeks)", () => {
@@ -34,5 +40,22 @@ describe("shiftMonth", () => {
   it("moves across year boundary", () => {
     expect(shiftMonth(2026, 1, -1)).toEqual({ year: 2025, month: 12 });
     expect(shiftMonth(2025, 12, 1)).toEqual({ year: 2026, month: 1 });
+  });
+});
+
+describe("weekIsoKeysContaining", () => {
+  it("returns Sunday–Saturday week for a Wednesday", () => {
+    // 2026-05-06 is Wednesday
+    const keys = weekIsoKeysContaining("2026-05-06");
+    expect(keys).toHaveLength(7);
+    expect(keys[0]).toBe("2026-05-03");
+    expect(keys[6]).toBe("2026-05-09");
+  });
+});
+
+describe("weekRangeLabel", () => {
+  it("formats same-month range", () => {
+    const keys = weekIsoKeysContaining("2026-05-06");
+    expect(weekRangeLabel(keys)).toMatch(/5월/);
   });
 });
