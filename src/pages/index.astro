@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
 import HeroCompact from "../components/dashboard/HeroCompact.astro";
 import MonthCalendar from "../components/timeline/MonthCalendar.astro";
-import DayEventList from "../components/timeline/DayEventList.astro";
+import WeekEventList from "../components/timeline/WeekEventList.astro";
 import DashboardTimelineInteractive from "../components/dashboard/DashboardTimelineInteractive";
 import { buildTimelineEvents, buildGlobalTimelineEvents } from "../lib/timeline";
 import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../lib/calendar-grid";
@@ -208,7 +208,6 @@ const todayInViewMonth = now.getFullYear() === viewYear && now.getMonth() + 1 ==
 const defaultDayKey = todayInViewMonth ? todayDayKey : firstOfMonthKey;
 
 const selectedDayKey = /^\d{4}-\d{2}-\d{2}$/.test(dayParam) ? dayParam : defaultDayKey;
-const selectedDayEvents = eventsByDay.get(selectedDayKey) ?? [];
 
 function homeHref(next: { month?: string; day?: string | null } = {}) {
   const params = new URLSearchParams();
@@ -267,11 +266,13 @@ function homeHref(next: { month?: string; day?: string | null } = {}) {
           rootPath={rootPath}
         />
       </div>
-      <DayEventList
-        dayKey={selectedDayKey}
-        events={selectedDayEvents}
+      <WeekEventList
+        anchorDayKey={selectedDayKey}
+        eventsByDay={eventsByDay}
+        todayDayKey={todayDayKey}
         rootPath={rootPath}
-        emptyHint="이 날짜에 표시할 일정이 없습니다. 전체 일정에서 더 볼 수 있습니다."
+        dayHref={(isoKey) => homeHref({ day: isoKey, month: isoKey.slice(0, 7) })}
+        emptyHint="이번 주에 표시할 일정이 없습니다. 전체 일정에서 더 볼 수 있습니다."
       />
     </div>
   </section>

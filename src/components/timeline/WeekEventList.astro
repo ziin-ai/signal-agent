@@ -1,0 +1,148 @@
+---
+import type { TimelineEvent } from "../../lib/timeline";
+import { parseLocalIsoKey, weekIsoKeysContaining, weekRangeLabel } from "../../lib/calendar-grid";
+
+interface Props {
+  /** 이 날짜가 속한 주(일~토)를 표시 */
+  anchorDayKey: string;
+  eventsByDay: Map<string, TimelineEvent[]>;
+  todayDayKey: string;
+  rootPath: string;
+  /** 날짜 헤더 클릭 시 (선택일 동기화) */
+  dayHref?: (isoKey: string) => string;
+  emptyHint?: string;
+}
+
+const {
+  anchorDayKey,
+  eventsByDay,
+  todayDayKey,
+  rootPath,
+  dayHref,
+  emptyHint = "이번 주에 표시할 일정이 없습니다.",
+} = Astro.props;
+
+const weekKeys = weekIsoKeysContaining(anchorDayKey);
+const rangeLabel = weekRangeLabel(weekKeys);
+const weekdayShort = ["일", "월", "화", "수", "목", "금", "토"];
+
+const weekDays = weekKeys.map((isoKey, i) => {
+  const date = parseLocalIsoKey(isoKey)!;
+  return {
+    isoKey,
+    weekday: weekdayShort[i]!,
+    dayNum: date.getDate(),
+    isToday: isoKey === todayDayKey,
+    isSelected: isoKey === anchorDayKey,
+    events: eventsByDay.get(isoKey) ?? [],
+  };
+});
+
+const weekEventCount = weekDays.reduce((n, d) => n + d.events.length, 0);
+
+function withBase(href: string): string {
+  if (!href.startsWith("/")) return href;
+  return `${rootPath}${href.slice(1)}`;
+}
+
+function kindLabel(kind: string) {
+  if (kind === "post") return "분석";
+  if (kind === "external_event") return "이벤트";
+  return "기타";
+}
+---
+
+<aside
+  class="flex h-full flex-col rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest p-5 shadow-md3-1 lg:sticky lg:top-20"
+  aria-label={`주간 일정 ${rangeLabel}`}
+>
+  <p class="text-[12px] font-medium text-on-surface-variant">이번 주</p>
+  <p class="mt-0.5 text-[15px] font-semibold tracking-[-0.02em] text-on-surface">{rangeLabel}</p>
+  <p class="mt-0.5 text-[11px] tabular-nums text-on-surface-variant/80">
+    {weekEventCount === 0 ? "일정 없음" : `${weekEventCount}건`}
+  </p>
+
+  {
+    weekEventCount === 0 ? (
+      <p class="mt-6 text-[13px] leading-relaxed text-on-surface-variant">{emptyHint}</p>
+    ) : (
+      <div class="mt-4 max-h-[min(70vh,640px)] space-y-4 overflow-y-auto pr-0.5">
+        {weekDays.map((day) => (
+          <section
+            class:list={[
+              "rounded-[14px] px-3 py-2.5",
+              day.isSelected && "bg-primary/[0.06]",
+              day.isToday && !day.isSelected && "bg-surface-container-low",
+            ]}
+            aria-label={`${day.weekday} ${day.dayNum}일`}
+          >
+            <div class="flex items-baseline justify-between gap-2">
+              {dayHref ? (
+                <a
+                  href={dayHref(day.isoKey)}
+                  class:list={[
+                    "text-[13px] font-semibold tracking-tight",
+                    day.isToday ? "text-primary" : "text-on-surface hover:text-primary",
+                  ]}
+                >
+                  {day.weekday}
+                  <span class="ml-1.5 tabular-nums font-medium text-on-surface-variant">
+                    {day.dayNum}
+                  </span>
+                  {day.isToday && (
+                    <span class="ml-1.5 text-[10px] font-medium text-primary">오늘</span>
+                  )}
+                </a>
+              ) : (
+                <p
+                  class:list={[
+                    "text-[13px] font-semibold tracking-tight",
+                    day.isToday ? "text-primary" : "text-on-surface",
+                  ]}
+                >
+                  {day.weekday}
+                  <span class="ml-1.5 tabular-nums font-medium text-on-surface-variant">
+                    {day.dayNum}
+                  </span>
+                </p>
+              )}
+              <span class="text-[10px] tabular-nums text-on-surface-variant/70">
+                {day.events.length ? `${day.events.length}` : ""}
+              </span>
+            </div>
+
+            {day.events.length === 0 ? (
+              <p class="mt-1.5 text-[11px] text-on-surface-variant/55">—</p>
+            ) : (
+              <ul class="mt-2 space-y-2">
+                {day.events.map((ev) => (
+                  <li>
+                    <p class="text-[10px] text-on-surface-variant">
+                      {kindLabel(ev.kind)}
+                      {ev.meta?.impact === "high" && <span class="text-warning"> · High</span>}
+                    </p>
+                    <p class="mt-0.5 text-[13px] font-semibold leading-snug tracking-[-0.01em] text-on-surface">
+                      {ev.href ? (
+                        <a
+                          href={withBase(ev.href)}
+                          class="transition-colors hover:text-primary"
+                          {...(ev.href.startsWith("http")
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                        >
+                          {ev.title}
+                        </a>
+                      ) : (
+                        ev.title
+                      )}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+      </div>
+    )
+  }
+</aside>

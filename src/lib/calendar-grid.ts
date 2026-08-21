@@ -80,3 +80,45 @@ export function shiftMonth(year: number, month: number, delta: number): { year: 
   const d = new Date(year, month - 1 + delta, 1);
   return { year: d.getFullYear(), month: d.getMonth() + 1 };
 }
+
+/** YYYY-MM-DD → Date (로컬 자정) */
+export function parseLocalIsoKey(isoKey: string): Date | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(isoKey)) return null;
+  const [y, m, d] = isoKey.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+
+/**
+ * 선택일이 속한 주(일~토)의 isoKey 7개.
+ * 캘린더 그리드와 동일하게 일요일 시작.
+ */
+export function weekIsoKeysContaining(isoKey: string): string[] {
+  const date = parseLocalIsoKey(isoKey);
+  if (!date) return [];
+  const start = new Date(date);
+  start.setDate(date.getDate() - date.getDay());
+  const keys: string[] = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    keys.push(localIsoKey(d.getFullYear(), d.getMonth(), d.getDate()));
+  }
+  return keys;
+}
+
+export function weekRangeLabel(weekKeys: string[]): string {
+  if (weekKeys.length < 7) return "";
+  const start = parseLocalIsoKey(weekKeys[0]!);
+  const end = parseLocalIsoKey(weekKeys[6]!);
+  if (!start || !end) return "";
+  const sameMonth = start.getMonth() === end.getMonth();
+  const startLabel = start.toLocaleDateString("ko-KR", {
+    month: "long",
+    day: "numeric",
+  });
+  const endLabel = end.toLocaleDateString(
+    "ko-KR",
+    sameMonth ? { day: "numeric" } : { month: "long", day: "numeric" },
+  );
+  return `${startLabel} – ${endLabel}`;
+}
