@@ -19,6 +19,20 @@ const WHITELIST_AUTHOR_HINTS = [
   "yonhap",
   "infomax",
   "bank of korea",
+  "bloomberg",
+  "cnbc",
+  "reuters",
+  "wall street journal",
+  "wsj",
+  "financial times",
+  "yahoo finance",
+  "삼프로",
+  "3pro",
+  "슈카",
+  "달란트",
+  "소수몽키",
+  "슈퍼개미",
+  "김정환",
 ];
 
 async function oembed(id) {

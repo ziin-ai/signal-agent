@@ -31,7 +31,7 @@ tags: ["금리", "매크로"]
 
 ## Field notes
 
-- `channel`: `hankyung-tv` | `yonhap-infomax` | `federal-reserve` | `bok-official`
+- `channel`: `federal-reserve` | `bok-official` | `bloomberg-tv` | `cnbc-intl` | `reuters-news` | `wsj-video` | `ft-video` | `yahoo-finance` | `hankyung-tv` | `yonhap-infomax` | `sampro-tv` | `syuka-world` | `talent-invest` | `sosumonkey` | `supergaemi`
 - `category`: 매크로·정책 공식 → `macro`/`policy`, 시황 헤드라인 → `news`
 - `impact: high` → Must-Watch 후보 (당일 High 최대 2슬롯)
 - `timestamps` 모르면 빈 배열 `timestamps: []` 또는 생략(default [])

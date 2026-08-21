@@ -3,11 +3,12 @@ name: media-daily-curation
 description: >-
   Find and add today's (KST) curated economy/market YouTube videos into
   signal-agent src/content/media/ for the /media monitor. Whitelist channels
-  only (hankyung-tv, yonhap-infomax, federal-reserve, bok-official). Verify
-  video IDs via oEmbed, write schema-valid markdown, then git commit/push per
-  _shared/git-publish.md unless the user opts out. Use when the user asks for
-  오늘 미디어, 미디어 데이터 추가, media curation, YouTube 큐레이션 갱신,
-  must-watch briefs 추가, or /media 당일 픽.
+  only (see SKILL whitelist: Fed, BoK, Bloomberg, CNBC, Reuters, WSJ, FT,
+  Yahoo Finance, Hankyung, Infomax, Sampro, Syuka, Talent, Sosumonkey,
+  Supergaemi). Verify video IDs via oEmbed, write schema-valid markdown, then
+  git commit/push per _shared/git-publish.md unless the user opts out. Use when
+  the user asks for 오늘 미디어, 미디어 데이터 추가, media curation, YouTube
+  큐레이션 갱신, must-watch briefs 추가, skill로 미디어 추가, or /media 당일 픽.
 disable-model-invocation: true
 ---
 
@@ -37,10 +38,21 @@ disable-model-invocation: true
 
 | `channel` | 이름 | URL |
 | --- | --- | --- |
-| `hankyung-tv` | 한국경제TV | https://www.youtube.com/@hkwowtv |
-| `yonhap-infomax` | 연합인포맥스 | https://www.youtube.com/@yonhapinfomax |
 | `federal-reserve` | Federal Reserve | https://www.youtube.com/@federalreserve |
 | `bok-official` | 한국은행 | https://www.youtube.com/@theBankofKoreakr |
+| `bloomberg-tv` | Bloomberg Television | https://www.youtube.com/@markets |
+| `cnbc-intl` | CNBC Television | https://www.youtube.com/@CNBCtelevision |
+| `reuters-news` | Reuters | https://www.youtube.com/@Reuters |
+| `wsj-video` | The Wall Street Journal | https://www.youtube.com/@wsj |
+| `ft-video` | Financial Times | https://www.youtube.com/@FinancialTimes |
+| `yahoo-finance` | Yahoo Finance | https://www.youtube.com/@YahooFinance |
+| `hankyung-tv` | 한국경제TV | https://www.youtube.com/@hkwowtv |
+| `yonhap-infomax` | 연합인포맥스 | https://www.youtube.com/@yonhapinfomax |
+| `sampro-tv` | 삼프로TV | https://www.youtube.com/@3protv |
+| `syuka-world` | 슈카월드 | https://www.youtube.com/@syukaworld |
+| `talent-invest` | 달란트투자 | https://www.youtube.com/@talentinvestment |
+| `sosumonkey` | 소수몽키 | https://www.youtube.com/@sosumonkey |
+| `supergaemi` | 슈퍼개미 김정환 | https://www.youtube.com/@supergaemi |
 
 채널 핸들이 비어 있으면(공개 영상 없음) 스킵하고 Final Response에 적는다. **다른 채널 ID로 우회 금지.**
 
@@ -92,7 +104,7 @@ node .cursor/skills/media-daily-curation/scripts/verify-youtube.mjs {ID} [{ID}..
 | `title` | 영상 제목(또는 명확한 축약) |
 | `publishedAt` | ISO datetime, 가능하면 `+09:00` |
 | `youtubeId` | 6–20자 |
-| `channel` | enum 4종만 |
+| `channel` | enum — `MEDIA_CHANNELS` id 전체 (스킬 Step 1 표와 동일) |
 | `category` | `macro` \| `earnings` \| `product` \| `policy` \| `supply-chain` \| `news` \| `other` |
 | `impact` | `high` \| `mid` \| `low` — Must-Watch는 `high` 우선 |
 | `why` | 1–2문장, 왜 모니터에 올렸는지 |

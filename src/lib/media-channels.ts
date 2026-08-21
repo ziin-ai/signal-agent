@@ -10,6 +10,54 @@ export type MediaChannel = {
 
 export const MEDIA_CHANNELS: readonly MediaChannel[] = [
   {
+    id: "federal-reserve",
+    name: "Federal Reserve",
+    url: "https://www.youtube.com/@federalreserve",
+    blurb: "FOMC·연준 공식 기자회견·연설",
+  },
+  {
+    id: "bok-official",
+    name: "한국은행",
+    url: "https://www.youtube.com/@theBankofKoreakr",
+    blurb: "금통위·금융안정·공식 브리핑",
+  },
+  {
+    id: "bloomberg-tv",
+    name: "Bloomberg Television",
+    url: "https://www.youtube.com/@markets",
+    blurb: "글로벌 시황·매크로·마켓 인터뷰",
+  },
+  {
+    id: "cnbc-intl",
+    name: "CNBC Television",
+    url: "https://www.youtube.com/@CNBCtelevision",
+    blurb: "미국·글로벌 증시 속보·인터뷰",
+  },
+  {
+    id: "reuters-news",
+    name: "Reuters",
+    url: "https://www.youtube.com/@Reuters",
+    blurb: "국제 경제·지정학 뉴스 클립",
+  },
+  {
+    id: "wsj-video",
+    name: "The Wall Street Journal",
+    url: "https://www.youtube.com/@wsj",
+    blurb: "월가·정책·기업 해설 영상",
+  },
+  {
+    id: "ft-video",
+    name: "Financial Times",
+    url: "https://www.youtube.com/@FinancialTimes",
+    blurb: "글로벌 매크로·시장 분석",
+  },
+  {
+    id: "yahoo-finance",
+    name: "Yahoo Finance",
+    url: "https://www.youtube.com/@YahooFinance",
+    blurb: "미국 장중·마감 시황 브리핑",
+  },
+  {
     id: "hankyung-tv",
     name: "한국경제TV",
     url: "https://www.youtube.com/@hkwowtv",
@@ -22,16 +70,34 @@ export const MEDIA_CHANNELS: readonly MediaChannel[] = [
     blurb: "금리·환율·채권·거시 지표 속보",
   },
   {
-    id: "federal-reserve",
-    name: "Federal Reserve",
-    url: "https://www.youtube.com/@federalreserve",
-    blurb: "FOMC·연준 공식 기자회견·연설",
+    id: "sampro-tv",
+    name: "삼프로TV",
+    url: "https://www.youtube.com/@3protv",
+    blurb: "국내 매크로·자산배분 토크",
   },
   {
-    id: "bok-official",
-    name: "한국은행",
-    url: "https://www.youtube.com/@theBankofKoreakr",
-    blurb: "금통위·금융안정·공식 브리핑",
+    id: "syuka-world",
+    name: "슈카월드",
+    url: "https://www.youtube.com/@syukaworld",
+    blurb: "거시·산업 스토리 해설",
+  },
+  {
+    id: "talent-invest",
+    name: "달란트투자",
+    url: "https://www.youtube.com/@talentinvestment",
+    blurb: "국내 투자·시장 브리핑",
+  },
+  {
+    id: "sosumonkey",
+    name: "소수몽키",
+    url: "https://www.youtube.com/@sosumonkey",
+    blurb: "매크로·섹터 인사이트",
+  },
+  {
+    id: "supergaemi",
+    name: "슈퍼개미 김정환",
+    url: "https://www.youtube.com/@supergaemi",
+    blurb: "국내 시장·종목 관점 브리핑",
   },
 ] as const;
 
