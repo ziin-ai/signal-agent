@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostTrustMeta from "../post/PostTrustMeta.astro";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+  newerHref?: string;
+  olderHref?: string;
+  newerDisabled?: boolean;
+  olderDisabled?: boolean;
+}
+
+const { post, newerHref = "#", olderHref = "#", newerDisabled = true, olderDisabled = true } =
+  Astro.props;
+const slug = post.id.replace(/\.md$/, "");
+const baseUrl = import.meta.env.BASE_URL;
+const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+const publishedDate = post.data.date.toLocaleDateString("ko-KR", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+---
+
+<article class="md-card p-5" aria-label="오늘의 글">
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="md-chip !min-h-7 bg-primary-container px-2.5 text-[11px] font-semibold text-on-primary-container">
+      오늘의 글
+    </span>
+    <span class="font-mono text-xs tabular-nums text-on-surface-variant">{post.data.symbol}</span>
+    <span class="text-xs text-on-surface-variant">{publishedDate}</span>
+  </div>
+
+  <h2 class="mt-3 font-sans text-xl font-bold leading-snug tracking-[-0.03em] text-on-surface md:text-2xl">
+    <a href={`${rootPath}posts/${slug}`} class="transition-colors hover:text-primary">
+      {post.data.title}
+    </a>
+  </h2>
+
+  <PostTrustMeta aiAssisted={post.data.aiAssisted} compact />
+
+  <p class="mt-3 text-sm leading-relaxed text-on-surface-variant md:text-[15px]">
+    {post.data.summary}
+  </p>
+
+  <div class="mt-4 flex flex-wrap items-center gap-2">
+    <a href={`${rootPath}posts/${slug}`} class="md-btn md-btn-filled !min-h-9 px-4 text-sm">
+      본문 읽기
+    </a>
+    <a href={`${rootPath}dashboard/${slug}`} class="md-btn md-btn-tonal !min-h-9 px-4 text-sm">
+      대시보드
+    </a>
+    <div class="ml-auto flex items-center gap-2">
+      <a
+        href={newerHref}
+        class={`md-btn-tonal !min-h-8 px-3 text-xs ${newerDisabled ? "pointer-events-none opacity-40" : ""}`}
+      >
+        더 최신 글
+      </a>
+      <a
+        href={olderHref}
+        class={`md-btn-tonal !min-h-8 px-3 text-xs ${olderDisabled ? "pointer-events-none opacity-40" : ""}`}
+      >
+        이전 글
+      </a>
+    </div>
+  </div>
+</article>

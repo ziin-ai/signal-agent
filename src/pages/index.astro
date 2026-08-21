@@ -1,20 +1,19 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
-import HeroCard from "../components/dashboard/HeroCard.astro";
-import TrustCard from "../components/dashboard/TrustCard.astro";
+import HeroCompact from "../components/dashboard/HeroCompact.astro";
+import MonthCalendar from "../components/timeline/MonthCalendar.astro";
+import DayEventList from "../components/timeline/DayEventList.astro";
 import DashboardTimelineInteractive from "../components/dashboard/DashboardTimelineInteractive";
-import {
-  buildTimelineEvents,
-  buildGlobalTimelineEvents,
-} from "../lib/timeline";
+import { buildTimelineEvents, buildGlobalTimelineEvents } from "../lib/timeline";
+import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../lib/calendar-grid";
 import { getThemeIndexChartLines, getYahooChartSeries, isThemeSymbol } from "../lib/market";
 import {
   marketCategoryOptionsInWindow,
   resolveDashboardTimelineFilters,
 } from "../lib/dashboard-event-filters";
 
-export const prerender = true;
+export const prerender = false;
 
 const allPosts = await getCollection("posts");
 const posts =
@@ -27,7 +26,7 @@ const publishedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.
 const latestPost = publishedPosts[0];
 const requestedPost = Astro.url.searchParams.get("post");
 const activePost = requestedPost
-  ? publishedPosts.find((post) => post.id.replace(/\.md$/, "") === requestedPost) ?? latestPost
+  ? (publishedPosts.find((post) => post.id.replace(/\.md$/, "") === requestedPost) ?? latestPost)
   : latestPost;
 const activeMeta = activePost
   ? {
@@ -92,7 +91,6 @@ const { selectedEventMarket, selectedEventCategories } = resolveDashboardTimelin
   externalEvents,
   marketCategoryOptions,
 );
-const activePostSlug = activePost?.id.replace(/\.md$/, "");
 const filterPathAndQuery = `${Astro.url.pathname}${Astro.url.search}${Astro.url.hash}`;
 const newerPostHref = newerPostSlug ? `${rootPath}dashboard/${newerPostSlug}` : "#";
 const olderPostHref = olderPostSlug ? `${rootPath}dashboard/${olderPostSlug}` : "#";
@@ -154,11 +152,79 @@ const currentPrice =
     : sortedChart.length > 0
       ? sortedChart[sortedChart.length - 1]!.price
       : undefined;
+
+/** 홈 캘린더: 분석글 전부 + High·실적/매크로 외부 이벤트만 */
+const homeCalendarEvents = buildGlobalTimelineEvents(publishedPosts, externalEvents).filter((ev) => {
+  if (ev.kind === "post") return true;
+  if (ev.kind !== "external_event") return false;
+  const impact = ev.meta?.impact;
+  const category = ev.meta?.category;
+  return impact === "high" && (category === "earnings" || category === "macro");
+});
+
+const monthParam = Astro.url.searchParams.get("month")?.trim() ?? "";
+const dayParam = Astro.url.searchParams.get("day")?.trim() ?? "";
+let viewYear = now.getFullYear();
+let viewMonth = now.getMonth() + 1;
+if (/^\d{4}-\d{2}$/.test(monthParam)) {
+  const [y, m] = monthParam.split("-").map(Number);
+  if (y >= 1970 && y <= 2100 && m >= 1 && m <= 12) {
+    viewYear = y;
+    viewMonth = m;
+  }
+}
+
+function eventDayKey(at: string): string {
+  const d = new Date(at);
+  return localIsoKey(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+const eventsByDay = new Map<string, typeof homeCalendarEvents>();
+for (const ev of homeCalendarEvents) {
+  const k = eventDayKey(ev.at);
+  const list = eventsByDay.get(k) ?? [];
+  list.push(ev);
+  eventsByDay.set(k, list);
+}
+for (const [, list] of eventsByDay) {
+  list.sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
+}
+
+const eventsInCalendarMonth = homeCalendarEvents.filter((ev) => {
+  const d = new Date(ev.at);
+  return d.getFullYear() === viewYear && d.getMonth() + 1 === viewMonth;
+});
+
+const monthGrid = buildGregorianMonthGrid(viewYear, viewMonth);
+const prevNav = shiftMonth(viewYear, viewMonth, -1);
+const nextNav = shiftMonth(viewYear, viewMonth, 1);
+const prevMonthStr = `${prevNav.year}-${String(prevNav.month).padStart(2, "0")}`;
+const nextMonthStr = `${nextNav.year}-${String(nextNav.month).padStart(2, "0")}`;
+const todayMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+const todayDayKey = localIsoKey(now.getFullYear(), now.getMonth(), now.getDate());
+const monthQueryValue = `${viewYear}-${String(viewMonth).padStart(2, "0")}`;
+const firstOfMonthKey = localIsoKey(viewYear, viewMonth - 1, 1);
+const todayInViewMonth = now.getFullYear() === viewYear && now.getMonth() + 1 === viewMonth;
+const defaultDayKey = todayInViewMonth ? todayDayKey : firstOfMonthKey;
+
+const selectedDayKey = /^\d{4}-\d{2}-\d{2}$/.test(dayParam) ? dayParam : defaultDayKey;
+const selectedDayEvents = eventsByDay.get(selectedDayKey) ?? [];
+
+function homeHref(next: { month?: string; day?: string | null } = {}) {
+  const params = new URLSearchParams();
+  if (requestedPost) params.set("post", requestedPost);
+  const monthValue = next.month ?? monthQueryValue;
+  const dayValue = next.day !== undefined ? next.day : selectedDayKey;
+  params.set("month", monthValue);
+  if (dayValue) params.set("day", dayValue);
+  const qs = params.toString();
+  return qs ? `${rootPath}?${qs}` : rootPath;
+}
 ---
 
 <Base
   title="내 곁에 지인 | 개인 증시 블로그"
-  description="출처를 붙인 한국·글로벌 증시·매크로 메모와 일정 타임라인을 올리는 개인 블로그. 투자 자문이 아닙니다."
+  description="월 캘린더로 오늘 읽을 분석·핵심 일정을 먼저 보고, 최근 흐름 타임라인으로 이어지는 개인 증시 블로그. 투자 자문이 아닙니다."
   agentContext={
     activePost
       ? {
@@ -169,74 +235,106 @@ const currentPrice =
       : undefined
   }
 >
-  {activePost && (
-    <section
-      transition:name="dashboard-hero"
-      class="ziin-rise ziin-rise-delay-1 relative z-10 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-3"
-    >
-      <HeroCard post={activePost} />
-      <TrustCard post={activePost} />
-    </section>
-  )}
-
-  {activeMeta && (
-    <section transition:name="dashboard-meta" class="relative z-10 mt-2 flex flex-wrap items-center justify-between gap-2">
-      <p class="text-xs text-on-surface-variant">
-        기준 글: <span class="text-primary">{activeMeta.title}</span>
-      </p>
-      <div class="flex items-center gap-2 text-xs">
-        <a
-          href={newerPostHref}
-          class={`md-btn-tonal !min-h-8 px-3 text-xs ${
-            newerPostSlug ? "" : "pointer-events-none opacity-40"
-          }`}
-        >
-          더 최신 글
-        </a>
-        <a
-          href={olderPostHref}
-          class={`md-btn-tonal !min-h-8 px-3 text-xs ${
-            olderPostSlug ? "" : "pointer-events-none opacity-40"
-          }`}
-        >
-          이전 글
-        </a>
+  <section class="ziin-rise ziin-rise-delay-1 relative z-10" aria-label="월 캘린더">
+    <div class="mb-3 flex flex-wrap items-end justify-between gap-2">
+      <div>
+        <h1 class="font-sans text-2xl font-semibold tracking-tight text-on-surface md:text-3xl">이번 달 일정</h1>
+        <p class="mt-1 text-sm text-on-surface-variant">
+          분석글 전부와 High 영향의 실적·매크로 이벤트만 표시합니다.
+        </p>
       </div>
-    </section>
-  )}
+      <a href={`${rootPath}timeline`} class="text-sm font-medium text-primary hover:underline">
+        전체 타임라인 →
+      </a>
+    </div>
 
-  {!latestPost && (
-    <section class="rounded-xl border border-slate-300/70 bg-white p-6 dark:border-slate-700/70 dark:bg-slate-900">
-      <p class="text-sm text-slate-600 dark:text-slate-300">표시할 published post가 아직 없습니다.</p>
-      <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-        로컬 개발 중이라면 <code class="rounded bg-slate-100 px-1 dark:bg-slate-800">npm run dev</code>를 재시작하거나
-        <a href={`${rootPath}posts/`} class="text-info hover:underline">분석글 목록</a>에서 직접 열어보세요.
-      </p>
-    </section>
-  )}
-
-  {publishedPosts.length > 0 && (
-    <section class="ziin-rise ziin-rise-delay-2 relative z-20 mt-4 scroll-mt-8" id="recent-flow" aria-label="최근 흐름 타임라인">
-      <DashboardTimelineInteractive
-        client:load
-        key={`${activePost?.id ?? "global"}|${selectedEventMarket}|${selectedEventCategories.join(",")}`}
-        allEvents={dashboardEvents}
-        windowStart={dashboardWindowStart.toISOString()}
-        windowEnd={dashboardWindowEnd.toISOString()}
-        todayPct={dashboardTodayPct}
-        pricePoints={activeChartPoints}
-        themeChartLines={themeChartLines ?? []}
-        timelineChartVariant={timelineChartVariant}
-        symbol={activePost?.data.symbol}
-        market={activePost?.data.market}
-        currentPrice={currentPrice}
-        priceDataStatusMessage={priceDataStatusMessage}
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <div class="lg:col-span-2">
+        <MonthCalendar
+          compact
+          viewYear={viewYear}
+          viewMonth={viewMonth}
+          monthGrid={monthGrid}
+          eventsByDay={eventsByDay}
+          todayDayKey={todayDayKey}
+          selectedDayKey={selectedDayKey}
+          todayHref={homeHref({ month: todayMonthStr, day: todayDayKey })}
+          prevMonthHref={homeHref({ month: prevMonthStr, day: null })}
+          nextMonthHref={homeHref({ month: nextMonthStr, day: null })}
+          dayHref={(isoKey) => homeHref({ day: isoKey, month: isoKey.slice(0, 7) })}
+          eventsInMonthCount={eventsInCalendarMonth.length}
+          filteredTotalCount={homeCalendarEvents.length}
+          rootPath={rootPath}
+        >
+          <span slot="footer" class="text-on-surface-variant">홈은 High · 실적/매크로만</span>
+        </MonthCalendar>
+      </div>
+      <DayEventList
+        dayKey={selectedDayKey}
+        events={selectedDayEvents}
         rootPath={rootPath}
-        filterPathAndQuery={filterPathAndQuery}
-        initialMarket={selectedEventMarket}
-        initialCategories={selectedEventCategories}
-        marketCategoryOptions={marketCategoryOptions}
+        emptyHint="이 날짜에 표시할 홈 일정이 없습니다. 전체 타임라인에서 더 볼 수 있습니다."
       />
-    </section>
-  )}
+    </div>
+  </section>
+
+  {
+    activePost && (
+      <section transition:name="dashboard-hero" class="ziin-rise ziin-rise-delay-1 relative z-10 mt-6">
+        <HeroCompact
+          post={activePost}
+          newerHref={newerPostHref}
+          olderHref={olderPostHref}
+          newerDisabled={!newerPostSlug}
+          olderDisabled={!olderPostSlug}
+        />
+      </section>
+    )
+  }
+
+  {
+    !latestPost && (
+      <section class="mt-6 rounded-xl border border-outline-variant bg-surface-container-lowest p-6">
+        <p class="text-sm text-on-surface-variant">표시할 published post가 아직 없습니다.</p>
+        <p class="mt-2 text-xs text-on-surface-variant">
+          로컬 개발 중이라면 <code class="rounded bg-surface-container px-1">npm run dev</code>를 재시작하거나
+          <a href={`${rootPath}posts/`} class="text-primary hover:underline">
+            분석글 목록
+          </a>
+          에서 직접 열어보세요.
+        </p>
+      </section>
+    )
+  }
+
+  {
+    publishedPosts.length > 0 && (
+      <section
+        class="ziin-rise ziin-rise-delay-2 relative z-20 mt-6 scroll-mt-8"
+        id="recent-flow"
+        aria-label="최근 흐름 타임라인"
+      >
+        <DashboardTimelineInteractive
+          client:load
+          key={`${activePost?.id ?? "global"}|${selectedEventMarket}|${selectedEventCategories.join(",")}`}
+          allEvents={dashboardEvents}
+          windowStart={dashboardWindowStart.toISOString()}
+          windowEnd={dashboardWindowEnd.toISOString()}
+          todayPct={dashboardTodayPct}
+          pricePoints={activeChartPoints}
+          themeChartLines={themeChartLines ?? []}
+          timelineChartVariant={timelineChartVariant}
+          symbol={activePost?.data.symbol}
+          market={activePost?.data.market}
+          currentPrice={currentPrice}
+          priceDataStatusMessage={priceDataStatusMessage}
+          rootPath={rootPath}
+          filterPathAndQuery={filterPathAndQuery}
+          initialMarket={selectedEventMarket}
+          initialCategories={selectedEventCategories}
+          marketCategoryOptions={marketCategoryOptions}
+        />
+      </section>
+    )
+  }
 </Base>

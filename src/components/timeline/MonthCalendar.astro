@@ -1,0 +1,215 @@
+---
+import type { TimelineEvent } from "../../lib/timeline";
+import type { MonthGridDay } from "../../lib/calendar-grid";
+
+interface Props {
+  viewYear: number;
+  viewMonth: number;
+  monthGrid: MonthGridDay[];
+  eventsByDay: Map<string, TimelineEvent[]>;
+  todayDayKey: string;
+  selectedDayKey?: string;
+  todayHref: string;
+  prevMonthHref: string;
+  nextMonthHref: string;
+  /** 날짜 칸(숫자) 클릭 시. 없으면 선택 UI 없음 */
+  dayHref?: (isoKey: string) => string;
+  eventsInMonthCount: number;
+  filteredTotalCount: number;
+  rootPath: string;
+  /** 홈용 약간 낮은 셀 */
+  compact?: boolean;
+  footerExtra?: string;
+}
+
+const {
+  viewYear,
+  viewMonth,
+  monthGrid,
+  eventsByDay,
+  todayDayKey,
+  selectedDayKey,
+  todayHref,
+  prevMonthHref,
+  nextMonthHref,
+  dayHref,
+  eventsInMonthCount,
+  filteredTotalCount,
+  rootPath,
+  compact = false,
+} = Astro.props;
+
+const weekdayLabels = ["일", "월", "화", "수", "목", "금", "토"];
+const monthTitle = new Date(viewYear, viewMonth - 1, 1).toLocaleDateString("ko-KR", {
+  year: "numeric",
+  month: "long",
+});
+
+function withBase(href: string): string {
+  if (!href.startsWith("/")) return href;
+  return `${rootPath}${href.slice(1)}`;
+}
+
+function kindLabel(kind: string) {
+  if (kind === "post") return "분석";
+  if (kind === "external_event") return "이벤트";
+  return "기타";
+}
+
+function kindCalendarChip(kind: string): string {
+  if (kind === "post") {
+    return "border-l-[3px] border-sky-600 bg-sky-50 font-medium text-sky-900 hover:bg-sky-100 dark:border-sky-400 dark:bg-sky-950/50 dark:text-sky-100 dark:hover:bg-sky-900/60";
+  }
+  if (kind === "external_event") {
+    return "border-l-[3px] border-teal-700 bg-teal-50 font-medium text-teal-900 hover:bg-teal-100 dark:border-teal-400 dark:bg-teal-950/40 dark:text-teal-100 dark:hover:bg-teal-900/50";
+  }
+  return "border-l-[3px] border-outline bg-surface-container font-medium text-on-surface hover:bg-surface-container-high";
+}
+
+const cellMin = compact ? "min-h-[88px]" : "min-h-[108px]";
+const maxShow = compact ? 3 : 4;
+---
+
+<div class="md-card overflow-hidden !p-0">
+  <div
+    class="flex flex-col gap-3 border-b border-outline-variant bg-surface-container-lowest px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-4"
+  >
+    <div class="flex flex-wrap items-center gap-2">
+      <a
+        href={todayHref}
+        class="rounded-md3-sm border border-outline-variant px-3 py-1.5 text-sm font-medium text-on-surface transition hover:bg-surface-container"
+      >
+        오늘
+      </a>
+      <div class="flex items-center">
+        <a
+          href={prevMonthHref}
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xl leading-none text-on-surface-variant transition hover:bg-surface-container"
+          aria-label="이전 달"
+        >
+          ‹
+        </a>
+        <a
+          href={nextMonthHref}
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xl leading-none text-on-surface-variant transition hover:bg-surface-container"
+          aria-label="다음 달"
+        >
+          ›
+        </a>
+      </div>
+    </div>
+    <h2 class="text-center text-lg font-semibold tracking-[-0.02em] text-on-surface sm:flex-1 sm:text-xl">
+      {monthTitle}
+    </h2>
+    <p class="text-center text-xs text-on-surface-variant sm:text-right">
+      이번 달 {eventsInMonthCount}건 · 표시 {filteredTotalCount}건
+    </p>
+  </div>
+
+  <div
+    class="grid grid-cols-7 border-b border-outline-variant bg-surface-container-low text-center text-[11px] font-medium tracking-wide text-on-surface-variant"
+  >
+    {
+      weekdayLabels.map((w) => (
+        <div class="border-r border-outline-variant/70 py-2 last:border-r-0">{w}</div>
+      ))
+    }
+  </div>
+
+  <div class="grid grid-cols-7 gap-px bg-outline-variant">
+    {
+      monthGrid.map((cell) => {
+        const dayEvents = eventsByDay.get(cell.isoKey) ?? [];
+        const shown = dayEvents.slice(0, maxShow);
+        const more = Math.max(0, dayEvents.length - shown.length);
+        const isToday = cell.isoKey === todayDayKey;
+        const isSelected = selectedDayKey === cell.isoKey;
+        const dayLink = dayHref?.(cell.isoKey);
+        return (
+          <div
+            class:list={[
+              `flex ${cellMin} flex-col bg-surface-container-lowest p-1`,
+              !cell.inMonth && "bg-surface-container-low/80",
+              isSelected && "ring-2 ring-inset ring-primary",
+            ]}
+          >
+            <div class="flex shrink-0 justify-end px-0.5 pt-0.5">
+              {dayLink ? (
+                <a
+                  href={dayLink}
+                  class:list={[
+                    "flex h-7 min-w-[28px] items-center justify-center rounded-full text-xs tabular-nums transition",
+                    isToday && "bg-primary font-semibold text-on-primary shadow-sm",
+                    !isToday && cell.inMonth && "text-on-surface hover:bg-surface-container",
+                    !isToday && !cell.inMonth && "text-on-surface-variant/70 hover:bg-surface-container",
+                  ]}
+                  aria-current={isSelected ? "date" : undefined}
+                  aria-label={`${cell.isoKey} 일정`}
+                >
+                  {cell.day}
+                </a>
+              ) : (
+                <span
+                  class:list={[
+                    "flex h-7 min-w-[28px] items-center justify-center rounded-full text-xs tabular-nums",
+                    isToday && "bg-primary font-semibold text-on-primary shadow-sm",
+                    !isToday && cell.inMonth && "text-on-surface",
+                    !isToday && !cell.inMonth && "text-on-surface-variant/70",
+                  ]}
+                >
+                  {cell.day}
+                </span>
+              )}
+            </div>
+            <div class="mt-1 min-h-0 flex-1 space-y-0.5 overflow-hidden">
+              {shown.map((ev) =>
+                ev.href ? (
+                  <a
+                    href={withBase(ev.href)}
+                    {...(ev.href.startsWith("http")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    class:list={[
+                      "block max-w-full truncate rounded-sm px-1 py-0.5 text-left text-[11px] leading-snug transition-colors",
+                      kindCalendarChip(ev.kind),
+                    ]}
+                    title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                  >
+                    {ev.title}
+                  </a>
+                ) : (
+                  <span
+                    class:list={[
+                      "block max-w-full truncate rounded-sm px-1 py-0.5 text-[11px] leading-snug",
+                      kindCalendarChip(ev.kind),
+                    ]}
+                    title={`${kindLabel(ev.kind)} · ${ev.title}`}
+                  >
+                    {ev.title}
+                  </span>
+                ),
+              )}
+              {more > 0 && (
+                <p class="truncate pl-1 text-[10px] font-medium text-on-surface-variant">+{more}개</p>
+              )}
+            </div>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  <div
+    class="flex flex-wrap items-center gap-6 border-t border-outline-variant bg-surface-container-lowest px-4 py-3 text-xs"
+  >
+    <span class="flex items-center gap-2 font-medium text-sky-800 dark:text-sky-200">
+      <span class="h-3 w-3 shrink-0 rounded-full bg-sky-600 shadow-sm ring-2 ring-sky-200 dark:ring-sky-950" aria-hidden="true" />
+      분석글
+    </span>
+    <span class="flex items-center gap-2 font-medium text-teal-800 dark:text-teal-200">
+      <span class="h-3 w-3 shrink-0 rounded-full bg-teal-700 shadow-sm ring-2 ring-teal-200 dark:ring-teal-950" aria-hidden="true" />
+      외부 이벤트
+    </span>
+    <slot name="footer" />
+  </div>
+</div>

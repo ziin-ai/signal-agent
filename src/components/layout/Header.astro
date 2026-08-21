@@ -4,9 +4,9 @@ import MdIcon from "../ui/MdIcon.astro";
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 const navItems = [
-  { href: rootPath, label: "홈", icon: "home" },
+  { href: rootPath, label: "홈", icon: "home", title: "월 캘린더 + 오늘 읽을 글" },
   { href: `${rootPath}posts`, label: "글", icon: "article" },
-  { href: `${rootPath}timeline`, label: "타임라인", icon: "timeline" },
+  { href: `${rootPath}timeline`, label: "타임라인", icon: "timeline", title: "종목·필터 전체 일정 허브" },
   { href: `${rootPath}about`, label: "소개", icon: "info" },
   { href: `${rootPath}contact`, label: "문의", icon: "mail" },
 ];
@@ -32,6 +32,7 @@ const navItems = [
           navItems.map((item) => (
             <a
               href={item.href}
+              title={"title" in item ? item.title : undefined}
               class="md-btn-text inline-flex items-center gap-1.5 !min-h-9 rounded-md3-sm px-3 py-2 text-sm font-medium text-on-surface-variant transition hover:bg-primary/8 hover:text-primary"
             >
               <MdIcon name={item.icon} size={18} />
@@ -70,6 +71,7 @@ const navItems = [
         navItems.map((item) => (
           <a
             href={item.href}
+            title={"title" in item ? item.title : undefined}
             class="inline-flex items-center gap-3 rounded-md3-sm px-3 py-2.5 text-sm font-medium text-on-surface transition hover:bg-primary/10 hover:text-primary"
           >
             <MdIcon name={item.icon} size={20} />

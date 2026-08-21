@@ -1,0 +1,78 @@
+---
+import type { TimelineEvent } from "../../lib/timeline";
+
+interface Props {
+  dayKey: string;
+  events: TimelineEvent[];
+  rootPath: string;
+  emptyHint?: string;
+}
+
+const { dayKey, events, rootPath, emptyHint = "이 날짜에 표시할 일정이 없습니다." } = Astro.props;
+
+const label = (() => {
+  const [y, m, d] = dayKey.split("-").map(Number);
+  if (!y || !m || !d) return dayKey;
+  return new Date(y, m - 1, d).toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "short",
+  });
+})();
+
+function withBase(href: string): string {
+  if (!href.startsWith("/")) return href;
+  return `${rootPath}${href.slice(1)}`;
+}
+
+function kindLabel(kind: string) {
+  if (kind === "post") return "분석";
+  if (kind === "external_event") return "이벤트";
+  return "기타";
+}
+---
+
+<aside class="md-card md-card-filled flex flex-col p-4" aria-label={`${label} 일정`}>
+  <h2 class="font-sans text-[11px] font-semibold uppercase tracking-[0.08em] text-on-surface-variant">
+    선택일 일정
+  </h2>
+  <p class="mt-1 text-sm font-semibold tracking-tight text-on-surface">{label}</p>
+  <p class="mt-0.5 text-xs tabular-nums text-on-surface-variant">{events.length}건</p>
+
+  {
+    events.length === 0 ? (
+      <p class="mt-4 text-xs leading-relaxed text-on-surface-variant">{emptyHint}</p>
+    ) : (
+      <ul class="mt-4 space-y-3 border-t border-outline-variant/70 pt-3">
+        {events.map((ev) => (
+          <li>
+            <p class="text-[10px] font-medium uppercase tracking-wide text-on-surface-variant">
+              {kindLabel(ev.kind)}
+              {ev.meta?.impact === "high" && <span class="ml-1 text-warning">· High</span>}
+              {ev.meta?.category && <span class="ml-1">· {ev.meta.category}</span>}
+            </p>
+            <p class="mt-0.5 text-sm font-semibold leading-snug text-on-surface">
+              {ev.href ? (
+                <a
+                  href={withBase(ev.href)}
+                  class="hover:text-primary"
+                  {...(ev.href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                >
+                  {ev.title}
+                </a>
+              ) : (
+                ev.title
+              )}
+            </p>
+            {ev.summary && (
+              <p class="mt-1 line-clamp-3 text-[11px] leading-relaxed text-on-surface-variant">{ev.summary}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</aside>

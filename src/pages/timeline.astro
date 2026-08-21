@@ -2,6 +2,8 @@
 import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Panel from "../components/ui/Panel.astro";
+import MonthCalendar from "../components/timeline/MonthCalendar.astro";
+import DayEventList from "../components/timeline/DayEventList.astro";
 import { buildGlobalTimelineEvents, buildSymbolTimelineEvents } from "../lib/timeline";
 import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../lib/calendar-grid";
 import {
@@ -64,6 +66,7 @@ const filteredEvents = events.filter((ev) => {
 });
 
 const monthParam = Astro.url.searchParams.get("month")?.trim() ?? "";
+const dayParam = Astro.url.searchParams.get("day")?.trim() ?? "";
 const today = new Date();
 let viewYear = today.getFullYear();
 let viewMonth = today.getMonth() + 1;
@@ -103,15 +106,22 @@ const prevMonthStr = `${prevNav.year}-${String(prevNav.month).padStart(2, "0")}`
 const nextMonthStr = `${nextNav.year}-${String(nextNav.month).padStart(2, "0")}`;
 const todayMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`;
 const todayDayKey = localIsoKey(today.getFullYear(), today.getMonth(), today.getDate());
+const monthQueryValue = `${viewYear}-${String(viewMonth).padStart(2, "0")}`;
+const firstOfMonthKey = localIsoKey(viewYear, viewMonth - 1, 1);
+const todayInViewMonth = today.getFullYear() === viewYear && today.getMonth() + 1 === viewMonth;
+const defaultDayKey = todayInViewMonth ? todayDayKey : firstOfMonthKey;
 
-const weekdayLabels = ["일", "월", "화", "수", "목", "금", "토"];
+const selectedDayKey =
+  /^\d{4}-\d{2}-\d{2}$/.test(dayParam) && dayParam.startsWith(monthQueryValue)
+    ? dayParam
+    : /^\d{4}-\d{2}-\d{2}$/.test(dayParam)
+      ? dayParam
+      : defaultDayKey;
+
+const selectedDayEvents = eventsByDay.get(selectedDayKey) ?? [];
 
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
-function withBase(href: string): string {
-  if (!href.startsWith("/")) return href;
-  return `${rootPath}${href.slice(1)}`;
-}
 
 function timelineHref(next: {
   symbol?: string | null;
@@ -119,18 +129,21 @@ function timelineHref(next: {
   impacts?: string[];
   categories?: string[];
   month?: string;
+  day?: string | null;
 }) {
   const params = new URLSearchParams();
   const symbolValue = next.symbol !== undefined ? next.symbol : activeSymbol;
   const kindsValue = next.kinds !== undefined ? next.kinds : selectedKinds;
   const impactsValue = next.impacts !== undefined ? next.impacts : selectedImpacts;
   const categoriesValue = next.categories !== undefined ? next.categories : selectedCategories;
-  const monthValue = next.month ?? `${viewYear}-${String(viewMonth).padStart(2, "0")}`;
+  const monthValue = next.month ?? monthQueryValue;
+  const dayValue = next.day !== undefined ? next.day : selectedDayKey;
   if (symbolValue) params.set("symbol", symbolValue);
   for (const k of kindsValue) params.append("kind", k);
   for (const i of impactsValue) params.append("impact", i);
   for (const c of categoriesValue) params.append("category", c);
   params.set("month", monthValue);
+  if (dayValue) params.set("day", dayValue);
   return `${rootPath}timeline?${params.toString()}`;
 }
 
@@ -143,24 +156,8 @@ function toggleMember(list: string[], id: string): string[] {
 
 function chipActive(active: boolean): string {
   return active
-    ? "border-info bg-info/15 text-info"
-    : "border-slate-200 bg-white text-slate-700 hover:border-info/50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200";
-}
-
-const monthQueryValue = `${viewYear}-${String(viewMonth).padStart(2, "0")}`;
-
-function kindLabel(kind: string) {
-  if (kind === "post") return "분석";
-  if (kind === "external_event") return "이벤트";
-  return "기타";
-}
-
-function kindCalendarChip(kind: string): string {
-  if (kind === "post")
-    return "border-l-4 border-[#2563eb] bg-[#dbeafe] font-medium text-[#1e40af] hover:bg-[#bfdbfe] dark:border-[#60a5fa] dark:bg-[#1e3a8a] dark:text-[#dbeafe] dark:hover:bg-[#1d4ed8]";
-  if (kind === "external_event")
-    return "border-l-4 border-[#059669] bg-[#d1fae5] font-medium text-[#065f46] hover:bg-[#a7f3d0] dark:border-[#34d399] dark:bg-[#022c22] dark:text-[#a7f3d0] dark:hover:bg-[#064e3b]";
-  return "border-l-4 border-[#64748b] bg-slate-100 font-medium text-slate-800 hover:bg-slate-200 dark:border-slate-500 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700";
+    ? "border-primary bg-primary text-on-primary"
+    : "border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container";
 }
 
 function categoryLabel(category: string) {
@@ -200,7 +197,6 @@ const highImpactCategoryCounts = highImpactWindowEvents.reduce(
 const highImpactCategorySorted = Object.entries(highImpactCategoryCounts).sort((a, b) => b[1] - a[1]);
 
 const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
-
 ---
 
 <Base
@@ -214,24 +210,28 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
   <section class="mb-4">
     <div class="flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 class="font-sans text-3xl font-semibold tracking-tight">
-          {activeSymbol ? (
-            <>
-              타임라인 · <span class="font-mono text-info">{activeSymbol}</span>
-            </>
-          ) : (
-            "타임라인"
-          )}
-        </h1>
-        <p class="mt-1 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+        <h1 class="font-sans text-3xl font-semibold tracking-tight text-on-surface">
           {
             activeSymbol ? (
               <>
-                이 종목의 <strong>분석·외부 이벤트</strong>를 달력 격자에 표시합니다. 날짜 칸에서 바로 열어볼 수 있습니다.
+                타임라인 · <span class="font-mono text-primary">{activeSymbol}</span>
+              </>
+            ) : (
+              "타임라인"
+            )
+          }
+        </h1>
+        <p class="mt-1 max-w-3xl text-sm leading-relaxed text-on-surface-variant">
+          {
+            activeSymbol ? (
+              <>
+                이 종목의 <strong>분석·외부 이벤트</strong>를 달력 격자에 표시합니다. 날짜를 고르면 오른쪽에서 일정을
+                확인합니다.
               </>
             ) : (
               <>
-                분석글과 외부 이벤트를 <strong>월 단위 달력</strong>으로 묶어 날짜 맥락을 읽기 쉽게 했습니다. 종목을 고르면 해당 심볼만 필터됩니다.
+                분석글과 외부 이벤트를 <strong>월 단위 달력</strong>으로 묶어 날짜 맥락을 읽기 쉽게 했습니다. 종목을
+                고르면 해당 심볼만 필터됩니다.
               </>
             )
           }
@@ -240,8 +240,8 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
       {
         activeSymbol && (
           <a
-            href={timelineHref({ symbol: "", month: monthQueryValue })}
-            class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+            href={timelineHref({ symbol: "", month: monthQueryValue, day: null })}
+            class="rounded-md3-sm border border-outline-variant px-3 py-1.5 text-sm font-medium text-on-surface transition hover:bg-surface-container"
           >
             전체 타임라인
           </a>
@@ -251,15 +251,20 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
 
     <div class="mt-4 space-y-3">
       <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <span class="shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400 sm:w-14">종목</span>
-        <form method="get" action={`${rootPath}timeline`} class="relative flex min-w-0 flex-1 flex-wrap items-center gap-2">
+        <span class="shrink-0 text-xs font-medium text-on-surface-variant sm:w-14">종목</span>
+        <form
+          method="get"
+          action={`${rootPath}timeline`}
+          class="relative flex min-w-0 flex-1 flex-wrap items-center gap-2"
+        >
           <input type="hidden" name="month" value={monthQueryValue} />
+          {selectedDayKey && <input type="hidden" name="day" value={selectedDayKey} />}
           {selectedKinds.map((k) => <input type="hidden" name="kind" value={k} />)}
           {selectedImpacts.map((i) => <input type="hidden" name="impact" value={i} />)}
           {selectedCategories.map((c) => <input type="hidden" name="category" value={c} />)}
           <div class="relative min-w-0 flex-1">
             <span
-              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant"
               aria-hidden="true"
             >
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -268,7 +273,7 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
+                ></path>
               </svg>
             </span>
             <input
@@ -279,25 +284,27 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
               list="timeline-symbol-options"
               autocomplete="off"
               value={symbolKnown ? activeSymbol : rawSymbol}
-              class="w-full rounded-lg border border-slate-300 bg-white py-2 pl-10 pr-3 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-info focus:outline-none focus:ring-2 focus:ring-info/25 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
+              class="w-full rounded-md3-sm border border-outline-variant bg-surface-container-lowest py-2 pl-10 pr-3 text-sm text-on-surface shadow-sm placeholder:text-on-surface-variant focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25"
             />
             <datalist id="timeline-symbol-options">
-              {symbolSearchEntries.map((entry) => (
-                <option value={entry.symbol}>{symbolOptionCaption(entry)}</option>
-              ))}
+              {
+                symbolSearchEntries.map((entry) => (
+                  <option value={entry.symbol}>{symbolOptionCaption(entry)}</option>
+                ))
+              }
             </datalist>
           </div>
           <button
             type="submit"
-            class="shrink-0 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+            class="shrink-0 rounded-md3-sm border border-outline-variant bg-surface-container-lowest px-4 py-2 text-sm font-medium text-on-surface transition hover:bg-surface-container"
           >
             적용
           </button>
           {
             activeSymbol && (
               <a
-                href={timelineHref({ symbol: "", month: monthQueryValue })}
-                class="shrink-0 rounded-lg border border-transparent px-3 py-2 text-sm text-slate-600 underline-offset-2 hover:text-info hover:underline dark:text-slate-400"
+                href={timelineHref({ symbol: "", month: monthQueryValue, day: null })}
+                class="shrink-0 rounded-md3-sm border border-transparent px-3 py-2 text-sm text-on-surface-variant underline-offset-2 hover:text-primary hover:underline"
               >
                 초기화
               </a>
@@ -308,34 +315,44 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
 
       {
         rawSymbol && !symbolKnown && (
-          <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
+          <p class="rounded-md3-sm border border-warning/40 bg-warning-container/40 px-3 py-2 text-sm text-on-surface">
             <span class="font-mono">{rawSymbol}</span>는 게시된 분석·이벤트 기록에 없어 전체 타임라인을 보여줍니다.
           </p>
         )
       }
 
-      <p class="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
-        유형·영향도·카테고리는 여러 개를 동시에 선택할 수 있습니다. 아무 것도 선택하지 않으면 해당 항목 전체가 표시됩니다.
+      <p class="text-[11px] leading-relaxed text-on-surface-variant">
+        유형·영향도·카테고리는 여러 개를 동시에 선택할 수 있습니다. 아무 것도 선택하지 않으면 해당 항목 전체가
+        표시됩니다.
       </p>
 
       <div class="flex flex-wrap items-start gap-x-3 gap-y-2">
-        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">유형</span>
+        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-on-surface-variant">유형</span>
         <div class="flex min-w-0 flex-1 flex-wrap gap-1.5">
           <a
-            href={timelineHref({ kinds: [] })}
+            href={timelineHref({ kinds: [], day: selectedDayKey })}
             class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedKinds.length === 0)]}
           >
             전체
           </a>
           <a
-            href={timelineHref({ kinds: toggleMember(selectedKinds, "post") })}
-            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedKinds.includes("post"))]}
+            href={timelineHref({ kinds: toggleMember(selectedKinds, "post"), day: selectedDayKey })}
+            class:list={[
+              "rounded-full border px-2.5 py-0.5 text-xs",
+              chipActive(selectedKinds.includes("post")),
+            ]}
           >
             분석
           </a>
           <a
-            href={timelineHref({ kinds: toggleMember(selectedKinds, "external_event") })}
-            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedKinds.includes("external_event"))]}
+            href={timelineHref({
+              kinds: toggleMember(selectedKinds, "external_event"),
+              day: selectedDayKey,
+            })}
+            class:list={[
+              "rounded-full border px-2.5 py-0.5 text-xs",
+              chipActive(selectedKinds.includes("external_event")),
+            ]}
           >
             이벤트
           </a>
@@ -343,201 +360,95 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
       </div>
 
       <div class="flex flex-wrap items-start gap-x-3 gap-y-2">
-        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">영향도</span>
+        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-on-surface-variant">영향도</span>
         <div class="flex min-w-0 flex-1 flex-wrap gap-1.5">
           <a
-            href={timelineHref({ impacts: [] })}
+            href={timelineHref({ impacts: [], day: selectedDayKey })}
             class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedImpacts.length === 0)]}
           >
             전체
           </a>
-          {(["high", "mid", "low"] as const).map((id) => (
-            <a
-              href={timelineHref({ impacts: toggleMember(selectedImpacts, id) })}
-              class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedImpacts.includes(id))]}
-            >
-              {id === "high" ? "High" : id === "mid" ? "Mid" : "Low"}
-            </a>
-          ))}
+          {
+            (["high", "mid", "low"] as const).map((id) => (
+              <a
+                href={timelineHref({ impacts: toggleMember(selectedImpacts, id), day: selectedDayKey })}
+                class:list={[
+                  "rounded-full border px-2.5 py-0.5 text-xs",
+                  chipActive(selectedImpacts.includes(id)),
+                ]}
+              >
+                {id === "high" ? "High" : id === "mid" ? "Mid" : "Low"}
+              </a>
+            ))
+          }
         </div>
       </div>
 
       <div class="flex flex-wrap items-start gap-x-3 gap-y-2">
-        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">카테고리</span>
+        <span class="mt-1.5 w-14 shrink-0 text-xs font-medium text-on-surface-variant">카테고리</span>
         <div class="flex min-w-0 flex-1 flex-wrap gap-1.5">
           <a
-            href={timelineHref({ categories: [] })}
-            class:list={["rounded-full border px-2.5 py-0.5 text-xs", chipActive(selectedCategories.length === 0)]}
+            href={timelineHref({ categories: [], day: selectedDayKey })}
+            class:list={[
+              "rounded-full border px-2.5 py-0.5 text-xs",
+              chipActive(selectedCategories.length === 0),
+            ]}
           >
             전체
           </a>
-          {categoryOptions.map((category) => (
-            <a
-              href={timelineHref({ categories: toggleMember(selectedCategories, category) })}
-              class:list={[
-                "rounded-full border px-2.5 py-0.5 text-xs",
-                chipActive(selectedCategories.includes(category)),
-              ]}
-            >
-              {categoryLabel(category)}
-            </a>
-          ))}
+          {
+            categoryOptions.map((category) => (
+              <a
+                href={timelineHref({
+                  categories: toggleMember(selectedCategories, category),
+                  day: selectedDayKey,
+                })}
+                class:list={[
+                  "rounded-full border px-2.5 py-0.5 text-xs",
+                  chipActive(selectedCategories.includes(category)),
+                ]}
+              >
+                {categoryLabel(category)}
+              </a>
+            ))
+          }
         </div>
       </div>
     </div>
   </section>
 
   <section class="grid grid-cols-1 gap-4 lg:grid-cols-3">
-    <div class="lg:col-span-2 space-y-4">
-      <div
-        class="overflow-hidden rounded-xl border border-[#dadce0] bg-[#f8f9fa] shadow-sm dark:border-slate-600 dark:bg-slate-950"
-      >
-        <div
-          class="flex flex-col gap-3 border-b border-[#dadce0] bg-white px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-4 dark:border-slate-600 dark:bg-slate-900"
-        >
-          <div class="flex flex-wrap items-center gap-2">
-            <a
-              href={timelineHref({ month: todayMonthStr })}
-              class="rounded border border-[#dadce0] px-3 py-1.5 text-sm font-medium text-[#3c4043] hover:bg-[#f1f3f4] dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-            >
-              오늘
-            </a>
-            <div class="flex items-center">
-              <a
-                href={timelineHref({ month: prevMonthStr })}
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xl leading-none text-[#5f6368] hover:bg-[#f1f3f4] dark:text-slate-300 dark:hover:bg-slate-800"
-                aria-label="이전 달"
-              >
-                ‹
-              </a>
-              <a
-                href={timelineHref({ month: nextMonthStr })}
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xl leading-none text-[#5f6368] hover:bg-[#f1f3f4] dark:text-slate-300 dark:hover:bg-slate-800"
-                aria-label="다음 달"
-              >
-                ›
-              </a>
-            </div>
-          </div>
-          <h2 class="text-center text-lg font-normal tracking-tight text-[#3c4043] sm:flex-1 sm:text-xl dark:text-slate-100">
-            {
-              new Date(viewYear, viewMonth - 1, 1).toLocaleDateString("ko-KR", {
-                year: "numeric",
-                month: "long",
-              })
-            }
-          </h2>
-          <p class="text-center text-xs text-[#70757a] sm:text-right dark:text-slate-400">
-            이번 달 {eventsInCalendarMonth.length}건 · 필터 전체 {filteredEvents.length}건
-          </p>
-        </div>
-
-        <div
-          class="grid grid-cols-7 border-b border-[#dadce0] bg-[#f8f9fa] text-center text-[11px] font-medium uppercase tracking-wide text-[#70757a] dark:border-slate-600 dark:bg-slate-800/90 dark:text-slate-400"
-        >
-          {weekdayLabels.map((w) => (
-            <div class="border-r border-[#dadce0] py-2 last:border-r-0 dark:border-slate-600">{w}</div>
-          ))}
-        </div>
-
-        <div class="grid grid-cols-7 gap-px bg-[#dadce0] dark:bg-slate-700">
-          {
-            monthGrid.map((cell) => {
-              const dayEvents = eventsByDay.get(cell.isoKey) ?? [];
-              const maxShow = 4;
-              const shown = dayEvents.slice(0, maxShow);
-              const more = Math.max(0, dayEvents.length - shown.length);
-              const isToday = cell.isoKey === todayDayKey;
-              return (
-                <div
-                  class:list={[
-                    "flex min-h-[108px] flex-col bg-white p-1 dark:bg-slate-900",
-                    !cell.inMonth && "bg-[#f8f9fa] dark:bg-slate-800/40",
-                  ]}
-                >
-                  <div class="flex shrink-0 justify-end px-0.5 pt-0.5">
-                    <span
-                      class:list={[
-                        "flex h-7 min-w-[28px] items-center justify-center rounded-full text-xs tabular-nums",
-                        isToday &&
-                          "bg-[#ea4335] font-semibold text-white shadow-sm ring-2 ring-[#ea4335]/25 dark:bg-[#f87171] dark:ring-red-400/30",
-                        !isToday && cell.inMonth && "text-[#3c4043] dark:text-slate-200",
-                        !isToday && !cell.inMonth && "text-[#70757a] dark:text-slate-500",
-                      ]}
-                    >
-                      {cell.day}
-                    </span>
-                  </div>
-                  <div class="mt-1 min-h-0 flex-1 space-y-0.5 overflow-hidden">
-                    {shown.map((ev) =>
-                      ev.href ? (
-                        <a
-                          href={withBase(ev.href)}
-                          {...(ev.href.startsWith("http")
-                            ? { target: "_blank", rel: "noopener noreferrer" }
-                            : {})}
-                          class:list={[
-                            "block max-w-full truncate rounded-sm px-1 py-0.5 text-left text-[11px] leading-snug transition-colors",
-                            kindCalendarChip(ev.kind),
-                          ]}
-                          title={`${kindLabel(ev.kind)} · ${ev.title}`}
-                        >
-                          {ev.title}
-                        </a>
-                      ) : (
-                        <span
-                          class:list={[
-                            "block max-w-full truncate rounded-sm px-1 py-0.5 text-[11px] leading-snug",
-                            kindCalendarChip(ev.kind),
-                          ]}
-                          title={`${kindLabel(ev.kind)} · ${ev.title}`}
-                        >
-                          {ev.title}
-                        </span>
-                      ),
-                    )}
-                    {more > 0 && (
-                      <p class="truncate pl-1 text-[10px] font-medium text-[#70757a] dark:text-slate-500">
-                        +{more}개
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })
-          }
-        </div>
-
-        <div class="flex flex-wrap items-center gap-6 border-t border-[#dadce0] bg-white px-4 py-3 text-xs dark:border-slate-600 dark:bg-slate-900">
-          <span class="flex items-center gap-2 font-medium text-[#1e40af] dark:text-blue-200">
-            <span
-              class="h-3 w-3 shrink-0 rounded-full bg-[#2563eb] shadow-sm ring-2 ring-[#bfdbfe] dark:bg-[#60a5fa] dark:ring-blue-950"
-              aria-hidden="true"
-            />
-            분석글
-          </span>
-          <span class="flex items-center gap-2 font-medium text-[#065f46] dark:text-emerald-200">
-            <span
-              class="h-3 w-3 shrink-0 rounded-full bg-[#059669] shadow-sm ring-2 ring-[#a7f3d0] dark:bg-[#34d399] dark:ring-emerald-950"
-              aria-hidden="true"
-            />
-            외부 이벤트
-          </span>
-        </div>
-      </div>
+    <div class="space-y-4 lg:col-span-2">
+      <MonthCalendar
+        viewYear={viewYear}
+        viewMonth={viewMonth}
+        monthGrid={monthGrid}
+        eventsByDay={eventsByDay}
+        todayDayKey={todayDayKey}
+        selectedDayKey={selectedDayKey}
+        todayHref={timelineHref({ month: todayMonthStr, day: todayDayKey })}
+        prevMonthHref={timelineHref({ month: prevMonthStr, day: null })}
+        nextMonthHref={timelineHref({ month: nextMonthStr, day: null })}
+        dayHref={(isoKey) => timelineHref({ day: isoKey, month: isoKey.slice(0, 7) })}
+        eventsInMonthCount={eventsInCalendarMonth.length}
+        filteredTotalCount={filteredEvents.length}
+        rootPath={rootPath}
+      />
     </div>
 
     <aside class="space-y-4">
+      <DayEventList dayKey={selectedDayKey} events={selectedDayEvents} rootPath={rootPath} />
+
       {
         activeSymbol && symbolPosts.length > 0 && (
           <Panel title="이 종목 분석글">
             <ul class="mt-3 space-y-2">
               {symbolPosts.slice(0, 6).map((post) => (
                 <li class="rounded-lg bg-secondary/30 px-3 py-2 text-sm">
-                  <a href={`${rootPath}posts/${post.id.replace(/\.md$/, "")}`} class="hover:text-info">
+                  <a href={`${rootPath}posts/${post.id.replace(/\.md$/, "")}`} class="hover:text-primary">
                     {post.data.title}
                   </a>
-                  <p class="mt-0.5 text-[10px] text-slate-500">
+                  <p class="mt-0.5 text-[10px] text-on-surface-variant">
                     {post.data.date.toLocaleDateString("ko-KR")} · 확신 {post.data.conviction}/5
                   </p>
                 </li>
@@ -548,10 +459,10 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
       }
 
       <Panel title="±3개월 · High 영향 이벤트" variant="soft">
-        <p class="mt-1 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+        <p class="mt-1 text-[11px] leading-relaxed text-on-surface-variant">
           콘텐츠의 외부 이벤트 중 영향도가 High인 일정만 모았습니다. 기간은 오늘 기준 과거 3개월부터 미래 3개월까지입니다.
         </p>
-        <p class="mt-2 text-[11px] tabular-nums text-slate-600 dark:text-slate-300">
+        <p class="mt-2 text-[11px] tabular-nums text-on-surface-variant">
           {summaryWindowStart.toLocaleDateString("ko-KR", {
             year: "numeric",
             month: "long",
@@ -564,15 +475,15 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
             day: "numeric",
           })}
         </p>
-        <p class="mt-3 text-2xl font-semibold tabular-nums text-slate-900 dark:text-slate-50">
+        <p class="mt-3 text-2xl font-semibold tabular-nums text-on-surface">
           {highImpactWindowEvents.length}
-          <span class="ml-1 text-sm font-normal text-slate-500 dark:text-slate-400">건</span>
+          <span class="ml-1 text-sm font-normal text-on-surface-variant">건</span>
         </p>
         {
           highImpactCategorySorted.length > 0 && (
             <div class="mt-3 flex flex-wrap gap-1.5">
               {highImpactCategorySorted.map(([cat, n]) => (
-                <span class="rounded-full border border-slate-200/90 bg-white px-2 py-0.5 text-[10px] font-medium text-slate-700 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-200">
+                <span class="rounded-full border border-outline-variant bg-surface-container-lowest px-2 py-0.5 text-[10px] font-medium text-on-surface">
                   {categoryLabel(cat)} {n}
                 </span>
               ))}
@@ -581,13 +492,13 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
         }
         {
           highImpactSidebarList.length > 0 ? (
-            <ul class="mt-4 space-y-3 border-t border-slate-200/90 pt-3 dark:border-slate-600/80">
+            <ul class="mt-4 space-y-3 border-t border-outline-variant/70 pt-3">
               {highImpactSidebarList.map((ev) => (
                 <li>
-                  <p class="text-[10px] font-medium uppercase tracking-wide text-amber-700 dark:text-amber-300">
+                  <p class="text-[10px] font-medium uppercase tracking-wide text-warning">
                     High · {categoryLabel(ev.data.category)}
                   </p>
-                  <p class="mt-0.5 text-[10px] tabular-nums text-slate-500 dark:text-slate-400">
+                  <p class="mt-0.5 text-[10px] tabular-nums text-on-surface-variant">
                     {ev.data.date.toLocaleDateString("ko-KR", {
                       year: "numeric",
                       month: "short",
@@ -600,13 +511,13 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
                       </>
                     )}
                   </p>
-                  <p class="mt-1 text-sm font-medium leading-snug text-slate-900 dark:text-slate-100">
+                  <p class="mt-1 text-sm font-medium leading-snug text-on-surface">
                     {ev.data.sourceUrl ? (
                       <a
                         href={ev.data.sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="hover:text-info"
+                        class="hover:text-primary"
                       >
                         {ev.data.title}
                       </a>
@@ -614,29 +525,27 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
                       ev.data.title
                     )}
                   </p>
-                  <p class="mt-1 line-clamp-3 text-[11px] leading-relaxed text-slate-600 dark:text-slate-400">
+                  <p class="mt-1 line-clamp-3 text-[11px] leading-relaxed text-on-surface-variant">
                     {ev.data.summary}
                   </p>
                 </li>
               ))}
             </ul>
           ) : (
-            <p class="mt-4 text-xs text-slate-500 dark:text-slate-400">
-              이 기간에 등록된 High 이벤트가 없습니다.
-            </p>
+            <p class="mt-4 text-xs text-on-surface-variant">이 기간에 등록된 High 이벤트가 없습니다.</p>
           )
         }
         {
           highImpactWindowEvents.length > 10 && (
-            <p class="mt-3 text-[11px] text-slate-500 dark:text-slate-400">
+            <p class="mt-3 text-[11px] text-on-surface-variant">
               최신 순 상위 10건만 표시합니다. 전체는 타임라인 필터에서 확인할 수 있습니다.
             </p>
           )
         }
-        <p class="mt-4 border-t border-slate-200/90 pt-3 dark:border-slate-600/80">
+        <p class="mt-4 border-t border-outline-variant/70 pt-3">
           <a
-            href={timelineHref({ impacts: ["high"], kinds: [], categories: [] })}
-            class="text-xs font-medium text-info hover:underline"
+            href={timelineHref({ impacts: ["high"], kinds: [], categories: [], day: null })}
+            class="text-xs font-medium text-primary hover:underline"
           >
             타임라인에서 영향도 High만 보기 →
           </a>
