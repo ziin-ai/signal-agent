@@ -96,13 +96,13 @@ function buildFallbackResponse(store: ContentStore, request: AgentChatRequest): 
     citations.push(...results.filter((item) => item.href.startsWith("/posts/")));
     const events = raw as Array<{ at: string; title: string; impact?: string }>;
     if (events.length === 0) {
-      text = "해당 조건에 맞는 일정을 아직 다루지 않았어요. 대시보드에서 전체 이벤트를 확인해 보세요.";
+      text = "해당 조건에 맞는 일정을 아직 다루지 않았어요. 캘린더에서 전체 이벤트를 확인해 보세요.";
     } else {
       const lines = events.map((event) => {
         const date = new Date(event.at).toLocaleDateString("ko-KR");
         return `- ${date}: ${event.title}${event.impact ? ` (${event.impact})` : ""}`;
       });
-      text = `지인이 대시보드에서 찾은 주요 일정이에요.\n\n${lines.join("\n")}`;
+      text = `지인이 캘린더에서 찾은 주요 일정이에요.\n\n${lines.join("\n")}`;
     }
   } else if (wantsQuote && request.context?.symbol) {
     text = "시세는 실시간 도구 연동 전이라, 관련 분석글 근거를 먼저 확인하는 편이 안전해요.";

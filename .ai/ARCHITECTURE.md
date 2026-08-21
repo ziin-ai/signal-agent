@@ -136,7 +136,7 @@ id, title, date, symbol?, market?, category, impact, summary, sourceUrl?, tags[]
   - `TimelineEventKind`에 `external_event` 추가
   - `buildGlobalTimelineEvents(...)`에 events merge
   - `buildSymbolTimelineEvents(...)`에 symbol/global 정책 반영 merge
-- `src/pages/index.astro` (메인 대시보드)
+- `src/pages/index.astro` (메인 캘린더)
   - collection fetch에 `events` 포함
   - 라벨/색상/링크 처리 분기 추가
   - `/timeline`은 `/`로 리다이렉트

@@ -81,7 +81,7 @@ function journeyBriefing60(store: ContentStore, request: AgentChatRequest): Agen
   } else {
     steps.push({
       title: "7일 내 촉매",
-      body: "등록된 임박 일정이 많지 않아요. 대시보드에서 더 볼 수 있어요.",
+      body: "등록된 임박 일정이 많지 않아요. 캘린더에서 더 볼 수 있어요.",
     });
   }
 
@@ -115,7 +115,7 @@ function journeyCatalysts(store: ContentStore, request: AgentChatRequest): Agent
   if (steps.length === 0) {
     steps.push({
       title: "촉매 없음",
-      body: "60일 내 등록된 촉매가 적어요. 대시보드 전체를 확인해 보세요.",
+      body: "60일 내 등록된 촉매가 적어요. 캘린더 전체를 확인해 보세요.",
     });
   }
 

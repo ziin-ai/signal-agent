@@ -149,7 +149,7 @@ export function buildScenarioJourney(
     {
       id: "catalyst",
       label: "다가오는 촉매 일정",
-      hint: events.length > 0 ? `90일 내 ${events.length}건 — 대시보드에서 확인` : "등록된 촉매가 적어요.",
+      hint: events.length > 0 ? `90일 내 ${events.length}건 — 캘린더에서 확인` : "등록된 촉매가 적어요.",
       href: timelineHref,
     },
     {
