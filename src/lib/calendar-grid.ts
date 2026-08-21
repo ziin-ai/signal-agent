@@ -122,3 +122,11 @@ export function weekRangeLabel(weekKeys: string[]): string {
   );
   return `${startLabel} – ${endLabel}`;
 }
+
+/** 앵커일 기준 ±N주 (같은 요일 유지) */
+export function shiftWeekIsoKey(isoKey: string, deltaWeeks: number): string {
+  const date = parseLocalIsoKey(isoKey);
+  if (!date) return isoKey;
+  date.setDate(date.getDate() + deltaWeeks * 7);
+  return localIsoKey(date.getFullYear(), date.getMonth(), date.getDate());
+}

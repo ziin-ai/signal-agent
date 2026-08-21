@@ -1,0 +1,214 @@
+---
+import type { TimelineEvent } from "../../lib/timeline";
+import {
+  parseLocalIsoKey,
+  weekIsoKeysContaining,
+  weekRangeLabel,
+} from "../../lib/calendar-grid";
+import {
+  agendaMetaClass,
+  agendaRowClass,
+  agendaTitleClass,
+  impactSortWeight,
+  kindBadgeClass,
+  resolveItemImpact,
+  timelineItemShortLabel,
+} from "../../lib/timeline-kind-styles";
+
+interface Props {
+  anchorDayKey: string;
+  eventsByDay: Map<string, TimelineEvent[]>;
+  todayDayKey: string;
+  rootPath: string;
+  prevWeekHref: string;
+  nextWeekHref: string;
+  todayHref: string;
+  dayHref: (isoKey: string) => string;
+  emptyHint?: string;
+}
+
+const {
+  anchorDayKey,
+  eventsByDay,
+  todayDayKey,
+  rootPath,
+  prevWeekHref,
+  nextWeekHref,
+  todayHref,
+  dayHref,
+  emptyHint = "이번 주에 표시할 일정이 없습니다. 필터를 바꿔 보세요.",
+} = Astro.props;
+
+const weekKeys = weekIsoKeysContaining(anchorDayKey);
+const rangeLabel = weekRangeLabel(weekKeys);
+const weekdayShort = ["일", "월", "화", "수", "목", "금", "토"];
+
+function sortDayEvents(list: TimelineEvent[]): TimelineEvent[] {
+  return [...list].sort((a, b) => {
+    const w = impactSortWeight(b) - impactSortWeight(a);
+    if (w !== 0) return w;
+    return new Date(a.at).getTime() - new Date(b.at).getTime();
+  });
+}
+
+const weekDays = weekKeys.map((isoKey, i) => {
+  const date = parseLocalIsoKey(isoKey)!;
+  return {
+    isoKey,
+    weekday: weekdayShort[i]!,
+    dayNum: date.getDate(),
+    monthLabel: date.toLocaleDateString("ko-KR", { month: "short" }),
+    isToday: isoKey === todayDayKey,
+    isSelected: isoKey === anchorDayKey,
+    events: sortDayEvents(eventsByDay.get(isoKey) ?? []),
+  };
+});
+
+const weekEventCount = weekDays.reduce((n, d) => n + d.events.length, 0);
+
+function withBase(href: string): string {
+  if (!href.startsWith("/")) return href;
+  return `${rootPath}${href.slice(1)}`;
+}
+
+function impactLabel(ev: TimelineEvent): string {
+  if (ev.kind === "post") return "분석";
+  const impact = resolveItemImpact(ev);
+  if (impact === "high") return "High";
+  if (impact === "mid") return "Mid";
+  if (impact === "low") return "Low";
+  return "";
+}
+---
+
+<section
+  class="overflow-hidden rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest shadow-md3-1"
+  aria-label={`주간 아젠다 ${rangeLabel}`}
+>
+  <div class="flex flex-wrap items-center gap-3 border-b border-outline-variant/40 px-4 py-3.5 sm:px-5">
+    <div class="min-w-0 flex-1">
+      <p class="text-[12px] font-medium text-on-surface-variant">주간 아젠다</p>
+      <h2 class="mt-0.5 text-[1.25rem] font-semibold tracking-[-0.03em] text-on-surface sm:text-[1.4rem]">
+        {rangeLabel}
+      </h2>
+      <p class="mt-0.5 text-[12px] tabular-nums text-on-surface-variant">
+        {weekEventCount === 0 ? "일정 없음" : `${weekEventCount}건`}
+      </p>
+    </div>
+    <div class="flex shrink-0 items-center gap-0.5">
+      <a
+        href={prevWeekHref}
+        class="flex h-9 w-9 items-center justify-center rounded-md3-sm text-lg text-on-surface-variant transition hover:bg-surface-container"
+        aria-label="이전 주"
+      >
+        ‹
+      </a>
+      <a
+        href={nextWeekHref}
+        class="flex h-9 w-9 items-center justify-center rounded-md3-sm text-lg text-on-surface-variant transition hover:bg-surface-container"
+        aria-label="다음 주"
+      >
+        ›
+      </a>
+      <a
+        href={todayHref}
+        class="ml-1 rounded-md3-sm px-3 py-1.5 text-[13px] font-medium text-primary transition hover:bg-primary/8"
+      >
+        오늘
+      </a>
+    </div>
+  </div>
+
+  {
+    weekEventCount === 0 ? (
+      <p class="px-5 py-10 text-[14px] leading-relaxed text-on-surface-variant">{emptyHint}</p>
+    ) : (
+      <div class="divide-y divide-outline-variant/30">
+        {weekDays.map((day) => {
+          const hasEvents = day.events.length > 0;
+          if (!hasEvents && !day.isToday && !day.isSelected) return null;
+          return (
+            <section
+              class:list={[
+                "px-4 py-4 sm:px-5 sm:py-5",
+                day.isSelected && "bg-primary/[0.04]",
+                day.isToday && !day.isSelected && "bg-surface-container-low/40",
+              ]}
+              aria-label={`${day.weekday} ${day.dayNum}일`}
+              id={`day-${day.isoKey}`}
+            >
+              <div class="mb-3 flex items-baseline gap-2">
+                <a
+                  href={dayHref(day.isoKey)}
+                  class:list={[
+                    "inline-flex items-baseline gap-1.5 rounded-md3-sm px-1 -ml-1 text-[15px] font-semibold tracking-tight transition hover:bg-surface-container",
+                    day.isToday ? "text-primary" : "text-on-surface",
+                  ]}
+                >
+                  <span class="w-4">{day.weekday}</span>
+                  <span class="tabular-nums">
+                    {day.monthLabel} {day.dayNum}
+                  </span>
+                  {day.isToday && <span class="text-[11px] font-medium text-primary">오늘</span>}
+                </a>
+                <span class="text-[12px] tabular-nums text-on-surface-variant/70">
+                  {hasEvents ? `${day.events.length}건` : "일정 없음"}
+                </span>
+              </div>
+
+              {hasEvents ? (
+                <ul class="space-y-2.5">
+                  {day.events.map((ev) => {
+                    const impact = resolveItemImpact(ev);
+                    const rowInner = (
+                      <>
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span
+                            class:list={[
+                              "inline-flex h-5 shrink-0 items-center rounded px-1.5 text-[10px] font-bold leading-none",
+                              kindBadgeClass(ev.kind, impact),
+                            ]}
+                          >
+                            {timelineItemShortLabel(ev)}
+                          </span>
+                          {impactLabel(ev) && (
+                            <span class={agendaMetaClass(ev)}>{impactLabel(ev)}</span>
+                          )}
+                        </div>
+                        <p class:list={["mt-1.5", agendaTitleClass(ev)]}>{ev.title}</p>
+                        {ev.summary && (
+                          <p class="mt-1.5 text-[13px] leading-[1.65] text-on-surface-variant">
+                            {ev.summary}
+                          </p>
+                        )}
+                      </>
+                    );
+                    return (
+                      <li>
+                        {ev.href ? (
+                          <a
+                            href={withBase(ev.href)}
+                            class={agendaRowClass(ev)}
+                            {...(ev.href.startsWith("http")
+                              ? { target: "_blank", rel: "noopener noreferrer" }
+                              : {})}
+                          >
+                            {rowInner}
+                          </a>
+                        ) : (
+                          <div class={agendaRowClass(ev)}>{rowInner}</div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p class="text-[13px] text-on-surface-variant/60">이 날 등록된 일정이 없습니다.</p>
+              )}
+            </section>
+          );
+        })}
+      </div>
+    )
+  }
+</section>
