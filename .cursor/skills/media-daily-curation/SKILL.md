@@ -4,11 +4,11 @@ description: >-
   Find and add today's (KST) curated economy/market YouTube videos into
   signal-agent src/content/media/ for the /media monitor. Whitelist channels
   only (see SKILL whitelist: Fed, BoK, Bloomberg, CNBC, Reuters, WSJ, FT,
-  Yahoo Finance, Hankyung, Infomax, Sampro, Syuka, Talent, Sosumonkey,
-  Supergaemi). Verify video IDs via oEmbed, write schema-valid markdown, then
-  git commit/push per _shared/git-publish.md unless the user opts out. Use when
-  the user asks for 오늘 미디어, 미디어 데이터 추가, media curation, YouTube
-  큐레이션 갱신, must-watch briefs 추가, skill로 미디어 추가, or /media 당일 픽.
+  Yahoo Finance, Hankyung, Infomax, Sampro, Syuka, Talent, Sosumonkey, MTN).
+  Verify video IDs via oEmbed, write schema-valid markdown, then git commit/push
+  per _shared/git-publish.md unless the user opts out. Use when the user asks
+  for 오늘 미디어, 미디어 데이터 추가, media curation, YouTube 큐레이션 갱신,
+  must-watch briefs 추가, skill로 미디어 추가, or /media 당일 픽.
 disable-model-invocation: true
 ---
 
@@ -52,7 +52,7 @@ disable-model-invocation: true
 | `syuka-world` | 슈카월드 | https://www.youtube.com/@syukaworld |
 | `talent-invest` | 달란트투자 | https://www.youtube.com/@talentinvestment |
 | `sosumonkey` | 소수몽키 | https://www.youtube.com/@sosumonkey |
-| `supergaemi` | 슈퍼개미 김정환 | https://www.youtube.com/@supergaemi |
+| `mtn` | MTN 머니투데이방송 | https://www.youtube.com/@mtn |
 
 채널 핸들이 비어 있으면(공개 영상 없음) 스킵하고 Final Response에 적는다. **다른 채널 ID로 우회 금지.**
 

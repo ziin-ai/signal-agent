@@ -31,8 +31,8 @@ const WHITELIST_AUTHOR_HINTS = [
   "슈카",
   "달란트",
   "소수몽키",
-  "슈퍼개미",
-  "김정환",
+  "머니투데이",
+  "mtn",
 ];
 
 async function oembed(id) {

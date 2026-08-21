@@ -115,7 +115,7 @@ const media = defineCollection({
         "syuka-world",
         "talent-invest",
         "sosumonkey",
-        "supergaemi",
+        "mtn",
       ]),
       category: z.enum(["macro", "earnings", "product", "policy", "supply-chain", "news", "other"]),
       impact: z.enum(["low", "mid", "high"]),

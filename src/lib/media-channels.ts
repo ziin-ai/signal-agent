@@ -94,10 +94,10 @@ export const MEDIA_CHANNELS: readonly MediaChannel[] = [
     blurb: "매크로·섹터 인사이트",
   },
   {
-    id: "supergaemi",
-    name: "슈퍼개미 김정환",
-    url: "https://www.youtube.com/@supergaemi",
-    blurb: "국내 시장·종목 관점 브리핑",
+    id: "mtn",
+    name: "MTN 머니투데이방송",
+    url: "https://www.youtube.com/@mtn",
+    blurb: "국내 시황·경제 뉴스·마켓 브리핑",
   },
 ] as const;
 
