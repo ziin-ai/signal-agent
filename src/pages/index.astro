@@ -148,13 +148,6 @@ function timelineHref(next: {
   return qs ? `${rootPath}?${qs}` : rootPath;
 }
 
-function toggleMember(list: string[], id: string): string[] {
-  const s = new Set(list);
-  if (s.has(id)) s.delete(id);
-  else s.add(id);
-  return [...s];
-}
-
 /**
  * 빈 배열 = 해당 축 전체 ON.
  * 클릭 시 실제 켜진 집합을 기준으로 토글하고, 전부 켜지면 다시 []로 정규화한다.
