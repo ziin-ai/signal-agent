@@ -155,15 +155,39 @@ function toggleMember(list: string[], id: string): string[] {
   return [...s];
 }
 
-/** 선택 없음 = 전체. UI는 좁힌 항목만 강조한다. */
-function axisOn(selected: string[], id: string): boolean {
-  return selected.includes(id);
+/**
+ * 빈 배열 = 해당 축 전체 ON.
+ * 클릭 시 실제 켜진 집합을 기준으로 토글하고, 전부 켜지면 다시 []로 정규화한다.
+ */
+function toggleAxis(selected: string[], id: string, allIds: readonly string[]): string[] {
+  const on = new Set(selected.length === 0 ? allIds : selected);
+  if (on.has(id)) on.delete(id);
+  else on.add(id);
+  if (on.size === 0 || allIds.every((x) => on.has(x))) return [];
+  return allIds.filter((x) => on.has(x));
 }
 
-function filterTabClass(active: boolean): string {
-  return active
-    ? "rounded-md3-sm bg-primary/10 px-2.5 py-1 text-[12px] font-semibold text-primary"
-    : "rounded-md3-sm px-2.5 py-1 text-[12px] font-medium text-on-surface-variant transition hover:bg-surface-container hover:text-on-surface";
+/** 선택 없음 = 전체 ON */
+function axisOn(selected: string[], id: string): boolean {
+  return selected.length === 0 || selected.includes(id);
+}
+
+const KIND_ALL = ["post", "external_event"] as const;
+const IMPACT_ALL = ["high", "mid", "low"] as const;
+
+function filterTabClass(active: boolean, tone: "default" | "post" | "event" = "default"): string {
+  const base =
+    "inline-flex items-center gap-1 rounded-md3-sm px-2.5 py-1 text-[12px] font-medium transition";
+  if (!active) {
+    return `${base} text-on-surface-variant/45 line-through decoration-on-surface-variant/35 hover:bg-surface-container hover:text-on-surface-variant hover:no-underline`;
+  }
+  if (tone === "post") {
+    return `${base} bg-sky-100 font-semibold text-sky-800 dark:bg-sky-950/55 dark:text-sky-100`;
+  }
+  if (tone === "event") {
+    return `${base} bg-orange-100 font-semibold text-orange-900 dark:bg-orange-950/50 dark:text-orange-100`;
+  }
+  return `${base} bg-primary/12 font-semibold text-primary`;
 }
 
 function categoryLabel(category: string) {
@@ -228,17 +252,24 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
     aria-label="일정 필터"
   >
     <a
-      href={timelineHref({ kinds: toggleMember(selectedKinds, "post"), day: selectedDayKey })}
-      class={filterTabClass(axisOn(selectedKinds, "post"))}
+      href={timelineHref({
+        kinds: toggleAxis(selectedKinds, "post", KIND_ALL),
+        day: selectedDayKey,
+      })}
+      class={filterTabClass(axisOn(selectedKinds, "post"), "post")}
+      aria-pressed={axisOn(selectedKinds, "post")}
+      title={axisOn(selectedKinds, "post") ? "분석 끄기" : "분석 켜기"}
     >
       분석
     </a>
     <a
       href={timelineHref({
-        kinds: toggleMember(selectedKinds, "external_event"),
+        kinds: toggleAxis(selectedKinds, "external_event", KIND_ALL),
         day: selectedDayKey,
       })}
-      class={filterTabClass(axisOn(selectedKinds, "external_event"))}
+      class={filterTabClass(axisOn(selectedKinds, "external_event"), "event")}
+      aria-pressed={axisOn(selectedKinds, "external_event")}
+      title={axisOn(selectedKinds, "external_event") ? "이벤트 끄기" : "이벤트 켜기"}
     >
       이벤트
     </a>
@@ -246,30 +277,43 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
     <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
 
     {
-      (["high", "mid", "low"] as const).map((id) => (
-        <a
-          href={timelineHref({ impacts: toggleMember(selectedImpacts, id), day: selectedDayKey })}
-          class={filterTabClass(axisOn(selectedImpacts, id))}
-        >
-          {id === "high" ? "High" : id === "mid" ? "Mid" : "Low"}
-        </a>
-      ))
+      IMPACT_ALL.map((id) => {
+        const on = axisOn(selectedImpacts, id);
+        return (
+          <a
+            href={timelineHref({
+              impacts: toggleAxis(selectedImpacts, id, IMPACT_ALL),
+              day: selectedDayKey,
+            })}
+            class={filterTabClass(on)}
+            aria-pressed={on}
+            title={on ? `${id} 끄기` : `${id} 켜기`}
+          >
+            {id === "high" ? "High" : id === "mid" ? "Mid" : "Low"}
+          </a>
+        );
+      })
     }
 
     <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
 
     {
-      categoryOptions.map((category) => (
-        <a
-          href={timelineHref({
-            categories: toggleMember(selectedCategories, category),
-            day: selectedDayKey,
-          })}
-          class={filterTabClass(axisOn(selectedCategories, category))}
-        >
-          {categoryLabel(category)}
-        </a>
-      ))
+      categoryOptions.map((category) => {
+        const on = axisOn(selectedCategories, category);
+        return (
+          <a
+            href={timelineHref({
+              categories: toggleAxis(selectedCategories, category, categoryOptions),
+              day: selectedDayKey,
+            })}
+            class={filterTabClass(on)}
+            aria-pressed={on}
+            title={on ? `${categoryLabel(category)} 끄기` : `${categoryLabel(category)} 켜기`}
+          >
+            {categoryLabel(category)}
+          </a>
+        );
+      })
     }
 
     {
@@ -278,7 +322,7 @@ const highImpactSidebarList = highImpactWindowEvents.slice(0, 10);
           href={filterResetHref}
           class="ml-1 text-[12px] font-medium text-on-surface-variant transition hover:text-primary"
         >
-          초기화
+          전체
         </a>
       )
     }
