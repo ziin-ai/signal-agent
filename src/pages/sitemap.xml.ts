@@ -12,7 +12,6 @@ export const GET: APIRoute = async ({ site }) => {
 
   const staticUrls = [
     { loc: `${origin}/`, lastmod: undefined },
-    { loc: `${origin}/today`, lastmod: undefined },
     { loc: `${origin}/posts`, lastmod: undefined },
     { loc: `${origin}/about`, lastmod: undefined },
     { loc: `${origin}/privacy`, lastmod: undefined },

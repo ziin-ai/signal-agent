@@ -141,7 +141,7 @@ id, title, date, symbol?, market?, category, impact, summary, sourceUrl?, tags[]
   - 라벨/색상/링크 처리 분기 추가
   - `/timeline`은 `/`로 리다이렉트
 - `src/pages/today.astro`
-  - 구 홈: 월 캘린더 + 오늘 읽을 글
+  - `/`로 리다이렉트 (구 홈 북마크 유지)
 - `src/components/dashboard/DashboardTimeline.astro`
   - event dot class에 `external_event` 스타일 추가
 
