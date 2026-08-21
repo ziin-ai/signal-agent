@@ -50,6 +50,13 @@ const weekKeyList = weekIsoKeysContaining(todayKey);
 const weekKeys = new Set(weekKeyList);
 const weekLabel = weekRangeLabel(weekKeyList);
 
+const kstClock = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Asia/Seoul",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+}).format(today);
+
 function dayKey(d: Date): string {
   return localIsoKey(d.getFullYear(), d.getMonth(), d.getDate());
 }
@@ -61,6 +68,25 @@ const mustWatchPool = highThisWeek.length > 0 ? highThisWeek : highInFilter;
 const mustWatch = mustWatchPool.slice(0, 3);
 const mustWatchIds = new Set(mustWatch.map((m) => m.id));
 const agendaItems = filtered.filter((m) => !mustWatchIds.has(m.id));
+
+const weekHighCount = items.filter(
+  (m) => m.data.impact === "high" && weekKeys.has(dayKey(m.data.publishedAt)),
+).length;
+
+const weekPulse = weekKeyList.map((isoKey) => {
+  const [y, m, d] = isoKey.split("-").map(Number);
+  const date = new Date(y!, m! - 1, d!);
+  const highCount = items.filter(
+    (item) => item.data.impact === "high" && dayKey(item.data.publishedAt) === isoKey,
+  ).length;
+  return {
+    isoKey,
+    dayNum: d!,
+    weekday: date.toLocaleDateString("en-US", { weekday: "narrow" }),
+    highCount,
+    isToday: isoKey === todayKey,
+  };
+});
 
 const agendaByDay = (() => {
   const map = new Map<string, MediaEntry[]>();
@@ -126,331 +152,529 @@ function viewTabClass(on: boolean): string {
 }
 
 const hasFilters = activeCategories.length > 0 || activeChannels.length > 0 || impactOnly;
+const agendaHref = mediaHref({ view: "agenda" });
 
-function formatDayHeading(isoKey: string): string {
+function formatTapeDayHeading(isoKey: string, count: number): string {
   const [y, m, d] = isoKey.split("-").map(Number);
   const date = new Date(y!, m! - 1, d!);
-  const weekday = date.toLocaleDateString("ko-KR", { weekday: "short" });
-  return `${date.toLocaleDateString("ko-KR", { month: "long", day: "numeric" })} (${weekday})`;
+  const md = `${String(m).padStart(2, "0")}.${String(d).padStart(2, "0")}`;
+  const wd = date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
+  return `${md} ${wd} · ${count}`;
+}
+
+function slotLabel(index: number): string {
+  return String(index + 1).padStart(2, "0");
 }
 ---
 
 <Base
   title="미디어 | 내 곁에 지인"
-  description="경제·증시 유튜브 큐레이션 대시보드. 이번 주 High와 일자 아젠다. 투자 권유가 아닙니다."
+  description="경제·증시 유튜브 큐레이션 모니터. 이번 주 High와 일자 테이프. 투자 권유가 아닙니다."
 >
-  <div class="mb-4 flex flex-wrap items-end justify-between gap-2">
+  <div class="media-monitor mb-3 flex flex-wrap items-end justify-between gap-2">
     <div>
       <h1 class="font-sans text-2xl font-semibold tracking-tight text-on-surface">미디어</h1>
-      <p class="mt-1 text-[12px] text-on-surface-variant">
-        편집 큐레이션 · 자동 피드 아님 · 원본은 YouTube
-      </p>
+      <p class="mt-0.5 text-[11px] tracking-wide text-on-surface-variant">큐레이션 모니터</p>
     </div>
-    <a href={rootPath} class="text-[13px] font-medium text-primary hover:underline">
-      캘린더 High →
-    </a>
   </div>
 
-  <div class="mb-4 space-y-3 rounded-[16px] border border-outline-variant/40 bg-surface-container-low/30 px-3 py-3 sm:px-4">
-    <section class="flex flex-wrap items-center gap-x-0.5 gap-y-1.5" role="group" aria-label="미디어 필터">
+  {/* Status strip */}
+  <div
+    class="media-status mb-3 flex flex-wrap items-center gap-x-3 gap-y-2 border border-outline-variant/45 bg-surface-container-lowest/80 px-3 py-2.5 sm:px-4"
+    role="status"
+    aria-label="미디어 모니터 상태"
+  >
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] tabular-nums text-on-surface-variant">
+      <span>
+        <span class="text-on-surface-variant/70">KST</span>{" "}
+        <span class="font-medium text-on-surface">{kstClock}</span>
+      </span>
+      <span class="hidden h-3 w-px bg-outline-variant/60 sm:inline-block" aria-hidden="true" />
+      <span>
+        이번 주 픽 <span class="font-semibold text-on-surface">{weekHighCount}</span>
+      </span>
+      <span class="hidden h-3 w-px bg-outline-variant/60 sm:inline-block" aria-hidden="true" />
+      <span>
+        High <span class="font-semibold text-primary">{highInFilter.length}</span>
+      </span>
       {
-        MEDIA_CHANNELS.filter((ch) => channelOptions.includes(ch.id)).map((ch) => {
-          const on = activeChannels.includes(ch.id);
-          return (
-            <a
-              href={mediaHref({ channels: toggleList(activeChannels, ch.id) })}
-              class={chipClass(on)}
-              aria-pressed={on}
-            >
-              {ch.name}
-            </a>
-          );
-        })
-      }
-      <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
-      {
-        categoryOptions.map((cat) => {
-          const on = activeCategories.includes(cat);
-          return (
-            <a
-              href={mediaHref({ categories: toggleList(activeCategories, cat) })}
-              class={chipClass(on)}
-              aria-pressed={on}
-            >
-              {mediaCategoryLabel(cat)}
-            </a>
-          );
-        })
-      }
-      <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
-      <a
-        href={mediaHref({ impactHigh: !impactOnly })}
-        class={chipClass(impactOnly)}
-        aria-pressed={impactOnly}
-      >
-        High만
-      </a>
-      {
-        hasFilters && (
-          <a
-            href={mediaHref({ categories: [], channels: [], impactHigh: false })}
-            class="ml-1 text-[12px] font-medium text-on-surface-variant hover:text-primary"
-          >
-            전체
-          </a>
+        weekLabel && (
+          <>
+            <span class="hidden h-3 w-px bg-outline-variant/60 sm:inline-block" aria-hidden="true" />
+            <span class="text-on-surface-variant/80">{weekLabel}</span>
+          </>
         )
       }
-    </section>
+    </div>
 
     <div
-      class="flex flex-wrap items-center justify-between gap-2 border-t border-outline-variant/35 pt-3"
+      class="ml-auto flex items-center gap-0.5"
       role="group"
-      aria-label="보기 전환"
+      aria-label="이번 주 High 펄스"
     >
-      <div class="flex items-center gap-0.5 rounded-md3-sm bg-surface-container-lowest p-0.5">
-        <a
-          href={mediaHref({ view: "agenda" })}
-          class={viewTabClass(mediaView === "agenda")}
-          aria-current={mediaView === "agenda" ? "page" : undefined}
-        >
-          일자
-        </a>
-        <a
-          href={mediaHref({ view: "topic" })}
-          class={viewTabClass(mediaView === "topic")}
-          aria-current={mediaView === "topic" ? "page" : undefined}
-        >
-          주제
-        </a>
-      </div>
-      <p class="text-[11px] text-on-surface-variant">
-        {mediaView === "agenda" ? "날짜별 아젠다" : "카테고리별 묶음"} · High는 위 필수 밴드
-      </p>
+      {
+        weekPulse.map((day) => {
+          const href = `${agendaHref}#day-${day.isoKey}`;
+          const hasHigh = day.highCount > 0;
+          return (
+            <a
+              href={href}
+              class:list={[
+                "media-pulse-cell flex h-8 w-7 flex-col items-center justify-center rounded-sm transition",
+                day.isToday ? "bg-primary/10" : "hover:bg-surface-container",
+              ]}
+              title={`${day.isoKey}${hasHigh ? ` · High ${day.highCount}` : ""}`}
+              aria-label={`${day.isoKey}${hasHigh ? `, High ${day.highCount}` : ""}`}
+            >
+              <span
+                class:list={[
+                  "font-mono text-[9px] leading-none tabular-nums",
+                  day.isToday ? "font-semibold text-primary" : "text-on-surface-variant/70",
+                ]}
+              >
+                {day.dayNum}
+              </span>
+              <span
+                class:list={[
+                  "mt-1 h-1.5 w-1.5 rounded-full",
+                  hasHigh ? "bg-primary media-pulse-dot" : "bg-outline-variant/50",
+                ]}
+                aria-hidden="true"
+              />
+            </a>
+          );
+        })
+      }
     </div>
   </div>
 
-  {
-    mustWatch.length > 0 && (
-      <section class="mb-6" aria-label="이번 주 필수">
-        <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-          <h2 class="text-[15px] font-semibold tracking-tight text-on-surface">
-            {highThisWeek.length > 0 ? "이번 주 필수" : "필수 시청"}
-          </h2>
-          {highThisWeek.length > 0 && (
-            <p class="text-[11px] tabular-nums text-on-surface-variant">{weekLabel}</p>
-          )}
-        </div>
-        <ul class="grid gap-3 lg:grid-cols-3">
-          {mustWatch.map((item) => {
-            const ch = mediaChannelById(item.data.channel);
-            const watch = youtubeWatchUrl(item.data.youtubeId);
-            const thumb = youtubeThumbUrl(item.data.youtubeId);
-            return (
-              <li>
+  <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_260px] lg:items-start lg:gap-5">
+    <div class="min-w-0">
+      {/* Command filter */}
+      <div class="mb-4 border border-outline-variant/40 bg-surface-container-low/25 px-3 py-2.5 sm:px-3.5">
+        <section
+          class="flex flex-wrap items-center gap-x-0.5 gap-y-1.5"
+          role="group"
+          aria-label="미디어 필터"
+        >
+          {
+            MEDIA_CHANNELS.filter((ch) => channelOptions.includes(ch.id)).map((ch) => {
+              const on = activeChannels.includes(ch.id);
+              return (
                 <a
-                  href={watch}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex h-full flex-col overflow-hidden rounded-[16px] border border-outline-variant/50 border-l-[3px] border-l-primary bg-primary/[0.06] shadow-sm transition hover:bg-primary/[0.1]"
+                  href={mediaHref({ channels: toggleList(activeChannels, ch.id) })}
+                  class={chipClass(on)}
+                  aria-pressed={on}
                 >
-                  <div class="relative aspect-video w-full bg-surface-container">
-                    <img
-                      src={thumb}
-                      alt=""
-                      width={480}
-                      height={270}
-                      class="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                    {item.data.durationSec != null && (
-                      <span class="absolute bottom-2 right-2 rounded bg-black/75 px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-white">
-                        {formatDuration(item.data.durationSec)}
-                      </span>
-                    )}
-                  </div>
-                  <div class="flex flex-1 flex-col p-3.5 sm:p-4">
-                    <div class="flex flex-wrap items-center gap-1.5 text-[11px]">
-                      <span class="font-semibold text-primary">High</span>
-                      <span class="text-on-surface-variant">·</span>
-                      <span class="text-on-surface-variant">{ch?.name}</span>
-                      <span class="text-on-surface-variant">·</span>
-                      <span class="text-on-surface-variant">{mediaCategoryLabel(item.data.category)}</span>
-                    </div>
-                    <h3 class="mt-2 text-[16px] font-semibold leading-snug tracking-[-0.02em] text-on-surface">
-                      {item.data.title}
-                    </h3>
-                    <p class="mt-2 flex-1 text-[13px] leading-[1.65] text-on-surface-variant">{item.data.why}</p>
-                    <p class="mt-3 text-[11px] font-medium text-primary">YouTube에서 보기 →</p>
-                  </div>
+                  {ch.name}
                 </a>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-    )
-  }
+              );
+            })
+          }
+          <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
+          {
+            categoryOptions.map((cat) => {
+              const on = activeCategories.includes(cat);
+              return (
+                <a
+                  href={mediaHref({ categories: toggleList(activeCategories, cat) })}
+                  class={chipClass(on)}
+                  aria-pressed={on}
+                >
+                  {mediaCategoryLabel(cat)}
+                </a>
+              );
+            })
+          }
+          <span class="mx-1.5 hidden h-3.5 w-px bg-outline-variant/70 sm:inline-block" aria-hidden="true" />
+          <a
+            href={mediaHref({ impactHigh: !impactOnly })}
+            class={chipClass(impactOnly)}
+            aria-pressed={impactOnly}
+          >
+            High만
+          </a>
+          {
+            hasFilters && (
+              <a
+                href={mediaHref({ categories: [], channels: [], impactHigh: false })}
+                class="ml-1 text-[12px] font-medium text-on-surface-variant hover:text-primary"
+              >
+                전체
+              </a>
+            )
+          }
+        </section>
 
-  {
-    filtered.length === 0 ? (
-      <p class="rounded-[16px] border border-outline-variant/50 bg-surface-container-lowest px-5 py-10 text-sm text-on-surface-variant">
-        조건에 맞는 큐레이션이 없습니다. 필터를 바꿔 보세요.
-      </p>
-    ) : agendaItems.length === 0 ? (
-      <p class="mb-6 text-[13px] text-on-surface-variant">
-        필수 시청에 표시된 항목이 전부입니다.
-      </p>
-    ) : mediaView === "agenda" ? (
-      <section class="overflow-hidden rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest shadow-md3-1" aria-label="일자 아젠다">
-        <div class="border-b border-outline-variant/40 px-4 py-3 sm:px-5">
-          <h2 class="text-[15px] font-semibold text-on-surface">아젠다</h2>
-          <p class="mt-0.5 text-[12px] text-on-surface-variant">{agendaItems.length}건 · 최신순</p>
+        <div
+          class="mt-2.5 flex flex-wrap items-center justify-between gap-2 border-t border-outline-variant/35 pt-2.5"
+          role="group"
+          aria-label="보기 전환"
+        >
+          <div class="flex items-center gap-0.5 rounded-md3-sm bg-surface-container-lowest p-0.5">
+            <a
+              href={mediaHref({ view: "agenda" })}
+              class={viewTabClass(mediaView === "agenda")}
+              aria-current={mediaView === "agenda" ? "page" : undefined}
+            >
+              일자
+            </a>
+            <a
+              href={mediaHref({ view: "topic" })}
+              class={viewTabClass(mediaView === "topic")}
+              aria-current={mediaView === "topic" ? "page" : undefined}
+            >
+              주제
+            </a>
+          </div>
+          <p class="font-mono text-[10px] tabular-nums text-on-surface-variant/80">
+            TAPE {agendaItems.length}
+          </p>
         </div>
-        <div class="divide-y divide-outline-variant/30">
-          {agendaByDay.map(([isoKey, dayItems]) => (
-            <section class="px-4 py-4 sm:px-5 sm:py-5" aria-label={formatDayHeading(isoKey)}>
-              <div class="mb-3 flex items-baseline gap-2">
-                <h3 class="text-[14px] font-semibold text-on-surface">{formatDayHeading(isoKey)}</h3>
-                <span class="text-[12px] tabular-nums text-on-surface-variant/70">{dayItems.length}건</span>
-              </div>
-              <ul class="space-y-2.5">
-                {dayItems.map((item) => {
-                  const ch = mediaChannelById(item.data.channel);
-                  const watch = youtubeWatchUrl(item.data.youtubeId);
-                  const thumb = youtubeThumbUrl(item.data.youtubeId);
-                  const isHigh = item.data.impact === "high";
-                  return (
-                    <li>
-                      <a
-                        href={watch}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class:list={[
-                          "flex gap-3 rounded-md3-sm border-l-[3px] px-3 py-3 transition hover:bg-surface-container/80 sm:gap-4",
-                          isHigh
-                            ? "border-l-primary bg-primary/[0.05]"
-                            : "border-l-outline-variant/80 bg-surface-container-low/30",
-                        ]}
-                      >
-                        <div class="relative h-16 w-28 shrink-0 overflow-hidden rounded-md3-sm bg-surface-container sm:h-[4.5rem] sm:w-32">
-                          <img
-                            src={thumb}
-                            alt=""
-                            width={256}
-                            height={144}
-                            class="h-full w-full object-cover"
-                            loading="lazy"
-                          />
+      </div>
+
+      {
+        mustWatch.length > 0 && (
+          <section class="mb-5" aria-label="필수 시청 슬롯">
+            <div class="mb-2.5 flex flex-wrap items-baseline justify-between gap-2">
+              <h2 class="text-[13px] font-semibold tracking-tight text-on-surface">
+                {highThisWeek.length > 0 ? "필수 슬롯" : "필수 시청"}
+              </h2>
+              <p class="font-mono text-[10px] tabular-nums text-on-surface-variant">
+                SLOT 01–{slotLabel(mustWatch.length - 1)}
+              </p>
+            </div>
+            <ul class="grid gap-3 lg:grid-cols-3">
+              {mustWatch.map((item, index) => {
+                const ch = mediaChannelById(item.data.channel);
+                const watch = youtubeWatchUrl(item.data.youtubeId);
+                const thumb = youtubeThumbUrl(item.data.youtubeId);
+                return (
+                  <li class="media-slot">
+                    <a
+                      href={watch}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="flex h-full flex-col overflow-hidden border border-outline-variant/50 border-l-[3px] border-l-primary bg-primary/[0.05] transition hover:bg-primary/[0.09]"
+                    >
+                      <div class="relative aspect-video w-full bg-surface-container">
+                        <img
+                          src={thumb}
+                          alt=""
+                          width={480}
+                          height={270}
+                          class="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                        <span class="absolute left-2 top-2 font-mono text-[11px] font-semibold tabular-nums text-white mix-blend-difference">
+                          {slotLabel(index)}
+                        </span>
+                        {item.data.durationSec != null && (
+                          <span class="absolute bottom-2 right-2 bg-black/75 px-1.5 py-0.5 font-mono text-[10px] font-medium tabular-nums text-white">
+                            {formatDuration(item.data.durationSec)}
+                          </span>
+                        )}
+                      </div>
+                      <div class="flex flex-1 flex-col p-3.5">
+                        <div class="flex flex-wrap items-center gap-1.5 font-mono text-[10px] tabular-nums">
+                          <span class="font-semibold text-primary">HIGH</span>
+                          <span class="text-on-surface-variant/50">·</span>
+                          <span class="text-on-surface-variant">{ch?.name}</span>
+                          <span class="text-on-surface-variant/50">·</span>
+                          <span class="text-on-surface-variant">{mediaCategoryLabel(item.data.category)}</span>
                         </div>
-                        <div class="min-w-0 flex-1">
-                          <div class="flex flex-wrap items-center gap-2 text-[11px] text-on-surface-variant">
-                            <span class="font-medium text-on-surface">{ch?.name}</span>
-                            <span>·</span>
-                            <span>{mediaCategoryLabel(item.data.category)}</span>
-                            {isHigh && (
-                              <>
-                                <span>·</span>
-                                <span class="font-semibold text-primary">High</span>
-                              </>
-                            )}
-                            {item.data.durationSec != null && (
-                              <>
-                                <span>·</span>
-                                <span class="tabular-nums">{formatDuration(item.data.durationSec)}</span>
-                              </>
-                            )}
-                          </div>
-                          <p
+                        <h3 class="mt-2 text-[15px] font-semibold leading-snug tracking-[-0.02em] text-on-surface">
+                          {item.data.title}
+                        </h3>
+                        <p class="mt-2 flex-1 text-[13px] leading-[1.65] text-on-surface-variant">{item.data.why}</p>
+                        <p class="mt-3 text-[11px] font-medium text-primary">YouTube →</p>
+                      </div>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )
+      }
+
+      {
+        filtered.length === 0 ? (
+          <p class="border border-outline-variant/50 bg-surface-container-lowest px-5 py-10 text-sm text-on-surface-variant">
+            조건에 맞는 큐레이션이 없습니다. 필터를 바꿔 보세요.
+          </p>
+        ) : agendaItems.length === 0 ? (
+          <p class="mb-6 text-[13px] text-on-surface-variant">필수 슬롯에 표시된 항목이 전부입니다.</p>
+        ) : mediaView === "agenda" ? (
+          <section
+            class="overflow-hidden border border-outline-variant/50 bg-surface-container-lowest"
+            aria-label="일자 테이프"
+          >
+            <div class="flex items-baseline justify-between border-b border-outline-variant/40 px-4 py-2.5 sm:px-5">
+              <h2 class="text-[13px] font-semibold text-on-surface">테이프</h2>
+              <p class="font-mono text-[10px] tabular-nums text-on-surface-variant">{agendaItems.length} · DESC</p>
+            </div>
+            <div class="divide-y divide-outline-variant/30">
+              {agendaByDay.map(([isoKey, dayItems]) => (
+                <section
+                  id={`day-${isoKey}`}
+                  class="scroll-mt-24 px-4 py-4 sm:px-5 sm:py-4"
+                  aria-label={formatTapeDayHeading(isoKey, dayItems.length)}
+                >
+                  <div class="mb-2.5 flex items-baseline gap-2">
+                    <h3 class="font-mono text-[12px] font-semibold tabular-nums tracking-tight text-on-surface">
+                      {formatTapeDayHeading(isoKey, dayItems.length)}
+                    </h3>
+                  </div>
+                  <ul class="space-y-2">
+                    {dayItems.map((item) => {
+                      const ch = mediaChannelById(item.data.channel);
+                      const watch = youtubeWatchUrl(item.data.youtubeId);
+                      const thumb = youtubeThumbUrl(item.data.youtubeId);
+                      const isHigh = item.data.impact === "high";
+                      return (
+                        <li>
+                          <a
+                            href={watch}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             class:list={[
-                              "mt-1 leading-snug text-on-surface",
-                              isHigh ? "text-[15px] font-semibold" : "text-[14px] font-medium",
+                              "flex gap-3 border-l-[3px] px-3 py-2.5 transition hover:bg-surface-container/80 sm:gap-3.5",
+                              isHigh
+                                ? "border-l-primary bg-primary/[0.04]"
+                                : "border-l-outline-variant/70 bg-transparent",
                             ]}
                           >
-                            {item.data.title}
-                          </p>
-                          <p class="mt-1 text-[13px] leading-[1.65] text-on-surface-variant">{item.data.why}</p>
-                        </div>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          ))}
-        </div>
-      </section>
-    ) : (
-      <section class="overflow-hidden rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest shadow-md3-1" aria-label="주제 아젠다">
-        <div class="border-b border-outline-variant/40 px-4 py-3 sm:px-5">
-          <h2 class="text-[15px] font-semibold text-on-surface">주제별</h2>
-          <p class="mt-0.5 text-[12px] text-on-surface-variant">{agendaItems.length}건</p>
-        </div>
-        <div class="divide-y divide-outline-variant/30">
-          {agendaByTopic.map(([cat, catItems]) => (
-            <section class="px-4 py-4 sm:px-5 sm:py-5" aria-label={mediaCategoryLabel(cat)}>
-              <div class="mb-3 flex items-baseline gap-2">
-                <h3 class="text-[14px] font-semibold text-on-surface">{mediaCategoryLabel(cat)}</h3>
-                <span class="text-[12px] tabular-nums text-on-surface-variant/70">{catItems.length}건</span>
-              </div>
-              <ul class="space-y-2.5">
-                {catItems.map((item) => {
-                  const ch = mediaChannelById(item.data.channel);
-                  const watch = youtubeWatchUrl(item.data.youtubeId);
-                  const thumb = youtubeThumbUrl(item.data.youtubeId);
-                  return (
-                    <li>
-                      <a
-                        href={watch}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="flex gap-3 rounded-md3-sm border-l-[3px] border-l-outline-variant/80 bg-surface-container-low/30 px-3 py-3 transition hover:bg-surface-container/80"
-                      >
-                        <div class="relative h-14 w-24 shrink-0 overflow-hidden rounded-md3-sm bg-surface-container">
-                          <img
-                            src={thumb}
-                            alt=""
-                            width={192}
-                            height={108}
-                            class="h-full w-full object-cover"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div class="min-w-0 flex-1">
-                          <p class="text-[11px] text-on-surface-variant">
-                            {ch?.name}
-                            <span class="mx-1">·</span>
-                            <time datetime={item.data.publishedAt.toISOString()}>
-                              {item.data.publishedAt.toLocaleDateString("ko-KR")}
-                            </time>
-                          </p>
-                          <p class="mt-1 text-[14px] font-medium leading-snug text-on-surface">{item.data.title}</p>
-                          <p class="mt-1 text-[13px] leading-[1.65] text-on-surface-variant">{item.data.why}</p>
-                        </div>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          ))}
-        </div>
-      </section>
-    )
-  }
+                            <div class="relative h-14 w-24 shrink-0 overflow-hidden bg-surface-container sm:h-16 sm:w-28">
+                              <img
+                                src={thumb}
+                                alt=""
+                                width={256}
+                                height={144}
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div class="min-w-0 flex-1">
+                              <div class="flex flex-wrap items-center gap-1.5 font-mono text-[10px] tabular-nums text-on-surface-variant">
+                                <span class="font-medium text-on-surface">{ch?.name}</span>
+                                <span class="opacity-40">·</span>
+                                <span>{mediaCategoryLabel(item.data.category)}</span>
+                                {isHigh && (
+                                  <>
+                                    <span class="opacity-40">·</span>
+                                    <span class="font-semibold text-primary">HIGH</span>
+                                  </>
+                                )}
+                                {item.data.durationSec != null && (
+                                  <>
+                                    <span class="opacity-40">·</span>
+                                    <span>{formatDuration(item.data.durationSec)}</span>
+                                  </>
+                                )}
+                              </div>
+                              <p
+                                class:list={[
+                                  "mt-1 leading-snug text-on-surface",
+                                  isHigh ? "text-[15px] font-semibold" : "text-[14px] font-medium",
+                                ]}
+                              >
+                                {item.data.title}
+                              </p>
+                              <p class="mt-1 text-[13px] leading-[1.65] text-on-surface-variant">{item.data.why}</p>
+                            </div>
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          </section>
+        ) : (
+          <section
+            class="overflow-hidden border border-outline-variant/50 bg-surface-container-lowest"
+            aria-label="주제 테이프"
+          >
+            <div class="flex items-baseline justify-between border-b border-outline-variant/40 px-4 py-2.5 sm:px-5">
+              <h2 class="text-[13px] font-semibold text-on-surface">주제별</h2>
+              <p class="font-mono text-[10px] tabular-nums text-on-surface-variant">{agendaItems.length}</p>
+            </div>
+            <div class="divide-y divide-outline-variant/30">
+              {agendaByTopic.map(([cat, catItems]) => (
+                <section class="px-4 py-4 sm:px-5" aria-label={mediaCategoryLabel(cat)}>
+                  <div class="mb-2.5 flex items-baseline gap-2">
+                    <h3 class="text-[13px] font-semibold text-on-surface">{mediaCategoryLabel(cat)}</h3>
+                    <span class="font-mono text-[11px] tabular-nums text-on-surface-variant/70">
+                      {catItems.length}
+                    </span>
+                  </div>
+                  <ul class="space-y-2">
+                    {catItems.map((item) => {
+                      const ch = mediaChannelById(item.data.channel);
+                      const watch = youtubeWatchUrl(item.data.youtubeId);
+                      const thumb = youtubeThumbUrl(item.data.youtubeId);
+                      return (
+                        <li>
+                          <a
+                            href={watch}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="flex gap-3 border-l-[3px] border-l-outline-variant/70 px-3 py-2.5 transition hover:bg-surface-container/80"
+                          >
+                            <div class="relative h-14 w-24 shrink-0 overflow-hidden bg-surface-container">
+                              <img
+                                src={thumb}
+                                alt=""
+                                width={192}
+                                height={108}
+                                class="h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div class="min-w-0 flex-1">
+                              <p class="font-mono text-[10px] tabular-nums text-on-surface-variant">
+                                {ch?.name}
+                                <span class="mx-1 opacity-40">·</span>
+                                <time datetime={item.data.publishedAt.toISOString()}>
+                                  {item.data.publishedAt.toLocaleDateString("ko-KR")}
+                                </time>
+                              </p>
+                              <p class="mt-1 text-[14px] font-medium leading-snug text-on-surface">
+                                {item.data.title}
+                              </p>
+                              <p class="mt-1 text-[13px] leading-[1.65] text-on-surface-variant">
+                                {item.data.why}
+                              </p>
+                            </div>
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </div>
 
-  <aside class="mt-8 rounded-[16px] border border-outline-variant/40 bg-surface-container-low/25 px-4 py-4">
-    <h2 class="text-sm font-semibold text-on-surface">신뢰 채널</h2>
-    <ul class="mt-3 grid gap-3 sm:grid-cols-2">
+    {/* Watchlist rail — desktop */}
+    <aside
+      class="media-watchlist sticky top-20 mt-6 hidden border border-outline-variant/45 bg-surface-container-lowest/90 p-3.5 lg:mt-0 lg:block"
+      aria-label="채널 워치리스트"
+    >
+      <div class="mb-3 flex items-baseline justify-between gap-2">
+        <h2 class="text-[12px] font-semibold tracking-wide text-on-surface">워치리스트</h2>
+        <span class="font-mono text-[10px] tabular-nums text-on-surface-variant">
+          {MEDIA_CHANNELS.length}
+        </span>
+      </div>
+      <ul class="space-y-0 divide-y divide-outline-variant/30">
+        {
+          MEDIA_CHANNELS.map((ch) => (
+            <li class="py-2.5 first:pt-0 last:pb-0">
+              <a
+                href={ch.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group block"
+              >
+                <p class="text-[13px] font-semibold text-on-surface group-hover:text-primary">{ch.name}</p>
+                <p class="mt-0.5 text-[11px] leading-snug text-on-surface-variant">{ch.blurb}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href={rootPath}
+        class="mt-3 block border-t border-outline-variant/35 pt-3 text-[12px] font-medium text-primary hover:underline"
+      >
+        캘린더 High →
+      </a>
+    </aside>
+  </div>
+
+  {/* Watchlist — mobile */}
+  <details class="mt-6 border border-outline-variant/45 bg-surface-container-low/20 lg:hidden">
+    <summary class="cursor-pointer list-none px-4 py-3 text-[13px] font-semibold text-on-surface [&::-webkit-details-marker]:hidden">
+      <span class="flex items-center justify-between gap-2">
+        워치리스트
+        <span class="font-mono text-[10px] font-normal tabular-nums text-on-surface-variant">
+          {MEDIA_CHANNELS.length}
+        </span>
+      </span>
+    </summary>
+    <ul class="space-y-0 divide-y divide-outline-variant/30 border-t border-outline-variant/35 px-4 pb-3">
       {
         MEDIA_CHANNELS.map((ch) => (
-          <li class="text-[13px] leading-relaxed">
-            <a href={ch.url} target="_blank" rel="noopener noreferrer" class="font-medium text-primary hover:underline">
-              {ch.name}
+          <li class="py-2.5">
+            <a href={ch.url} target="_blank" rel="noopener noreferrer" class="block">
+              <p class="text-[13px] font-semibold text-on-surface">{ch.name}</p>
+              <p class="mt-0.5 text-[11px] leading-snug text-on-surface-variant">{ch.blurb}</p>
             </a>
-            <span class="text-on-surface-variant"> — {ch.blurb}</span>
           </li>
         ))
       }
     </ul>
-  </aside>
+    <a
+      href={rootPath}
+      class="mx-4 mb-3 block border-t border-outline-variant/35 pt-3 text-[12px] font-medium text-primary"
+    >
+      캘린더 High →
+    </a>
+  </details>
+
+  <p class="mt-6 text-[11px] leading-relaxed text-on-surface-variant/80">
+    편집 큐레이션이며 자동 피드가 아닙니다. 투자 권유가 아니며 원본은 YouTube에 있습니다.
+  </p>
 </Base>
+
+<style>
+  @keyframes media-slot-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes media-pulse-glow {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+
+  .media-slot {
+    animation: media-slot-in 0.35s ease both;
+  }
+
+  .media-slot:nth-child(2) {
+    animation-delay: 0.06s;
+  }
+
+  .media-slot:nth-child(3) {
+    animation-delay: 0.12s;
+  }
+
+  .media-pulse-dot {
+    animation: media-pulse-glow 2.4s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-slot,
+    .media-pulse-dot {
+      animation: none;
+    }
+  }
+</style>
