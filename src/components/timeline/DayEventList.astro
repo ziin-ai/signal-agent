@@ -1,5 +1,11 @@
 ---
 import type { TimelineEvent } from "../../lib/timeline";
+import {
+  kindBadgeClass,
+  kindLongLabel,
+  kindShortLabel,
+  kindSurfaceClass,
+} from "../../lib/timeline-kind-styles";
 
 interface Props {
   dayKey: string;
@@ -24,12 +30,6 @@ function withBase(href: string): string {
   if (!href.startsWith("/")) return href;
   return `${rootPath}${href.slice(1)}`;
 }
-
-function kindLabel(kind: string) {
-  if (kind === "post") return "분석";
-  if (kind === "external_event") return "이벤트";
-  return "기타";
-}
 ---
 
 <aside
@@ -45,32 +45,46 @@ function kindLabel(kind: string) {
     events.length === 0 ? (
       <p class="mt-6 text-[13px] leading-relaxed text-on-surface-variant">{emptyHint}</p>
     ) : (
-      <ul class="mt-5 divide-y divide-outline-variant/40">
+      <ul class="mt-4 space-y-2">
         {events.map((ev) => (
-          <li class="py-3.5 first:pt-0 last:pb-0">
-            <p class="text-[11px] text-on-surface-variant">
-              {kindLabel(ev.kind)}
-              {ev.meta?.impact === "high" && <span class="text-warning"> · High</span>}
-            </p>
-            <p class="mt-1 text-[15px] font-semibold leading-snug tracking-[-0.015em] text-on-surface">
-              {ev.href ? (
-                <a
-                  href={withBase(ev.href)}
-                  class="transition-colors hover:text-primary"
-                  {...(ev.href.startsWith("http")
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
+          <li>
+            {ev.href ? (
+              <a
+                href={withBase(ev.href)}
+                class:list={["flex items-start gap-2 rounded-xl px-3 py-2.5 transition-colors", kindSurfaceClass(ev.kind)]}
+                {...(ev.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                <span
+                  class:list={[
+                    "mt-0.5 inline-flex h-4 shrink-0 items-center rounded px-1 text-[9px] font-bold leading-none",
+                    kindBadgeClass(ev.kind),
+                  ]}
                 >
-                  {ev.title}
-                </a>
-              ) : (
-                ev.title
-              )}
-            </p>
-            {ev.summary && (
-              <p class="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-on-surface-variant">
-                {ev.summary}
-              </p>
+                  {kindShortLabel(ev.kind)}
+                </span>
+                <span class="min-w-0">
+                  <span class="block text-[14px] font-semibold leading-snug tracking-[-0.015em]">{ev.title}</span>
+                  <span class="mt-0.5 block text-[10px] opacity-80">
+                    {kindLongLabel(ev.kind)}
+                    {ev.meta?.impact === "high" ? " · High" : ""}
+                  </span>
+                  {ev.summary && (
+                    <span class="mt-1 block line-clamp-2 text-[12px] leading-relaxed opacity-75">{ev.summary}</span>
+                  )}
+                </span>
+              </a>
+            ) : (
+              <div class:list={["flex items-start gap-2 rounded-xl px-3 py-2.5", kindSurfaceClass(ev.kind)]}>
+                <span
+                  class:list={[
+                    "mt-0.5 inline-flex h-4 shrink-0 items-center rounded px-1 text-[9px] font-bold leading-none",
+                    kindBadgeClass(ev.kind),
+                  ]}
+                >
+                  {kindShortLabel(ev.kind)}
+                </span>
+                <span class="text-[14px] font-semibold leading-snug">{ev.title}</span>
+              </div>
             )}
           </li>
         ))}

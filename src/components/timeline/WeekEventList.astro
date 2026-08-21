@@ -1,6 +1,12 @@
 ---
 import type { TimelineEvent } from "../../lib/timeline";
 import { parseLocalIsoKey, weekIsoKeysContaining, weekRangeLabel } from "../../lib/calendar-grid";
+import {
+  kindBadgeClass,
+  kindLongLabel,
+  kindShortLabel,
+  kindSurfaceClass,
+} from "../../lib/timeline-kind-styles";
 
 interface Props {
   /** 이 날짜가 속한 주(일~토)를 표시 */
@@ -44,23 +50,29 @@ function withBase(href: string): string {
   if (!href.startsWith("/")) return href;
   return `${rootPath}${href.slice(1)}`;
 }
-
-function kindLabel(kind: string) {
-  if (kind === "post") return "분석";
-  if (kind === "external_event") return "이벤트";
-  return "기타";
-}
 ---
 
 <aside
   class="flex flex-col rounded-[20px] border border-outline-variant/50 bg-surface-container-lowest p-4 shadow-md3-1 sm:p-5"
   aria-label={`주간 일정 ${rangeLabel}`}
 >
-  <p class="text-[12px] font-medium text-on-surface-variant">이번 주</p>
-  <p class="mt-0.5 text-[15px] font-semibold tracking-[-0.02em] text-on-surface">{rangeLabel}</p>
-  <p class="mt-0.5 text-[11px] tabular-nums text-on-surface-variant/80">
-    {weekEventCount === 0 ? "일정 없음" : `${weekEventCount}건`}
-  </p>
+  <div class="flex flex-wrap items-start justify-between gap-2">
+    <div>
+      <p class="text-[12px] font-medium text-on-surface-variant">이번 주</p>
+      <p class="mt-0.5 text-[15px] font-semibold tracking-[-0.02em] text-on-surface">{rangeLabel}</p>
+      <p class="mt-0.5 text-[11px] tabular-nums text-on-surface-variant/80">
+        {weekEventCount === 0 ? "일정 없음" : `${weekEventCount}건`}
+      </p>
+    </div>
+    <div class="flex items-center gap-1.5 pt-0.5">
+      <span class={`inline-flex h-4 items-center rounded px-1 text-[9px] font-bold ${kindBadgeClass("post")}`}>
+        글
+      </span>
+      <span class={`inline-flex h-4 items-center rounded px-1 text-[9px] font-bold ${kindBadgeClass("external_event")}`}>
+        일정
+      </span>
+    </div>
+  </div>
 
   {
     weekEventCount === 0 ? (
@@ -108,28 +120,51 @@ function kindLabel(kind: string) {
               </div>
 
               {hasEvents && (
-                <ul class="mt-1.5 space-y-1.5 pl-0.5">
+                <ul class="mt-1.5 space-y-1.5">
                   {day.events.map((ev) => (
                     <li>
-                      <p class="text-[13px] font-semibold leading-snug tracking-[-0.01em] text-on-surface">
-                        {ev.href ? (
-                          <a
-                            href={withBase(ev.href)}
-                            class="transition-colors hover:text-primary"
-                            {...(ev.href.startsWith("http")
-                              ? { target: "_blank", rel: "noopener noreferrer" }
-                              : {})}
+                      {ev.href ? (
+                        <a
+                          href={withBase(ev.href)}
+                          class:list={[
+                            "flex items-start gap-1.5 rounded-lg px-2 py-1.5 transition-colors",
+                            kindSurfaceClass(ev.kind),
+                          ]}
+                          {...(ev.href.startsWith("http")
+                            ? { target: "_blank", rel: "noopener noreferrer" }
+                            : {})}
+                        >
+                          <span
+                            class:list={[
+                              "mt-0.5 inline-flex h-4 shrink-0 items-center rounded px-1 text-[9px] font-bold leading-none",
+                              kindBadgeClass(ev.kind),
+                            ]}
                           >
-                            {ev.title}
-                          </a>
-                        ) : (
-                          ev.title
-                        )}
-                      </p>
-                      <p class="text-[10px] text-on-surface-variant">
-                        {kindLabel(ev.kind)}
-                        {ev.meta?.impact === "high" && <span class="text-warning"> · High</span>}
-                      </p>
+                            {kindShortLabel(ev.kind)}
+                          </span>
+                          <span class="min-w-0">
+                            <span class="block text-[13px] font-semibold leading-snug tracking-[-0.01em]">
+                              {ev.title}
+                            </span>
+                            <span class="mt-0.5 block text-[10px] opacity-80">
+                              {kindLongLabel(ev.kind)}
+                              {ev.meta?.impact === "high" ? " · High" : ""}
+                            </span>
+                          </span>
+                        </a>
+                      ) : (
+                        <div class:list={["flex items-start gap-1.5 rounded-lg px-2 py-1.5", kindSurfaceClass(ev.kind)]}>
+                          <span
+                            class:list={[
+                              "mt-0.5 inline-flex h-4 shrink-0 items-center rounded px-1 text-[9px] font-bold leading-none",
+                              kindBadgeClass(ev.kind),
+                            ]}
+                          >
+                            {kindShortLabel(ev.kind)}
+                          </span>
+                          <span class="min-w-0 text-[13px] font-semibold leading-snug">{ev.title}</span>
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>
