@@ -1,40 +1,89 @@
 ---
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
-const policyLinks = [
+const year = new Date().getFullYear();
+
+const exploreLinks = [
+  { href: rootPath, label: "캘린더" },
+  { href: `${rootPath}media`, label: "미디어" },
+  { href: `${rootPath}posts`, label: "블로그" },
+];
+
+const legalLinks = [
   { href: `${rootPath}about`, label: "소개" },
-  { href: `${rootPath}privacy`, label: "개인정보처리방침" },
-  { href: `${rootPath}terms`, label: "이용약관·면책" },
-  { href: `${rootPath}contact`, label: "연락처" },
+  { href: `${rootPath}privacy`, label: "개인정보" },
+  { href: `${rootPath}terms`, label: "이용약관" },
+  { href: `${rootPath}contact`, label: "문의" },
 ];
 ---
 
-<footer class="mt-14 border-t border-outline-variant/80 bg-surface-container-low/80 px-4 py-10 text-sm text-on-surface-variant backdrop-blur-sm">
-  <div class="mx-auto flex w-full max-w-7xl flex-col gap-5">
-    <div class="flex flex-col gap-1">
-      <p class="font-sans text-lg font-bold tracking-[-0.03em] text-on-surface">
-        지인<span class="text-primary">.ai</span>
-      </p>
-      <p class="max-w-2xl text-[13px] leading-relaxed">
-        출처를 붙인 증시·매크로 메모를 올리는 개인 블로그입니다. 투자 권유가 아니며, 손익의 책임은 읽는 분에게 있습니다.
-        <a href={`${rootPath}terms`} class="font-medium text-primary hover:underline">이용약관·면책</a>
-      </p>
+<footer class="mt-16 border-t border-outline-variant/70 bg-surface-container-low/60">
+  <div class="mx-auto w-full max-w-7xl px-4 py-10 md:px-6 md:py-12">
+    <div class="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_auto_auto] md:items-start md:gap-12">
+      <div class="min-w-0 space-y-3">
+        <a
+          href={rootPath}
+          class="inline-flex items-baseline rounded-md3-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          aria-label="지인.ai 홈"
+        >
+          <span class="font-sans text-[1.35rem] font-bold tracking-[-0.04em] text-on-surface">지인</span>
+          <span class="font-sans text-[1.35rem] font-bold tracking-[-0.04em] text-primary">.ai</span>
+          <span class="ml-2 text-[11px] font-medium tracking-wide text-on-surface-variant">내 곁에</span>
+        </a>
+        <p class="max-w-md text-[13px] leading-relaxed text-on-surface-variant">
+          출처를 붙인 증시·매크로 개인 분석.
+          <span class="text-on-surface-variant/80"> 투자 권유가 아닙니다.</span>
+        </p>
+      </div>
+
+      <nav class="space-y-3" aria-label="바로가기">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.08em] text-on-surface-variant/70">
+          바로가기
+        </p>
+        <ul class="space-y-2">
+          {
+            exploreLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm font-medium text-on-surface-variant transition hover:text-primary"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav class="space-y-3" aria-label="정책">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.08em] text-on-surface-variant/70">
+          정책
+        </p>
+        <ul class="space-y-2">
+          {
+            legalLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm font-medium text-on-surface-variant transition hover:text-primary"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
     </div>
-    <nav class="flex flex-wrap gap-x-1 gap-y-1" aria-label="정책 및 소개">
-      {
-        policyLinks.map((link) => (
-          <a href={link.href} class="md-btn-text !min-h-8 !px-2 text-sm">
-            {link.label}
-          </a>
-        ))
-      }
-    </nav>
-    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-outline-variant/60 pt-4 text-xs">
-      <p>
-        문의
-        <a href="mailto:contact@ziin.ai" class="ml-1 font-medium text-primary hover:underline">contact@ziin.ai</a>
-      </p>
-      <p class="text-on-surface-variant/80">© {new Date().getFullYear()} ziin.ai</p>
+
+    <div
+      class="mt-10 flex flex-col gap-3 border-t border-outline-variant/50 pt-5 text-xs text-on-surface-variant sm:flex-row sm:items-center sm:justify-between"
+    >
+      <a href="mailto:contact@ziin.ai" class="font-medium transition hover:text-primary">
+        contact@ziin.ai
+      </a>
+      <p class="tabular-nums text-on-surface-variant/75">© {year} ziin.ai</p>
     </div>
   </div>
 </footer>
