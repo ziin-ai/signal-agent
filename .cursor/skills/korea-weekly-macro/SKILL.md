@@ -132,7 +132,7 @@ src/content/posts/{weekEnd-YYYY-MM-DD}-korea-weekly-macro-w{n}-{thesis-kebab}.md
 ## Step 5: Quality Checklist
 
 - [ ] `weekStart`–`weekEnd`·W주차 명시
-- [ ] 일별 연대기 나열 없음 — **추세·인과** + **콜 · 순위 · 가드레일** (post-from-sources Expert voice)
+- [ ] 일별 연대기 나열 없음 — **추세·인과** + **ziin analysis engine** (오늘의 결론·팩트·시나리오·지인의 판단; post-from-sources)
 - [ ] Signal 2~3 Deep Dive, Noise 축소 — 균등 N대 나열 금지
 - [ ] 주간 수급·지수 **확정 숫자** = sources/fetch 일치
 - [ ] 차주 Key Schedule **KST** 정렬

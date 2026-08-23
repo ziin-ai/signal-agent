@@ -4,15 +4,17 @@ description: >-
   Write a post under src/content/posts from sources or topic research, and when
   the thesis hinges on dated catalysts or milestones, add or update matching
   entries in src/content/events (timeline / 대시보드 외부 이벤트).
-  Enforce expert voice (콜 · 순위 · 가드레일), valid sources[*].type enum only,
-  and AdSense-ready substance (no thin template clones). Evergreen/교육 guides
-  omit shorts by default and require depth. For each new or revised market/
-  research post, generate frontmatter `shorts` unless user opts out or the post
-  is an educational guide. Post body tables must use Markdown GFM pipe syntax
-  (`| col |`), not HTML `<table>`. After saving, validate content (build or
-  schema) then git add/commit/push per _shared/git-publish.md unless opted out.
-  Use when the user provides URLs, source summaries, topics, educational guide
-  requests, or asks to draft or revise analysis posts for this repo.
+  Enforce ziin analysis engine (질문 → 팩트 → 해석 → 시나리오 → 독자 시사점 → 작성자 판단),
+  search-friendly titles, plain language over trader slang, fact/opinion split,
+  valid sources[*].type enum only, and AdSense-ready substance (no thin news
+  mashups). Evergreen/교육 guides omit shorts by default and require depth. For
+  each new or revised market/research post, generate frontmatter `shorts` unless
+  user opts out or the post is an educational guide. Post body tables must use
+  Markdown GFM pipe syntax (`| col |`), not HTML `<table>`. After saving,
+  validate content (build or schema) then git add/commit/push per
+  _shared/git-publish.md unless opted out. Use when the user provides URLs,
+  source summaries, topics, educational guide requests, or asks to draft or
+  revise analysis posts for this repo.
 disable-model-invocation: true
 ---
 
@@ -34,8 +36,8 @@ Before drafting, classify the post. Do not mix daily-template shells into educat
 
 | Mode | When | Shorts | Structure | Tags |
 | --- | --- | --- | --- | --- |
-| **Market / research** | Daily outlook, thematic analysis, issuer deep-dive | Required unless user opts out | Expert voice: **콜 · 순위 · 가드레일** | Topic tags; no need for `교육` |
-| **Evergreen / 교육** | Concept explainers (수급, PER, 사이드카, ETF, 환율…) | **Omit by default** | Framework + worked examples + **가드레일**; FAQ OK if short | Must include **`교육`** |
+| **Market / research** | Daily outlook, thematic analysis, issuer deep-dive | Required unless user opts out | **ziin analysis engine** (아래 Writing Rules) | Topic tags; no need for `교육` |
+| **Evergreen / 교육** | Concept explainers (수급, PER, 사이드카, ETF, 환율…) | **Omit by default** | Framework + worked examples + **확인/포기 조건**; FAQ OK if short | Must include **`교육`** |
 
 ### Evergreen / 교육 depth bar (AdSense / low-value review)
 
@@ -44,18 +46,20 @@ Reviewers treat thin AI-looking pages as low-value. For every `교육` post:
 1. **Hangul body ≥ ~1,800 characters** (excluding frontmatter). Prefer 2,000+ with tables/examples.
 2. Open with a **usable judgment frame** (what mistake the headline causes), not a definition dump.
 3. Include **≥1 worked example or rewrite table** (잘못된 문장 → 다시 쓰기, or numeric toy example).
-4. Include **`## 가드레일`** (when the frame should be abandoned).
+4. Include **`## 확인/포기 조건`** or equivalent (when the frame should be abandoned).
 5. Keep YMYL hygiene: “교육용 참고 / 투자 권유 아님” near the top; no buy/sell targets.
 6. Prefer official/primary URLs in `sources` (`filing` / `report`); news is secondary color.
-7. Do **not** clone yesterday’s daily headings (TL;DR → N대 변수 → FAQ) into guides.
+7. Do **not** clone yesterday’s daily headings into guides; use the evergreen adaptation of the ziin analysis engine.
 8. Reference in-repo: `src/content/posts/2026-07-28-usd-krw-and-korea-equities.md`, `…-how-to-read-foreign-investor-flows.md`.
 
 ### Market / research anti-template bar
 
-1. Lead with a **ranked call**, not an equal “오늘의 5대 변수” deck.
-2. Vary section titles vs the previous same-series post when substance differs.
-3. If two drafts share the same skeleton and only swap dates/numbers, merge or rewrite one — do not ship near-duplicates.
-4. Keep `aiAssisted: true` when AI helped; never set `false` without real human rewrite evidence.
+1. Lead with **오늘의 결론** (answer-first), not a data dump or equal “오늘의 5대 변수” deck.
+2. Every post must include a distinct **작성자 판단** section — not only a mashup of wire headlines.
+3. Vary section titles vs the previous same-series post when substance differs; keep the **7-step engine** order, not yesterday’s cryptic lede.
+4. If two drafts share the same skeleton and only swap dates/numbers, merge or rewrite one — do not ship near-duplicates.
+5. Keep `aiAssisted: true` when AI helped; never set `false` without real human rewrite evidence.
+6. **Do not mass-rewrite old posts** into the new style unless the user asks — apply the engine to **new and newly revised** posts going forward.
 
 ## Inputs To Request
 
@@ -246,55 +250,42 @@ entities:
   product: ["..."]
 ---
 
-## 핵심 요약
+## 오늘의 결론
 
-- ...
+...
 
-![핵심 제품 키비주얼](https://example.com/official/keyvisual.png)
-*공식 IR 자료 키비주얼{{cite:src-1}}*
+## 확인된 사실
 
-## 투자 포인트
+| 지표 | 현재 | 의미 |
+| --- | --- | --- |
+| ... | ... | ... |
+
+## 왜 중요한가
+
+...
+
+## 핵심 변수
 
 1. ...
 2. ...
 
-## 경쟁 구도 비교
+## 시나리오
 
-| 구분 | A사 | B사 | 자사 |
-| --- | --- | --- | --- |
-| 시장 점유율 | 32% | 24% | 18% |
-| 주요 제품 | ... | ... | ... |
-| 차별 포인트 | ... | ... | ... |
+| 시나리오 | 조건 | 함의 |
+| --- | --- | --- |
+| 상승 | ... | ... |
+| 중립 | ... | ... |
+| 하락 | ... | ... |
 
-*자료: 2026 IR 자료 기준{{cite:src-1}}*
+## 독자가 확인할 것
 
-## 가치사슬 흐름
+1. ...
+2. ...
+3. ...
 
-<svg viewBox="0 0 320 80" role="img" aria-label="원료-셀-모듈-팩-출하 가치사슬">
-  <title>가치사슬 단계</title>
-  <desc>원료 → 셀 → 모듈 → 팩 → OEM 출하 단계 흐름</desc>
-  <g fill="none" stroke="currentColor" stroke-width="1.5">
-    <rect x="4"   y="20" width="56" height="40" rx="6"/>
-    <rect x="72"  y="20" width="56" height="40" rx="6"/>
-    <rect x="140" y="20" width="56" height="40" rx="6"/>
-    <rect x="208" y="20" width="56" height="40" rx="6"/>
-  </g>
-  <g fill="currentColor" font-size="11" text-anchor="middle">
-    <text x="32"  y="44">원료</text>
-    <text x="100" y="44">셀</text>
-    <text x="168" y="44">모듈/팩</text>
-    <text x="236" y="44">OEM 출하</text>
-  </g>
-  <g stroke="currentColor" stroke-width="1.5" fill="none">
-    <path d="M60 40 H72"/>
-    <path d="M128 40 H140"/>
-    <path d="M196 40 H208"/>
-  </g>
-</svg>
+## 지인의 판단
 
-## 체크할 리스크
-
-- ...
+...
 
 ## 결론
 
@@ -380,126 +371,171 @@ Reference examples in-repo: `src/content/events/2026-01-15-bok-rate-decision.md`
 
 ## Writing Rules
 
-- Write like a domain expert analyst, not like an assistant
-- Use evidence-backed reasoning tied to `sources`
-- Separate facts from interpretation and scenario assumptions
-- Include downside/risk and disconfirming signals
+- Write as a **personal market analyst** (개인 분석형), not as a news aggregator or assistant
+- Target mix for market/research posts: **팩트 ~30% / 설명 ~25% / 분석 ~30% / 결론 ~15%**
+- Flow: **질문 → 팩트 → 해석 → 시나리오 → 독자가 얻는 것** (not: 데이터 나열 → 암호형 해석 → 압축 결론)
+- Separate **확인된 사실**, **작성자 해석**, **시나리오** with clear headings or labels
+- Include downside/risk via **시나리오** (상승·중립·하락) rather than a single hard prediction
 - Avoid invented numbers, quotes, or claims not supported by sources
 - Prefer Korean prose unless user asks otherwise
-- Create genuinely new synthesis from source facts (do not paraphrase each source one-by-one)
-- Prioritize causal reasoning, implications, and decision relevance over source recap
-- Follow **Report Writing Style** below for typography, emphasis, and readability — this overrides “highlight everything important” instincts
+- Create genuinely new synthesis — cite wires, but the spine must be **지인의 판단**
+- Follow **Report Writing Style** below for typography, plain language, and the ziin analysis engine
 
 ## Report Writing Style
 
-Write like a **sell-side / buy-side research note**: calm, dense, scannable without looking like a highlighted handout. The reader should grasp hierarchy from **headings, tables, and sentence order** — not from bold on every number and ticker.
+Write like a **completed analysis report for general investors**, not a trader memo or wire digest. Hierarchy comes from **search-friendly titles, answer-first lede, labeled fact/opinion blocks, and scenario tables** — not from bold or slang density.
+
+### Positioning (AdSense / YMYL)
+
+- Site identity: **개인 분석형 금융 콘텐츠** — “이 사람이 시장을 풀어 설명한다”
+- Anti-identity: “여러 기사를 AI가 잘 정리한 사이트”
+- Keep YMYL hygiene: 교육·참고 / 투자 권유 아님 near the top or in 결론; no buy/sell targets
+- Apply this engine to **new posts going forward**; do not rewrite the whole archive unless asked
+- Site-level trust pages (소개·작성 원칙·출처 정책·투자 면책·개인정보·약관·문의) are **out of scope for this skill** but recommended for AdSense/YMYL; each post still ends with a short disclaimer in **결론**
 
 ### Tone
 
-- Decisive analyst voice: state **what you prioritize today**, then evidence — not a balanced slide deck of equal bullets
+- **설명형 + 분석형 + 독자 중심 + 근거 중심**
 - Short paragraphs (2–4 sentences); one idea per paragraph
 - Prefer connected prose over bullet stacks when the logic is sequential
-- Avoid hype adjectives unless sourced (“역대급”, “폭등”, “대박”) — use measured verbs: “상회”, “확대”, “부합”, “둔화”
+- Avoid hype adjectives unless sourced (“역대급”, “폭등”, “대박”)
 - Avoid meta-AI phrasing: “읽기 틀”, “한 줄로 정리하면”, “다음과 같이 볼 수 있다”, “종합하면” stacked mechanically
-- Prefer: “우선 …로 본다”, “아직 단정하지 않는다”, “틀리면 이 조건에서 해석을 바꾼다”
+- Prefer: “우선 …로 봅니다”, “단정하지 않습니다”, “이 조건이 나오면 해석을 바꿉니다”
 - Do not bold for emotional punch; bold is a **structural** tool only (see budget below)
 
-### Expert voice (required — anti-generic / anti-AI pattern)
+### Plain language (required — ban cryptic trader slang)
 
-**Market / research posts** must include these three beats **in the body** (heading names may vary):
+Trader shorthand may stay **only** if immediately followed by a plain gloss. Prefer rewriting entirely.
 
-1. **콜 (call)** — Opening 1–3 sentences: a ranked judgment for this piece (what matters most today / this thesis). Numbers come after, not before.
-2. **순위 (priority)** — Explicit hierarchy of drivers (e.g. 1순위 / 감시 / 노이즈, or a 3-row priority table). Do **not** present 4–5 equal “변수” without ranking.
-3. **가드레일 (falsifier)** — One short block: what would make you **change** today’s call (price, flow, event, or data print). Optional: one line linking to the **prior session’s** read if a related post exists (“어제 …로 읽었는데 오늘은 …”).
+| Avoid (암호형) | Prefer (전문용어 + 쉬운 설명) |
+| --- | --- |
+| 기대의 종가 / 다음 층 / 첫날 | 금요일 종가 기준 기대 / 다음 확인 구간 / 연휴 후 첫 거래일 |
+| 이미 깎인 호가 / 호가를 받는다 | 야간선물에 반영된 단기 기대 / 시초가에서 소화한다 |
+| 월요일 테이프 / 현금 창구 | 월요일 현물 거래 / 실제 매수·매도 자금 |
+| 반대 칸의 주간 시나리오 | 다른 방향으로 가는 주간 시나리오 |
+| 서학은 같은 이름을 미국에서 샀다 | 미국 상장 동일 종목(ADR 등) 매수 |
+| 야간선물은 기대를 먼저 깎았다 | KOSPI200 야간선물이 −2.29%로 떨어져 월요일 단기 기대가 낮아진 상태입니다 |
 
-**Evergreen / 교육 posts** adapt the same idea:
+**Rule:** if a sentence would confuse a non-trader reader on first pass, rewrite it.
 
-1. **콜** → the reading mistake this guide corrects (headline trap)
-2. **순위** → ordered checklist / questions (not equal FAQ dump as the spine)
-3. **가드레일** → when to abandon the frame
+### ziin analysis engine (required for market / research)
+
+Every market/research post must hit these beats **in order** (heading names may vary slightly; order must not):
+
+1. **오늘의 질문 / 검색 의도** — `title` and opening frame answer a clear question (예: “월요일 코스피는 무엇을 봐야 하나?”).
+2. **오늘의 결론** — First body section: **2–5 sentences that answer immediately**. Numbers optional here; judgment first.
+3. **확인된 사실** — Sourced facts only. Lead with a **핵심 숫자 표 5–7행** (지표 / 현재 / 의미). Extra figures only when a later section needs them.
+4. **왜 중요한가** — Causal explanation in plain Korean (야간선물 → 현물 시가 → 대형주·수급 등).
+5. **핵심 변수** — 3–5 ranked drivers the reader should watch (not an equal “N대 변수” deck).
+6. **시나리오** — At least **상승 / 중립 / 하락** (or two clear paths + 가드레일). Conditions + implication; not a single point forecast.
+7. **독자가 확인할 것** — Concrete checklist (“그래서 내가 뭘 보면 되지?”). Prefer 3–5 items with what each signal means.
+8. **지인의 판단** — **Required.** Author-only synthesis that wires alone cannot provide. First person OK (“저는 …로 봅니다”). Distinguish from 확인된 사실.
+9. **결론** — 5–10 lines restating answer + what would change the read + disclaimer.
+
+**Evergreen / 교육** adapt the same idea:
+
+1. **오늘의 질문** → the reading mistake this guide corrects  
+2. **확인된 사실 / 정의** → sourced definitions + one worked example  
+3. **왜 중요한가** → when headlines misuse the concept  
+4. **프레임** → ordered checklist  
+5. **반대·한계** → when to abandon the frame  
+6. **독자가 확인할 것**  
+7. **결론**
 
 **Do less by default:**
 
-- Skip FAQ on daily market briefs unless the user asks for SEO/snippet mode
-- Skip “N대 변수” equal lists; merge into ranked sections
-- Quote at most **one** external analyst for the primary call; add one sentence of agreement or dissent — do not stack three broker quotes as the thesis
-- Do not ship a post that only reshuffles a prior daily’s section titles
+- Skip FAQ on daily market briefs unless the user asks for extra snippet Q&A
+- Skip equal “N대 변수” lists; merge into ranked 핵심 변수
+- Quote at most **one** external analyst inside **지인의 판단**; add agreement or dissent — do not stack three broker quotes as the thesis
+- Do not ship a post that only reshuffles prior daily section titles or wires
 
-**Allowed asymmetry:** It is better to be wrong with a clear falsifier than to be “balanced” with no priority.
+**Allowed asymmetry:** Clear author judgment + falsifying scenarios beats “balanced” news mashup with no priority.
+
+### Fact vs interpretation (YMYL)
+
+Never mix fact and opinion in the same unlabeled paragraph when a reader could confuse them.
+
+| Label | Contains |
+| --- | --- |
+| **확인된 사실** | Prices, flows, official prints, dated headlines with `{{cite:}}` |
+| **작성자 해석** / **지인의 판단** | How to read those facts; what *not* to equate (예: 야간선물 % ≠ 월요일 코스피 예상 등락) |
+| **시나리오** | Conditional paths; mark as 시나리오/가정 |
+| **독자가 확인할 것** | Forward checklist, not a prediction |
+
+Example pattern:
+
+> **확인된 사실:** 금요일 코스피 종가 6,912.95, KOSPI200 야간선물 −2.29%.{{cite:src-1}}  
+> **작성자 해석:** 야간선물 −2.29%를 월요일 시가 환산 하락률로 그대로 쓰지 않습니다.  
+> **월요일 확인할 것:** 삼성전자 시가, 외국인 현물 수급, KOSPI200 선물.
+
+### Numbers budget
+
+- **핵심 표에 5–7개** 숫자만 올린다. More numbers ≠ more substance.
+- Put comparable figures in GFM pipe tables (`| 지표 | 현재 | 의미 |`); prose explains *why* and *so what*
+- Repeat a number in prose only when interpreting it — not when re-listing
+- Dump of 10+ index/flow/yield figures in one section is a fail — move extras to appendix-like later paragraphs or cut
 
 ### Emphasis budget (critical)
 
-**Default: no bold in body prose.** Most “important” facts belong in a table, heading, or the opening thesis sentence — not in `**…**`.
+**Default: no bold in body prose.** Most “important” facts belong in a table, heading, or the opening conclusion — not in `**…**`.
 
 | Element | Bold / `<strong>` rule |
 | --- | --- |
 | **Whole post** | Aim for **≤12** bold spans in body (excluding frontmatter). If over budget, cut bold before cutting content |
-| **Opening paragraph** | At most **one** bold phrase (thesis or anchor date). Never bold every metric in the lede |
-| **TL;DR / bullet lists** | Bold **only** tier labels or section lead-ins (`티어 A`, `관전 포인트`) — not tickers, percentages, or amounts repeated in tables |
-| **Body paragraphs** | No bold on numbers, tickers, dates, or “서프라이즈”. Plain text + `{{cite:}}` |
-| **Subheadings (`###`)** | Carry the emphasis; do not repeat the same emphasis in the paragraph below |
-| **GFM tables** | Plain text in cells; `{{cite:src-x}}` allowed per cell when sourced. Use `<strong>` sparingly (see emphasis budget) |
+| **Opening (오늘의 결론)** | At most **one** bold phrase. Never bold every metric in the lede |
+| **Checklist / bullets** | Bold **only** tier labels (`확인된 사실`, `상승 시나리오`) — not tickers or % repeated in tables |
+| **Body paragraphs** | No bold on numbers, tickers, dates. Plain text + `{{cite:}}` |
+| **GFM tables** | Plain text in cells; `{{cite:src-x}}` allowed per cell when sourced |
 | **Blockquotes** | Max **2** per post; no bold inside unless one defined term |
-| **기준일 / disclaimer line** | Plain or italic; do not bold the entire disclaimer |
+| **Disclaimer** | Plain or italic; do not bold the entire disclaimer |
 
-**When bold is allowed (pick one per local context):**
+**Never:** bold a ticker **and** its price **and** the % gap in one sentence; duplicate table figures in bold prose; chain `**A** **B** **C**`.
 
-1. First introduction of a **named framework** the post owns (e.g. `티어 A`) — once per section
-2. A **single** contrarian or disconfirming line in blockquote
-3. Shorts/thumbnail copy (separate from long-form body rules)
+### Structure (default market / research flow)
 
-**Never:**
+1. **Title** — search-friendly (날짜 + 자산/지수 + 핵심 숫자 또는 질문). See Title Policy.  
+2. **오늘의 결론** — answer-first, 2–5 sentences  
+3. **확인된 사실** — 5–7 row table + short prose if needed  
+4. **왜 중요한가** — causal plain-language section  
+5. **핵심 변수** — ranked 3–5  
+6. **테마 심화** (optional) — e.g. 삼성전자·반도체 only when material  
+7. **시나리오** — 상승 / 중립 / 하락 table or short subsections  
+8. **독자가 확인할 것** — 3–5 checklist items  
+9. **지인의 판단** — required author view  
+10. **결론** — restatement + what changes the read + disclaimer  
+11. **출처** — links concentrated here  
 
-- Bold a ticker **and** its OI **and** the % gap **and** the catalyst in one sentence
-- Duplicate table figures in bold prose (“표에 있으면 본문은 해석만”)
-- Chain bold fragments: `**A** **B** **C**` — rewrite as one plain sentence
-- Bold inside FAQ answers except the direct one-word answer if needed
+FAQ is **optional** (Snippet add-on). Daily briefs usually omit FAQ.
 
-### Numbers and tables
+### Before save — style pass
 
-- **Put comparable figures in GFM pipe tables** (`| col |`); prose explains *why* and *so what*
-- **`{{cite:src-x}}` renders in markdown table cells** — append cites on the same row when the figure is sourced
-- Optional: italic caption on the line after the table when prose above does not already cite — e.g. `*출처: 2026 IR 기준{{cite:src-1}}*`
-- If the preceding paragraph already cites the same sources, skip the table caption — do not duplicate
-- Repeat a number in prose only when interpreting it (beat magnitude, revision, surprise vs priced-in) — not when listing
-- Percentages and amounts: plain text in prose (`+33.7%`, `85.6조`) unless the table already shows them
-- Dates: plain (`7/7`, `6/24`) — not `**7/7**`
+1. Count body `**` pairs; if >12, remove bold from numbers/tickers first  
+2. Count distinct figures in the lead table; if >7, cut to the decision-relevant set  
+3. Search body for slang from the plain-language table — rewrite  
+4. Confirm **확인된 사실** vs **지인의 판단** are labeled and not fused  
+5. Confirm **시나리오** has at least two paths with conditions  
+6. Read the opening aloud: if it sounds like a trader chat log, rewrite in explanatory Korean  
 
-### Structure (research note flow)
+### Bad vs good
 
-1. **Lede = 콜:** ranked thesis first (date → call → why now); numbers deferred to table  
-2. **결론 요약:** 3–5 bullets — lead bullet restates the call; then facts  
-3. **순위:** 1순위 / 감시 / 노이즈 (table or short subsections — not equal “5대”)  
-4. **가드레일:** what would falsify today’s call (+ optional prior-day memory)  
-5. **Evidence sections:** tables/visuals near claims; one primary broker quote max for the call  
-6. **리스크:** plain bullets tied to the ranked drivers  
-7. **결론:** 2 paragraphs max; restate call + falsifier — no FAQ unless snippet mode  
+**Bad (암호형 + 숫자 폭격):**
 
-FAQ is **optional** (see Snippet-Oriented Structure). Daily market briefs should usually omit FAQ.
+> 8/23 휴장: 슈퍼위크는 이번 주 이야기고, 월요일 호가는 야간선물 −2.29%다. 기대의 종가·현금 창구·테이프를 본다.
 
-### Before save — emphasis pass
+**Good (검색형 + 결론 먼저):**
 
-1. Count `**` pairs in body; if >12, remove bold from numbers and tickers first  
-2. For each table row, check if the paragraph above/below repeats the same numbers — delete duplication or drop bold from prose  
-3. Read one paragraph aloud: if it sounds like a slide deck, rewrite in plain analyst prose  
+> **제목:** 8월 24일 코스피 전망: KOSPI200 야간선물 −2.29%, 삼성전자는 어떻게 될까?  
+> **오늘의 결론:** 월요일 국내 증시는 금요일 미국 상승보다 KOSPI200 야간선물 −2.29%를 먼저 보는 편이 낫습니다. 다만 야간선물 하락만으로 급락을 단정하지는 않습니다.
 
-### Bad vs good (body prose)
+**Bad (팩트·해석 혼선):**
 
-**Bad (over-highlighted):**
+> 야간선물 −2.29%를 월요일 시가 환산으로 쓰지 않는다.
 
-> **7648** 급락 이후 **LG전자**(**+50%**)·**LG이노텍**(**+34%**)가 **서프라이즈** 후보다.
+**Good (분리):**
 
-**Good (research note):**
-
-> 7648 급락 이후 시장은 메모리 대형주 밸류에이션을 먼저 조정했다. 같은 2분기 시즌에서 컨센 대비 갭이 남은 LG전자(+50%p), LG이노텍(+34%p) 등 비메모리는 상대적 서프라이즈 후보로 보는 시각이 유효하다.
-
-**Bad (TL;DR):**
-
-> - **티어 A**: **LG전자**(**+50%**), **LG이노텍**(**+33.7%**)
-
-**Good (TL;DR):**
-
-> - 티어 A(컨센 갭): LG전자 +50%p, LG이노텍 +33.7%p, 증권 업종 NI +20~42%p{{cite:src-4}}
+> **확인된 사실:** KOSPI200 야간선물 −2.29%.{{cite:src-1}}  
+> **작성자 해석:** 이 수치를 월요일 코스피 예상 등락률로 그대로 적용하지 않습니다.  
+> **확인할 것:** 삼성전자 시가, 외국인 현물 수급, 반도체 동조화.
 
 ## Visual Enrichment Policy
 
@@ -629,46 +665,59 @@ tags: ["실적", "가이던스"]
 
 - Never mention AI, model limitations, or that the text is generated
 - Avoid formulaic phrasing such as "종합하면", "정리하면" repeated mechanically
-- **Expert voice first:** enforce **콜 · 순위 · 가드레일** (Report Writing Style → Expert voice) before filling equal-length sections
-- **Readability over highlighting:** if a fact is already in a table or heading, do not bold it again in prose (see Report Writing Style)
+- **Engine first:** enforce **질문 → 팩트 → 해석 → 시나리오 → 독자 시사점 → 지인의 판단** before filling equal-length wire recaps
+- **Readability over slang and highlighting:** plain language + table-first numbers; if a fact is already in a table, do not bold it again in prose
 - Keep high structural freedom in body sections:
-  - You may rename headings or change order by topic
-  - You may merge/split sections when it improves readability
-  - You are not required to use the exact sample headings
-  - You are not required to use FAQ, “5대 변수”, or equal bullet stacks
-- Keep the analysis decisive but calibrated:
-  - State conviction drivers clearly
-  - Explicitly note uncertainty boundaries and trigger conditions (가드레일)
-- Prioritize insight density over length; remove filler sentences
+  - You may rename headings slightly by topic
+  - You may merge/split **optional** theme sections (예: 삼성전자 심화)
+  - You must **not** drop 오늘의 결론, 확인된 사실, 시나리오, 독자가 확인할 것, 지인의 판단
+  - You are not required to use FAQ or equal “N대 변수” stacks
+- Keep analysis decisive but calibrated:
+  - State the author’s view clearly in **지인의 판단**
+  - Explicitly note scenario conditions that change the read
+- Prioritize insight density over length; remove filler and number dumps
 
 ## Snippet-Oriented Structure (Google Search)
 
-Use this structure **only when** the user asks for SEO visibility, snippet exposure, or search-friendly writing. Default market/research posts use Expert voice + Structure above instead.
+**Default for market/research posts:** titles and openings already follow search-friendly rules below. Use the full FAQ-heavy variant **only when** the user asks for extra SEO/snippet Q&A.
 
-1. Title includes the core query intent
-2. First 1-2 lines answer the core question directly (still include a ranked call)
-3. `## 결론 요약 (TL;DR)` with 2-3 bullets
-4. At least one question-style heading (for example, `## ~인가?`)
-5. Direct answer paragraph immediately below that heading (2-4 sentences)
-6. Supporting bullets or GFM tables with concrete facts
-7. `## 체크할 리스크` or equivalent downside section
-8. `## 자주 묻는 질문 (FAQ)` with short Q/A pairs when relevant
-9. `## 출처` list with source title + URL + date
+1. Title includes the core query intent (날짜 + 지수/종목 + 핵심 변수 or 질문)
+2. First section (**오늘의 결론**) answers the core question directly
+3. At least one reader-facing checklist (**독자가 확인할 것**)
+4. Scenario table or subsections with conditions
+5. Optional: one question-style heading (예: `## 야간선물을 월요일 시가로 환산해도 될까?`) + direct answer paragraph
+6. Optional: `## 자주 묻는 질문 (FAQ)` with short Q/A when the user requests snippet mode
+7. `## 출처` list with source title + URL + date
 
 Guidelines:
 
-- Prioritize answer-first formatting over long introductions
-- Keep paragraphs short and information-dense
-- Prefer lists or GFM tables for scannability when facts are structured
+- Answer-first over long introductions
+- Keep paragraphs short; prefer GFM tables for the 5–7 key facts
 - Align title, opening answer, and section headings to the same search intent
 - Do not promise rankings or guaranteed featured snippets
-- Still include **가드레일** even in snippet mode
+- Still include **시나리오** + **지인의 판단**
 
-## Title Policy (Naver as search / discovery source)
+## Title Policy (search-friendly + Naver as discovery only)
 
-When the agent **finds or triages material via Naver** (e.g. `site:n.news.naver.com`, Naver News economy section, `stock.naver.com/research`), treat Naver as a **pipeline only**. Readers care about market substance, not where it was fetched.
+When the agent **finds or triages material via Naver**, treat Naver as a **pipeline only**. Readers care about market substance, not where it was fetched.
 
-**Do not** put Naver-branded wording in post-facing titles:
+### Search-friendly titles (default)
+
+Prefer titles a general investor would type or click:
+
+| Bad (암호·메모형) | Good (검색·설명형) |
+| --- | --- |
+| `8/23 휴장: 슈퍼위크는 이번 주 이야기고, 월요일 호가는 야간선물 −2.29%다` | `8월 24일 코스피 전망: 야간선물 −2.29%, 삼성전자 주가에 미칠 영향은?` |
+| `기대의 종가·현금 창구` | `코스피 장전 점검: 외국인 수급과 시초가가 가리키는 것` |
+
+Patterns that work:
+
+- `{월일} {지수/종목} 전망: {핵심 숫자}, {질문}?`
+- `{날짜} {테마}: {확인된 사실 한 줄}`
+
+`summary` frontmatter should also be plain-language (1–3 sentences), not trader shorthand.
+
+### Do not put Naver-branded wording in post-facing titles
 
 - Post frontmatter `title`
 - Filename slug (`YYYY-MM-DD-<kebab-topic>.md`)
@@ -676,12 +725,12 @@ When the agent **finds or triages material via Naver** (e.g. `site:n.news.naver.
 
 Avoid phrases such as: `네이버`, `Naver`, `네이버 리서치`, `네이버 경제`, `네이버 헤드라인`, `naver-economy`, `naver-research`.
 
-**Do** derive titles from **content**: anchor-date market character, dominant catalysts, sector/theme, issuer names, macro calendar — same intent as SEO/snippet rules below.
+**Do** derive titles from **content**: anchor-date market character, dominant catalysts, sector/theme, issuer names, macro calendar.
 
 | Bad (source-branded) | Good (content-based) |
 | --- | --- |
-| `네이버 리서치 — 단기 체크: 9천피` | `2026-06-19 코스피 9천피·코스닥 디커플 — 증권사 리서치 단기 체크` |
-| `네이버 경제 헤드라인이 가리키는 MSCI 변수` | `2026-06-20 한국 증시: 9050→MSCI·반도체 쏠림 주간 변수` |
+| `네이버 리서치 — 단기 체크: 9천피` | `2026년 6월 19일 코스피 전망: 9000선과 코스닥 디커플링` |
+| `네이버 경제 헤드라인이 가리키는 MSCI 변수` | `2026년 6월 20일 한국 증시: MSCI·반도체 쏠림이 이번 주 변수인 이유` |
 | `naver-research-short-term-brief.md` | `2026-06-19-kospi-nine-thousand-research-brief.md` (thesis kebab) |
 
 `sources[*].url` may still point to Naver; `sources[*].title` stays the **original report/article headline**.
@@ -705,13 +754,13 @@ Slug rules:
 2. If input is topic (+ optional anchor URLs), run Topic-Driven Research Mode as the primary flow, and apply **Topic mode + anchor URLs** to include anchors as required references within that flow. If topic-only with no anchors, run Topic-Driven Research Mode only.
 3. Draft frontmatter first and validate schema fields — especially **`sources[*].type` enum** (no `data`/`guide`).
 4. For YouTube sources, extract transcript-backed points (or best-effort metadata summary with confidence note).
-5. Draft body sections using source-backed claims and synthesized reasoning; apply **Report Writing Style** (expert voice; emphasis budget; table-first numbers). For evergreen, meet the **depth bar**.
+5. Draft body sections using the **ziin analysis engine** (Report Writing Style): answer-first conclusion, fact table (≤7), plain language, scenarios, reader checklist, **지인의 판단**. For evergreen, meet the **depth bar**.
 6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections. (Evergreen may use 2 strong tables + 1 diagram if denser than three decorative visuals.)
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies. **Skip events for pure evergreen concept guides** unless a concrete calendar catalyst is central.
 8. Add **`shorts`** after `sources` and before `entities` for market/research posts unless opted out; **omit shorts for 교육 guides** unless the user asks. Derive hook/scenes from the finalized thesis; validate against **Shorts** table.
 9. Re-check all source metadata fields and date formats.
 10. Verify visuals: GFM tables have header + separator rows, `{{cite:}}` in cells where sourced, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or HTML `<table>`, citations consistent with prose.
-11. **Emphasis pass:** count body `**` pairs (target ≤12); strip bold from numbers/tickers duplicated in tables; confirm TL;DR and blockquotes follow Report Writing Style.
+11. **Style pass:** emphasis budget; numbers ≤7 in lead table; slang rewrite; fact/opinion labels; scenarios present.
 12. **Schema/build gate:** `pnpm run build` (or content sync) must succeed — fix `InvalidContentEntryDataError` before commit.
 13. Save or update the target post file and any event files.
 14. **Git publish:** [_shared/git-publish.md](../_shared/git-publish.md) — `git add` → `commit` → `push`. 파일 변경 없거나 사용자 "git 생략" 시 skip.
@@ -719,15 +768,16 @@ Slug rules:
 ## Quality checklist (before Final Response)
 
 - [ ] Post mode classified; `교육` tag only on evergreen
-- [ ] Expert voice: 콜 · 순위 · 가드레일 present (adapted for evergreen)
-- [ ] No equal “N대 변수” / no daily FAQ unless snippet mode or evergreen Q&A that stays short
+- [ ] ziin engine: 오늘의 결론 · 확인된 사실 · 시나리오 · 독자가 확인할 것 · 지인의 판단 present (evergreen adapted)
+- [ ] Search-friendly title; plain-language body (no unexplained trader slang)
+- [ ] Lead fact table ≤7 rows; no equal “N대 변수” / no daily FAQ unless requested
+- [ ] Fact vs interpretation labeled; not fused in one unlabeled paragraph
 - [ ] Every `sources[*].type` ∈ allowed enum
 - [ ] Evergreen: body depth bar met; shorts omitted unless requested
 - [ ] Market/research: shorts present unless opted out
 - [ ] Visual enrichment met (or evergreen exception documented)
 - [ ] `pnpm run build` (or equivalent schema check) passed
 - [ ] Git publish done or skip reason recorded
-
 ## Final Response To User
 
 When done, report:

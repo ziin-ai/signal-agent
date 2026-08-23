@@ -101,15 +101,16 @@ disable-model-invocation: true
 
 ## Step 3: Synthesis Rules
 
-- **팩트와 해석 분리**: 수치는 출처와 함께, 전망은 "증권가는 ~", "시나리오상 ~".
-- **인과 > 나열**: "무슨 일이 있었나" 다음에 "코스피/환율/섹터에 왜 중요한가".
-- **상충 신호 명시**: 차익실현 vs 수출 호재처럼 방향이 갈리면 표로 정리.
-- **숫자 금지**: 검색·본문에서 확인되지 않은 지수·%·금액은 쓰지 않는다.
-- **한국어** 분석 톤. AI·생성 언급 금지(본문). frontmatter `aiAssisted: true`는 유지.
-- 기존 레포 톤 참고:
-  - `src/content/posts/2026-05-14-korea-equity-market-daily-summary.md` (장 마감형)
-  - `src/content/posts/2026-06-10-korea-8000-cpi-volatility.md` (장 전·전망형)
-- **제목·파일명:** 네이버 뉴스로 검색·선별해도 [post-from-sources Title Policy](../post-from-sources/SKILL.md#title-policy-naver-as-search--discovery-source) 적용 — `title`·slug·shorts에 `네이버`/`naver-*` 금지, 당일 시장 변수·hook 기준.
+- **ziin analysis engine** ([post-from-sources](../post-from-sources/SKILL.md)): 질문 → 팩트 → 해석 → 시나리오 → 독자 시사점 → 지인의 판단.
+- **팩트와 해석 분리**: 수치는 출처와 함께 라벨링, 전망은 "작성자 해석"·"시나리오"로 구분.
+- **인과 > 나열**: "무슨 일이 있었나" 다음에 "코스피/환율/섹터에 왜 중요한가"를 쉬운 말로.
+- **암호형 트레이더 속어 금지** (테이프·호가·현금 창구 등) — 전문용어 + 쉬운 설명.
+- **핵심 숫자 5~7개**만 표로; 나머지 숫자는 필요할 때만.
+- **상충 신호**는 시나리오 표로 정리 (상승/중립/하락).
+- **확인되지 않은 지수·%·금액 금지.**
+- **한국어** 설명·분석 톤. AI·생성 언급 금지(본문). frontmatter `aiAssisted: true` 유지.
+- **제목:** 검색 친화형 (`{월일} 코스피 전망: …?`). 네이버로 검색해도 [Title Policy](../post-from-sources/SKILL.md#title-policy-search-friendly--naver-as-discovery-only) — `title`·slug·shorts에 `네이버`/`naver-*` 금지.
+- 신규·개정 글에만 새 문체 적용 (전체 아카이브 재작성 금지, 사용자 요청 시 제외).
 
 ## Step 4: Output Modes
 
@@ -120,21 +121,31 @@ disable-model-invocation: true
 ```markdown
 ## {YYYY-MM-DD} 한국 경제·증시 브리핑 ({장전|장중|장마감})
 
-### 콜
-오늘 장의 본체는 … (헤드라인 말고 우선순위 1개)
+### 오늘의 결론
+오늘 장이 답해야 할 질문 + 2~4문장 결론 (숫자 나열 금지)
 
-### 순위
-1. … / 감시: … / 노이즈: …
-
-### 가드레일
-이 신호가 나오면 해석을 바꾼다: …
-
-### 확정 숫자
-| 항목 | 값 | 출처 |
+### 확인된 사실
+| 지표 | 현재 | 의미 |
 | --- | --- | --- |
+| … | … | … |  <!-- 5~7행 -->
 
-### 내일·이번 주 체크
-- ...
+### 핵심 변수
+1. … / 2. … / 3. …
+
+### 시나리오
+| 시나리오 | 조건 | 함의 |
+| --- | --- | --- |
+| 상승 | … | … |
+| 중립 | … | … |
+| 하락 | … | … |
+
+### 독자가 확인할 것
+1. …
+2. …
+3. …
+
+### 지인의 판단
+작성자 고유 해석 3~6문장
 
 ### 출처
 - [제목](URL) — tier N, YYYY-MM-DD
@@ -162,15 +173,19 @@ disable-model-invocation: true
 - 장 전/전망: `YYYY-MM-DD-korea-market-outlook.md` 또는 **당일 thesis** kebab slug (예: `…-msci-week-ahead.md`)
 - 네이버로 헤드라인을 모았어도 slug에 `naver-*` **사용 금지** — 내용 hook으로 kebab 작성
 
-**Body structure (daily):** post-from-sources **Expert Voice** 필수 — 콜·순위·가드레일. FAQ·균등 N대 나열 금지.
+**Body structure (daily):** post-from-sources **ziin analysis engine** 필수. FAQ·균등 N대 나열·암호형 속어 금지.
 
-1. 오프닝 1~2문장: **콜** (오늘 장의 본체)
-2. `## 결론 요약` — 3~5 bullets, 숫자 + 순위 반영
-3. `## 오늘 장에서 확정된 숫자` — GFM 표
-4. `## 우선순위` — 1순위 / 감시 / 노이즈 (균등 N대 변수 표 금지)
-5. `## 수급·섹터` — 표 또는 ASCII/SVG (Visual Enrichment Policy 준수)
-6. `## 가드레일` — 해석을 바꾸는 신호
-7. `## 출처`
+1. 검색 친화형 `title` (날짜 + 코스피/핵심 종목 + 질문 또는 핵심 숫자)
+2. `## 오늘의 결론` — answer-first 2~5문장
+3. `## 확인된 사실` — 핵심 숫자 GFM 표 **5~7행** (지표/현재/의미)
+4. `## 왜 중요한가` — 쉬운 말로 인과
+5. `## 핵심 변수` — 순위 있는 3~5개 (균등 N대 금지)
+6. `## 테마 심화` (선택) — 예: 삼성전자·반도체
+7. `## 시나리오` — 상승 / 중립 / 하락
+8. `## 독자가 확인할 것` — 3~5개 체크리스트
+9. `## 지인의 판단` — **필수** 작성자 고유 분석
+10. `## 결론` + 면책
+11. `## 출처`
 
 `shorts` frontmatter: post-from-sources와 동일 — **`sources` 다음, `entities` 앞**. 사용자가 생략 요청 시만 제외.
 
@@ -194,7 +209,9 @@ Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 sk
 
 작업 완료 전 확인:
 
-- [ ] **콜 · 순위 · 가드레일** 본문에 있음 (균등 N대 변수·일간 FAQ 없음)
+- [ ] **ziin engine:** 오늘의 결론 · 확인된 사실 · 시나리오 · 독자가 확인할 것 · 지인의 판단
+- [ ] 검색 친화형 제목; 암호형 속어 없음; 핵심 표 ≤7행
+- [ ] 팩트/해석 라벨 분리; 균등 N대 변수·일간 FAQ 없음
 - [ ] 직전 동일 시리즈 글과 **제목/섹션 골격이 복붙이 아님**
 - [ ] 모든 핵심 숫자가 `sources` 또는 fetch 본문과 일치
 - [ ] 기준일(KST)과 기사 게시일 혼동 없음 (전일 장 / 당일 장 전 구분)
@@ -207,7 +224,7 @@ Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 sk
 ## Final Response To User
 
 1. **기준일·시각대** (KST)
-2. **콜 한 줄** + 1순위 / 감시 / 노이즈
+2. **오늘의 결론 한 줄** + 핵심 변수 3개 + 시나리오 요약
 3. **생성/수정 파일 경로** (Mode B) 또는 브리핑 요약 (Mode A)
 4. **sources shortlist** — 왜 포함했는지 1줄씩
 5. **low-confidence 구간** — 확인 못한 숫자·충돌 보도
@@ -227,7 +244,7 @@ Mode A·C 등 워킹 트리 변경 없으면 skip. 사용자 "git 생략" 시 sk
 ```
 
 ```text
-`korea-daily-news`로 리서치만 — sources YAML 초안이랑 우선순위(콜·감시·노이즈) 표.
+`korea-daily-news`로 리서치만 — sources YAML 초안이랑 핵심 변수·시나리오 표.
 ```
 
 ## Related

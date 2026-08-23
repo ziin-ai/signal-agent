@@ -168,7 +168,7 @@ node .cursor/skills/naver-research-short-term/scripts/fetch-research.mjs --date 
 - [ ] `sources` ≥ 6, 리포트 URL `stock.naver.com/research/...`
 - [ ] `sources[*].type` ∈ allowed enum (`report`/`news` 등 — `data`/`guide` 금지)
 - [ ] 핵심 숫자 = news fetch와 일치
-- [ ] **콜 · 순위 · 가드레일** (post-from-sources Expert voice); 균등 나열·일간 FAQ 골격 복붙 금지
+- [ ] **ziin analysis engine** (post-from-sources): 오늘의 결론·확인된 사실·시나리오·독자 체크·지인의 판단; 균등 나열·일간 FAQ 골격 복붙 금지
 - [ ] visual 3종+, `shorts` 포함(생략 요청 제외)
 - [ ] 공유 포인트 5~8, 중복 모닝 브리프 과다 없음
 - [ ] 투자 권유·미확인 목표가 없음
