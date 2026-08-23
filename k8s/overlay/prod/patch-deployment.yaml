@@ -8,7 +8,7 @@ spec:
   template:
     metadata:
       annotations:
-        ziin.ai/content-rev: 3084197cd123897aea1170f01850bb770d3054ad
+        ziin.ai/content-rev: 87079605dc561be3362235b05e9026c74fe33070
     spec:
       volumes:
         - name: content
