@@ -91,10 +91,6 @@ const consensusLead =
         ? "완화·비둘기 우세"
         : "혼조·관망";
 
-const macroTags = [
-  ...new Set(filtered.flatMap((m) => [...m.data.relatedAssets, ...m.data.tags]).filter(Boolean)),
-].slice(0, 16);
-
 const channelStats = MEDIA_CHANNELS.map((ch) => {
   const channelItems = items.filter((m) => m.data.channel === ch.id);
   const latest = channelItems[0];
@@ -507,35 +503,6 @@ const weekPulse = weekKeyList.map((isoKey) => {
             </tbody>
           </table>
         </div>
-      </section>
-
-      {/* Macro tags */}
-      <section class="media-panel media-macro flex flex-col overflow-hidden" aria-label="매크로 태그">
-        <div class="flex items-center justify-between border-b border-[var(--mt-border)] px-3 py-2">
-          <h2 class="media-panel-label">Macro Tags</h2>
-          <a href={rootPath} class="media-mono text-[10px] text-[var(--mt-accent)] hover:underline">
-            캘린더 ↗
-          </a>
-        </div>
-        <div class="flex flex-wrap gap-1.5 overflow-auto p-3">
-          {
-            macroTags.length === 0 ? (
-              <p class="text-[12px] text-[var(--mt-muted)]">태그 없음</p>
-            ) : (
-              macroTags.map((tag) => (
-                <a
-                  href={`${rootPath}media?day=${encodeURIComponent(selectedDay)}`}
-                  class="media-chip"
-                >
-                  {tag}
-                </a>
-              ))
-            )
-          }
-        </div>
-        <p class="mt-auto border-t border-[var(--mt-border)] px-3 py-2 text-[10px] leading-relaxed text-[var(--mt-muted)]">
-          편집 큐레이션 · 자동 피드 아님 · 투자 권유 아님
-        </p>
       </section>
     </div>
   </div>

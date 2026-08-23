@@ -151,13 +151,7 @@ html.media-terminal body {
 
 .media-bento > .media-watch {
   grid-column: 2;
-  grid-row: 1;
-  border-bottom: none;
-}
-
-.media-bento > .media-macro {
-  grid-column: 2;
-  grid-row: 2;
+  grid-row: 1 / -1;
 }
 
 @media (max-width: 1023px) {
@@ -181,8 +175,7 @@ html.media-terminal body {
 /* Vertical scroll only — never grow a horizontal scrollbar */
 .media-watch > ul,
 .media-tape > div,
-.media-briefs > ul,
-.media-macro > div {
+.media-briefs > ul {
   overflow-x: hidden;
   overflow-y: auto;
   min-width: 0;
