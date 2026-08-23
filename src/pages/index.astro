@@ -1,6 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
+import { getEvents, getPublishedPosts } from "../lib/content";
 import Panel from "../components/ui/Panel.astro";
 import MonthCalendar from "../components/timeline/MonthCalendar.astro";
 import DayEventList from "../components/timeline/DayEventList.astro";
@@ -13,12 +13,8 @@ import {
 
 export const prerender = false;
 
-const allPosts = await getCollection("posts");
-const posts =
-  allPosts.filter((post) => post.data.draft !== true).length > 0
-    ? allPosts.filter((post) => post.data.draft !== true)
-    : allPosts;
-const externalEvents = await getCollection("events");
+const posts = await getPublishedPosts();
+const externalEvents = await getEvents();
 
 const publishedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const symbolSearchEntries = buildSymbolSearchEntries(publishedPosts, externalEvents);

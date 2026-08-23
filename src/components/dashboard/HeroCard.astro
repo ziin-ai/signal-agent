@@ -1,10 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { render } from "astro:content";
 import Panel from "../ui/Panel.astro";
-import CitationBadge from "../post/CitationBadge.astro";
 import MarkdownViewer from "../post/MarkdownViewer.astro";
 import PostTrustMeta from "../post/PostTrustMeta.astro";
+import { renderPostHtml } from "../../lib/content";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -16,7 +15,7 @@ const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 const bodySectionId = `hero-body-${slug}`;
 const summary = post.data.summary;
-const { Content } = await render(post);
+const html = await renderPostHtml(post);
 const publishedDate = post.data.date.toLocaleDateString("ko-KR", {
   year: "numeric",
   month: "2-digit",
@@ -93,7 +92,7 @@ const yahooFinanceUrl = yahooSymbol
       class="relative min-h-0 max-h-[360px] overflow-hidden opacity-100 transition-[max-height] duration-300 ease-out lg:max-h-none"
       data-dashboard-body-content
     >
-      <MarkdownViewer Content={Content} components={{ CitationBadge }} />
+      <MarkdownViewer html={html} />
       <div
         class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-surface-container-lowest to-transparent dark:from-surface-container-low"
         data-dashboard-body-fade={bodySectionId}

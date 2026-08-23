@@ -45,9 +45,9 @@ git log -5 --oneline
 
 ### 3. Commit message
 
-**Before commit when posts/events changed:** run `pnpm run build` (or confirm Astro content sync has no `InvalidContentEntryDataError`). Fix schema failures first — especially illegal `sources[*].type` values (`data`, `guide`, etc. are forbidden; see post-from-sources Schema Guardrails).
+**Before commit when posts/events/media changed:** run `pnpm content:validate` (disk schema loader). Full `pnpm run build` is only required when app code changed. Fix schema failures first — especially illegal `sources[*].type` values (`data`, `guide`, etc. are forbidden; see post-from-sources Schema Guardrails).
 
-Do not `git commit` a broken content collection that fails the build.
+Do not `git commit` content that fails `pnpm content:validate`.
 
 HEREDOC 사용. **why** 중심, 1~2문장. 스킬·날짜·주제 반영.
 

@@ -1,14 +1,15 @@
 ---
 interface Props {
-  Content: any;
+  html?: string;
+  Content?: any;
   components?: Record<string, any>;
 }
 
-const { Content, components = {} } = Astro.props;
+const { html, Content, components = {} } = Astro.props;
 ---
 
 <article class="markdown-viewer">
-  <Content components={components} />
+  {html ? <Fragment set:html={html} /> : Content ? <Content components={components} /> : null}
 </article>
 
 <style>

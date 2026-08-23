@@ -6,7 +6,27 @@ metadata:
 spec:
   replicas: 2
   template:
+    metadata:
+      annotations:
+        ziin.ai/content-rev: latest
     spec:
+      volumes:
+        - name: content
+          emptyDir: {}
+      initContainers:
+        - name: content
+          image: ghcr.io/ziin-ai/signal-agent-content:latest
+          imagePullPolicy: Always
+          command: ["sh", "-c", "cp -a /content/. /shared/"]
+          volumeMounts:
+            - name: content
+              mountPath: /shared
       containers:
         - name: web
           imagePullPolicy: Always
+          env:
+            - name: CONTENT_ROOT
+              value: /app/content
+          volumeMounts:
+            - name: content
+              mountPath: /app/content

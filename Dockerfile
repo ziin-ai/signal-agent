@@ -32,7 +32,13 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --prod
 
 COPY --from=builder /app/dist ./dist
+COPY src/content ./content-baked
+COPY scripts/web-entrypoint.sh ./scripts/web-entrypoint.sh
+RUN chmod +x ./scripts/web-entrypoint.sh
+
+ENV CONTENT_ROOT=/app/content
+ENV CONTENT_BAKED=/app/content-baked
 
 EXPOSE 4321
 
-CMD ["node", "./dist/server/entry.mjs"]
+CMD ["./scripts/web-entrypoint.sh"]

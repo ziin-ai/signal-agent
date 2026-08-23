@@ -1,29 +1,18 @@
 ---
-import { getCollection, getEntry, render } from "astro:content";
 import Base from "../../layouts/Base.astro";
 import SourceSidebar from "../../components/post/SourceSidebar.astro";
-import CitationBadge from "../../components/post/CitationBadge.astro";
 import MarkdownViewer from "../../components/post/MarkdownViewer.astro";
+import { getPostBySlug, renderPostHtml } from "../../lib/content";
 
-export const prerender = true;
-
-export async function getStaticPaths() {
-  const allPosts = await getCollection("posts");
-  const posts =
-    allPosts.filter((post) => post.data.draft !== true).length > 0
-      ? allPosts.filter((post) => post.data.draft !== true)
-      : allPosts;
-  return posts.map((post) => ({
-    params: { slug: post.id.replace(/\.md$/, "") },
-  }));
-}
+export const prerender = false;
 
 const slug = Astro.params.slug ?? "";
-const post = await getEntry("posts", slug);
+const post = await getPostBySlug(slug);
 if (!post) {
-  throw new Error(`Post not found for slug: ${slug}`);
+  return new Response("Not Found", { status: 404, headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }
-const { Content } = await render(post);
+const html = await renderPostHtml(post);
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
 ---
 
 <Base
@@ -36,7 +25,7 @@ const { Content } = await render(post);
       <h1 class="mb-2 font-sans text-3xl font-semibold tracking-tight">{post.data.title}</h1>
       <p class="text-sm text-slate-500">{post.data.symbol} · {post.data.date.toLocaleDateString("ko-KR")}</p>
       <div class="mt-3">
-        <MarkdownViewer Content={Content} components={{ CitationBadge }} />
+        <MarkdownViewer html={html} />
       </div>
     </article>
     <div class="space-y-4 lg:sticky lg:top-4 lg:self-start">

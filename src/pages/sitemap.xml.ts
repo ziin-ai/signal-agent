@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
+import { getPublishedPosts } from "../lib/content";
 
 function toIsoDate(date: Date): string {
   return date.toISOString().split("T")[0]!;
@@ -7,8 +7,7 @@ function toIsoDate(date: Date): string {
 
 export const GET: APIRoute = async ({ site }) => {
   const origin = site?.toString().replace(/\/$/, "") ?? "https://ziin.ai";
-  const posts = await getCollection("posts");
-  const published = posts.filter((p) => p.data.draft !== true);
+  const published = await getPublishedPosts();
 
   const staticUrls = [
     { loc: `${origin}/`, lastmod: undefined },
@@ -53,6 +52,7 @@ ${entries
   return new Response(xml, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
     },
   });
 };

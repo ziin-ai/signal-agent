@@ -1,0 +1,4 @@
+# Content-only image. Copied into the web pod at /app/content so markdown
+# updates do not require rebuilding the Node app image.
+FROM alpine:3.21
+COPY src/content /content

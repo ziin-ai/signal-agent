@@ -1,6 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { getCollection } from "astro:content";
+import { getEvents, getPublishedPosts } from "../../lib/content";
 import HeroCard from "../../components/dashboard/HeroCard.astro";
 import TrustCard from "../../components/dashboard/TrustCard.astro";
 import DashboardTimelineInteractive from "../../components/dashboard/DashboardTimelineInteractive";
@@ -11,26 +11,12 @@ import {
   resolveDashboardTimelineFilters,
 } from "../../lib/dashboard-event-filters";
 
-export const prerender = true;
-
-export async function getStaticPaths() {
-  const allPosts = await getCollection("posts");
-  const posts =
-    allPosts.filter((post) => post.data.draft !== true).length > 0
-      ? allPosts.filter((post) => post.data.draft !== true)
-      : allPosts;
-  return posts.map((post) => ({
-    params: { slug: post.id.replace(/\.md$/, "") },
-  }));
-}
+export const prerender = false;
 
 const requestedPost = Astro.params.slug?.trim();
-const allPosts = await getCollection("posts");
-const posts =
-  allPosts.filter((post) => post.data.draft !== true).length > 0
-    ? allPosts.filter((post) => post.data.draft !== true)
-    : allPosts;
-const externalEvents = await getCollection("events");
+const posts = await getPublishedPosts();
+const externalEvents = await getEvents();
+Astro.response.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
 
 const publishedPosts = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const latestPost = publishedPosts[0];

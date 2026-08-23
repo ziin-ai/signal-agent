@@ -1,6 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
+import { getMedia, selectPublished } from "../lib/content";
 import { localIsoKey, weekIsoKeysContaining } from "../lib/calendar-grid";
 import {
   MEDIA_CHANNELS,
@@ -17,9 +17,7 @@ import "../styles/media-terminal.css";
 
 export const prerender = false;
 
-const allMedia = await getCollection("media");
-const items = allMedia
-  .filter((m) => m.data.draft !== true)
+const items = selectPublished(await getMedia())
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
 
 const categoryOptions = [...new Set(items.map((m) => m.data.category))].sort();
