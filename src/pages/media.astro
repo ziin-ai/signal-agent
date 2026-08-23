@@ -144,6 +144,14 @@ function formatTapeTime(d: Date): string {
   });
 }
 
+function formatTapeDate(d: Date): string {
+  return d.toLocaleDateString("ko-KR", {
+    timeZone: "Asia/Seoul",
+    month: "2-digit",
+    day: "2-digit",
+  });
+}
+
 function formatDayShort(isoKey: string): string {
   const [y, m, d] = isoKey.split("-").map(Number);
   const date = new Date(y!, m! - 1, d!);
@@ -427,8 +435,8 @@ const weekPulse = weekKeyList.map((isoKey) => {
           <table class="w-full table-fixed border-collapse text-left">
             <thead class="sticky top-0 bg-[var(--mt-surface)]">
               <tr class="media-mono text-[10px] uppercase tracking-wide text-[var(--mt-muted)]">
-                <th class="w-[3.25rem] border-b border-[var(--mt-border)] px-2 py-1.5 font-medium sm:w-[4rem] sm:px-3">
-                  시간
+                <th class="w-[3.75rem] border-b border-[var(--mt-border)] px-2 py-1.5 font-medium sm:w-[5rem] sm:px-3">
+                  게시
                 </th>
                 <th class="w-[4.5rem] border-b border-[var(--mt-border)] px-1 py-1.5 font-medium sm:w-[6.5rem] sm:px-2">
                   채널
@@ -457,8 +465,9 @@ const weekPulse = weekKeyList.map((isoKey) => {
                     const assets = item.data.relatedAssets.slice(0, 3);
                     return (
                       <tr class="media-tape-row border-b border-[var(--mt-border)]/80 hover:bg-[color-mix(in_oklab,var(--mt-accent)_5%,transparent)]">
-                        <td class="media-mono whitespace-nowrap px-2 py-2 text-[11px] text-[var(--mt-text-2)] sm:px-3">
-                          {formatTapeTime(item.data.publishedAt)}
+                        <td class="media-mono whitespace-nowrap px-2 py-2 text-[11px] leading-tight text-[var(--mt-text-2)] sm:px-3">
+                          <span class="block">{formatTapeDate(item.data.publishedAt)}</span>
+                          <span class="block text-[var(--mt-muted)]">{formatTapeTime(item.data.publishedAt)}</span>
                         </td>
                         <td
                           class="media-mono truncate px-1 py-2 text-[11px] text-[var(--mt-text)] sm:px-2"
