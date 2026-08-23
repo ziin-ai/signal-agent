@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "Kansas City Fed 주최 Jackson Hole Economic Policy Symposium(8/27–29). 주제는 Financial Innovation: Implications for Payments and Policy. 연준·주요 중앙은행 발언이 국채·달러·반도체 밸류에 전이. 같은 날 한은 금통위·NVDA 실적 여파와 겹친다."
+summary: "Kansas City Fed 주최 Jackson Hole Economic Policy Symposium(8/27–29). 케빈 워시 기조연설은 8/28(한국시간 밤 11시). 개막일·연설일을 한 날짜로 합치지 않는다. 같은 주 한은 금통위·NVDA 실적 여파와 겹친다."
 sourceUrl: "https://www.kansascityfed.org/research/jackson-hole-economic-symposium/"
 tags: ["잭슨홀", "Fed", "금리", "매크로", "달러"]
 ---
