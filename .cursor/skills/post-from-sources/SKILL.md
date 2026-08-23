@@ -4,10 +4,13 @@ description: >-
   Write a post under src/content/posts from sources or topic research, and when
   the thesis hinges on dated catalysts or milestones, add or update matching
   entries in src/content/events (timeline / 대시보드 외부 이벤트).
-  Enforce ziin analysis engine (질문 → 팩트 → 해석 → 시나리오 → 독자 시사점 → 작성자 판단),
-  search-friendly titles, plain language over trader slang, fact/opinion split,
-  valid sources[*].type enum only, and AdSense-ready substance (no thin news
-  mashups). Evergreen/교육 guides omit shorts by default and require depth. For
+  Enforce ziin analysis engine (해석·의견 중심; 단순 데이터 요약 금지),
+  anti-AI template voice (no greeting/3-bullet shells), first-person analyst tone,
+  causal drivers + author scenarios, evergreen concept block on daily posts,
+  Hangul body ≥ ~1,200–1,500 for market posts, search-friendly titles, plain
+  language over trader slang, fact/opinion split, valid sources[*].type enum
+  only, and AdSense-ready substance (no thin news mashups). Evergreen/교육
+  guides omit shorts by default and require depth. For
   each new or revised market/research post, generate frontmatter `shorts` unless
   user opts out or the post is an educational guide. Post body tables must use
   Markdown GFM pipe syntax (`| col |`), not HTML `<table>`. After saving,
@@ -54,12 +57,15 @@ Reviewers treat thin AI-looking pages as low-value. For every `교육` post:
 
 ### Market / research anti-template bar
 
-1. Lead with **오늘의 결론** (answer-first), not a data dump or equal “오늘의 5대 변수” deck.
-2. Every post must include a distinct **작성자 판단** section — not only a mashup of wire headlines.
-3. Vary section titles vs the previous same-series post when substance differs; keep the **7-step engine** order, not yesterday’s cryptic lede.
-4. If two drafts share the same skeleton and only swap dates/numbers, merge or rewrite one — do not ship near-duplicates.
-5. Keep `aiAssisted: true` when AI helped; never set `false` without real human rewrite evidence.
-6. **Do not mass-rewrite old posts** into the new style unless the user asks — apply the engine to **new and newly revised** posts going forward.
+1. Lead with **해석이 담긴 결론** (answer-first) — not “야간선물 +0.5% → 오늘 상승 출발”급 사실 전달.
+2. Every post must include distinct **작성자 판단** + at least one **독자적 분석 각도** (갭 메움 관점, 과거 유사 사례, 장중 30분 대응 등) — not only a wire mashup.
+3. Ban AI-shell voice: no greeting/개요 인사, no fixed “서론 → 불렛 3개 → 요약 당부”, no textbook “정리하면/다음과 같습니다” stacks.
+4. Every market post ends with a short **개념·원리** block (에버그린) so the page keeps value after the news day ages.
+5. Hangul body (excluding frontmatter) **≥ ~1,200 characters**; prefer **1,500+**. Thin date-only notes fail.
+6. Vary section titles vs the previous same-series post when substance differs; keep engine order, not yesterday’s cryptic lede.
+7. If two drafts share the same skeleton and only swap dates/numbers, merge or rewrite one.
+8. Keep `aiAssisted: true` when AI helped; never set `false` without real human rewrite evidence.
+9. **Do not mass-rewrite old posts** unless the user asks — apply to **new and newly revised** posts.
 
 ## Inputs To Request
 
@@ -254,36 +260,33 @@ entities:
 
 ...
 
-## 확인된 사실
+## 핵심 팩트
 
 | 지표 | 현재 | 의미 |
 | --- | --- | --- |
 | ... | ... | ... |
 
-## 왜 중요한가
+## 배경 동인
 
 ...
 
-## 핵심 변수
-
-1. ...
-2. ...
-
-## 시나리오
+## 데이터 시나리오
 
 | 시나리오 | 조건 | 함의 |
 | --- | --- | --- |
-| 상승 | ... | ... |
-| 중립 | ... | ... |
-| 하락 | ... | ... |
+| 갭 유지 | ... | ... |
+| 갭 메움 | ... | ... |
+| 추가 약세/강세 | ... | ... |
 
-## 독자가 확인할 것
+## 투자자 유의점
 
-1. ...
-2. ...
-3. ...
+...
 
 ## 지인의 판단
+
+...
+
+## 개념 노트
 
 ...
 
@@ -371,37 +374,58 @@ Reference examples in-repo: `src/content/events/2026-01-15-bok-rate-decision.md`
 
 ## Writing Rules
 
-- Write as a **personal market analyst** (개인 분석형), not as a news aggregator or assistant
-- Target mix for market/research posts: **팩트 ~30% / 설명 ~25% / 분석 ~30% / 결론 ~15%**
-- Flow: **질문 → 팩트 → 해석 → 시나리오 → 독자가 얻는 것** (not: 데이터 나열 → 암호형 해석 → 압축 결론)
+- Write as a **personal market analyst** (개인 분석형), not as a news aggregator, assistant, or wire rewriter
+- Target mix for market/research: **팩트 ~25% / 설명(개념·인과) ~25% / 분석·의견 ~35% / 결론 ~15%**
+- Flow: **핵심 팩트 → 배경 동인(인과) → 데이터 시나리오 → 투자자 유의점 → 지인의 판단 → 개념(에버그린)**
+- **현상 : 해석 = 1 : 1** — every factual paragraph (or table row cluster) must be followed by author interpretation; bare fact dumps fail
 - Separate **확인된 사실**, **작성자 해석**, **시나리오** with clear headings or labels
-- Include downside/risk via **시나리오** (상승·중립·하락) rather than a single hard prediction
-- Avoid invented numbers, quotes, or claims not supported by sources
+- Include downside via **시나리오** (갭 유지 vs 갭 메움, 상승·중립·하락) — not a single hard call
+- Avoid invented numbers, quotes, or claims not supported by sources; if citing “과거 유사 갭”/통계, source it or mark as **작성자 경험·가정**
 - Prefer Korean prose unless user asks otherwise
-- Create genuinely new synthesis — cite wires, but the spine must be **지인의 판단**
-- Follow **Report Writing Style** below for typography, plain language, and the ziin analysis engine
+- Spine must be **지인의 판단** + causal explanation — cites are evidence, not the article
+- Market posts: Hangul body **≥ ~1,200** (prefer **1,500+**) excluding frontmatter
+- Follow **Report Writing Style** below
 
 ## Report Writing Style
 
-Write like a **completed analysis report for general investors**, not a trader memo or wire digest. Hierarchy comes from **search-friendly titles, answer-first lede, labeled fact/opinion blocks, and scenario tables** — not from bold or slang density.
+Write like a **completed personal analysis report**, not a news brief, trader memo, or ChatGPT outline. Hierarchy comes from **search-friendly titles, causal narrative, scenario tables, first-person judgment, and an evergreen concept block** — not from bold, slang, or bullet shells.
 
 ### Positioning (AdSense / YMYL)
 
 - Site identity: **개인 분석형 금융 콘텐츠** — “이 사람이 시장을 풀어 설명한다”
-- Anti-identity: “여러 기사를 AI가 잘 정리한 사이트”
-- Keep YMYL hygiene: 교육·참고 / 투자 권유 아님 near the top or in 결론; no buy/sell targets
-- Apply this engine to **new posts going forward**; do not rewrite the whole archive unless asked
-- Site-level trust pages (소개·작성 원칙·출처 정책·투자 면책·개인정보·약관·문의) are **out of scope for this skill** but recommended for AdSense/YMYL; each post still ends with a short disclaimer in **결론**
+- Anti-identity: “여러 기사를 AI가 잘 정리한 사이트” / “야간선물 숫자만 바꿔 쓴 일일 요약”
+- Thin date-only market notes age out fast in review — every daily post must leave **reusable concept value**
+- Keep YMYL hygiene: 교육·참고 / 투자 권유 아님 in 결론; no buy/sell targets
+- Apply to **new posts going forward**; do not rewrite the whole archive unless asked
+- Site-level trust pages remain **out of scope for this skill**; post-page 작성/면책 chrome is not required in body
 
-### Tone
+### Tone (anti-AI template)
 
-- **설명형 + 분석형 + 독자 중심 + 근거 중심**
-- Short paragraphs (2–4 sentences); one idea per paragraph
-- Prefer connected prose over bullet stacks when the logic is sequential
+- **해석·의견 중심** + 1인칭 분석가 어조 (“저는 …로 봅니다”, “실제 투자 관점에서는…”, “비슷한 갭을 볼 때 저는…”)
+- Open on **핵심 데이터 + 시장 맥락** — no greeting, no “오늘은 ~를 살펴보겠습니다”, no formal 서론
+- Short paragraphs (2–4 sentences); one idea per paragraph; prefer connected prose over bullet stacks
+- Ban rigid shell: **서론(개요/인사) → 본문 불렛 3개 → 결론(요약·당부)**
 - Avoid hype adjectives unless sourced (“역대급”, “폭등”, “대박”)
-- Avoid meta-AI phrasing: “읽기 틀”, “한 줄로 정리하면”, “다음과 같이 볼 수 있다”, “종합하면” stacked mechanically
+- Avoid meta-AI phrasing: “읽기 틀”, “한 줄로 정리하면”, “다음과 같이 볼 수 있다”, “종합하면”, “정리하면”, “요약하면” stacked mechanically
 - Prefer: “우선 …로 봅니다”, “단정하지 않습니다”, “이 조건이 나오면 해석을 바꿉니다”
 - Do not bold for emotional punch; bold is a **structural** tool only (see budget below)
+
+### Ban: thin fact-forward copy
+
+These patterns are **low-quality / undifferentiated** from news & broker notes — rewrite before shipping:
+
+| Fail (단순 전달) | Pass (인과 + 작성자 관점) |
+| --- | --- |
+| 야간선물이 0.5% 올라 오늘 코스피는 상승 출발할 것으로 보입니다 | 갭의 **원인**(미 증시 섹터·매크로·환율 등)을 밝히고, 시초가 이후 **갭 유지 vs 갭 메움**을 어떤 수급으로 판별할지 제시 |
+| 외인이 순매수했습니다. 따라서 긍정적입니다 | 어느 업종/선물·현물인지 분리하고, 프로그램·현물 창구 조건과 작성자 시나리오를 연결 |
+| 오늘의 3가지 포인트: … | 순위를 가진 인과 서술 + 표; equal bullet deck 금지 |
+
+**Required author value (pick ≥1 per post, ideally 2+):**
+
+- Gap cause chain (글로벌 매크로, 빅테크 실적, 환율, 섹터 디커플 등)
+- Gap-fill / hold scenario with **observable** checks (외국인 선물 순매수, 시초가 이후 30분 등)
+- Past analogous episode — only if sourced or explicitly labeled as author memory/hypothesis
+- “장 초반 30분” 등 실전 관점의 유의점 (권유·목표가 없이)
 
 ### Plain language (required — ban cryptic trader slang)
 
@@ -422,34 +446,36 @@ Trader shorthand may stay **only** if immediately followed by a plain gloss. Pre
 
 Every market/research post must hit these beats **in order** (heading names may vary slightly; order must not):
 
-1. **오늘의 질문 / 검색 의도** — `title` and opening frame answer a clear question (예: “월요일 코스피는 무엇을 봐야 하나?”).
-2. **오늘의 결론** — First body section: **2–5 sentences that answer immediately**. Numbers optional here; judgment first.
-3. **확인된 사실** — Sourced facts only. Lead with a **핵심 숫자 표 5–7행** (지표 / 현재 / 의미). Extra figures only when a later section needs them.
-4. **왜 중요한가** — Causal explanation in plain Korean (야간선물 → 현물 시가 → 대형주·수급 등).
-5. **핵심 변수** — 3–5 ranked drivers the reader should watch (not an equal “N대 변수” deck).
-6. **시나리오** — At least **상승 / 중립 / 하락** (or two clear paths + 가드레일). Conditions + implication; not a single point forecast.
-7. **독자가 확인할 것** — Concrete checklist (“그래서 내가 뭘 보면 되지?”). Prefer 3–5 items with what each signal means.
-8. **지인의 판단** — **Required.** Author-only synthesis that wires alone cannot provide. First person OK (“저는 …로 봅니다”). Distinguish from 확인된 사실.
-9. **결론** — 5–10 lines restating answer + what would change the read + disclaimer.
+1. **오늘의 질문 / 검색 의도** — `title` and opening answer a clear question (**no greeting**).
+2. **오늘의 결론** — **2–5 sentences** with judgment first (not “야간선물 % → 방향” only).
+3. **핵심 팩트** — Sourced facts; lead with a **비교 표 5–7행** (지표 / 현재 / 의미). No number dump in prose.
+4. **배경 동인** — **Why the gap/move happened**: US sector moves, macro prints, FX, earnings, etc. Each fact cluster → interpretation (**현상:해석 = 1:1**).
+5. **데이터 시나리오** — At least **갭 유지 vs 갭 메움** (and/or 상승·중립·하락) with **observable** flow checks (외국인 선물·현물, 프로그램 등).
+6. **투자자 유의점** — e.g. first 30 minutes, what *not* to equate; **no buy/sell targets**.
+7. **지인의 판단** — **Required.** First-person author synthesis wires cannot provide.
+8. **개념 노트 (에버그린)** — **Required on daily/market posts.** Teach one reusable idea tied to today’s tape (예: 야간선물·베이시스, 스프레드, 프로그램 매매 유입 조건) so the page keeps value after the news day ages.
+9. **결론** — Restate answer + what would change the read + brief disclaimer (권유 아님).
+10. **출처**
 
-**Evergreen / 교육** adapt the same idea:
+**Evergreen / 교육** (standalone concept guides) adapt:
 
-1. **오늘의 질문** → the reading mistake this guide corrects  
-2. **확인된 사실 / 정의** → sourced definitions + one worked example  
-3. **왜 중요한가** → when headlines misuse the concept  
-4. **프레임** → ordered checklist  
-5. **반대·한계** → when to abandon the frame  
-6. **독자가 확인할 것**  
+1. **오늘의 질문** → reading mistake to correct
+2. **확인된 사실 / 정의** → sourced definitions + worked example
+3. **왜 중요한가** → headline misuse
+4. **프레임** → ordered checklist
+5. **반대·한계** → when to abandon
+6. **독자가 확인할 것**
 7. **결론**
 
 **Do less by default:**
 
-- Skip FAQ on daily market briefs unless the user asks for extra snippet Q&A
-- Skip equal “N대 변수” lists; merge into ranked 핵심 변수
-- Quote at most **one** external analyst inside **지인의 판단**; add agreement or dissent — do not stack three broker quotes as the thesis
-- Do not ship a post that only reshuffles prior daily section titles or wires
+- Skip FAQ on daily briefs unless user asks for snippet Q&A
+- Skip equal “N대 변수” / “오늘의 3포인트” decks
+- Quote at most **one** external analyst inside **지인의 판단**
+- Do not ship posts that only reshuffle prior daily titles or wires
+- Do not ship posts that only restate overnight futures direction
 
-**Allowed asymmetry:** Clear author judgment + falsifying scenarios beats “balanced” news mashup with no priority.
+**Allowed asymmetry:** Clear author judgment + falsifying scenarios beats “balanced” news mashup.
 
 ### Fact vs interpretation (YMYL)
 
@@ -493,49 +519,61 @@ Example pattern:
 
 ### Structure (default market / research flow)
 
-1. **Title** — search-friendly (날짜 + 자산/지수 + 핵심 숫자 또는 질문). See Title Policy.  
-2. **오늘의 결론** — answer-first, 2–5 sentences  
-3. **확인된 사실** — 5–7 row table + short prose if needed  
-4. **왜 중요한가** — causal plain-language section  
-5. **핵심 변수** — ranked 3–5  
-6. **테마 심화** (optional) — e.g. 삼성전자·반도체 only when material  
-7. **시나리오** — 상승 / 중립 / 하락 table or short subsections  
-8. **독자가 확인할 것** — 3–5 checklist items  
-9. **지인의 판단** — required author view  
-10. **결론** — restatement + what changes the read + disclaimer  
-11. **출처** — links concentrated here  
+Align with this template (names may vary; beats must appear):
 
-FAQ is **optional** (Snippet add-on). Daily briefs usually omit FAQ.
+1. **Title** — search-friendly (날짜 + 자산/지수 + 핵심 숫자 또는 질문)
+2. **오늘의 결론** — judgment + why (not direction-only)
+3. **핵심 팩트** — overnight/close levels & gap size in a **비교 표**
+4. **배경 동인** — US sectors, macro, FX, earnings that *caused* the gap
+5. **데이터 시나리오** — 갭 유지 vs 갭 메움 (and/or 상승·중립·하락) + flow checks
+6. **투자자 유의점** — e.g. first-30-minute volatility lens (no advice/targets)
+7. **지인의 판단** — required first-person view
+8. **개념 노트** — evergreen teaching block tied to today’s theme
+9. **결론** + short disclaimer
+10. **출처**
+
+Optional: theme deep-dive (삼성전자 등) between 배경 동인 and 시나리오 when material.
+
+FAQ is **optional**. Daily briefs usually omit FAQ.
 
 ### Before save — style pass
 
-1. Count body `**` pairs; if >12, remove bold from numbers/tickers first  
-2. Count distinct figures in the lead table; if >7, cut to the decision-relevant set  
-3. Search body for slang from the plain-language table — rewrite  
-4. Confirm **확인된 사실** vs **지인의 판단** are labeled and not fused  
-5. Confirm **시나리오** has at least two paths with conditions  
-6. Read the opening aloud: if it sounds like a trader chat log, rewrite in explanatory Korean  
+1. Hangul body length ≥ ~1,200 (prefer 1,500+); if short, expand **배경 동인 / 시나리오 / 개념 노트**, not filler
+2. Count body `**` pairs; if >12, strip bold from numbers/tickers first
+3. Lead table ≤7 rows; no prose number dumps
+4. Every fact block has a matching **해석** sentence/paragraph (1:1)
+5. No AI shell (인사/개요 → 불렛3 → 요약 당부); opening is data+context
+6. **개념 노트** present on market/daily posts
+7. **확인된 사실** vs **지인의 판단** labeled; **시나리오** has ≥2 conditioned paths
+8. Search for thin copy (“야간선물 올라 상승 출발”) and slang — rewrite
+9. Read opening aloud: if it sounds like a wire rewrite or chatbot outline, rewrite
 
 ### Bad vs good
 
-**Bad (암호형 + 숫자 폭격):**
+**Bad (단순 전달 = 뉴스와 무차별):**
 
-> 8/23 휴장: 슈퍼위크는 이번 주 이야기고, 월요일 호가는 야간선물 −2.29%다. 기대의 종가·현금 창구·테이프를 본다.
+> 어젯밤 야간선물이 0.5% 상승 마감하여 오늘 주간 코스피는 상승 출발할 것으로 보입니다.
+
+**Good (인과 + 작성자 시나리오):**
+
+> KOSPI200 야간선물이 +0.5%로 마감한 것은 확인된 사실입니다.{{cite:src-1}} 다만 저는 이를 곧바로 “오늘 상승 출발”로 번역하지 않습니다. 갭의 배경이 나스닥 빅테크인지, 환율·금리인지에 따라 시초가 이후 갭 메움 속도가 달라진다고 보기 때문입니다. 장 초반 30분에는 외국인 선물 순매수와 현물 창구가 같이 들어오는지를 먼저 보겠습니다.
+
+**Bad (AI 템플릿):**
+
+> 안녕하세요. 오늘은 세 가지를 정리합니다. 1) … 2) … 3) … 정리하면 신중히 대응하시기 바랍니다.
+
+**Good (바로 맥락 진입 + 1인칭):**
+
+> 월요일 개장에서 제가 먼저 보는 숫자는 야간선물 갭보다, 그 갭을 만든 뉴욕 섹터와 원/달러입니다.
+
+**Bad (암호형 메모):**
+
+> 8/23 휴장: 슈퍼위크는 이번 주 이야기고, 월요일 호가는 야간선물 −2.29%다.
 
 **Good (검색형 + 결론 먼저):**
 
-> **제목:** 8월 24일 코스피 전망: KOSPI200 야간선물 −2.29%, 삼성전자는 어떻게 될까?  
-> **오늘의 결론:** 월요일 국내 증시는 금요일 미국 상승보다 KOSPI200 야간선물 −2.29%를 먼저 보는 편이 낫습니다. 다만 야간선물 하락만으로 급락을 단정하지는 않습니다.
-
-**Bad (팩트·해석 혼선):**
-
-> 야간선물 −2.29%를 월요일 시가 환산으로 쓰지 않는다.
-
-**Good (분리):**
-
-> **확인된 사실:** KOSPI200 야간선물 −2.29%.{{cite:src-1}}  
-> **작성자 해석:** 이 수치를 월요일 코스피 예상 등락률로 그대로 적용하지 않습니다.  
-> **확인할 것:** 삼성전자 시가, 외국인 현물 수급, 반도체 동조화.
+> **제목:** 8월 24일 코스피 전망: KOSPI200 야간선물 −2.29%, 삼성전자는 어떻게 될까?
+> **오늘의 결론:** 월요일은 미국 상승보다 야간선물 −2.29%와 삼성전자 시가를 먼저 봅니다. 급락을 단정하지는 않습니다.
 
 ## Visual Enrichment Policy
 
@@ -665,17 +703,16 @@ tags: ["실적", "가이던스"]
 
 - Never mention AI, model limitations, or that the text is generated
 - Avoid formulaic phrasing such as "종합하면", "정리하면" repeated mechanically
-- **Engine first:** enforce **질문 → 팩트 → 해석 → 시나리오 → 독자 시사점 → 지인의 판단** before filling equal-length wire recaps
-- **Readability over slang and highlighting:** plain language + table-first numbers; if a fact is already in a table, do not bold it again in prose
-- Keep high structural freedom in body sections:
-  - You may rename headings slightly by topic
-  - You may merge/split **optional** theme sections (예: 삼성전자 심화)
-  - You must **not** drop 오늘의 결론, 확인된 사실, 시나리오, 독자가 확인할 것, 지인의 판단
-  - You are not required to use FAQ or equal “N대 변수” stacks
-- Keep analysis decisive but calibrated:
-  - State the author’s view clearly in **지인의 판단**
-  - Explicitly note scenario conditions that change the read
-- Prioritize insight density over length; remove filler and number dumps
+- **Engine first:** enforce **팩트 → 배경 동인 → 시나리오 → 유의점 → 지인의 판단 → 개념 노트** before equal-length wire recaps
+- **Anti-AI shell:** no greeting / 3-bullet / summary-당부; use first-person analyst tone
+- **Readability over slang and highlighting:** plain language + table-first numbers; do not bold table duplicates
+- Keep structural freedom:
+  - Rename headings slightly by topic
+  - Merge/split optional theme deep-dives
+  - Must **not** drop 오늘의 결론, 핵심 팩트, 배경 동인, 시나리오, 지인의 판단, **개념 노트**
+  - FAQ / equal “N대 변수” not required
+- Keep analysis decisive but calibrated in **지인의 판단**
+- Prefer insight density; Hangul ≥ ~1,200 (prefer 1,500+); cut filler and number dumps
 
 ## Snippet-Oriented Structure (Google Search)
 
@@ -683,8 +720,8 @@ tags: ["실적", "가이던스"]
 
 1. Title includes the core query intent (날짜 + 지수/종목 + 핵심 변수 or 질문)
 2. First section (**오늘의 결론**) answers the core question directly
-3. At least one reader-facing checklist (**독자가 확인할 것**)
-4. Scenario table or subsections with conditions
+3. At least one **투자자 유의점** or observable checklist
+4. Scenario table (갭 유지 vs 갭 메움 and/or 상승·중립·하락) with conditions
 5. Optional: one question-style heading (예: `## 야간선물을 월요일 시가로 환산해도 될까?`) + direct answer paragraph
 6. Optional: `## 자주 묻는 질문 (FAQ)` with short Q/A when the user requests snippet mode
 7. `## 출처` list with source title + URL + date
@@ -695,7 +732,7 @@ Guidelines:
 - Keep paragraphs short; prefer GFM tables for the 5–7 key facts
 - Align title, opening answer, and section headings to the same search intent
 - Do not promise rankings or guaranteed featured snippets
-- Still include **시나리오** + **지인의 판단**
+- Still include **시나리오** + **지인의 판단** + **개념 노트**
 
 ## Title Policy (search-friendly + Naver as discovery only)
 
@@ -768,8 +805,10 @@ Slug rules:
 ## Quality checklist (before Final Response)
 
 - [ ] Post mode classified; `교육` tag only on evergreen
-- [ ] ziin engine: 오늘의 결론 · 확인된 사실 · 시나리오 · 독자가 확인할 것 · 지인의 판단 present (evergreen adapted)
-- [ ] Search-friendly title; plain-language body (no unexplained trader slang)
+- [ ] ziin engine: 결론 · 핵심 팩트 · 배경 동인 · 시나리오 · 투자자 유의점 · 지인의 판단 · **개념 노트** (evergreen adapted)
+- [ ] Hangul body ≥ ~1,200 (prefer 1,500+); 현상:해석 1:1; no thin “야간선물→방향” copy
+- [ ] Anti-AI shell: no greeting / 3-bullet / summary-당부 template; first-person analyst tone
+- [ ] Search-friendly title; plain language (no unexplained trader slang)
 - [ ] Lead fact table ≤7 rows; no equal “N대 변수” / no daily FAQ unless requested
 - [ ] Fact vs interpretation labeled; not fused in one unlabeled paragraph
 - [ ] Every `sources[*].type` ∈ allowed enum
@@ -778,6 +817,7 @@ Slug rules:
 - [ ] Visual enrichment met (or evergreen exception documented)
 - [ ] `pnpm run build` (or equivalent schema check) passed
 - [ ] Git publish done or skip reason recorded
+
 ## Final Response To User
 
 When done, report:
