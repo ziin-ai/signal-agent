@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BEA Personal Income and Outlays(7월) — Fed 선호 PCE·근원 PCE. 같은 날 NVDA 실적·GDP 2차 추정치와 겹치고, 다음날(8/27) 금통위·잭슨홀 개막 직전에 금리 기대를 다시 가격한다."
+summary: "BEA Personal Income and Outlays(7월) — Fed 선호 PCE·근원 PCE, 08:30 ET(한국 26일 밤). 같은 날 NVDA 실적(마감 후)과 겹치고, 다음날 금통위·잭슨홀 개막 직전에 금리 기대를 다시 가격한다. 수요일 09:00 현물 시가의 1순위가 아니다."
 sourceUrl: "https://www.bea.gov/news/schedule/"
 tags: ["PCE", "Fed", "물가", "매크로", "BEA"]
 ---
