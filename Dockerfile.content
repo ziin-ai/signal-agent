@@ -1,4 +1,5 @@
 # Content-only image. Copied into the web pod at /app/content so markdown
 # updates do not require rebuilding the Node app image.
+# CI publishes tags `latest` and the full git SHA; k8s overlay pins the SHA.
 FROM alpine:3.21
 COPY src/content /content

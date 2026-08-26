@@ -39,6 +39,7 @@ jobs:
             content:
               - 'src/content/**'
               - 'Dockerfile.content'
+              - '.github/workflows/build.yml'
 
   validate-content:
     runs-on: ubuntu-latest
@@ -132,6 +133,7 @@ jobs:
           images: ghcr.io/${{ github.repository }}-content
           tags: |
             type=raw,value=latest
+            type=raw,value=${{ github.sha }}
             type=sha
 
       - name: Build and push content image
@@ -166,7 +168,14 @@ jobs:
                   line = f"    newTag: {tag}\n"
               out.append(line)
           kustomization_path.write_text("".join(out))
-          patch_path.write_text(re.sub(r"(ziin\.ai/content-rev:\s*)\S+", rf"\g<1>{tag}", patch_path.read_text()))
+          patch = patch_path.read_text()
+          patch = re.sub(r"(ziin\.ai/content-rev:\s*)\S+", rf"\g<1>{tag}", patch)
+          patch = re.sub(
+              r"(image:\s*ghcr\.io/ziin-ai/signal-agent-content:)\S+",
+              rf"\g<1>{tag}",
+              patch,
+          )
+          patch_path.write_text(patch)
           PY
           if git diff --quiet -- "$kustomization" "$patch"; then
             echo "content pin already current"

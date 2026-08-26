@@ -15,8 +15,8 @@ spec:
           emptyDir: {}
       initContainers:
         - name: content
-          image: ghcr.io/ziin-ai/signal-agent-content:latest
-          imagePullPolicy: Always
+          image: ghcr.io/ziin-ai/signal-agent-content:3cd171edb1d198410bb4f6adaa83fa8ebd056927
+          imagePullPolicy: IfNotPresent
           command: ["sh", "-c", "cp -a /content/. /shared/"]
           volumeMounts:
             - name: content
