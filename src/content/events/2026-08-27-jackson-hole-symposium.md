@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "Kansas City Fed 주최 Jackson Hole Economic Policy Symposium(8/27–29) 개막일. 케빈 워시 기조연설은 8/28 한국시간 밤 11시(와이오밍 현지 오전 8시). 개막일·연설일을 한 날짜로 합치지 않는다. 한국 금요일 09:00 시가의 1순위가 아니다."
+summary: "8/27–29. 워시 기조연설은 8/28 밤(와이오밍 오전 8시)에 인쇄됨. 물가 우려·2% 고정·포워드 가이던스 폐기. 개막일·연설일을 한 날짜로 합치지 않는다. 한국 월요일 시가의 출발점이지 금요일 종가의 원인이 아니다."
 sourceUrl: "https://www.kansascityfed.org/research/jackson-hole-economic-symposium/"
 tags: ["잭슨홀", "Fed", "금리", "매크로", "달러", "워시"]
 ---

@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS Employment Situation — 8월 비농업 고용·실업률. FOMC(9/16·SEP) 직전 노동시장 필터로 국채·달러·외국인 수급에 연동."
+summary: "BLS Employment Situation — 8월 비농업 고용·실업률. 워시 연설 다음 필터. 로이터 컨센서스 +4.5만·실업률 4.2%(7월은 −2.3만). FOMC(9/16·SEP) 직전 노동시장 숫자로 국채·달러·외국인 수급에 연동."
 sourceUrl: "https://www.bls.gov/schedule/news_release/empsit.htm"
 tags: ["NFP", "고용", "Fed", "매크로"]
 ---
