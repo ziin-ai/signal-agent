@@ -7,7 +7,7 @@ market: "NASDAQ"
 scope: "symbol"
 category: "earnings"
 impact: "high"
-summary: "인쇄됨. 매출 962.2억, GM 75.0%, Q3 매출 1,080억±2% / GM 74.0%±50bp. 시간외 +4.4% → 8/27 정규장 +8.74% → 8/28(워시 세션) −4.57%. 한국 금요일 종가 6,788은 +8.74%를 현물이 못 받은 가격이고, −4.57%는 그 종가 뒤의 다음 세션이다."
+summary: "인쇄됨. 매출 962.2억, GM 75.0%, Q3 매출 1,080억±2% / GM 74.0%±50bp. 시간외 +4.4% → 8/27 정규장 +8.74% → 8/28 −4.57%. 같은 날 SOX −3.47%. 한국 주간 삼성 −8.70%와 한 방향으로 합치지 않는다. 다음 필터는 9/2 브로드컴."
 sourceUrl: "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027"
 tags: ["NVIDIA", "실적", "가이던스", "AI", "반도체", "잭슨홀"]
 ---

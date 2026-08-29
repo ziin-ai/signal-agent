@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "8/27–29. 워시 기조연설은 8/28 밤(와이오밍 오전 8시)에 인쇄됨. 물가 우려·2% 고정·포워드 가이던스 폐기. 개막일·연설일을 한 날짜로 합치지 않는다. 한국 월요일 시가의 출발점이지 금요일 종가의 원인이 아니다."
+summary: "8/27–29 종료. 워시 기조연설은 8/28 밤에 인쇄됨. SOX −3.47%·페드워치 인상 57.5%. 개막일·연설일을 한 날짜로 합치지 않는다. 한국 월요일은 주간 창구·수출 주의 첫 현금이지, 연설의 둘째 시가가 아니다."
 sourceUrl: "https://www.kansascityfed.org/research/jackson-hole-economic-symposium/"
 tags: ["잭슨홀", "Fed", "금리", "매크로", "달러", "워시"]
 ---
