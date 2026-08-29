@@ -1,14 +1,14 @@
 ---
 id: "bok-rate-decision-20260410"
-title: "한국은행 금통위 (4월)"
+title: "한국은행 금통위 (4월) 2.50% 7연속 동결"
 date: 2026-04-10
 market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "물가·성장 진단과 기준금리 결정이 1분기 이후 매크로 서프라이즈를 증시에 재주입하는 촉매가 될 수 있다."
-sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
-tags: ["금통위", "금리", "원화", "한국은행"]
+summary: "한은이 기준금리 연 2.50%를 7회 연속·만장일치 동결했다. 중동전쟁으로 물가 상방·성장 하방이 동시에 커져 2월 성장 전망(2.0%)을 하회할 것으로 봤다. 이창용 총재의 마지막 금리결정 금통위다."
+sourceUrl: "https://www.bok.or.kr/portal/bbs/P0000559/view.do?menuNo=200690&nttId=10097452"
+tags: ["금통위", "금리", "중동", "스태그플레이션", "한국은행"]
 ---
 
-한국은행이 공개한 2026년 통화정책방향 결정회의 일정의 일부다.
+통방문은 에너지 가격·공급 차질이 반도체 호조·추경 효과를 상쇄한다고 명시했다.

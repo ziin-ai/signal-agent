@@ -1,14 +1,14 @@
 ---
 id: "bok-rate-decision-20260226"
-title: "한국은행 금통위 (2월)"
+title: "한국은행 금통위 (2월) 2.50% 동결·성장률 2.0%"
 date: 2026-02-26
 market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "기준금리·통화정책 문구가 원화 금리와 은행·내수·외국인 수급 심리의 단기 앵커가 된다."
-sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
-tags: ["금통위", "금리", "원화", "한국은행"]
+summary: "한은이 기준금리 연 2.50%를 6회 연속 동결하고 2026년 성장률 전망을 1.8%→2.0%로 상향했다. 소비자물가 전망은 2.1%→2.2%. 한국형 점도표(8월 시점 2.50% 16개·2.25% 4개·2.75% 1개)를 처음 공개한 회의다."
+sourceUrl: "https://www.mk.co.kr/news/business/11972647"
+tags: ["금통위", "금리", "점도표", "성장률", "한국은행"]
 ---
 
-한국은행이 공개한 2026년 통화정책방향 결정회의 일정의 일부다.
+수출 호조·소비 회복으로 성장 상향과 집값·환율 금융안정 리스크가 동시에 제시된 동결이다.

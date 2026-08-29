@@ -1,14 +1,14 @@
 ---
 id: "bok-rate-decision-2026-01"
-title: "한국은행 금통위 (1차)"
+title: "한국은행 금통위 (1월) 2.50% 5연속 동결"
 date: 2026-01-15
 market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "기준금리 동결/변경 여부와 통화정책 문구가 원화·금리·내수주 센티먼트에 영향을 준다."
-sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
-tags: ["금통위", "금리", "원화"]
+summary: "한은이 기준금리 연 2.50%를 5회 연속 동결했다. 수도권 집값·가계부채·원/달러 1,400원대 후반 변동성을 금융안정 리스크로 적시했고, 의결문에서 금리 인하 가능성 문구를 삭제했다."
+sourceUrl: "https://www.mt.co.kr/economy/2026/01/15/2026011510495644273"
+tags: ["금통위", "금리", "원화", "한국은행", "금융안정"]
 ---
 
-시장 주요 일정은 타임라인에서 분석글과 함께 맥락 이벤트로 사용한다.
+이창용 총재 기자간담회에서 2026년 성장은 11월 전망 1.8%에 대체로 부합하되 IT·비IT K자형 회복을 유의 포인트로 제시했다.
