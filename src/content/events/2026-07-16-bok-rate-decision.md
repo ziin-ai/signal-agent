@@ -1,14 +1,14 @@
 ---
 id: "bok-rate-decision-20260716"
-title: "한국은행 금통위 (7월)"
+title: "한국은행 금통위 (7월) 2.50→2.75% 만장일치 인상"
 date: 2026-07-16
 market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "하반기 시작 직전 금리·물가 가이던스가 원화·채권·증시 동시에 재평가되는 관측 포인트다."
-sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
-tags: ["금통위", "금리", "원화", "한국은행"]
+summary: "한은이 기준금리를 연 2.50%에서 2.75%로 올렸다. 2023년 1월 이후 3년 6개월 만의 인상이자 2025년 5월 인하 이후 8연속 동결의 종료. 의결문은 물가가 상당기간 목표를 상회한다며 금리인상 기조를 이어갈 필요가 있다고 적었다."
+sourceUrl: "https://www.bok.or.kr/portal/bbs/P0000559/view.do?nttId=11062942&menuNo=200690"
+tags: ["금통위", "금리", "한국은행", "물가", "긴축"]
 ---
 
-한국은행이 공개한 2026년 통화정책방향 결정회의 일정의 일부다.
+금통위원 7명 전원 찬성. 5월 점도표(3.00% 10개·2.75% 7개·3.25% 2개)와 같은 방향이다.
