@@ -4,7 +4,7 @@ publishedAt: 2026-08-29T20:00:12+09:00
 youtubeId: "XgwCcJ4GesE"
 channel: "hankyung-tv"
 category: "macro"
-impact: "mid"
+impact: "high"
 why: "금요일 경제전쟁꾼의 금리·빅테크 캡엑스 클립. 엔비디아 실적 이후 AI 투자 사이클이 금리 5%대에서 버틸지를 국내 시각으로 점검한다."
 summaryBullets:
   - "엔비디아 실적 이후 AI 반도체 사이클의 지속 여부를 이건규·한지영이 토요일 업로드로 정리한다"
