@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "policy"
 impact: "mid"
-summary: "8/28 보도 기준 KB증권·키움증권·IBK기업은행·KDB산업은행이 세종에서 소명하는 두 번째 전원회의. 같은 날 현물 개장(워시 연설 이후 첫 거래일)과 겹친다. 과징금 확정일은 아님."
+summary: "8/28 보도 기준 KB증권·키움증권·IBK기업은행·KDB산업은행이 세종에서 소명하는 두 번째 전원회의. 같은 날 현물 개장과 겹친다. 과징금 확정일은 아님. 지수 시가의 1순위에서 뺀다."
 sourceUrl: "https://www.tokenpost.kr/news/policy/399638"
 tags: ["공정위", "국고채", "전문딜러", "과징금", "증권"]
 ---
