@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "mid"
-summary: "금통위 금융안정회의(기준금리 결정 회차 아님). 가계부채·외환·금융시스템 점검. 10월 통방 회의 전 톤 단서."
+summary: "금통위 금융안정회의(기준금리 결정 회차 아님). 가계부채·외환·금융시스템 점검. 7월 산업활동은 설비 +7.5%·소매 −2.4%·금융 관련 서비스 −17.5%로 내수·거래대금이 갈라진 달. 10월 통방 전 톤 단서."
 sourceUrl: "https://www.bok.or.kr/portal/bbs/B0000502/view.do?menuNo=200690&nttId=10094300"
 tags: ["금융안정", "한국은행", "가계부채"]
 ---
