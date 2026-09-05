@@ -6,8 +6,8 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "산업부·관세청 8월 수출입 잠정치. 1~20일 잠정 수출 552.7억달러(+56.0%), 반도체 260.3억달러(+198.8%, 비중 47.2%). 8/31 첫 현금의 재료가 아니라 화요일 필터. 월요일 외인 부호를 수출이 사후 정당화한다고 보지 않는다."
-sourceUrl: "https://www.korea.kr/briefing/pressReleaseView.do?newsId=156775068"
+summary: "산업부 확정. 8월 수출 982.5억달러(+68.7%), 반도체 466.5억(+209.0%, 비중 47.4%), 수지 +347.5억. 한은 연 4500억달러 경상 경로의 통관 입력값. 1~20일 잠정(552.7억)을 월 숫자로 덮어 씀."
+sourceUrl: "https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172145/view"
 tags: ["수출", "반도체", "무역수지", "산업통상부"]
 ---
 
