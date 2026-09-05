@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "policy"
 impact: "mid"
-summary: "미국 노동절. NYSE·나스닥 정규장 휴장. 한국은 정상 거래 — 8월 고용(+16.2만) 다음 첫 한국 현금이지만 미국 정규장 오버레이는 없다. 미국 재개는 9/8."
+summary: "미국 노동절. NYSE·나스닥 정규장 휴장. 한국은 정상 거래 — 8월 고용(+16.2만) 다음 첫 한국 현금이지만 한 주의 결정은 아님. 미국 재개 9/8, 같은 주 9/10 만기·PPI와 9/11 CPI가 뒤에 있다."
 sourceUrl: "https://www.nyse.com/markets/hours-calendars"
 tags: ["휴장", "LaborDay", "미국증시"]
 ---
