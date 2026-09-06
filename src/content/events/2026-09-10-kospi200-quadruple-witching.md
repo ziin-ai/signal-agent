@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "other"
 impact: "high"
-summary: "9월물 KOSPI200 선물·옵션·개별주식 파생 동시만기(네 마녀의 날). 노동절 월요일(미국 휴장) 다음, 같은 날 美 8월 PPI. 거래대금이 9/2 35조원대로 얇아진 위 청산이라 프로그램 부호가 커 보일 수 있다."
+summary: "9월물 KOSPI200 선물·옵션·개별주식 파생 동시만기(네 마녀의 날). 노동절 월요일(미국 휴장·야간선물 공백) 다음, 같은 날 美 8월 PPI. 월요일 첫 현금의 작은 갭을 프로그램 부호가 다시 쓸 수 있다."
 sourceUrl: "https://open.krx.co.kr/contents/OPN/01/01040201/OPN01040201.jsp"
 tags: ["동시만기", "네마녀", "KOSPI200", "파생"]
 ---
