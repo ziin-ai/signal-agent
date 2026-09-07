@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS 8월 CPI·코어. 9/16 FOMC 직전 물가 입력값. 전날(9/10) 동시만기·PPI를 받은 뒤의 필터. NFP +16.2만 이후 월러가 가리킨 다음 칸. 시장 예상 전년비 3.4%·근원 2.4%."
+summary: "BLS 8월 CPI·코어. 9/16 FOMC 직전 물가 입력값. 전날(9/10) 동시만기·PPI·반도체 ETF 캡을 받은 뒤의 필터. 9/7 노동절 현금 6995.39는 이 숫자의 미리보기가 아님. 시장 예상 전년비 3.4%·근원 2.4%."
 sourceUrl: "https://www.bls.gov/schedule/news_release/cpi.htm"
 tags: ["CPI", "물가", "Fed", "매크로"]
 ---

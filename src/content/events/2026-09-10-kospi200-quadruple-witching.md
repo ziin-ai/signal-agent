@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "other"
 impact: "high"
-summary: "9월물 KOSPI200 선물·옵션·개별주식 파생 동시만기(네 마녀의 날). 노동절 월요일(미국 휴장·야간선물 공백) 다음, 같은 날 美 8월 PPI. 월요일 첫 현금의 작은 갭을 프로그램 부호가 다시 쓸 수 있다."
+summary: "9월물 KOSPI200 선물·옵션·개별주식 파생 동시만기(네 마녀의 날). 같은 날 美 8월 PPI. 노동절 월요일 현금 6995.39(+4.61%)와 프로그램 위에, KRX 반도체 ETF 20% 캡 가정 매도 약 1.7조가 종가 부근에 겹칠 수 있다. 지수 적용은 9/11."
 sourceUrl: "https://open.krx.co.kr/contents/OPN/01/01040201/OPN01040201.jsp"
 tags: ["동시만기", "네마녀", "KOSPI200", "파생"]
 ---
