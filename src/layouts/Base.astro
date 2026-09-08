@@ -115,6 +115,34 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
       <slot />
     </main>
     {!isTerminal && <Footer transition:persist="ziin-footer" />}
+    <script define:vars={{ pageviewUrl: `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}api/pageview` }}>
+      function reportZiinPageview() {
+        const payload = JSON.stringify({
+          path: window.location.pathname + window.location.search,
+          title: document.title,
+          referrer: document.referrer || undefined,
+          slug: document.querySelector('meta[name="ziin-agent-slug"]')?.getAttribute("content") || undefined,
+          symbol: document.querySelector('meta[name="ziin-agent-symbol"]')?.getAttribute("content") || undefined,
+          language: navigator.language || undefined,
+        });
+        const blob = new Blob([payload], { type: "application/json" });
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(pageviewUrl, blob);
+          return;
+        }
+        void fetch(pageviewUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: payload,
+          keepalive: true,
+        });
+      }
+      const w = window;
+      if (!w.__ziinPageviewBound) {
+        w.__ziinPageviewBound = true;
+        document.addEventListener("astro:page-load", reportZiinPageview);
+      }
+    </script>
     <script is:inline>
       const SCROLL_KEY = "ziin-vt-scroll-y";
       document.addEventListener("astro:before-preparation", (e) => {

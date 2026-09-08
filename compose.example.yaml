@@ -1,0 +1,47 @@
+# Local run: bind-mount ./src/content into the web container.
+# The content image is not required; SSR reads the host markdown on each request.
+#
+#   docker compose -f compose.example.yaml up --build
+#   open http://127.0.0.1:4321
+#
+# Another tree: CONTENT_BIND=/path/to/content docker compose -f compose.example.yaml up
+# Optional `.env` (see `.env.example`) is loaded if present.
+#
+# K8s-style copy from the content image uses a named volume instead:
+#   volumes: [content:/app/content]
+#   plus an init-style `content` service that `cp -a /content/. /shared/`
+
+name: ziin-ai
+
+services:
+  web:
+    image: ghcr.io/ziin-ai/signal-agent:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4321:4321"
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "4321"
+      CONTENT_ROOT: /app/content
+      AGENT_ENABLED: "true"
+      PUBLIC_SITE_URL: "http://127.0.0.1:4321"
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ${CONTENT_BIND:-./src/content}:/app/content:ro
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4321/').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 15s
+    restart: unless-stopped

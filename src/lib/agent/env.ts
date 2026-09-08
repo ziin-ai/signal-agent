@@ -30,6 +30,8 @@ export type AgentEnv = {
   CURSOR_CLOUD_REPO?: string;
   /** Discord incoming webhook — 지인 채팅 사용자 질문 알림 */
   DISCORD_WEBHOOK_URL?: string;
+  /** Discord incoming webhook — 브라우저 페이지뷰. Unset = disabled. */
+  DISCORD_PAGEVIEW_WEBHOOK_URL?: string;
 };
 
 export function readAgentEnv(): AgentEnv {
@@ -46,6 +48,7 @@ export function readAgentEnv(): AgentEnv {
     CURSOR_MODEL: readEnv("CURSOR_MODEL"),
     CURSOR_CLOUD_REPO: readEnv("CURSOR_CLOUD_REPO"),
     DISCORD_WEBHOOK_URL: readEnv("DISCORD_WEBHOOK_URL"),
+    DISCORD_PAGEVIEW_WEBHOOK_URL: readEnv("DISCORD_PAGEVIEW_WEBHOOK_URL"),
   };
 }
 
@@ -61,6 +64,7 @@ export function agentEnvSnapshot(): Record<string, string> {
     CURSOR_MODEL: env.CURSOR_MODEL ?? "composer-2.5",
     CURSOR_CLOUD_REPO: env.CURSOR_CLOUD_REPO ?? "(unset)",
     DISCORD_WEBHOOK_URL: env.DISCORD_WEBHOOK_URL ? "(set)" : "(unset)",
+    DISCORD_PAGEVIEW_WEBHOOK_URL: env.DISCORD_PAGEVIEW_WEBHOOK_URL ? "(set)" : "(unset)",
     source: env.LLM_BASE_URL && !process.env.LLM_BASE_URL ? "import.meta.env" : "process.env",
   };
 }
