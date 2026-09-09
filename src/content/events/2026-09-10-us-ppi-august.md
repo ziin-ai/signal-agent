@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS 8월 생산자물가. 공표 09-10 08:30 ET. 같은 날 코스피200 분기 동시만기와 겹친다. 시장 예상은 전년비 5.2%(전월 4.7%). 다음 필터는 9/11 CPI."
+summary: "BLS 8월 생산자물가. 공표 09-10 08:30 ET. 같은 날 코스피 동시만기·반도체 ETF 캡. 직전 밤 브렌트 101.21(+3.36%)·美 10년 4.857%·바이백 60억달러(기대 80~100 하회). 한국 정규장은 이미 닫힌 뒤. 다음 필터는 9/11 CPI."
 sourceUrl: "https://www.bls.gov/schedule/news_release/ppi.htm"
 tags: ["PPI", "물가", "Fed", "매크로"]
 ---
