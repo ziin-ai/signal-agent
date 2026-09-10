@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS 8월 생산자물가. 공표 09-10 08:30 ET. 같은 날 코스피 동시만기·반도체 ETF 캡. 직전 밤 브렌트 101.21(+3.36%)·美 10년 4.857%·바이백 60억달러(기대 80~100 하회). 한국 정규장은 이미 닫힌 뒤. 다음 필터는 9/11 CPI."
+summary: "인쇄됨. 최종수요 PPI 전월 +0.4%(전망 부합)·전년 +5.4%(전망 5.3%). 에너지 +4.2%·디젤 +24.1%. 근원 +0.2%/4.6%. 한국 정규장은 이미 7033.92로 닫힌 뒤. 같은 밤 WTI 102.48·브렌트 107.63·야간선물 −3.51%. 다음 필터는 9/11 CPI."
 sourceUrl: "https://www.bls.gov/schedule/news_release/ppi.htm"
 tags: ["PPI", "물가", "Fed", "매크로"]
 ---
