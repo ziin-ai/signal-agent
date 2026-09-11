@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getMedia, selectPublished } from "../lib/content";
-import { localIsoKey, weekIsoKeysContaining } from "../lib/calendar-grid";
+import { isoKeyInTimeZone, weekIsoKeysContaining } from "../lib/calendar-grid";
 import {
   MEDIA_CHANNELS,
   formatDuration,
@@ -35,12 +35,11 @@ const activeChannels = rawChannels.filter((c) =>
   channelOptions.includes(c as (typeof channelOptions)[number]),
 );
 
-const today = new Date();
-const todayKey = localIsoKey(today.getFullYear(), today.getMonth(), today.getDate());
+const todayKey = isoKeyInTimeZone(new Date());
 const weekKeyList = weekIsoKeysContaining(todayKey);
 
 function dayKey(d: Date): string {
-  return localIsoKey(d.getFullYear(), d.getMonth(), d.getDate());
+  return isoKeyInTimeZone(d);
 }
 
 const availableDays = [...new Set(items.map((m) => dayKey(m.data.publishedAt)))].sort((a, b) =>

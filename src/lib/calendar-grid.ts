@@ -20,6 +20,32 @@ export function localIsoKey(year: number, monthIndex0: number, day: number): str
   return `${year}-${pad2(monthIndex0 + 1)}-${pad2(day)}`;
 }
 
+/** 캘린더·일정 일자는 서버 TZ가 아니라 KST 달력일을 쓴다. */
+export const CALENDAR_TIME_ZONE = "Asia/Seoul";
+
+export function ymdInTimeZone(
+  date: Date,
+  timeZone: string = CALENDAR_TIME_ZONE,
+): { year: number; month: number; day: number } {
+  const formatted = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+  const [year, month, day] = formatted.split("-").map(Number);
+  return { year: year!, month: month!, day: day! };
+}
+
+export function isoKeyInTimeZone(date: Date, timeZone: string = CALENDAR_TIME_ZONE): string {
+  const { year, month, day } = ymdInTimeZone(date, timeZone);
+  return localIsoKey(year, month - 1, day);
+}
+
+export function kstTodayParts(): { year: number; month: number; day: number } {
+  return ymdInTimeZone(new Date());
+}
+
 /**
  * @param year 연도
  * @param month 1–12 (표시 중인 달)

@@ -5,7 +5,7 @@ import Panel from "../components/ui/Panel.astro";
 import MonthCalendar from "../components/timeline/MonthCalendar.astro";
 import DayEventList from "../components/timeline/DayEventList.astro";
 import { buildGlobalTimelineEvents, buildSymbolTimelineEvents } from "../lib/timeline";
-import { buildGregorianMonthGrid, localIsoKey, shiftMonth } from "../lib/calendar-grid";
+import { buildGregorianMonthGrid, isoKeyInTimeZone, kstTodayParts, localIsoKey, shiftMonth, ymdInTimeZone } from "../lib/calendar-grid";
 import {
   buildSymbolSearchEntries,
   resolveSymbolFromQuery,
@@ -69,9 +69,9 @@ const filteredEvents = events.filter((ev) => {
 
 const monthParam = Astro.url.searchParams.get("month")?.trim() ?? "";
 const dayParam = Astro.url.searchParams.get("day")?.trim() ?? "";
-const today = new Date();
-let viewYear = today.getFullYear();
-let viewMonth = today.getMonth() + 1;
+const todayParts = kstTodayParts();
+let viewYear = todayParts.year;
+let viewMonth = todayParts.month;
 if (/^\d{4}-\d{2}$/.test(monthParam)) {
   const [y, m] = monthParam.split("-").map(Number);
   if (y >= 1970 && y <= 2100 && m >= 1 && m <= 12) {
@@ -81,8 +81,7 @@ if (/^\d{4}-\d{2}$/.test(monthParam)) {
 }
 
 function eventDayKey(at: string): string {
-  const d = new Date(at);
-  return localIsoKey(d.getFullYear(), d.getMonth(), d.getDate());
+  return isoKeyInTimeZone(new Date(at));
 }
 
 const eventsByDay = new Map<string, typeof filteredEvents>();
@@ -97,8 +96,8 @@ for (const [, list] of eventsByDay) {
 }
 
 const eventsInCalendarMonth = filteredEvents.filter((ev) => {
-  const d = new Date(ev.at);
-  return d.getFullYear() === viewYear && d.getMonth() + 1 === viewMonth;
+  const parts = ymdInTimeZone(new Date(ev.at));
+  return parts.year === viewYear && parts.month === viewMonth;
 });
 
 const monthGrid = buildGregorianMonthGrid(viewYear, viewMonth);
@@ -106,11 +105,11 @@ const prevNav = shiftMonth(viewYear, viewMonth, -1);
 const nextNav = shiftMonth(viewYear, viewMonth, 1);
 const prevMonthStr = `${prevNav.year}-${String(prevNav.month).padStart(2, "0")}`;
 const nextMonthStr = `${nextNav.year}-${String(nextNav.month).padStart(2, "0")}`;
-const todayMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`;
-const todayDayKey = localIsoKey(today.getFullYear(), today.getMonth(), today.getDate());
+const todayMonthStr = `${todayParts.year}-${String(todayParts.month).padStart(2, "0")}`;
+const todayDayKey = localIsoKey(todayParts.year, todayParts.month - 1, todayParts.day);
 const monthQueryValue = `${viewYear}-${String(viewMonth).padStart(2, "0")}`;
 const firstOfMonthKey = localIsoKey(viewYear, viewMonth - 1, 1);
-const todayInViewMonth = today.getFullYear() === viewYear && today.getMonth() + 1 === viewMonth;
+const todayInViewMonth = todayParts.year === viewYear && todayParts.month === viewMonth;
 const defaultDayKey = todayInViewMonth ? todayDayKey : firstOfMonthKey;
 
 const selectedDayKey =

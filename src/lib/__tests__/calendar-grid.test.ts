@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildGregorianMonthGrid,
+  isoKeyInTimeZone,
   localIsoKey,
   shiftMonth,
   weekIsoKeysContaining,
@@ -33,6 +34,19 @@ describe("buildGregorianMonthGrid", () => {
 describe("localIsoKey", () => {
   it("formats YYYY-MM-DD", () => {
     expect(localIsoKey(2026, 4, 9)).toBe("2026-05-09");
+  });
+});
+
+describe("isoKeyInTimeZone", () => {
+  it("uses KST calendar date, not UTC", () => {
+    // 2026-09-07 16:00 UTC = 2026-09-08 01:00 KST
+    expect(isoKeyInTimeZone(new Date("2026-09-07T16:00:00.000Z"))).toBe("2026-09-08");
+    // 2026-09-07 14:59 UTC = 2026-09-07 23:59 KST
+    expect(isoKeyInTimeZone(new Date("2026-09-07T14:59:00.000Z"))).toBe("2026-09-07");
+  });
+
+  it("keeps YAML date-only (UTC midnight) on the written calendar day", () => {
+    expect(isoKeyInTimeZone(new Date("2026-09-08T00:00:00.000Z"))).toBe("2026-09-08");
   });
 });
 
