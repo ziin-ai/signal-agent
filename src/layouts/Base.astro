@@ -13,6 +13,8 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   noindex?: boolean;
+  author?: string;
+  jsonLd?: Record<string, unknown>;
   /** media 터미널 모니터용 셸 */
   shell?: "default" | "terminal";
 }
@@ -23,6 +25,8 @@ const {
   image = "/favicon.svg",
   type = "website",
   noindex = false,
+  author,
+  jsonLd,
   shell = "default",
 } = Astro.props;
 
@@ -57,6 +61,7 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
     ) : null}
     <title>{title}</title>
     <meta name="description" content={description} />
+    {author ? <meta name="author" content={author} /> : null}
     <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large"} />
     <link rel="canonical" href={canonical} />
     <meta property="og:site_name" content="내 곁에 지인" />
@@ -79,6 +84,7 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
       inLanguage: "ko-KR",
       description,
     })} />
+    {jsonLd ? <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} /> : null}
     <ClientRouter />
     {
       gaMeasurementId ? (
