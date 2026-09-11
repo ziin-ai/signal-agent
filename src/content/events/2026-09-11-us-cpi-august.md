@@ -6,8 +6,8 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS 8월 CPI·코어. 9/16 FOMC 직전 물가 입력값. 직전 층은 9/10 현금 7033.92와 같은 밤 PPI +0.4%/5.4%·브렌트 107.63·야간 −3.51%. 7033과 야간 갭은 이 숫자의 미리보기가 아님. 시장 예상 전년비 3.4%·근원 2.4%·전월 헤드라인 +0.4%/근원 +0.2%."
-sourceUrl: "https://www.bls.gov/schedule/news_release/cpi.htm"
+summary: "인쇄됨. 헤드라인 전월 +0.4%·전년 +3.4%(전망 부합), 근원 전월 +0.3%(전망 0.2%)·전년 +2.4%. 한국 정규장은 이미 6909.91(−1.76%)로 닫힌 뒤. 같은 밤 야간선물 +0.97%·브렌트 104.61·페드워치 86.3%. 6909는 이 숫자의 미리보기가 아님. 다음 필터는 9/16 FOMC."
+sourceUrl: "https://www.bls.gov/news.release/cpi.nr0.htm"
 tags: ["CPI", "물가", "Fed", "매크로"]
 ---
 
