@@ -35,7 +35,8 @@ const activeChannels = rawChannels.filter((c) =>
   channelOptions.includes(c as (typeof channelOptions)[number]),
 );
 
-const todayKey = isoKeyInTimeZone(new Date());
+const today = new Date();
+const todayKey = isoKeyInTimeZone(today);
 const weekKeyList = weekIsoKeysContaining(todayKey);
 
 function dayKey(d: Date): string {
