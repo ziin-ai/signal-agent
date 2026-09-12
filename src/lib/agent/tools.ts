@@ -296,7 +296,7 @@ export const TOOL_DEFINITIONS: LlmToolDefinition[] = [
           symbol: { type: "string", description: "종목 필터 (선택)" },
           category: {
             type: "string",
-            enum: ["macro", "earnings", "product", "policy", "supply-chain", "news", "other"],
+            enum: ["macro", "earnings", "product", "policy", "supply-chain", "news", "subscription", "other"],
           },
           limit: { type: "integer", description: "최대 결과 수 (1-20)" },
         },

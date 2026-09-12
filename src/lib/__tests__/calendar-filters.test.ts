@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   filterHomeCalendarEvents,
   hasExplicitHomeCalendarFilters,
+  homeCalCategoryLabel,
   resolveHomeCalendarFilters,
   toggleListMember,
 } from "../calendar-filters";
@@ -114,5 +115,12 @@ describe("toggleListMember", () => {
   it("toggles membership", () => {
     expect(toggleListMember(["a", "b"], "b")).toEqual(["a"]);
     expect(toggleListMember(["a"], "b").sort()).toEqual(["a", "b"]);
+  });
+});
+
+describe("homeCalCategoryLabel", () => {
+  it("labels subscription events as 청약", () => {
+    expect(homeCalCategoryLabel("subscription")).toBe("청약");
+    expect(homeCalCategoryLabel("news")).toBe("뉴스");
   });
 });

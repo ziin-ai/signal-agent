@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { parseMarkdownEntry } from "../parse";
-import { postSchema } from "../schemas";
+import { eventSchema, postSchema } from "../schemas";
 import {
   getPostBySlug,
   getPublishedPosts,
@@ -47,6 +47,24 @@ describe("parseMarkdownEntry", () => {
 
   it("rejects missing frontmatter", () => {
     expect(() => parseMarkdownEntry("# no fm\n", postSchema)).toThrow(/frontmatter/);
+  });
+
+  it("accepts subscription category on events", () => {
+    const parsed = parseMarkdownEntry(
+      `---
+id: "sample-subscription"
+title: "샘플 일반청약"
+date: 2026-09-10
+market: "KRX"
+scope: "market"
+category: "subscription"
+impact: "mid"
+summary: "청약 카테고리 검증용."
+---
+`,
+      eventSchema,
+    );
+    expect(parsed.data.category).toBe("subscription");
   });
 });
 

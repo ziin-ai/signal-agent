@@ -55,7 +55,7 @@ export function rankEventForDashboard(
         ? 8
         : event.meta?.category === "macro"
           ? 6
-        : event.meta?.category === "news"
+        : event.meta?.category === "news" || event.meta?.category === "subscription"
           ? 5
           : event.meta?.category === "policy"
             ? 4

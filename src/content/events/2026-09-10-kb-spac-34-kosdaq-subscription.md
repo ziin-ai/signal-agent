@@ -4,7 +4,7 @@ title: "KB스팩34호 코스닥 일반청약"
 date: 2026-09-10
 market: "KRX"
 scope: "market"
-category: "news"
+category: "subscription"
 impact: "low"
 summary: "공모가 2000원, 공모 700만주·140억. 일반 175만주(25%), 청약한도 5만주, 증거금 100%. 청약 9/10~11, 납입·환불 9/15, 상장 예정 9/22. KB증권."
 sourceUrl: "https://www.etoday.co.kr/news/view/2622123"

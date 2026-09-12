@@ -4,7 +4,7 @@ title: "브릴스 코스닥 일반청약"
 date: 2026-09-17
 market: "KRX"
 scope: "market"
-category: "news"
+category: "subscription"
 impact: "mid"
 summary: "로봇 모듈화·SI 플랫폼. 수요예측 9/9~15, 일반청약 9/17~18. 공모 120만주 전량 신주, 희망가 1만6500~1만9500원, 공모 198억~234억. IBK투자증권. 2025년 매출 238억. 상장일은 미확정."
 sourceUrl: "https://www.yna.co.kr/view/AKR20260911094100008"

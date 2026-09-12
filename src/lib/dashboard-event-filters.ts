@@ -100,6 +100,7 @@ export function eventCategoryLabel(category: string): string {
   if (category === "policy") return "정책";
   if (category === "supply-chain") return "공급망";
   if (category === "news") return "뉴스";
+  if (category === "subscription") return "청약";
   return "기타";
 }
 

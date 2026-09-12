@@ -4,7 +4,7 @@ title: "바로팜 코스닥 일반청약"
 date: 2026-11-02
 market: "KRX"
 scope: "market"
-category: "news"
+category: "subscription"
 impact: "mid"
 summary: "9/9 증권신고서. 약국 주문통합 플랫폼. 공모 178만주, 희망가 1만6400~2만200원, 공모 292억~360억. 수요예측 10/22~28, 일반청약 11/2~3. 미래에셋증권. 8/12 예심 승인. 상장일은 연내 목표로 미확정. 2025 연결 매출 967억, 2026 상반기 690억·영업이익 22억 흑전."
 sourceUrl: "https://www.mt.co.kr/stock/2026/09/09/2026090910063059853"

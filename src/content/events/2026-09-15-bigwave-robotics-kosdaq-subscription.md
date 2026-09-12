@@ -4,7 +4,7 @@ title: "빅웨이브로보틱스 코스닥 일반청약"
 date: 2026-09-15
 market: "KRX"
 scope: "market"
-category: "news"
+category: "subscription"
 impact: "mid"
 summary: "로봇 자동화 플랫폼 마로솔. 수요예측 9/7~11 종료, 공모가 9/14 확정 예정, 일반청약 9/15~16. 공모 160만주(신주 152만·구주 8만), 희망가 1만5000~1만8000원, 공모 240억~288억. 상장 예정 9/29. 일반청약자 6개월 환매청구권. 유진투자 대표·미래에셋 공동. 몸값 여러 차례 하향 후 재도전."
 sourceUrl: "https://www.yna.co.kr/view/AKR20260911094100008"
