@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import SiteDoc from "../components/layout/SiteDoc.astro";
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "../lib/brand";
 
 export const prerender = true;
 
@@ -10,14 +11,18 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 
 <Base
   title="소개 | 내 곁에 지인"
-  description="지인.ai는 출처를 붙인 증시·매크로 메모를 올리는 개인 블로그입니다. 투자 자문이 아닙니다."
+  description={BRAND_DESCRIPTION}
 >
-  <SiteDoc title="소개" updated="2026-07-28">
+  <SiteDoc title="소개" updated="2026-09-12">
     <p>
-      <strong>지인.ai(ziin.ai)</strong>는 제가 한국·글로벌 주식·매크로 이슈를 <strong>출처와 함께</strong> 정리해 두는
-      <strong>개인 블로그</strong>입니다. 회사·금융기관·투자자문사가 아니며, 앞으로도 그런 형태로 키울 계획이 없습니다.
-      글은 투자 <strong>참고용 메모</strong>일 뿐이고, 매수·매도·보유를 권유하지 않습니다. 최종 판단과 손익은 읽는 분
-      본인에게 있습니다.
+      <strong>지인.ai(ziin.ai)</strong> — {BRAND_TAGLINE}
+    </p>
+    <p>
+      {BRAND_DESCRIPTION} 글은 오늘 전망을 적고, 이후 시황·실적으로 다시 보는 기록입니다.
+    </p>
+    <p>
+      회사·금융기관·투자자문사가 아니며, 매수·매도·보유를 권유하지 않습니다. 최종 판단과 손익은 읽는 분 본인에게
+      있습니다.
     </p>
 
     <h2>무엇을 올려 두나</h2>
@@ -46,8 +51,8 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 
     <h2>작성자</h2>
     <p>
-      이 사이트는 <strong>개인이 운영하는 블로그</strong>입니다. 금융투자업·투자자문 자격·법인 등록이 없고, 사업자
-      정보를 게시할 계획도 없습니다. 문의는
+      이 사이트는 <strong>개인이 운영</strong>합니다. 금융투자업·투자자문 자격·법인 등록이 없고, 사업자 정보를
+      게시할 계획도 없습니다. 문의는
       <a href={`${rootPath}contact`}>연락처</a> ·
       <a href="mailto:contact@ziin.ai">contact@ziin.ai</a>로 보내 주세요.
     </p>

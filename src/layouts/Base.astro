@@ -6,6 +6,7 @@ import Footer from "../components/layout/Footer.astro";
 import { fetchTickerBarQuotes } from "../lib/market";
 import "../styles/global.css";
 import { getPublicAdsenseClientId, getPublicGaMeasurementId } from "../lib/adsense-public-env";
+import { BRAND_DESCRIPTION, SITE_NAME } from "../lib/brand";
 
 interface Props {
   title?: string;
@@ -20,8 +21,8 @@ interface Props {
 }
 
 const {
-  title = "내 곁에 지인 | 주식 투자 분석",
-  description = "데이터와 출처 기반으로 한국어 주식 투자 인사이트를 제공하는 분석 블로그.",
+  title = `${SITE_NAME} | 지인.ai`,
+  description = BRAND_DESCRIPTION,
   image = "/favicon.svg",
   type = "website",
   noindex = false,
@@ -64,7 +65,7 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
     {author ? <meta name="author" content={author} /> : null}
     <meta name="robots" content={noindex ? "noindex,nofollow" : "index,follow,max-image-preview:large"} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:site_name" content="내 곁에 지인" />
+    <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -79,7 +80,7 @@ const imageUrl = siteOrigin ? new URL(image, siteOrigin).toString() : image;
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "내 곁에 지인",
+      name: SITE_NAME,
       url: siteOrigin || canonical,
       inLanguage: "ko-KR",
       description,

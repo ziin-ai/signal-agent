@@ -1,4 +1,6 @@
 ---
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "../../lib/brand";
+
 const baseUrl = import.meta.env.BASE_URL;
 const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 const year = new Date().getFullYear();
@@ -30,9 +32,11 @@ const legalLinks = [
           <span class="font-sans text-[1.35rem] font-bold tracking-[-0.04em] text-primary">.ai</span>
           <span class="ml-2 text-[11px] font-medium tracking-wide text-on-surface-variant">내 곁에</span>
         </a>
-        <p class="max-w-md text-[13px] leading-relaxed text-on-surface-variant">
-          출처를 붙인 증시·매크로 개인 분석.
-          <span class="text-on-surface-variant/80"> 투자 권유가 아닙니다.</span>
+        <p class="max-w-md text-[13px] font-medium leading-relaxed text-on-surface">
+          {BRAND_TAGLINE}
+        </p>
+        <p class="max-w-md text-[12px] leading-relaxed text-on-surface-variant">
+          {BRAND_DESCRIPTION}
         </p>
       </div>
 

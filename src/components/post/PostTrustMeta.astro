@@ -12,9 +12,9 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 {
   compact ? (
     <p class="mt-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
-      개인 블로그 ·
+      정보 제공 ·
       {aiAssisted ? " AI 보조 초안 · 작성자 검수 · " : " "}
-      <span class="text-on-surface-variant">투자 참고(자문 아님)</span>
+      <span class="text-on-surface-variant">투자 권유 아님</span>
       {" · "}
       <a href={`${rootPath}terms`} class="text-primary hover:underline">
         면책
@@ -31,7 +31,7 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
     >
       <p>
         <strong class="font-semibold text-on-surface">작성</strong>
-        {" · "}개인 블로그(지인.ai)
+        {" · "}지인.ai · 정보 제공
         {aiAssisted ? (
           <>
             {" · "}
@@ -45,8 +45,8 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
       </p>
       <p class="mt-1.5">
         <strong class="font-semibold text-on-surface">면책</strong>
-        {" · "}본문은 투자 자문·매매 권유가 아닌 <strong class="font-medium">참고 메모</strong>입니다. 손익은
-        읽는 분 본인 책임입니다.
+        {" · "}본문은 투자 자문·매매 권유가 아닌 <strong class="font-medium">정보 제공</strong> 목적입니다.
+        손익은 읽는 분 본인 책임입니다.
         {" "}
         <a href={`${rootPath}terms`} class="font-medium text-primary hover:underline">
           이용약관·면책

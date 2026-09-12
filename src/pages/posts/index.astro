@@ -3,6 +3,7 @@ import Base from "../../layouts/Base.astro";
 import { calculateScore } from "../../lib/credibility";
 import MdIcon from "../../components/ui/MdIcon.astro";
 import { getPublishedPosts } from "../../lib/content";
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "../../lib/brand";
 
 export const prerender = false;
 
@@ -16,13 +17,12 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
 
 <Base
   title="글 목록 | 내 곁에 지인"
-  description="출처 기반 증시·매크로 메모와 교육 가이드를 모아 둔 개인 블로그 글 목록."
+  description={BRAND_DESCRIPTION}
 >
   <section class="mb-7">
     <h1 class="font-sans text-[1.85rem] font-bold tracking-[-0.035em] text-on-surface md:text-3xl">글</h1>
-    <p class="mt-1.5 max-w-xl text-sm text-on-surface-variant">
-      시황·테마 메모와 교육용 정리 글을 모아 둡니다. 투자 권유가 아닙니다.
-    </p>
+    <p class="mt-1.5 max-w-2xl text-sm font-medium text-on-surface">{BRAND_TAGLINE}</p>
+    <p class="mt-1 max-w-2xl text-sm text-on-surface-variant">{BRAND_DESCRIPTION}</p>
   </section>
 
   {

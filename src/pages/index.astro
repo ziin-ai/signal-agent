@@ -5,6 +5,7 @@ import Panel from "../components/ui/Panel.astro";
 import MonthCalendar from "../components/timeline/MonthCalendar.astro";
 import DayEventList from "../components/timeline/DayEventList.astro";
 import { buildGlobalTimelineEvents, buildSymbolTimelineEvents } from "../lib/timeline";
+import { BRAND_DESCRIPTION } from "../lib/brand";
 import { buildGregorianMonthGrid, isoKeyInTimeZone, kstTodayParts, localIsoKey, shiftMonth, ymdInTimeZone } from "../lib/calendar-grid";
 import {
   buildSymbolSearchEntries,
@@ -224,7 +225,7 @@ const filterResetHref = timelineHref({
   description={
     activeSymbol
       ? `${activeSymbol} 관련 분석글/외부 이벤트 일정을 달력형 타임라인으로 제공합니다.`
-      : "분석글과 외부 이벤트를 월 단위 달력으로 보는 메인 캘린더."
+      : BRAND_DESCRIPTION
   }
 >
   <section
