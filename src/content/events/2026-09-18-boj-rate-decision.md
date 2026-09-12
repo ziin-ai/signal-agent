@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BOJ MPM 9/17–18 결정일. 같은 주 FOMC(9/16) 다음 칸. 엔화·한일 금리차·원/달러 경로 필터. 9/11 한국 현금은 이미 국고 3년 4.014%·환율 1345.9를 인쇄. 추가 인상 여부가 아시아 리스크 프리미엄."
+summary: "BOJ MPM 9/17–18 결정일. 같은 주 FOMC(9/16) 다음 칸. 일요일 환율 전선은 3분기 원화 절상 15.41%와 금요일 현금 1345.9(주간마감 보도 1344.1과 충돌). 추가 인상이 엔·원 경로를 되돌리는지가 필터. 같은 날 한국 8월 PPI."
 sourceUrl: "https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm"
 tags: ["BOJ", "엔화", "금리", "매크로"]
 ---
