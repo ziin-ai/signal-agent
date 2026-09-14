@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "other"
 impact: "mid"
-summary: "연초 대형 컨퍼런스에서 제시되는 가이던스와 신제품 로드맵이 섹터 기대치를 빠르게 재조정할 수 있다."
+summary: "연초 대형 컨퍼런스에서 제시되는 가이던스와 신제품 로드맵이 섹터 기대치를 빠르게 재조정할 수 있다. 삼성바이오로직스는 6공장 착공 검토를 말했으나 9월에도 이사회 승인은 나오지 않았다."
 sourceUrl: "https://www.jpmorgan.com/insights/conferences/health-care-conference"
 tags: ["컨퍼런스", "CES", "헬스케어"]
 ---
