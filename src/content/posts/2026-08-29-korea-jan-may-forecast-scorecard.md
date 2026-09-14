@@ -14,6 +14,12 @@ tags:
   - "환율"
 aiAssisted: true
 draft: false
+loop:
+  prior: "코스피 5200·연내 1만·하반기 연준 인하"
+  result: "8/29 종가 6,788. 6월 고점 9,106 아래. 한은 3.00%"
+  score: "partial"
+  note: "방향(슈퍼사이클·인하 종료)은 남고 레벨은 깨짐"
+  next: "레벨보다 달력·조건이 찍힌 문장부터 이어서 채점"
 sources:
   - id: "src-1"
     tier: 2

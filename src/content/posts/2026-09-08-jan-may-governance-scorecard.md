@@ -14,6 +14,12 @@ tags:
   - "코리아디스카운트"
 aiAssisted: true
 draft: false
+loop:
+  prior: "밸류업·상법·자사주로 K디스카운트 종료"
+  result: "법은 통과, 소각·공시는 실행. 종가 6,995.39는 오픈AI 반도체"
+  score: "partial"
+  note: "실행은 남고 종료선언은 성립하지 않음"
+  next: "거버넌스가 시가의 1순위가 되는지 계속 분리"
 sources:
   - id: "src-1"
     tier: 2

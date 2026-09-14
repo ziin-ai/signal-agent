@@ -15,6 +15,12 @@ tags:
   - "잭슨홀"
 aiAssisted: true
 draft: false
+loop:
+  prior: "열어본 7천을 6912 위에서 다시 받나"
+  result: "금요일 시가 6846, 고점 6901, 종가 6788.88(−1.79%). 삼전 257000"
+  score: "miss"
+  note: "7천은 토했고 종가는 6788"
+  next: "이미 토한 6788을 월요 현물이 받나"
 sources:
   - id: "src-1"
     tier: 2

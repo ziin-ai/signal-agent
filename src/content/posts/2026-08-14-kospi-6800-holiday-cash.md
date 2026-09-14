@@ -14,6 +14,12 @@ tags:
   - "연휴"
 aiAssisted: true
 draft: false
+loop:
+  prior: "연휴 앞 외인 현물이 6800을 남기는가"
+  result: "시가 6995·고점 7010. 장중 외인 +4343억. 종가 6977.94는 다음날 글"
+  score: "hit"
+  note: "7천은 열렸고 본체는 외인 창구"
+  next: "종가 6977이 7천 안착인가, 창구 종가인가"
 sources:
   - id: "src-1"
     tier: 2

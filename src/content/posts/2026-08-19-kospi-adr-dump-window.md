@@ -14,6 +14,12 @@ tags:
   - "사이드카"
 aiAssisted: true
 draft: false
+loop:
+  prior: "종가 7000이 창구 확인으로 남나"
+  result: "8/18 종가 6869.83. 다음날 시가 6528.77, 저점 6400. 전기전자 −1.19조"
+  score: "miss"
+  note: "7000 종가는 반납됐고 시가에서 6800이 깨졌다"
+  next: "ADR 번역이 종가까지인가, 6869 위 갭 소화인가"
 sources:
   - id: "src-1"
     tier: 2

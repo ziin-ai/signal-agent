@@ -14,6 +14,12 @@ tags:
   - "외국인수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "야간선물 −2.29%가 하락 확정인가"
+  result: "현물 전. 아직 없음"
+  score: "pending"
+  note: "월요일 개장 전"
+  next: "갭 유지 vs 메움을 외인 창구로 가른다. 15조 취득이 현물에서 시작되나"
 sources:
   - id: "src-1"
     tier: 2

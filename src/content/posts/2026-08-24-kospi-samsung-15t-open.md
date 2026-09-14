@@ -14,6 +14,12 @@ tags:
   - "외국인수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "15조 취득과 281500이 월요일 현금의 바닥인가"
+  result: "첫 현금 전. 종가는 다음날 글"
+  score: "pending"
+  note: "08:00 장전. 세션 미인쇄"
+  next: "15조가 현물에서 시작되고 281500이 현금으로 만나나"
 sources:
   - id: "src-1"
     tier: 1

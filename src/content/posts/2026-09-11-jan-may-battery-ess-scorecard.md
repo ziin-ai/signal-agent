@@ -14,6 +14,12 @@ tags:
   - "LG에너지솔루션"
 aiAssisted: true
 draft: false
+loop:
+  prior: "ESS 믹스·연간 적자·2027년 회복·56만원"
+  result: "ESS 믹스·1분기 바닥은 남고 연간 적자·2027은 7/30에 끝남"
+  score: "partial"
+  note: "믹스는 맞고 목표 연도와 목표가는 깨짐"
+  next: "흑자를 목표가·지수로 환산하지 않고 실적 칸만 보기"
 sources:
   - id: "src-1"
     tier: 2

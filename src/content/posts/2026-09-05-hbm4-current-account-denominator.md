@@ -14,6 +14,12 @@ tags:
   - "삼성전자"
 aiAssisted: true
 draft: false
+loop:
+  prior: "9월 5일 HBM4 점유율: 한은 4500억 달러의 한 달 분모는?"
+  result: "9/5(토) 주말 휴장. 금요일 코스피 6,687.21은 이미 시황 글에 있습니다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "토요일 경제·IT에서 한 달 뒤 가격에 남을 칸은 HBM 점유율 격차 17%p와 한은의 연 4500억달러 경상 경로입니다."
 sources:
   - id: "src-1"
     tier: 2

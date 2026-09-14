@@ -14,6 +14,12 @@ tags:
   - "AI인프라"
 aiAssisted: true
 draft: false
+loop:
+  prior: "특별법이 국내 전력을 켠다"
+  result: "법 통과·수출 수주는 남고 국내 전력은 2027년. 종가 6,954.52"
+  score: "partial"
+  note: "법과 수주는 맞고 전기 확보는 밀렸다"
+  next: "2027 전력 일정과 수출 수주를 따로 채점"
 sources:
   - id: "src-1"
     tier: 2

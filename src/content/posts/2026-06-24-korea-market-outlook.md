@@ -14,6 +14,12 @@ tags:
   - "수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "2026-06-24 코스피 8200선 반등 시도: MSCI 불발·마이크론·美 반도체 급락인가"
+  result: "6/24 장전 콜은 전일 -9.99% 다음 날의 반등을 MSCI 불발이 아닌 수급 되돌림으로 읽는 것이다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "MSCI 결과는 선반영됐고, 마이크론 실적과 5월 PCE가 그 해석의 가드레일이다."
 sources:
   - id: "src-1"
     tier: 2

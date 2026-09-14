@@ -13,6 +13,12 @@ tags:
   - "MSCI"
 aiAssisted: true
 draft: false
+loop:
+  prior: "도 글로벌 주식 순환매 트렌드: AI 집중에서 경기·비미국 확산으로인가"
+  result: "2026년 글로벌 주식시장은 'AI 인프라 집중'에서 '실적 가시성이 높은 비기술·비미국 구간'으로 리더십이 넓어지는 국면에 들어섰다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "핵심 변수는 연준 회의 경로, 달러 방향성, MSCI 리밸런싱 일정이며, 순환매의 지속성은 AI 투자의 수익화 속도와 경기 재가속 폭에 의해 결정된다."
 sources:
   - id: "src-1"
     tier: 1

@@ -16,6 +16,12 @@ tags:
   - "호르무즈"
 aiAssisted: true
 draft: false
+loop:
+  prior: "시한 만료가 화요일 창구보다 월요일 뉴욕이 먼저인가"
+  result: "휴장. 호르무즈 16일 통행 0척"
+  score: "pending"
+  note: "대체휴일. 현물 없음"
+  next: "화요일 첫 현금이 6800을 재시험하거나 전기전자를 파나"
 sources:
   - id: "src-1"
     tier: 2

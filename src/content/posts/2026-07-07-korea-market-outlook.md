@@ -14,6 +14,12 @@ tags:
   - "수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "삼전 89조 서프라이즈·美증시 강세…8천피 반등 시도 전망인가"
+  result: "7/7 장전 콜은 삼성전자 2Q 영업이익 89.4조원 서프라이즈와 외국인 12거래일 누적 매도의 대결이다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "미국 증시 강세는 반등 재료지만, 수급이 필터다."
 sources:
   - id: "src-1"
     tier: 2

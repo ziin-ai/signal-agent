@@ -4,7 +4,8 @@ description: >-
   Write a post under src/content/posts from sources or topic research, and when
   the thesis hinges on dated catalysts or milestones, add or update matching
   entries in src/content/events (timeline / 대시보드 외부 이벤트).
-  Enforce ziin analysis engine (해석·의견 중심; 단순 데이터 요약 금지),
+  Enforce the site writing grammar (전망 → 결과 → 채점 → 다음 전망),
+  ziin analysis engine (해석·의견 중심; 단순 데이터 요약 금지),
   anti-AI template voice (no greeting/3-bullet shells), first-person analyst tone,
   causal drivers + author scenarios, evergreen concept block on daily posts,
   Hangul body ≥ ~1,200–1,500 for market posts, search-friendly titles, plain
@@ -29,7 +30,7 @@ Create or update one file in `src/content/posts/` that matches the project's pos
 
 When the draft introduces or relies on **concrete calendar catalysts** (실적 일정, 정책·금리 결정, 제품·공장 가동, 규제 마일스톤 등), **also** add or update one or more files in `src/content/events/` so those items appear on the global/symbol timeline and in dashboard filters (`category`, `market`, `impact`). Do not invent dates; only record what sources or the user supplied with reasonable certainty.
 
-Unless the user explicitly asks to skip shorts, **fill `shorts` frontmatter** for market/research posts: a vertical Shorts script derived from the same thesis as the long-form body (hook → tension → explanation → checkpoints → conclusion → CTA). Placement order in YAML is **`sources:` → `shorts:` → `entities:`**. Validate fields against `shortsSchema` in `src/content.config.ts`. In-repo reference: `src/content/posts/2026-05-08-2026-iljin-electric.md`.
+Unless the user explicitly asks to skip shorts, **fill `shorts` frontmatter** for market/research posts: a vertical Shorts script derived from the same thesis as the long-form body (hook → tension → explanation → checkpoints → conclusion → CTA). Placement order in YAML is **`loop:` → `sources:` → `shorts:` → `entities:`**. Validate fields against `shortsSchema` in `src/content.config.ts`. In-repo reference: `src/content/posts/2026-05-08-2026-iljin-electric.md`.
 
 **Exception — evergreen / 교육 guides:** omit `shorts` by default (see **Post modes**). User may still request shorts explicitly.
 
@@ -62,7 +63,7 @@ Reviewers treat thin AI-looking pages as low-value. For every `교육` post:
 3. Ban AI-shell voice: no greeting/개요 인사, no fixed “서론 → 불렛 3개 → 요약 당부”, no textbook “정리하면/다음과 같습니다” stacks.
 4. Every market post ends with a short **개념·원리** block (에버그린) so the page keeps value after the news day ages.
 5. Hangul body (excluding frontmatter) **≥ ~1,200 characters**; prefer **1,500+**. Thin date-only notes fail.
-6. Vary section titles vs the previous same-series post when substance differs; keep engine order, not yesterday’s cryptic lede.
+6. Vary section titles vs the previous same-series post when substance differs; keep engine order and the 전망→채점 loop, not yesterday’s cryptic lede.
 7. If two drafts share the same skeleton and only swap dates/numbers, merge or rewrite one.
 8. Keep `aiAssisted: true` when AI helped; never set `false` without real human rewrite evidence.
 9. **Do not mass-rewrite old posts** unless the user asks — apply to **new and newly revised** posts.
@@ -203,6 +204,12 @@ summary: "..."
 tags: ["..."]
 aiAssisted: true
 draft: false
+loop:
+  prior: "직전 글이 건 관찰 가능한 질문"
+  result: "그 질문에 대한 숫자. 휴장이면 아직 없음"
+  score: "pending"
+  note: "맞음/부분/틀림/미채점 한 줄"
+  next: "다음 세션에서 볼 조건"
 sources:
   - id: "src-1"
     tier: 1
@@ -320,6 +327,17 @@ Always satisfy these constraints:
 - `url` must be absolute URL
 - Keep `sources` non-empty
 - Tags for evergreen must include `교육` when Post mode is Evergreen
+- Market/research posts **must** include `loop` (`prior`, `result`, `score`, `note`, `next`). `score` is `hit` \| `partial` \| `miss` \| `pending`. Evergreen/교육 omit `loop`.
+- Do not invent a score when the session has not printed. `pending` is valid.
+- `loop` is the SSOT. The site renders it on the home hero, post page, and `/posts` chips. Do **not** also paste a markdown 4-row loop table in the body.
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `prior` | string | Observable question from the previous post (or this series) |
+| `result` | string | Number / flow / calendar that answers it. Closed session → “아직 없음” |
+| `score` | enum | `hit` \| `partial` \| `miss` \| `pending` |
+| `note` | string | One-line reason for the score |
+| `next` | string | Observable condition for the next session |
 
 **Before git publish:** run `pnpm run build` (or at least confirm content sync does not throw `InvalidContentEntryDataError`). Do not push posts that fail schema validation.
 **Shorts (`shorts`, optional in Zod but standard for new posts here):**
@@ -375,8 +393,10 @@ Reference examples in-repo: `src/content/events/2026-01-15-bok-rate-decision.md`
 ## Writing Rules
 
 - Write as a **personal market analyst** (개인 분석형), not as a news aggregator, assistant, or wire rewriter
+- **Site grammar (strongest rule):** every market/research post makes **전망 → 결과 → 채점 → 다음 전망** visible. Style tweaks are secondary to this loop.
+- Keep **70–80% of current house voice**. Do not flatten into a beginner explainer or a sell-side note.
 - Target mix for market/research: **팩트 ~25% / 설명(개념·인과) ~25% / 분석·의견 ~35% / 결론 ~15%**
-- Flow: **핵심 팩트 → 배경 동인(인과) → 데이터 시나리오 → 투자자 유의점 → 지인의 판단 → 개념(에버그린)**
+- Flow: **직전 전망 채점(또는 미채점) → 핵심 팩트 → 배경 동인(인과) → 데이터 시나리오 → 투자자 유의점 → 지인의 판단 → 개념(에버그린) → 다음 전망**
 - **현상 : 해석 = 1 : 1** — every factual paragraph (or table row cluster) must be followed by author interpretation; bare fact dumps fail
 - Separate **확인된 사실**, **작성자 해석**, **시나리오** with clear headings or labels
 - Include downside via **시나리오** (갭 유지 vs 갭 메움, 상승·중립·하락) — not a single hard call
@@ -388,12 +408,59 @@ Reference examples in-repo: `src/content/events/2026-01-15-bok-rate-decision.md`
 
 ## Report Writing Style
 
-Write like a **completed personal analysis report**, not a news brief, trader memo, or ChatGPT outline. Hierarchy comes from **search-friendly titles, causal narrative, scenario tables, first-person judgment, and an evergreen concept block** — not from bold, slang, or bullet shells.
+Write like **an expert showing a general investor how they think**, not a sell-side research note, desk memo, or ChatGPT outline. Hierarchy comes from **the forecast loop, search-friendly titles, causal narrative, scenario tables, first-person judgment, and an evergreen concept block** — not from bold, slang, or bullet shells.
+
+### Site writing grammar (전망 → 결과 → 채점 → 다음 전망)
+
+This loop is the product. It is **more important than polishing sentences**.
+
+| 단계 | 글에 넣을 것 |
+| --- | --- |
+| **전망** | 직전 글(또는 이 글)이 건 **관찰 가능한** 질문 한 줄 |
+| **결과** | 그 질문에 대한 숫자·수급·일정. 휴장이면 “아직 없음” |
+| **채점** | 맞음 / 부분 / 틀림 / 미채점 + 한 줄 이유. 권유·목표가 채점 아님 |
+| **다음 전망** | 다음 세션에서 볼 조건 한 줄 (시나리오 표와 맞출 것) |
+
+Daily posts: fill frontmatter `loop` (UI block under the title) and **restate 다음 전망 in 결론**. Theme/scorecard posts: same loop at series scale (1~5월 문장 → 9월 숫자 → 남고/깨짐 → 다음 확인).
+
+Do not invent a score when the session has not printed. “미채점” is a valid state.
+
+### Style keep / change (70–80% 유지)
+
+Do **not** rewrite the house voice. Change weights, not identity.
+
+| 현재 | 앞으로 |
+| --- | --- |
+| 전문적인 분석 | **유지** |
+| 데이터 중심 | **유지** |
+| 출처 강조 | **유지** |
+| 전망 검증 | **더 강화** (frontmatter `loop` + 결론) |
+| 저자의 판단 | **더 강화** (지인의 판단이 스파인) |
+| 긴 문장 | **20–30% 축소** (한 문장 한 생각) |
+| 부정형 반복 | **20–30% 축소** (원칙은 한 번) |
+| 어려운 표현 | **조금** 쉽게 (첫 사용 시 짧은 풀이) |
+| 문학적 표현 | **핵심 문장에만** (글당 1–2개) |
+| 첫 부분 | **훨씬 쉽게** (루프 + 오늘 질문) |
+| 결론 | **더 명확하게** (채점 상태 + 다음 전망 한 줄) |
+
+Target: **잘 쓰는 금융 블로그 → 자기만의 분석 방법론을 가진 금융 미디어.**
+
+### Audience (required)
+
+| Fail | Pass |
+| --- | --- |
+| 전문가가 전문가에게 쓰는 리서치 노트 | 전문가가 일반 투자자에게 자신의 사고 과정을 보여 주는 글 |
+
+- Assume a smart reader who does **not** share desk jargon. Keep the same numbers and judgment; add **why you look at this first**.
+- On first use, gloss 야간선물 / FOMC / 애프터마켓 / 페드워치 / ADR / 갭 메움 in a short clause. Do not lecture; do not skip.
+- Prefer “제가 월요일에 먼저 보는 이유는…” over “1순위: 외인 현·선물 부호”.
+- Keep **확인된 사실 / 작성자 해석** labels (YMYL). The 해석 paragraph must show *thinking*, not just a tighter restatement of the table.
+- Do not dumb down or drop sourced figures. Do not talk down (“쉽게 말하면” stacks).
 
 ### Positioning (AdSense / YMYL)
 
-- Site identity: **개인 분석형 금융 콘텐츠** — “이 사람이 시장을 풀어 설명한다”
-- Anti-identity: “여러 기사를 AI가 잘 정리한 사이트” / “야간선물 숫자만 바꿔 쓴 일일 요약”
+- Site identity: **자기만의 분석 방법론을 가진 금융 미디어** — 오늘을 기록하고 내일의 결과로 검증한다
+- Anti-identity: “여러 기사를 AI가 잘 정리한 사이트” / “야간선물 숫자만 바꿔 쓴 일일 요약” / “증권사 리서치 노트를 한국어로 옮긴 글” / “문장만 좋은 금융 블로그”
 - Thin date-only market notes age out fast in review — every daily post must leave **reusable concept value**
 - Keep YMYL hygiene: 교육·참고 / 투자 권유 아님 in 결론; no buy/sell targets
 - Apply to **new posts going forward**; do not rewrite the whole archive unless asked
@@ -407,8 +474,29 @@ Write like a **completed personal analysis report**, not a news brief, trader me
 - Ban rigid shell: **서론(개요/인사) → 본문 불렛 3개 → 결론(요약·당부)**
 - Avoid hype adjectives unless sourced (“역대급”, “폭등”, “대박”)
 - Avoid meta-AI phrasing: “읽기 틀”, “한 줄로 정리하면”, “다음과 같이 볼 수 있다”, “종합하면”, “정리하면”, “요약하면” stacked mechanically
-- Prefer: “우선 …로 봅니다”, “단정하지 않습니다”, “이 조건이 나오면 해석을 바꿉니다”
+- Prefer: “우선 …로 봅니다”, “이 조건이 나오면 해석을 바꿉니다”
 - Do not bold for emotional punch; bold is a **structural** tool only (see budget below)
+
+### Ban: stacked negation (원칙은 한 번)
+
+“A가 아니다 / B로 해석하지 않는다 / C로 환산하지 않는다”를 절마다 반복하면 처음엔 강하지만 리듬이 무거워진다. **원칙은 한 번 선언하고 바로 분석으로 넘어간다.**
+
+| Fail (반복 설명) | Pass (한 번 선언) |
+| --- | --- |
+| A는 B가 아니다. B로 해석하지 않는다. C의 공식이 아니다. 따라서 D로 보면 안 된다. | 이 글에서는 A를 B로 환산하지 않는다. 이후에는 이 원칙을 전제로 데이터를 읽는다. |
+
+- Put the principle in **오늘의 결론** (or the first 작성자 해석). Later sections add **new facts and paths**, not restated bans.
+- 투자자 유의점 / 지인의 판단 / 결론에서 같은 환산 금지를 다시 설교하지 말 것.
+- 개념 노트 may teach the session distinction **once**; do not clone the opening principle.
+
+### Literary budget (에세이화 금지)
+
+Aphorisms like “오늘 바뀐 것은 입력이 아니라 프레임입니다” are a **strength** — they stick. They become a **weakness** when every paragraph does the same.
+
+- **Max 1–2** memorable literary lines per post (opening 해석 or 개념 노트).
+- The rest must read as **경제 분석**: 숫자, 수급, 일정, 관찰 조건.
+- Ban stacking house metaphors in one piece: 칸 / 인쇄 / 전선 / 소화 / 앉다 / 색 / 층 / 번역. Prefer 거래일·수치·일정·반영.
+- If a sentence would sound equally at home in an essay with the numbers stripped out, rewrite it.
 
 ### Ban: thin fact-forward copy
 
@@ -446,15 +534,15 @@ Trader shorthand may stay **only** if immediately followed by a plain gloss. Pre
 
 Every market/research post must hit these beats **in order** (heading names may vary slightly; order must not):
 
-1. **오늘의 질문 / 검색 의도** — `title` and opening answer a clear question (**no greeting**).
-2. **오늘의 결론** — **2–5 sentences** with judgment first (not “야간선물 % → 방향” only).
+1. **루프 + 오늘의 질문** — Opening is **easy**. State 직전 전망 → 결과/미채점 → 오늘 질문 (**no greeting**).
+2. **오늘의 결론** — **2–5 sentences** with author judgment first (not “야간선물 % → 방향” only). The 4-row loop is the `loop` frontmatter / UI block, not a second markdown table.
 3. **핵심 팩트** — Sourced facts; lead with a **비교 표 5–7행** (지표 / 현재 / 의미). No number dump in prose.
 4. **배경 동인** — **Why the gap/move happened**: US sector moves, macro prints, FX, earnings, etc. Each fact cluster → interpretation (**현상:해석 = 1:1**).
 5. **데이터 시나리오** — At least **갭 유지 vs 갭 메움** (and/or 상승·중립·하락) with **observable** flow checks (외국인 선물·현물, 프로그램 등).
-6. **투자자 유의점** — e.g. first 30 minutes, what *not* to equate; **no buy/sell targets**.
+6. **투자자 유의점** — e.g. first 30 minutes, observable checks; **no buy/sell targets**. Do not restack the opening equivalence ban.
 7. **지인의 판단** — **Required.** First-person author synthesis wires cannot provide.
 8. **개념 노트 (에버그린)** — **Required on daily/market posts.** Teach one reusable idea tied to today’s tape (예: 야간선물·베이시스, 스프레드, 프로그램 매매 유입 조건) so the page keeps value after the news day ages.
-9. **결론** — Restate answer + what would change the read + brief disclaimer (권유 아님).
+9. **결론** — **명확하게:** 직전 채점 상태 한 줄 + 오늘 전망 한 줄 + 다음 채점 조건 한 줄 + 면책.
 10. **출처**
 
 **Evergreen / 교육** (standalone concept guides) adapt:
@@ -484,14 +572,14 @@ Never mix fact and opinion in the same unlabeled paragraph when a reader could c
 | Label | Contains |
 | --- | --- |
 | **확인된 사실** | Prices, flows, official prints, dated headlines with `{{cite:}}` |
-| **작성자 해석** / **지인의 판단** | How to read those facts; what *not* to equate (예: 야간선물 % ≠ 월요일 코스피 예상 등락) |
+| **작성자 해석** / **지인의 판단** | How to read those facts; what to watch next. Equivalence bans go **once** in the opening principle, not in every 해석 |
 | **시나리오** | Conditional paths; mark as 시나리오/가정 |
 | **독자가 확인할 것** | Forward checklist, not a prediction |
 
 Example pattern:
 
-> **확인된 사실:** 금요일 코스피 종가 6,912.95, KOSPI200 야간선물 −2.29%.{{cite:src-1}}  
-> **작성자 해석:** 야간선물 −2.29%를 월요일 시가 환산 하락률로 그대로 쓰지 않습니다.  
+> **확인된 사실:** 금요일 코스피 종가 6,912.95, KOSPI200 야간선물(한국이 닫힌 뒤 밤에 거래되는 지수선물) −2.29%.{{cite:src-1}}  
+> **작성자 해석:** 이 글에서는 야간선물을 월요일 시가 등락률로 바로 바꾸지 않습니다. 제가 초반 30분을 보는 이유는 금요일 매도 손이 외국인 현물과 선물이었기 때문입니다.  
 > **월요일 확인할 것:** 삼성전자 시가, 외국인 현물 수급, KOSPI200 선물.
 
 ### Numbers budget
@@ -794,7 +882,7 @@ Slug rules:
 5. Draft body sections using the **ziin analysis engine** (Report Writing Style): answer-first conclusion, fact table (≤7), plain language, scenarios, reader checklist, **지인의 판단**. For evergreen, meet the **depth bar**.
 6. Plan visualization before finalizing body: pick at least 3 visual elements (mixing 2+ types) per Visual Enrichment Policy, and embed them inline at the right sections. (Evergreen may use 2 strong tables + 1 diagram if denser than three decorative visuals.)
 7. List or search `src/content/events/` for overlaps; determine event co-updates; create/update event markdown files when policy above applies. **Skip events for pure evergreen concept guides** unless a concrete calendar catalyst is central.
-8. Add **`shorts`** after `sources` and before `entities` for market/research posts unless opted out; **omit shorts for 교육 guides** unless the user asks. Derive hook/scenes from the finalized thesis; validate against **Shorts** table.
+8. Add **`loop`** after `draft` for market/research posts; **omit `loop` for 교육 guides**. Then add **`shorts`** after `sources` and before `entities` unless opted out; **omit shorts for 교육 guides** unless the user asks. Derive hook/scenes from the finalized thesis; validate against **Shorts** table.
 9. Re-check all source metadata fields and date formats.
 10. Verify visuals: GFM tables have header + separator rows, `{{cite:}}` in cells where sourced, SVG has `viewBox`, images use stable URLs, no `mermaid` blocks or HTML `<table>`, citations consistent with prose.
 11. **Style pass:** emphasis budget; numbers ≤7 in lead table; slang rewrite; fact/opinion labels; scenarios present.
@@ -813,7 +901,7 @@ Slug rules:
 - [ ] Fact vs interpretation labeled; not fused in one unlabeled paragraph
 - [ ] Every `sources[*].type` ∈ allowed enum
 - [ ] Evergreen: body depth bar met; shorts omitted unless requested
-- [ ] Market/research: shorts present unless opted out
+- [ ] Market/research: `loop` present (no invented score; `pending` OK); shorts present unless opted out
 - [ ] Visual enrichment met (or evergreen exception documented)
 - [ ] `pnpm run build` (or equivalent schema check) passed
 - [ ] Git publish done or skip reason recorded
@@ -825,7 +913,7 @@ When done, report:
 1. Created/updated file path
 2. Any assumed defaults
 3. Missing data the user may want to refine (optional)
-4. **`shorts`:** one-line note on hook angle and target `duration`, or that shorts was omitted (user request **or** evergreen/교육 default)
+4. **`loop`:** prior / score / next in one line, or omitted (교육). **`shorts`:** hook angle and target `duration`, or omitted (user request **or** evergreen/교육 default)
 5. **Post mode** + (evergreen only) approximate Hangul body length vs depth bar
 
 For URL-only mode, also report:

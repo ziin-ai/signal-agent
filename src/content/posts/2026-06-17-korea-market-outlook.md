@@ -14,6 +14,12 @@ tags:
   - "외국인"
 aiAssisted: true
 draft: false
+loop:
+  prior: "6월 17일 한국 증시 전망: FOMC 전 외국인 매도에도 종가 최고 8864, 9천피까지 136p인가"
+  result: "6/17 종가 최고는 지수 전체의 확산이 아니라 SK하이닉스와 대형주 순환이 만든 결과다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "외국인 9,972억원 순매도와 FOMC가 본체 긴장으로 남아 있다."
 sources:
   - id: "src-1"
     tier: 2

@@ -14,6 +14,12 @@ tags:
   - "반도체"
 aiAssisted: true
 draft: false
+loop:
+  prior: "아시아 신흥 14.5배·5년 평균 10배 리레이팅"
+  result: "12개월 선행 PER 5.19~5.2배. 종가 6,687.21"
+  score: "miss"
+  note: "리레이팅은 오지 않고 지수가 이익보다 먼저 내려왔다"
+  next: "5.2배가 이익 상향으로 열리는지, 할인율로 더 눌리는지"
 sources:
   - id: "src-1"
     tier: 2

@@ -1,0 +1,59 @@
+---
+import type { ForecastLoopData } from "../../lib/content/schemas";
+import { FORECAST_SCORE_LABEL } from "../../lib/forecast-loop";
+
+interface Props {
+  loop: ForecastLoopData;
+  compact?: boolean;
+}
+
+const { loop, compact = false } = Astro.props;
+const scoreClass =
+  loop.score === "hit"
+    ? "bg-emerald-100 text-emerald-900 dark:bg-emerald-950/70 dark:text-emerald-100"
+    : loop.score === "partial"
+      ? "bg-amber-100 text-amber-950 dark:bg-amber-950/70 dark:text-amber-100"
+      : loop.score === "miss"
+        ? "bg-rose-100 text-rose-950 dark:bg-rose-950/60 dark:text-rose-100"
+        : "bg-surface-container text-on-surface-variant";
+
+const rows = [
+  { key: "전망", value: loop.prior },
+  { key: "결과", value: loop.result },
+  { key: "채점", value: `${FORECAST_SCORE_LABEL[loop.score]} · ${loop.note}` },
+  { key: "다음", value: loop.next },
+] as const;
+---
+
+<section
+  class:list={[
+    "rounded-xl border border-outline-variant/70 bg-surface-container-lowest",
+    compact ? "px-3 py-2.5" : "px-3.5 py-3",
+  ]}
+  aria-label="전망 채점 루프"
+>
+  <p class:list={["text-[11px] font-semibold tracking-wide text-on-surface-variant", compact ? "mb-1.5" : "mb-2"]}>
+    전망 → 결과 → 채점 → 다음
+  </p>
+  <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-[13px] leading-snug">
+    {
+      rows.map((row) => (
+        <>
+          <dt class="pt-0.5 text-[11px] font-semibold text-on-surface-variant">{row.key}</dt>
+          <dd class="min-w-0 text-on-surface">
+            {row.key === "채점" ? (
+              <span class="inline-flex flex-wrap items-center gap-1.5">
+                <span class:list={["inline-flex h-5 items-center rounded px-1.5 text-[11px] font-semibold", scoreClass]}>
+                  {FORECAST_SCORE_LABEL[loop.score]}
+                </span>
+                <span>{loop.note}</span>
+              </span>
+            ) : (
+              row.value
+            )}
+          </dd>
+        </>
+      ))
+    }
+  </dl>
+</section>

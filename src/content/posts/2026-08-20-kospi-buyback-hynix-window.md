@@ -14,6 +14,12 @@ tags:
   - "주주환원"
 aiAssisted: true
 draft: false
+loop:
+  prior: "ADR 번역이 종가까지인가"
+  result: "외인 −에서 +3346억. 매수 사이드카. 장중 6796.65"
+  score: "partial"
+  note: "창구 부호는 뒤집혔고 6869 종가는 아직이다"
+  next: "종가 6869 위·외인 순매수가 8/18 소화인가"
 sources:
   - id: "src-1"
     tier: 2

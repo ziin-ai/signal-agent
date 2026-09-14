@@ -12,6 +12,12 @@ tags:
   - "HVDC"
 aiAssisted: true
 draft: false
+loop:
+  prior: "2026 AI 데이터센터 전력 병목: 어디가 막혔고 누가 푸는가인가"
+  result: "AI 데이터센터의 진짜 병목은 GPU나 부지가 아니라 송전망·변압기·HVDC 케이블·가스터빈으로 이어지는 전력 공급사슬 전체로 옮겨갔다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "한국은 수도권 포화와 비수도권 인프라 부족이라는 이중 제약 위에 있어 정책보다 실집행 속도가 더 중요하며, 글로벌 기준으로도 단기 수혜는 변압기·HVDC·가스터빈 등 공급 부족…"
 sources:
   - id: "src-iea-key"
     tier: 1

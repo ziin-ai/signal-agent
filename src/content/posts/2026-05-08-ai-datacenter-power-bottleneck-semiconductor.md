@@ -13,6 +13,12 @@ tags:
   - "HBM"
 aiAssisted: true
 draft: false
+loop:
+  prior: "AI 데이터센터 전력 병목, 2026년 반도체 수요의 상한이 되는가인가"
+  result: "2026년 AI 데이터센터의 결정적 제약은 가속기 공급이 아니라 전력과 송전 인프라다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "전력 병목은 단기적으로 가동 가능한 GPU 출하의 상한을 만들어 수요 곡선을 이연시키는 동시에, 공급 부족 구조를 강화해 NVIDIA 가속기와 HBM의 가격 결정력을 장기간…"
 sources:
   - id: "src-power-defining-limit"
     tier: 1

@@ -14,6 +14,12 @@ tags:
   - "환율"
 aiAssisted: true
 draft: false
+loop:
+  prior: "월요일은 한 주의 결정이 아니다"
+  result: "첫 현금. 미국 노동절 휴장, 야간선물 추가 봉 없음"
+  score: "pending"
+  note: "질문은 주간 결정이 아님. 당일 창구로 확인"
+  next: "6,687을 고용 다음이 아닌 노동절 현금으로 여는가"
 sources:
   - id: "src-1"
     tier: 2

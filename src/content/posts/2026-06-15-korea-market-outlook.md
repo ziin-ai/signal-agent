@@ -14,6 +14,12 @@ tags:
   - "VKOSPI"
 aiAssisted: true
 draft: false
+loop:
+  prior: "6월 15일 한국 증시 장중: 미·이란 종전 합의에 8500선 회복, 9천피 기대와 FOMC가 맞선인가"
+  result: "6월 15일(월) 장중 코스피는 미·이란 종전 MOU 확정에 힘입어 개장 직후 5%대 급등·매수 사이드카가 발동됐다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "환율·유가 안정과 외국인 소규모 순매수가 맞물리며 8500선을 회복했으나, VKOSPI 사상 최고(91.23)와 6/17 FOMC·6/19 공식 서명식이 남아 변동성 국면은…"
 sources:
   - id: "src-1"
     tier: 2

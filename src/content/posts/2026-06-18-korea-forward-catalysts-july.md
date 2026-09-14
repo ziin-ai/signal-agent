@@ -15,6 +15,12 @@ tags:
   - "FOMC"
 aiAssisted: true
 draft: false
+loop:
+  prior: "6월 18일 뉴스가 가리키는 7월 중순 증시 촉매 — MSCI·실적·외환 24시간·중복상장인가"
+  result: "6월 18일(KST) 헤드라인은 매파 FOMC·MSCI·중복상장·빚투 경고로 단기 변동성을 키우지만, 7월 중순(≈7/18) 증시 재평가의 핵심은 MSCI 관찰대상국(6/23)…"
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "6월 18일(KST) 헤드라인은 매파 FOMC·MSCI·중복상장·빚투 경고로 단기 변동성을 키우지만, 7월 중순(≈7/18) 증시 재평가의 핵심은 MSCI 관찰대상국(6/23)…"
 sources:
   - id: "src-1"
     tier: 2

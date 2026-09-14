@@ -14,6 +14,12 @@ tags:
   - "변동성"
 aiAssisted: true
 draft: false
+loop:
+  prior: "2026-06-10 한국 증시: 8000선·CPI·반도체 5대 변수인가"
+  result: "6월 10일 장은 전일 8.18% 급반등(코스피 8096.93) 직후의 차익실현·VKOSPI 사상 최고(91.23)와 밤 美 5월 CPI가 겹친 변동성 국면이다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "당일 시장을 가를 이슈는 CPI·반도체 지방 투자(삼성·SK)·카카오 창사 첫 파업·쿠팡 제재 심의·레버리지 ETF 괴리다."
 sources:
   - id: "src-1"
     tier: 2

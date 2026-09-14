@@ -14,6 +14,12 @@ tags:
   - "외국인수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "15조·281500이 월요일 현금의 바닥인가"
+  result: "281500 이탈. 기타법인 약 5300억. 외인 삼전 −1.81조"
+  score: "miss"
+  note: "15조 창구는 바닥이 아니었고 외인이 삼켰다"
+  next: "25만7천원 종가를 현물이 받나"
 sources:
   - id: "src-1"
     tier: 2

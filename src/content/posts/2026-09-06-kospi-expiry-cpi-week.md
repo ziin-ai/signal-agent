@@ -14,6 +14,12 @@ tags:
   - "수출"
 aiAssisted: true
 draft: false
+loop:
+  prior: "금요일 6,687이 고용 전 현금인가"
+  result: "휴장. 월요일 현물·미국 노동절"
+  score: "pending"
+  note: "일요일 시점 미채점"
+  next: "월요일은 한 주의 결정이 아니다"
 sources:
   - id: "src-1"
     tier: 2

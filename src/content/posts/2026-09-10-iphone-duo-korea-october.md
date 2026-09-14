@@ -14,6 +14,12 @@ tags:
   - "삼성디스플레이"
 aiAssisted: true
 draft: false
+loop:
+  prior: "9월 10일 아이폰 듀오: 329만원이 10월 23일 한국 판매로 남나"
+  result: "9/10(목) 장중. 시황과 만기·ETF 글은 오늘 다른 칸에 있습니다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "네이버 IT·경제에서 한 달 뒤 한국 현물에 남을 뉴스는, 새벽에 인쇄된 아이폰 듀오의 한국 창입니다."
 sources:
   - id: "src-1"
     tier: 1

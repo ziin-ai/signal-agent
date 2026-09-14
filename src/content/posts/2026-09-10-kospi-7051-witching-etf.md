@@ -14,6 +14,12 @@ tags:
   - "유가"
 aiAssisted: true
 draft: false
+loop:
+  prior: "노동절 현금 6,995가 미국 첫 봉 앞에서 남는가"
+  result: "수요일 종가 7,051.64(+1.40%). 33거래일 만에 7,000 종가"
+  score: "hit"
+  note: "6,995 위 7,000 종가로 닫힘"
+  next: "7,051을 동시만기·반도체 ETF 캡이 같은 종가에서 받는가"
 sources:
   - id: "src-1"
     tier: 2

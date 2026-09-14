@@ -14,6 +14,12 @@ tags:
   - "수출"
 aiAssisted: true
 draft: false
+loop:
+  prior: "월요일은 워시 주인가"
+  result: "휴장. 주간 외인 −8.3조·SOX −3.47%는 이미 있던 숫자"
+  score: "pending"
+  note: "일요일. 현물 없음"
+  next: "주간 삼성·닉스 매도 부호가 첫 현금에서 이어지나"
 sources:
   - id: "src-1"
     tier: 2

@@ -14,6 +14,12 @@ tags:
   - "외국인수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "야간선물 +1.20%가 엔비디아 실적 선할인인가"
+  result: "수요일 종가 6808.21(+0.97%). 엔비디아 매출 비트, 시간외 +4.4%"
+  score: "partial"
+  note: "6800은 다시 찍었고 실적 비트는 갭 뒤에 더 붙었다"
+  next: "가이던스 1080억·마진 74%를 현물이 같은 부호로 받나"
 sources:
   - id: "src-1"
     tier: 1

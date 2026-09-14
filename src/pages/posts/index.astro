@@ -4,6 +4,7 @@ import { calculateScore } from "../../lib/credibility";
 import MdIcon from "../../components/ui/MdIcon.astro";
 import { getPublishedPosts } from "../../lib/content";
 import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "../../lib/brand";
+import { FORECAST_SCORE_LABEL } from "../../lib/forecast-loop";
 
 export const prerender = false;
 
@@ -66,6 +67,13 @@ const rootPath = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
               <span class="md-chip !min-h-6 bg-primary-container px-2 text-[11px] text-on-primary-container">
                 출처 {score.toFixed(1)}
               </span>
+              {
+                post.data.loop ? (
+                  <span class="md-chip !min-h-6 px-2 text-[11px] text-on-surface">
+                    {FORECAST_SCORE_LABEL[post.data.loop.score]}
+                  </span>
+                ) : null
+              }
               <span class="text-on-surface-variant">
                 {post.data.date.toLocaleDateString("ko-KR")}
               </span>

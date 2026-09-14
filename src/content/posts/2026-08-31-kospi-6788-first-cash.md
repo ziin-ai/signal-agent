@@ -14,6 +14,12 @@ tags:
   - "수출"
 aiAssisted: true
 draft: false
+loop:
+  prior: "주간 외인 매도 부호가 첫 현금에서 이어지나"
+  result: "첫 현금 전. 야간선물 세션 없음"
+  score: "pending"
+  note: "08:00 장전. 한 주는 9/5에서 이어 채점"
+  next: "주간 삼성·닉스 매도 부호가 월요일 창구에서 같은가"
 sources:
   - id: "src-1"
     tier: 2

@@ -14,6 +14,12 @@ tags:
   - "환율"
 aiAssisted: true
 draft: false
+loop:
+  prior: "화요일 첫 현금이 6800을 재시험하거나 전기전자를 파나"
+  result: "시가 7127.77, 장중 7216. 전기전자 +5765억, 외인 +1.46조"
+  score: "miss"
+  note: "재시험·순매도 가드레일은 꺼졌다"
+  next: "종가 7000이 창구 확인으로 남나"
 sources:
   - id: "src-1"
     tier: 2

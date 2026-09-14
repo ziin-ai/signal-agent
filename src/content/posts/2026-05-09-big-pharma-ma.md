@@ -13,6 +13,12 @@ tags:
   - "바이오"
 aiAssisted: true
 draft: false
+loop:
+  prior: "빅파마 인수합병: 왜 in vivo CAR-T에 거래가 몰리나"
+  result: "최근 빅파마 M&A는 단순 파이프라인 보강이 아니라 특허절벽 대응과 제조 병목 해소를 동시에 해결할 수 있는 in vivo CAR-T 플랫폼 확보 경쟁으로 재편되고 있다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "다만 거래 규모 급등 대비 임상 검증 구간이 짧아, 단기 주가 반응과 중장기 가치 실현 사이의 괴리를 분리해 봐야 한다."
 sources:
   - id: "src-1"
     tier: 3

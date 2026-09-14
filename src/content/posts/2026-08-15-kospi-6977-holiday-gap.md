@@ -15,6 +15,12 @@ tags:
   - "유가"
 aiAssisted: true
 draft: false
+loop:
+  prior: "종가 6977이 7천 안착인가"
+  result: "금요일 종가 6977.94(+2.42%). 고점 7010 반납. 휴장"
+  score: "hit"
+  note: "7천 안착이 아니라 창구 종가"
+  next: "화요일 첫 현금이 6800을 재시험하거나 전기전자를 파나"
 sources:
   - id: "src-1"
     tier: 2

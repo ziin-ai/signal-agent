@@ -15,6 +15,12 @@ tags:
   - "신용잔고"
 aiAssisted: true
 draft: false
+loop:
+  prior: "주간 외인 +6.6조와 코스닥 매도가 같은 로테인가"
+  result: "휴장. 주간 숫자는 그대로"
+  score: "pending"
+  note: "연휴 둘째 날. 현물 없음"
+  next: "화요일 첫 현금이 6800을 재시험하거나 전기전자를 파나"
 sources:
   - id: "src-1"
     tier: 2

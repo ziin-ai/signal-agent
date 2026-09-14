@@ -15,6 +15,12 @@ tags:
   - "잠정실적"
 aiAssisted: true
 draft: false
+loop:
+  prior: "오라클 OCI +121% 실적 해석: 850MW는 삼성 잠정실적인가"
+  result: "오라클 FY27 1분기 OCI 74억달러(+121%), 신규 용량 850MW, GPU 30만대. 9월 11일 코스피 6802는 유가·금리 충격입니다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "한국 반도체 번역은 10월 초 삼성 잠정에서 확인합니다."
 sources:
   - id: "src-1"
     tier: 1

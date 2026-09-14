@@ -14,6 +14,12 @@ tags:
   - "원전"
 aiAssisted: true
 draft: false
+loop:
+  prior: "9월 8일 명목GDP: 반도체 가격이 올린 숫자가 10월 금통위에 남나"
+  result: "9/8(화) 장중. 시황 글은 아침에 있습니다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "네이버 경제에서 한 달 뒤 지수 할인율에 남을 칸은, 오늘 08:00 한국은행 2분기 국민소득 잠정입니다."
 sources:
   - id: "src-1"
     tier: 1

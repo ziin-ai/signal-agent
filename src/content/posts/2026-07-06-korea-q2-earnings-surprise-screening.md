@@ -13,6 +13,12 @@ tags:
   - "한국증시"
 aiAssisted: true
 draft: false
+loop:
+  prior: "2분기 어닝 서프라이즈 발굴 — 7월 실적 시즌 컨센서스 갭 점검인가"
+  result: "7648 급락 이후 7월 실적 시즌에서 '서프라이즈'는 152조+ 메모리 컨센을 또 넘기는 초대형 베트와, LG전자·LG이노텍·증권·삼성전기 등 FnGuide 대비 +% 갭이…"
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "6/24 마이크론 beat가 메모리 read-through를 확인했고, 7/7 삼성 잠정이 단기 분수령이다."
 sources:
   - id: "src-1"
     tier: 2

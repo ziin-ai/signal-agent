@@ -13,6 +13,12 @@ tags:
   - "지정학"
 aiAssisted: true
 draft: false
+loop:
+  prior: "인텔 파운드리: 애플 예비 합의와 ‘빅3’ 포트폴리오가 바꾸는 미국 파운드리 판인가"
+  result: "정책·지분 연계, TSMC 포화, 18A/18AP 로드맵 검증이 향후 재평가의 축이다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "다만 블룸버그 등이 직전에 정리한 ‘초기 협상·물량 불확실’ 프레임과 충돌 여지가 있어, 단계(합의서 vs 양산 증명)를 분리해 봐야 한다."
 sources:
   - id: "src-1"
     tier: 2

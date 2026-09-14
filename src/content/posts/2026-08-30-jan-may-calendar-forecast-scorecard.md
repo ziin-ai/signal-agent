@@ -14,6 +14,12 @@ tags:
   - "연준"
 aiAssisted: true
 draft: false
+loop:
+  prior: "삼성 37만원·4월 6100·한두 달 1400원·워시 비둘기"
+  result: "37만원은 6/19 장중 한 번. 교보 6100은 5월에 이미 낮음. 종가 6,788.88"
+  score: "miss"
+  note: "기한이 찍힌 문장이 연간 상단보다 먼저 깨짐"
+  next: "이익·수출 숫자 채점으로 이어 읽기"
 sources:
   - id: "src-1"
     tier: 2

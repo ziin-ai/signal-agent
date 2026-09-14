@@ -14,6 +14,12 @@ tags:
   - "VKOSPI"
 aiAssisted: true
 draft: false
+loop:
+  prior: "2026-06-23 코스피 910p 역대 최대 낙폭: 반도체 쏠림·레버리지 ETF 조정인가"
+  result: "6/23 코스피는 전일 9114→8203(-9.99%, -910.71p)로 포인트 기준 역대 최대 낙폭을 기록했다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "외국인·기관 8.6조+ 순매도, 삼성전자·SK하이닉스 -12%대, 사이드카·서킷브레이커·VKOSPI 89.41이 겹친 '테크니컬 조정' 장이었다."
 sources:
   - id: "src-1"
     tier: 2

@@ -14,6 +14,12 @@ tags:
   - "증권전망"
 aiAssisted: true
 draft: false
+loop:
+  prior: "서울 연간 1~5%·강남 주도·전세가 먼저"
+  result: "1~7월 서울 아파트 6.40%. 전세 축소 순서는 남음. 종가 7,051.64"
+  score: "partial"
+  note: "방향·순서는 남고 1~5%와 강남 주도는 7월에 끝남"
+  next: "연간 박스보다 월간 누적을 계속 채점"
 sources:
   - id: "src-1"
     tier: 2

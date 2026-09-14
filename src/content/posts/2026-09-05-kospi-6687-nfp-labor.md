@@ -14,6 +14,12 @@ tags:
   - "고용"
 aiAssisted: true
 draft: false
+loop:
+  prior: "금요일 6,687을 고용 다음 현물로 다시 쓰는가"
+  result: "휴장. 월요일 미국 정규장 휴장"
+  score: "pending"
+  note: "토요일 시점 미채점"
+  next: "6,687은 고용 전 종가. 월요일 1순위는 그 종가를 다시 쓰는지"
 sources:
   - id: "src-1"
     tier: 1

@@ -51,6 +51,16 @@ export const shortsSchema = z
   })
   .strict();
 
+export const forecastLoopSchema = z
+  .object({
+    prior: z.string().min(1),
+    result: z.string().min(1),
+    score: z.enum(["hit", "partial", "miss", "pending"]),
+    note: z.string().min(1),
+    next: z.string().min(1),
+  })
+  .strict();
+
 export const postSchema = z
   .object({
     title: z.string().min(1),
@@ -62,6 +72,7 @@ export const postSchema = z
     tags: z.array(z.string().min(1)).min(1),
     aiAssisted: z.boolean(),
     draft: z.boolean(),
+    loop: forecastLoopSchema.optional(),
     sources: z.array(sourceSchema).min(1),
     entities: z.record(z.string(), z.array(z.string().min(1))).default({}),
     shorts: shortsSchema.optional(),
@@ -140,5 +151,6 @@ export const mediaSchema = z
   .strict();
 
 export type PostData = z.infer<typeof postSchema>;
+export type ForecastLoopData = z.infer<typeof forecastLoopSchema>;
 export type EventData = z.infer<typeof eventSchema>;
 export type MediaData = z.infer<typeof mediaSchema>;

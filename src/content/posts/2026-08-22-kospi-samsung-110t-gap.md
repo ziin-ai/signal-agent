@@ -14,6 +14,12 @@ tags:
   - "외국인수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "종가 6680이 남나"
+  result: "금요일 종가 6912.95(+0.88%). 외인 −1707억. 코스닥은 사이드카 종가"
+  score: "hit"
+  note: "6680은 남고 종가는 삼전 기대로 올라왔다"
+  next: "월요일 삼전 281500을 잃고 전기전자 외인이 다시 팔면 6912는 기대 종가인가"
 sources:
   - id: "src-1"
     tier: 2

@@ -13,6 +13,12 @@ tags:
   - "MI455X"
 aiAssisted: true
 draft: false
+loop:
+  prior: "AMD Helios AI 랙: 단품 GPU에서 랙스케일 플랫폼으로의 전환인가"
+  result: "AMD Helios는 Instinct MI455X·EPYC Venice·Pensando·ROCm을 하나의 ORW 더블와이드 랙으로 묶은 첫 랙스케일 AI 시스템이다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "2026년 하반기 출하를 앞두고 Microsoft Azure 도입이 확정되며 Meta·OpenAI·Oracle 고객군이 겹친다."
 sources:
   - id: "src-1"
     tier: 1

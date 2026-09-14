@@ -14,6 +14,12 @@ tags:
   - "외국인수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "종가 6869 위가 8/18 소화인가"
+  result: "시가 6759.95. 6869는 시가에서 꺼짐. 장중 6680은 유지. 외인 +1063억"
+  score: "miss"
+  note: "소화 레벨은 시가에서 끝났고 규모도 전일이 아니다"
+  next: "종가 6680이 남나"
 sources:
   - id: "src-1"
     tier: 2

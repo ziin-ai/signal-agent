@@ -14,6 +14,12 @@ tags:
   - "수출"
 aiAssisted: true
 draft: false
+loop:
+  prior: "루마니아 4조·180만원·파이프라인 60조"
+  result: "잔고 실행은 남고 루마니아·180만원은 4/29에 달력을 잃음. 종가 6,909.91"
+  score: "partial"
+  note: "이미 따 둔 잔고는 남고 신규 대형 수주·목표가는 끝남"
+  next: "잔고 실적과 신규 수주 헤드라인을 분리"
 sources:
   - id: "src-1"
     tier: 2

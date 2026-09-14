@@ -14,6 +14,12 @@ tags:
   - "코스닥"
 aiAssisted: true
 draft: false
+loop:
+  prior: "ABL 2.0 전환기 에이비엘바이오 — BBB·ABL111·BLA 3대 촉매인가"
+  result: "에이비엘바이오(298380)는 GSK·릴리·사노피 검증 그랩바디-B 플랫폼 위에 ABL 2.0을 제시했다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "7/7 IR 기준 핵심은 ABL001 4Q BLA 제출, ABL111 12월 3상 착수, 사노피 ABL301 리스크 해소. 1Q 매출 131억·현금성자산 1,867억이 R&D…"
 sources:
   - id: "src-1"
     tier: 2

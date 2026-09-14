@@ -14,6 +14,12 @@ tags:
   - "메모리"
 aiAssisted: true
 draft: false
+loop:
+  prior: "9월 7일 아스트라 갭: 월요일 3%가 10월 메모리 수요로 남나"
+  result: "9/7(월) 장중. 시황과 사이클 채점은 오늘 다른 글에 있습니다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "네이버 경제·IT에서 한 달 뒤 지수 가격에 남을 칸은, 오픈AI GPT-6 아스트라를 고용량 메모리 수요로 읽은 월요일 시가 6,910.78(+3.34%)입니다."
 sources:
   - id: "src-1"
     tier: 2

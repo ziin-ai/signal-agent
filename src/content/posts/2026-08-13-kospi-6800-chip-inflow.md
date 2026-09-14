@@ -14,6 +14,12 @@ tags:
   - "코스닥"
 aiAssisted: true
 draft: false
+loop:
+  prior: "6800이 CPI·공급대책의 선인가"
+  result: "장중 6808.86. 외인 +1.49조, 닉스·삼전이 본체"
+  score: "hit"
+  note: "밀려도 외인 현물이 선을 샀다"
+  next: "연휴 앞에도 외인 부호가 6800 종가를 남기는가"
 sources:
   - id: "src-1"
     tier: 2

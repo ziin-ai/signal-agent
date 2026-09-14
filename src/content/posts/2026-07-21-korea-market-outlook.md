@@ -14,6 +14,12 @@ tags:
   - "수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "수출 역대 최대·삼전닉스 반등…코스피 2%대 vs 코스닥 디커플인가"
+  result: "7/21 장중 콜은 코스피 반등을 수출·삼성전자·SK하이닉스 바스켓으로 읽는 것이다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "다만 코스닥의 730선대 약세가 본체 리스크이며, 외인·기관 매수 지속과 빅테크 실적이 가드레일이다."
 sources:
   - id: "src-1"
     tier: 2

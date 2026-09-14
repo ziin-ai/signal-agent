@@ -14,6 +14,12 @@ tags:
   - "외국인수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "가이던스를 현물이 같은 부호로 받나"
+  result: "목요일 시가 6996.12, 종가 6912.37(+1.53%). 엔비디아 정규장 +8.74%"
+  score: "hit"
+  note: "같은 부호로 열었고 7천 시가를 한 번 열어봤다"
+  next: "열어본 7천을 6912 위에서 다시 받나"
 sources:
   - id: "src-1"
     tier: 2

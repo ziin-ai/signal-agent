@@ -15,6 +15,12 @@ tags:
   - "로보틱스"
 aiAssisted: true
 draft: false
+loop:
+  prior: "젠슨 황이 삼성·SK·현대차·LG를 모두 만난 이유 — 2026 하반기 한국 AI 산업·경제 전망 완전 분석인가"
+  result: "2026년 6월 5~8일 젠슨 황의 4박 5일 방한은 HBM 공급자에서 AI 인프라·피지컬 AI 허브로 한국 산업 역할을 재정의하는 신호다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "SK·네이버·SKT는 GW급 AI 팩토리, 삼성은 HBM4E·파운드리, LG·현대차·두산은 로보틱스·데이터센터로 분업하며, 하반기에는 Vera Rubin 램프업·AI 팩토리…"
 sources:
   - id: "src-1"
     tier: 1

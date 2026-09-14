@@ -14,6 +14,12 @@ tags:
   - "증권전망"
 aiAssisted: true
 draft: false
+loop:
+  prior: "WGBI가 주식을 사고 하반기 연준 인하, 원/달러 1350"
+  result: "원/달러 1,350.4. WGBI는 채권. 종가 6,687.21"
+  score: "partial"
+  note: "1350 밴드·상고하저는 남고 주식 매수·인하는 깨짐"
+  next: "1350 위 환율이 반도체 창구를 누르는지"
 sources:
   - id: "src-1"
     tier: 2

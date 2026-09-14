@@ -15,6 +15,12 @@ tags:
   - "AI규제"
 aiAssisted: true
 draft: false
+loop:
+  prior: "6월 20일 IT 증시 전망: 네이버 IT 헤드라인이 가리키는 AI 통제·칩플레이션·소버린 변수인가"
+  result: "6/20(토) 기준 네이버 IT/과학 헤드라인은 美 AI 모델 '사용' 수출통제·갤Z폴드8 360만원 칩플레이션·챗GPT 한국 광고·카카오게임즈 지배구조 변경·HBM4E·구글…"
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "메모리 호황과 AI 규제 리스크가 동시에 가격에 반영되는 주말이다."
 sources:
   - id: "src-1"
     tier: 2

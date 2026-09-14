@@ -14,6 +14,12 @@ tags:
   - "변동성"
 aiAssisted: true
 draft: false
+loop:
+  prior: "2026-06-22 한국 증시: 9050·마이크론·MSCI 5대 변수인가"
+  result: "6월 22일(월) 장 전 국내 증시는 전주 코스피 9052·주간 +11.4% 급등 직후, 미·이란 후속 협상·6월 수출(반도체)·마이크론 실적·MSCI 관찰대상국·SK하이닉스…"
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "코스피 대형 반도체 vs 코스닥 966 디커플이 핵심 구조다."
 sources:
   - id: "src-1"
     tier: 2

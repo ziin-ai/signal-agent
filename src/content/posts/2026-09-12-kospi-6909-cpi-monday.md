@@ -14,6 +14,12 @@ tags:
   - "7000선"
 aiAssisted: true
 draft: false
+loop:
+  prior: "7,000이 유가·PPI 갭을 첫 현금에서 받는가"
+  result: "금요일 종가 6,909.91(−1.76%). 7,000 반납"
+  score: "hit"
+  note: "갭을 종가에서 받았고 7,000을 내줬다"
+  next: "월요일은 6,909를 CPI·유가 되돌림의 다음 현물로 쓰는가"
 sources:
   - id: "src-1"
     tier: 2

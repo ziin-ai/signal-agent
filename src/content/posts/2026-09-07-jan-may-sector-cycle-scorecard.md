@@ -14,6 +14,12 @@ tags:
   - "삼성전자"
 aiAssisted: true
 draft: false
+loop:
+  prior: "8월 반도체 정점·비반도체가 지수를 이끈다"
+  result: "8월 수출 467억은 정점 통과 전. 주가 정점은 6/19. 종가 6,687.21"
+  score: "miss"
+  note: "실물 정점은 안 왔고 주가 정점은 이미 지났다"
+  next: "반도체 창구가 지수를 계속 쓰는지"
 sources:
   - id: "src-1"
     tier: 3

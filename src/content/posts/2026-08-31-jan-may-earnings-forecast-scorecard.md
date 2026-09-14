@@ -14,6 +14,12 @@ tags:
   - "수출"
 aiAssisted: true
 draft: false
+loop:
+  prior: "삼성 연간 180조·하이닉스 140조·수출 7400억달러"
+  result: "상반기에 이익은 거의 찼고 1~7월 수출 5951억. 종가 6,788.88"
+  score: "partial"
+  note: "이익 레벨은 앞당겨졌고 수출 목표는 낮다"
+  next: "그 이익을 더 높은 금리로 나눈 가격이 유지되는지"
 sources:
   - id: "src-1"
     tier: 2

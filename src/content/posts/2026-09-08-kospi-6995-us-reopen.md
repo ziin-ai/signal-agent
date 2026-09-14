@@ -14,6 +14,12 @@ tags:
   - "환율"
 aiAssisted: true
 draft: false
+loop:
+  prior: "주간 외인 매도 부호가 첫 현금에서 열리는가"
+  result: "월요일 종가 6,995.39(+4.61%). 하루 만에 부호 반전"
+  score: "miss"
+  note: "외인 매도 지속 전망은 하루 만에 뒤집힘"
+  next: "6,995를 미국 정규장 개장 전에 현물이 받는가"
 sources:
   - id: "src-1"
     tier: 2

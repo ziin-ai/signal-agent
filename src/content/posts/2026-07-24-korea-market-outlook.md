@@ -14,6 +14,12 @@ tags:
   - "수급"
 aiAssisted: true
 draft: false
+loop:
+  prior: "7천피 하루 만에 반납…유가100·외인 매도·사이드카인가"
+  result: "7/24 장중 본체는 유가 헤드라인이 아니라 외인 4일(약 6.2조) 순매수의 청산 속도다."
+  score: "pending"
+  note: "당일 기록. 이후 세션으로 채점하지 않음"
+  next: "외인 장중 순매수 재전환+원/달러 1470 하회면 ‘오버나잇 되돌림’으로 수정."
 sources:
   - id: "src-1"
     tier: 2
