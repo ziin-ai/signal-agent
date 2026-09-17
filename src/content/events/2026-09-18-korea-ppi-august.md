@@ -6,9 +6,9 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "mid"
-summary: "한은 8월 PPI 공표(통상 06:00 KST). 같은 날 BOJ. 미국 8월 PPI·CPI와 금요일 6909 유가 갭은 이미 지난 칸. 국내 생산자물가가 국고·환율 경로를 다시 쓰는지가 필터."
-sourceUrl: "https://www.bok.or.kr/portal/stats/statsPublictSchdul/listCldr.do?date=2026-09&menuNo=200775"
+summary: "인쇄됨. 8월 PPI 129.64(+0.2% MoM, +7.9% YoY). 7월 −0.4% 후 반등. 농림수산품 +3.8%, 산업용 도시가스 +11.0%. 한은은 9월 1–16일 유가 +29%·도시가스 도매 +6.6%를 상방으로 둠. 목 현금 6715.41, 환율 1382.2, 야간 +2.99%. 같은 날 BOJ는 미인쇄."
+sourceUrl: "https://www.yna.co.kr/view/AKR20260917177300002"
 tags: ["PPI", "생산자물가", "한국은행", "매크로"]
 ---
 
-공식 시각은 한은 통계 공표일정. 숫자가 나오면 요약을 인쇄값으로 교체한다.
+공식 시각은 한은 통계 공표일정 06:00. 9월 상방은 유가·가스 칸이며 8월 인쇄값과 섞지 않는다.
