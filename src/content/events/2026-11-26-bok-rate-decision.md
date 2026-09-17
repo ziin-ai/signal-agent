@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "미국 중간선거 직후 국면과 겹칠 수 있어, 대외·대내 정치 이벤트와 금리 메시지가 동시에 주가에 전달될 수 있다."
+summary: "9/17 이후 시장 문장의 기본 경로(10월 동결 뒤 여기 3.25%). 10/28 연준의 두 번째 카드와 중간선거 국면이 같은 달에 겹친다. 10/22가 이미 올리면 이 회차의 무게는 줄어든다."
 sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
 tags: ["금통위", "금리", "원화", "한국은행"]
 ---
