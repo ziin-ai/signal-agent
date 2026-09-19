@@ -6,8 +6,8 @@ market: "GLOBAL"
 scope: "all"
 category: "policy"
 impact: "mid"
-summary: "FT·동아: 9/20 뉴욕에서 베선트·그리어와 허리펑이 회동. 5월 베이징 합의 300억달러 상호 관세 인하, 11/10 유예 만료 연장이 쟁점. 중국은 임기 말, 미국은 희토류를 이유로 6개월. 24일 정상회담의 실무 입력."
-sourceUrl: "https://www.donga.com/news/Inter/article/all/20260916/134681111/1"
+summary: "중국 상무부: 허리펑 19∼23일 방미. 베선트 주말 회동 계획, 그리어 참석 관측. 의제 전망은 11월 관세 휴전 연장·희토류·AI. 20일 뉴욕 결과는 일 08:00 KST 기준 미인쇄. 24일 워싱턴 정상회담의 실무 입력."
+sourceUrl: "https://www.yna.co.kr/view/AKR20260919026800083"
 tags: ["미중", "관세", "베선트", "허리펑", "희토류"]
 ---
 
