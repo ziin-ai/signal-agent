@@ -7,7 +7,7 @@ market: "NASDAQ"
 scope: "all"
 category: "earnings"
 impact: "high"
-summary: "조선비즈 9/15: 마이크론이 2026 회계연도 4분기(6~8월)를 9/30 발표. 매출 가이던스 490억~510억달러. 달러 기준이라 삼성·닉스 3Q 원화 잠정의 선행 지표이지 환산 공식이 아니다. 9/16 KB는 삼성·닉스·마이크론 수요 충족률 60%·재고 10일 미만을 적었다. AI 메모리 수요가 가이던스를 지키는지가 관찰값."
+summary: "IR 안내: 9/30 14:30 Mountain Time 콘퍼런스콜. 조선비즈 가이던스 490억~510억달러는 달러 선행이지 삼성 원화 환산이 아니다. 9/24 미중 성명(AI·관세 휴전) 다음 첫 주문 창. 9/19 연합: 2Q OPM 80.4%, HBM 점유 18%, 연말 HBM 월 10만장."
 sourceUrl: "https://biz.chosun.com/it-science/ict/2026/09/15/F2PO2P5UCBG7BDEVA7CE2V67QE/"
 tags: ["Micron", "메모리", "HBM", "실적", "삼성전자", "SK하이닉스"]
 ---
