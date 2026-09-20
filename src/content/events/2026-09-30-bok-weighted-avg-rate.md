@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "mid"
-summary: "한은 월간통계 9/30 12:00. 8월 예금·대출 가중평균이 FOMC +25bp(3.75~4.00%)·한은 8/27 3.00% 유지 뒤 첫 월간 표. 같은 날 8월 산업활동·은행 3분기 마감과 층을 분리한다. 가계대출 신규취급 vs 잔액, 기업대출 가산이 10월 금통위 입력."
+summary: "한은 월간통계 9/30 12:00. 8월 예금·대출 가중평균이 FOMC +25bp(3.75~4.00%)·한은 8/27 3.00% 유지 뒤 첫 월간 표. 같은 날 8월 산업활동·2분기 외환 순거래·은행 3분기 마감과 층을 분리한다. 가계대출 신규취급 vs 잔액, 기업대출 가산이 10월 금통위 입력."
 sourceUrl: "https://www.bok.or.kr/portal/stats/statsPublictSchdul/listCldr.do?date=2026-09&menuNo=200775"
 tags: ["가중평균금리", "한국은행", "가계대출", "수신금리", "금통위"]
 ---
