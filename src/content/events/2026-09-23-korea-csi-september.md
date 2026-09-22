@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "mid"
-summary: "한은 통계 공표일정 9/23 06:00. 미 FOMC 0.25%p 인상(3.75~4.00%)·워시 매파 회견이 전해진 뒤 첫 국내 소비심리. 환율·유가·추석 물가가 가계 기대인플레·CSI에 남는지가 필터. 29일 ESI·10월 금통위와 층을 분리한다."
+summary: "한은 통계 공표일정 9/23 06:00. 미 FOMC 0.25%p 인상(3.75~4.00%)·워시 매파 회견이 전해진 뒤 첫 국내 소비심리. 환율·유가·추석 물가가 가계 기대인플레·CSI에 남는지가 필터. 같은 날 뉴욕 투자서밋·ADB 14:00은 별 파일. 29일 ESI는 분리하지 않는다."
 sourceUrl: "https://www.bok.or.kr/portal/stats/statsPublictSchdul/listCldr.do?date=2026-09&menuNo=200775"
 tags: ["소비심리", "CSI", "한국은행", "FOMC", "내수"]
 ---
