@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "9/17 FOMC가 +25bp(3.75~4.00%)를 찍은 뒤 한미 금리차는 상단 기준 1.00%p. 8월 PPI는 +0.2%·한은은 9월 1–16일 유가 +29%를 상방으로 남김. 다음 국내 CPI는 10/2(8월은 +3.1%·기저 제외 2.5%). 시장 문장은 10월 동결 뒤 11월 3.25%에 무게. 이 회차는 연준 10/27–28보다 닷새 먼저다."
+summary: "9/17 FOMC가 +25bp(3.75~4.00%)를 찍은 뒤 한미 금리차는 상단 기준 1.00%p. 9/23 금리수준전망 CSI 128(2023-10 이후 최고)·CCSI 106.6·ADB 성장 3.2%·기대인플레 2.7%가 같은 아침 입력. 다음 국내 CPI는 10/2. 시장 문장은 10월 동결 뒤 11월 3.25%에 무게. 이 회차는 연준 10/27–28보다 닷새 먼저다."
 sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
 tags: ["금통위", "금리", "원화", "한국은행", "명목GDP", "한미금리차"]
 ---
