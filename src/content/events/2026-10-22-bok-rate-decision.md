@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "9/17 FOMC가 +25bp(3.75~4.00%)를 찍은 뒤 한미 금리차는 상단 기준 1.00%p. 9/23 금리수준전망 CSI 128(2023-10 이후 최고)·CCSI 106.6·ADB 성장 3.2%·기대인플레 2.7%가 같은 아침 입력. 다음 국내 CPI는 10/2. 시장 문장은 10월 동결 뒤 11월 3.25%에 무게. 이 회차는 연준 10/27–28보다 닷새 먼저다."
+summary: "기준 3.00%(8/27). 한미 금리차 상단 기준 1.00%p. 9/24 입력은 8월 CPI 3.1%·수출 중 반도체 약 47.5%·OECD 성장 3.7%·한은 3.3%. 9/23 금리전망 CSI 128·기대인플레 2.7%. 다음 국내 CPI는 10/2. 연준 10/27–28 페드워치 70%가 닷새 뒤. 시장 문장은 10월 동결 뒤 11월 3.25%에 무게."
 sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
 tags: ["금통위", "금리", "원화", "한국은행", "명목GDP", "한미금리차"]
 ---
