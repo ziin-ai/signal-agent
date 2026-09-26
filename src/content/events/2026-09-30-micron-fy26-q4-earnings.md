@@ -7,7 +7,7 @@ market: "NASDAQ"
 scope: "all"
 category: "earnings"
 impact: "high"
-summary: "IR 안내: 9/30 14:30 Mountain Time 콘퍼런스콜. 조선비즈 가이던스 490억~510억달러는 달러 선행이지 삼성 원화 환산이 아니다. 9/24 미중 성명(AI·관세 휴전) 다음 첫 주문 창. 9/19 연합: 2Q OPM 80.4%, HBM 점유 18%, 연말 HBM 월 10만장."
+summary: "IR 안내: 9/30 14:30 Mountain Time 콘퍼런스콜. 유안타는 한국시간 10/1 05:30으로 적음(서머타임 환산과 1시간 안팎 어긋날 수 있음). 대신: 다음 분기 가이던스·매출총이익률 86%가 한국 반도체 하한. 9/25 MS 에이전트 코파일럿 +3.66%·SOX +1.41%는 수요 입력이지 마이크론 숫자가 아님. 조선비즈 가이던스 490억~510억달러는 달러 선행."
 sourceUrl: "https://biz.chosun.com/it-science/ict/2026/09/15/F2PO2P5UCBG7BDEVA7CE2V67QE/"
 tags: ["Micron", "메모리", "HBM", "실적", "삼성전자", "SK하이닉스"]
 ---
