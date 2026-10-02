@@ -1,14 +1,14 @@
 ---
 id: "us-nfp-september-2026-10"
-title: "美 9월 고용지표(NFP)"
+title: "美 9월 고용지표(NFP) — +2.9만 인쇄"
 date: 2026-10-02
 market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS Employment Situation — 9월 비농업 고용. 10월 FOMC(10/28) 경로·달러·외국인 수급의 노동 입력값."
-sourceUrl: "https://www.bls.gov/schedule/news_release/empsit.htm"
+summary: "BLS 인쇄: 9월 비농업 +29,000(다우존스 예상 +84,000, 로이터 +90,000). 실업률 4.2%. 시간당 임금 전월 +0.1%·전년 +3.0%. 8월 +162,000→+133,000, 7월 +21,000→−10,000. 금 밤 나스닥 27,190.86(+1.19%), 10년 5.283%(+4.93bp), 페드워치 10월 동결 77.9%. 한국 다음 현금은 10/6."
+sourceUrl: "https://www.bls.gov/news.release/empsit.nr0.htm"
 tags: ["NFP", "고용", "Fed", "매크로"]
 ---
 
-공식 일정 08:30 ET.
+공식 일정 08:30 ET. 한국 세션 반영은 연휴 뒤 10/6 개장. 인쇄 인용은 연합 AKR20261003005451072·뉴스핌 20261002001325.
