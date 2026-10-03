@@ -6,4 +6,4 @@ patches:
   - path: patch-deployment.yaml
 images:
   - name: ghcr.io/ziin-ai/signal-agent-content
-    newTag: 2ff23d5b117e766eef5c8faf92377dfdabb9f5ad
+    newTag: 89930a8a06b806dce02433daf5cb1ba4d7f30c2d
