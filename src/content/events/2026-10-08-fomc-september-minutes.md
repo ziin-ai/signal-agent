@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "mid"
-summary: "9월 FOMC 의사록. 10/5 인포맥스·조선 주간 일정은 8일. 직전 인쇄는 NFP +2.9만, 10년 5.283%, 페드워치 10월 동결 77.9%. 한국은 같은 날 삼성 잠정 창(7~8일)·중국 재개와 겹치고, 다음날 한글날 휴장."
+summary: "9월 FOMC 의사록. 와이어 공개일 8일. 10/6 직전 인쇄는 ISM 서비스 54.9·가격 74.0, 나스닥 27,477.31(+1.05%), 10년 장중 5.347%. 금요일 페드워치 동결 77.9%는 월 뉴욕 전 숫자라 덮어쓰지 않음. 한국은 같은 날 삼성 잠정 창(7~8일)·중국 재개와 겹치고, 다음날 한글날 휴장."
 sourceUrl: "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
 tags: ["FOMC", "Fed", "금리", "의사록", "매크로"]
 ---
