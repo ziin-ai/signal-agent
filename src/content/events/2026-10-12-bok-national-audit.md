@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "policy"
 impact: "mid"
-summary: "인포맥스 11일 외환 주간: 12일 한국은행 국정감사. 10/22 금통위 앞 신현송 총재의 통화정책·환율 발언 여부. 같은 날 한국 첫 현금·美 채권 휴장. 발언이 나오기 전 숫자로 채우지 않는다."
+summary: "12일 한은 국정감사. 인포맥스 마감: 신현송, 8월 선제 인상으로 시간을 벌었고 외환보유액은 안정성·유동성 위주로 운용. 10/22 금통위와 층을 분리. 발언을 화요일 시가로 읽지 않는다."
 sourceUrl: "https://news.einfomax.co.kr/news/articleView.html?idxno=4438567"
 tags: ["국정감사", "한국은행", "환율", "금통위"]
 ---

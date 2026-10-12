@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "supply-chain"
 impact: "mid"
-summary: "Open Compute Project 2026 글로벌 서밋, 10/12–15 새너제이. 등록 매진. 서울경제 12일 07:00은 오픈AI 매출 논란 이후 AI 인프라 효율·수익화 발표에 이목이 쏠린다고 적음. 한국 초반 30분의 입력이 아니라 주중 일정."
+summary: "Open Compute Project 2026 글로벌 서밋, 10/12–15 새너제이. 13일은 둘째 날. 등록 매진. 월 밤 SOX −2.60%·닉스 ADR −4.02%는 OCP 일정이 아니라 CXMT·유가 화면. 한국 초반 30분의 입력이 아니라 주중 일정."
 sourceUrl: "https://www.opencompute.org/events/ocp-summit/2026-ocp-global-summit/"
 tags: ["OCP", "데이터센터", "AI", "반도체"]
 ---
