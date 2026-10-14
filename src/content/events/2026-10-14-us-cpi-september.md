@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS 9월 CPI·코어. 같은 날 연준 베이지북. 인쇄는 21:30 KST, 수 현금 뒤. 화 종가 6,035.35·외인 −4.5259조. 화(현지) 나스닥 27,204.38·닉스 ADR −3.19%·10년 5.216%는 입력이지 CPI 결과가 아님. 수 초반 30분과 층을 분리."
+summary: "인쇄됨. 전년 3.7%(전망 3.6%)·전월 0.6%. 근원 2.6%/0.3%. 수(현지) 나스닥 26,692.87(−1.88%)·SOX −4.30%·닉스 ADR −6.06%. 10년 장중 5.304% 뒤 5.189%. 페드워치 직후 51.5%·종가 근처 37%. 목 초반 30분과 층을 분리."
 sourceUrl: "https://www.bls.gov/schedule/news_release/cpi.htm"
 tags: ["CPI", "물가", "Fed", "매크로"]
 ---
