@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "high"
-summary: "기준 3.00%(8/27). 9월 CPI +2.9%, 한은 10월 3% 내외. 브렌트 10/2(현지) 102.25. 9월 NFP +2.9만, 페드워치 10월 동결 77.9%(인상 22.1%). 연준 10/27–28이 닷새 뒤, 3분기 GDP 속보는 10/27. 같은 날 오픈AI 데브데이 서울·래블업 청약과 층을 분리한다."
+summary: "기준 3.00%(8/27). 이투데이: 시장 동결(3.00%) 전망. 금 종가 5,668.05, 서울 1,331.4, 브렌트 109.86. 9월 CPI +2.9%. 연준 10/27–28이 닷새 뒤, 3분기 GDP 속보는 10/27. 19일 중국 GDP·월 초반 30분과 층을 분리한다."
 sourceUrl: "https://www.bok.or.kr/portal/singl/crncyPolicyDrcMtg/listYear.do?menuNo=200755&mtgSe=A"
 tags: ["금통위", "금리", "원화", "한국은행", "명목GDP", "한미금리차"]
 ---

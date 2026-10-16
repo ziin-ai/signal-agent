@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "인쇄됨. 전월 1.3%(전망 0.6%)·전년 6.3%. 목(현지) 나스닥 26,713.03(+0.08%)·SOX −0.88%·닉스 ADR −0.98%. 10년 5.086%(−10.2bp). 페드워치 10월 인상 약 27%. 금 초반 30분과 층을 분리."
+summary: "인쇄됨. 전월 1.3%(전망 0.6%)·전년 6.3%. 금 종가 5,668.05. 금(현지) 나스닥 26,140.03(−2.15%)·SOX −3.83%·닉스 ADR −6.58%. 월 초반 30분과 층을 분리."
 sourceUrl: "https://www.bls.gov/schedule/news_release/ppi.htm"
 tags: ["PPI", "물가", "Fed", "매크로"]
 ---
