@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS Employment Situation — 10월 비농업 고용. 미 중간선거(11/3) 직후·12월 FOMC 전 노동시장 필터."
+summary: "BLS Employment Situation — 10월 비농업 고용. 미 중간선거(11/3) 직후·12월 FOMC 전 노동시장 필터. 같은 날 애플 M6 맥 판매·카카오인베스트 채권자이의와 층을 분리한다."
 sourceUrl: "https://www.bls.gov/schedule/news_release/empsit.htm"
 tags: ["NFP", "고용", "Fed", "매크로"]
 ---
