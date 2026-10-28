@@ -6,9 +6,9 @@ market: "KRX"
 scope: "market"
 category: "macro"
 impact: "mid"
-summary: "한은 월간통계 10/29 06:00. 9월 슬롯은 9/29. 10/27 GDP 속보·CSI 다음의 기업 심리 입력. 10/28 FOMC 다음 날 아침이라 국내 체감과 미국 금리 칸을 섞지 않는다. 소비자동향(10/27)과 층을 분리한다. 숫자는 발표 후 요약을 교체한다."
-sourceUrl: "https://www.bok.or.kr/portal/stats/statsPublictSchdul/listCldr.do?date=2026-10&menuNo=200775"
+summary: "한은 10/29 06:00. 제조업 BSI 105.6(+6.1p), 비제조업 103.2(+4.3p). ESI 100.8(+0.9p). 10/27 GDP 속보 1.0%·CSI 105.4 다음의 기업 심리 입력. FOMC 동결(03:00)과 층을 분리한다. 목 시가로 읽지 않는다. 같은 날 12:00 가중평균금리는 별도로 열지 않는다."
+sourceUrl: "https://www.bok.or.kr/portal/bbs/B0000501/view.do?menuNo=201264&nttId=11066009"
 tags: ["ESI", "기업경기", "한국은행", "반도체", "심리지수"]
 ---
 
-9/29 파일의 다음 달 공식 슬롯. 같은 날 12:00 가중평균금리는 별도로 열지 않는다.
+한은 10/29 06:00 원문. 제조 105.6·비제조 103.2·ESI 100.8을 잠갔다. 목 08:00 글은 이미 찍힌 아침 입력으로만 상속하고 시가로 읽지 않는다.
