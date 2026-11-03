@@ -8,14 +8,14 @@ spec:
   template:
     metadata:
       annotations:
-        ziin.ai/content-rev: 33113f9b0688692e0383c0725c2b7a2b03de23d3
+        ziin.ai/content-rev: 47c2f232a56df4ae2ef986f0835d8e504811d8e6
     spec:
       volumes:
         - name: content
           emptyDir: {}
       initContainers:
         - name: content
-          image: ghcr.io/ziin-ai/signal-agent-content:33113f9b0688692e0383c0725c2b7a2b03de23d3
+          image: ghcr.io/ziin-ai/signal-agent-content:47c2f232a56df4ae2ef986f0835d8e504811d8e6
           imagePullPolicy: IfNotPresent
           command: ["sh", "-c", "cp -a /content/. /shared/"]
           volumeMounts:
