@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BOJ MPM 12/17–18 결정일. 연말 엔화·한일 금리차 재가격. 한국 연말 수급·환율과 맞물릴 수 있다."
+summary: "BOJ MPM 12/17–18 결정일. 연말 엔화·한일 금리차 재가격. 한국 연말 수급·환율과 맞물릴 수 있다. 같은 날 카카오 인적분할 주주확정일과 층을 분리한다."
 sourceUrl: "https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm"
 tags: ["BOJ", "엔화", "금리", "매크로"]
 ---
