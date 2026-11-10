@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "policy"
 impact: "mid"
-summary: "서울경제 11/9 06:15 leftover. 12일 한국시간 07:00 직후 편입·편출 공개. 실제 변경은 30일 장 마감 기준. 옵션 만기와 같은 날 수급 leftover. 월 초반 30분의 현물 부호가 아니다. 같은 날 네이버 3Q·오픈AI 커서 모델 종료·삼성·구글 AI 안경 예약과 층을 분리한다."
+summary: "서울경제 11/9 06:15 leftover. 12일 한국시간 07:00 직후 편입·편출 공개. 실제 변경은 30일 장 마감 기준. 옵션 만기와 같은 날 수급 leftover. 수 초반 30분의 현물 부호가 아니다. 같은 날 네이버 3Q·오픈AI 커서 모델 종료·삼성·구글 AI 안경 예약과 층을 분리한다."
 sourceUrl: "https://www.msci.com/index-review"
 tags: ["MSCI", "분기리뷰", "수급"]
 ---
