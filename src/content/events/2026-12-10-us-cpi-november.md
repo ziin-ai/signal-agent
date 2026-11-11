@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BLS 11월 CPI·코어. FOMC(12/9) 직후·연말 포지션 정리 구간의 물가 확인. 같은 날 코스피 분기 동시만기와 겹칠 수 있다."
+summary: "BLS 11월 CPI·코어. FOMC(12/9) 직후·연말 포지션 정리 구간의 물가 확인. 같은 날 코스피 분기 동시만기·철도 무기한 총파업과 층을 분리한다."
 sourceUrl: "https://www.bls.gov/schedule/news_release/cpi.htm"
 tags: ["CPI", "물가", "Fed", "매크로"]
 ---
