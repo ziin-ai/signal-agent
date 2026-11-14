@@ -7,7 +7,7 @@ market: "NASDAQ"
 scope: "symbol"
 category: "product"
 impact: "high"
-summary: "플레이스테이션 공식. PS5·Xbox Series X|S, 디지털 전용. 사전다운로드 11/12. PC는 미발표. 8/22 한국 IT는 유출 사태와 함께 '연말 출시'로 재소환. 테이크투 실적·가이던스의 본체 촉매. 같은 날 지스타 개막·앤트로픽 나스닥 상장과 층을 분리한다."
+summary: "플레이스테이션 공식. PS5·Xbox Series X|S, 디지털 전용. 사전다운로드 11/12. PC는 미발표. 8/22 한국 IT는 유출 사태와 함께 '연말 출시'로 재소환. 테이크투 실적·가이던스의 본체 촉매. 같은 날 지스타 개막·앤트로픽 나스닥 상장·한은 3분기 국제투자대조표와 층을 분리한다."
 sourceUrl: "https://blog.ko.playstation.com/2026/06/25/20260625-gta6/"
 tags: ["GTA6", "테이크투", "락스타", "PS5", "게임"]
 ---
