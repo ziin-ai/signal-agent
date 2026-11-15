@@ -7,9 +7,9 @@ market: "NASDAQ"
 scope: "symbol"
 category: "news"
 impact: "high"
-summary: "연합 11/15 06:00 leftover. 주간 코스피 +4.56% 5,290.53. 13일(현지) 엔비디아 −2.01% leftover. 닉스 ADR −4.30%. SOX −3.43%. AMD −8.75%. leftover 12일(현지) −4.34%는 전날 칸. 인포맥스 02:46 머스크 leftover. 금 현금 삼성 −0.96%·닉스 −3.03%. 금 초반 30분은 5,342 위로 맞음. 월 초반 30분의 현물 부호가 아니다."
-sourceUrl: "https://www.yna.co.kr/view/AKR20261114009551072"
+summary: "인포맥스 11/16 07:16 leftover. 15일(현지) FT: 황이 측근과 복귀 논의, 워룸·백악관 지지 leftover. 베선트 02:20 leftover: 외부 CEO·대대적 쇄신, 10일 이내 수출통제 답변. 13일(현지) 엔비디아 −2.01% leftover. SOX −3.43%. 닉스 ADR −4.30%. leftover 12일(현지) −4.34%는 전날 칸. 17일 실적 칸은 열지 않는다. 월 초반 30분의 현물 부호가 아니다."
+sourceUrl: "https://news.einfomax.co.kr/news/articleView.html?idxno=4444837"
 tags: ["엔비디아", "젠슨황", "이사회", "반도체", "나스닥"]
 ---
 
-07:14 종합이 −2.01%를 잠갔다. leftover −4.34%와 한 점수로 읽지 않는다. 머스크 leftover와 17일 실적은 이 칸이 아니다. 월요일 시가로 바꾸지 않는다.
+07:16이 복귀 leftover를 잠갔다. −2.01% leftover와 한 점수로 읽지 않는다. 베선트 leftover와 17일 실적은 이 칸이 아니다. 월요일 시가로 바꾸지 않는다.
