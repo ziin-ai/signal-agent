@@ -6,7 +6,7 @@ market: "GLOBAL"
 scope: "all"
 category: "macro"
 impact: "high"
-summary: "BEA Personal Income and Outlays(10월) — PCE. 같은 날 GDP 3분기 2차 추정치. Thanksgiving 직전 매크로 패키지. 전날 엠게임 귀혼키우기 출시는 별 파일."
+summary: "BEA Personal Income and Outlays(10월) — PCE. 같은 날 GDP 3분기 2차 추정치. Thanksgiving 직전 매크로 패키지. 같은 날 서울교통공사 총파업은 `2026-11-25-seoul-metro-strike`. 전날 엠게임 귀혼키우기 출시는 별 파일."
 sourceUrl: "https://www.bea.gov/news/schedule/"
 tags: ["PCE", "Fed", "물가", "BEA"]
 ---
