@@ -1,0 +1,14 @@
+---
+id: "korea-bank-federation-chair-2026-11-26"
+title: "은행연합회 사원총회 — 제16대 회장 선출"
+date: 2026-11-26
+market: "KRX"
+scope: "market"
+category: "policy"
+impact: "mid"
+summary: "네이버 경제 11/23(101) 뉴시스. 23일 회추위 3차·이사회가 박종복 전 SC제일은행장을 제16대 회장 후보로 단독 추천. 26일 정회원 사원총회에서 선출. 후보군 leftover 김한조·손병환·윤종규·이원덕, 윤종원은 16일 고사 leftover. 선임되면 leftover 12/1부터 3년 임기 — 칸은 열지 않는다. 조용병 현 회장 30일 임기 종료 leftover도 칸을 열지 않는다. 같은 날 한은 금통위·넥슨 템빨·아주르 출시·NYSE 추수감사절 휴장과 층을 분리한다."
+sourceUrl: "https://n.news.naver.com/mnews/article/003/0014339133"
+tags: ["은행연합회", "박종복", "금융협회", "은행"]
+---
+
+네이버 경제 11/23 뉴시스가 26일 사원총회와 단독 추천을 섹션에 잠갔다. 12/1 취임·30일 퇴임은 leftover라 이 칸에 적고 별 파일로 열지 않는다.
