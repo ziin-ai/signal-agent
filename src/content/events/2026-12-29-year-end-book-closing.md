@@ -6,7 +6,7 @@ market: "KRX"
 scope: "market"
 category: "other"
 impact: "mid"
-summary: "배당락과 연말 포지션 정리가 집중되며 단기 수급 왜곡과 종목별 변동성이 커질 수 있다."
+summary: "배당락과 연말 포지션 정리가 집중되며 단기 수급 왜곡과 종목별 변동성이 커질 수 있다. 같은 날 SK하이닉스 3분기 현금배당 지급과 층을 분리한다."
 sourceUrl: "https://global.krx.co.kr/"
 tags: ["배당락", "연말", "수급"]
 ---
