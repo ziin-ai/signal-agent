@@ -7,7 +7,7 @@ market: "KRX"
 scope: "symbol"
 category: "policy"
 impact: "high"
-summary: "네이버 경제 11/21(101) 조선비즈. 국산 1호 CAR-T 림카토(RIMQARTO). 12/1부터 건강보험 급여. 1회 상한금액 leftover 2억8,001만6,050원. 본인 부담 leftover 약 600만원. 대상 leftover 재발성·불응성 성인 거대 B세포 림프종(DLBCL). 20일 약가 협상 마무리 leftover, 건정심 상정 leftover. 네이버 IT 11/22(105) 서울경제 leftover 12/1·상한 2억8,001만6,050 재확인. 2차 치료 3상 IND 변경승인 leftover 지난달 신청, 2027 상반기 개시 목표 leftover — 칸은 열지 않는다. 같은 날 대한항공 12월 국제선 유류할증료 25단계·모두의 AI 정식 공개 창·ABL111 3상 착수 창·제일기획 자사주 400억 소각·오스코텍 임시주총·SK텔레콤 5G SA 전국망 상용화와 층을 분리한다."
+summary: "네이버 경제 11/21(101) 조선비즈. 국산 1호 CAR-T 림카토(RIMQARTO). 12/1부터 건강보험 급여. 1회 상한금액 leftover 2억8,001만6,050원. 본인 부담 leftover 약 600만원. 대상 leftover 재발성·불응성 성인 거대 B세포 림프종(DLBCL). 20일 약가 협상 마무리 leftover, 건정심 상정 leftover. 네이버 IT 11/22(105) 서울경제 leftover 12/1·상한 2억8,001만6,050 재확인. 2차 치료 3상 IND 변경승인 leftover 지난달 신청, 2027 상반기 개시 목표 leftover — 칸은 열지 않는다. 같은 날 대한항공 12월 국제선 유류할증료 25단계·모두의 AI 정식 공개 창·ABL111 3상 착수 창·제일기획 자사주 400억 소각·오스코텍 임시주총·SK텔레콤 5G SA 전국망 상용화·엔키화이트햇 일반청약과 층을 분리한다."
 sourceUrl: "https://n.news.naver.com/mnews/article/366/0001206380"
 tags: ["큐로셀", "림카토", "CAR-T", "건강보험", "건정심"]
 ---
